@@ -6,10 +6,7 @@ abstract class Failure extends Equatable {
   final String message;
   final StackTrace? stackTrace;
 
-  const Failure({
-    required this.message,
-    this.stackTrace,
-  });
+  const Failure({required this.message, this.stackTrace});
 
   @override
   List<Object?> get props => [message];
@@ -21,10 +18,7 @@ abstract class Failure extends Equatable {
 
 /// Lỗi liên quan đến network/API
 class NetworkFailure extends Failure {
-  const NetworkFailure({
-    required super.message,
-    super.stackTrace,
-  });
+  const NetworkFailure({required super.message, super.stackTrace});
 
   factory NetworkFailure.noInternet() {
     return const NetworkFailure(
@@ -33,14 +27,30 @@ class NetworkFailure extends Failure {
   }
 
   factory NetworkFailure.timeout() {
-    return const NetworkFailure(
-      message: 'Kết nối timeout. Vui lòng thử lại.',
-    );
+    return const NetworkFailure(message: 'Kết nối timeout. Vui lòng thử lại.');
   }
 
   factory NetworkFailure.serverError([String? details]) {
     return NetworkFailure(
       message: details ?? 'Lỗi server. Vui lòng thử lại sau.',
+    );
+  }
+
+  factory NetworkFailure.unauthorized([String? details]) {
+    return NetworkFailure(
+      message: details ?? 'Bạn cần đăng nhập để thực hiện thao tác này.',
+    );
+  }
+
+  factory NetworkFailure.badRequest([String? details]) {
+    return NetworkFailure(
+      message: details ?? 'Yêu cầu không hợp lệ. Vui lòng kiểm tra lại.',
+    );
+  }
+
+  factory NetworkFailure.notFound([String? details]) {
+    return NetworkFailure(
+      message: details ?? 'Không tìm thấy tài nguyên yêu cầu.',
     );
   }
 }
@@ -51,33 +61,22 @@ class NetworkFailure extends Failure {
 
 /// Lỗi liên quan đến local storage
 class CacheFailure extends Failure {
-  const CacheFailure({
-    required super.message,
-    super.stackTrace,
-  });
+  const CacheFailure({required super.message, super.stackTrace});
 
   factory CacheFailure.readError() {
-    return const CacheFailure(
-      message: 'Không thể đọc dữ liệu từ bộ nhớ.',
-    );
+    return const CacheFailure(message: 'Không thể đọc dữ liệu từ bộ nhớ.');
   }
 
   factory CacheFailure.writeError() {
-    return const CacheFailure(
-      message: 'Không thể lưu dữ liệu vào bộ nhớ.',
-    );
+    return const CacheFailure(message: 'Không thể lưu dữ liệu vào bộ nhớ.');
   }
 
   factory CacheFailure.deleteError() {
-    return const CacheFailure(
-      message: 'Không thể xóa dữ liệu từ bộ nhớ.',
-    );
+    return const CacheFailure(message: 'Không thể xóa dữ liệu từ bộ nhớ.');
   }
 
   factory CacheFailure.notFound(String itemName) {
-    return CacheFailure(
-      message: 'Không tìm thấy $itemName trong bộ nhớ.',
-    );
+    return CacheFailure(message: 'Không tìm thấy $itemName trong bộ nhớ.');
   }
 }
 
@@ -87,21 +86,14 @@ class CacheFailure extends Failure {
 
 /// Lỗi validation input
 class ValidationFailure extends Failure {
-  const ValidationFailure({
-    required super.message,
-    super.stackTrace,
-  });
+  const ValidationFailure({required super.message, super.stackTrace});
 
   factory ValidationFailure.emptyField(String fieldName) {
-    return ValidationFailure(
-      message: '$fieldName không được để trống.',
-    );
+    return ValidationFailure(message: '$fieldName không được để trống.');
   }
 
   factory ValidationFailure.invalidFormat(String fieldName) {
-    return ValidationFailure(
-      message: 'Định dạng $fieldName không hợp lệ.',
-    );
+    return ValidationFailure(message: 'Định dạng $fieldName không hợp lệ.');
   }
 
   factory ValidationFailure.tooShort(String fieldName, int minLength) {
@@ -123,10 +115,7 @@ class ValidationFailure extends Failure {
 
 /// Lỗi liên quan đến AI caption generation
 class GenerationFailure extends Failure {
-  const GenerationFailure({
-    required super.message,
-    super.stackTrace,
-  });
+  const GenerationFailure({required super.message, super.stackTrace});
 
   factory GenerationFailure.apiKeyMissing() {
     return const GenerationFailure(
@@ -165,15 +154,10 @@ class GenerationFailure extends Failure {
 
 /// Lỗi liên quan đến permissions
 class PermissionFailure extends Failure {
-  const PermissionFailure({
-    required super.message,
-    super.stackTrace,
-  });
+  const PermissionFailure({required super.message, super.stackTrace});
 
   factory PermissionFailure.denied(String permissionName) {
-    return PermissionFailure(
-      message: 'Quyền $permissionName bị từ chối.',
-    );
+    return PermissionFailure(message: 'Quyền $permissionName bị từ chối.');
   }
 
   factory PermissionFailure.permanentlyDenied(String permissionName) {
@@ -190,10 +174,7 @@ class PermissionFailure extends Failure {
 
 /// Lỗi không xác định
 class UnexpectedFailure extends Failure {
-  const UnexpectedFailure({
-    required super.message,
-    super.stackTrace,
-  });
+  const UnexpectedFailure({required super.message, super.stackTrace});
 
   factory UnexpectedFailure.fromException(Object exception, [StackTrace? st]) {
     return UnexpectedFailure(

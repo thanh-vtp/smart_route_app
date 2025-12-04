@@ -2,18 +2,17 @@
 /// Được sử dụng để wrap và classify các lỗi từ external sources
 library;
 
-class CaptionException implements Exception {
+class AppException implements Exception {
   final String message;
   final String? code;
 
-  const CaptionException(this.message, [this.code]);
-
+  const AppException(this.message, [this.code]);
   @override
-  String toString() => 'CaptionException: $message';
+  String toString() => 'AppException: $message';
 }
 
 /// Network related exceptions
-class NetworkException extends CaptionException {
+class NetworkException extends AppException {
   const NetworkException(super.message, [super.code]);
 
   factory NetworkException.noConnection() =>
@@ -27,7 +26,7 @@ class NetworkException extends CaptionException {
 }
 
 /// API related exceptions
-class ApiException extends CaptionException {
+class ApiException extends AppException {
   final int? statusCode;
 
   const ApiException(super.message, [super.code, this.statusCode]);
@@ -49,7 +48,7 @@ class ApiException extends CaptionException {
 }
 
 /// File related exceptions
-class FileException extends CaptionException {
+class FileException extends AppException {
   const FileException(super.message, [super.code]);
 
   factory FileException.notFound() =>
@@ -66,7 +65,7 @@ class FileException extends CaptionException {
 }
 
 /// Validation related exceptions
-class ValidationException extends CaptionException {
+class ValidationException extends AppException {
   const ValidationException(super.message, [super.code]);
 
   factory ValidationException.emptyInput() =>
@@ -74,10 +73,13 @@ class ValidationException extends CaptionException {
 
   factory ValidationException.invalidInput(String reason) =>
       ValidationException('Invalid input: $reason', 'INVALID_INPUT');
+
+  factory ValidationException.requiredInput(String message) =>
+      ValidationException(message, 'REQUIRED_INPUT');
 }
 
 /// Cache related exceptions
-class CacheException extends CaptionException {
+class CacheException extends AppException {
   const CacheException(super.message, [super.code]);
 
   factory CacheException.writeError() =>

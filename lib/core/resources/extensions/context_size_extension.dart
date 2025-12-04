@@ -45,17 +45,11 @@ extension ContextSizeExtension on BuildContext {
     // Calculate base height
     double availableHeight = screenHeight - topPadding - bottomPadding;
 
-    // Track deductions
-    double appBarDeduction = 0;
-    double bottomNavDeduction = 0;
-
     if (excludeAppBar) {
-      appBarDeduction = kToolbarHeight;
       availableHeight -= kToolbarHeight;
     }
 
     if (excludeBottomNav) {
-      bottomNavDeduction = kBottomNavigationBarHeight;
       availableHeight -= kBottomNavigationBarHeight;
     }
 

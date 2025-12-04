@@ -1,14 +1,36 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
+import 'package:smart_route_app/features/auth/presentation/pages/login_page.dart';
+import 'package:smart_route_app/features/auth/presentation/states/auth.dart';
 import 'package:smart_route_app/features/main/presentation/pages/main_page.dart';
 
 part 'router.g.dart';
 
 @riverpod
-GoRouter router(Ref ref) {
+GoRouter router(RouterRef ref) {
+  // Lắng nghe auth state để redirect
+  final authState = ref.watch(authProvider);
+
   return GoRouter(
     initialLocation: '/',
+    redirect: (context, state) {
+      final isLoggedIn = authState.isNotEmpty;
+      final isGoingToLogin = state.matchedLocation == '/login';
+
+      // Nếu chưa đăng nhập và không đang đi tới login -> redirect đến login
+      if (!isLoggedIn && !isGoingToLogin) {
+        return '/login';
+      }
+
+      // Nếu đã đăng nhập và đang ở login -> redirect về home
+      if (isLoggedIn && isGoingToLogin) {
+        return '/';
+      }
+
+      // Không redirect
+      return null;
+    },
     errorBuilder: (context, state) => Scaffold(
       backgroundColor: const Color(0xFF121212),
       appBar: AppBar(
@@ -41,7 +63,13 @@ GoRouter router(Ref ref) {
       ),
     ),
     routes: [
-      // MainPage là trang chính
+      // Login Page
+      GoRoute(
+        path: '/login',
+        name: 'login',
+        builder: (context, state) => const LoginPage(),
+      ),
+      // MainPage - chỉ truy cập được khi đã đăng nhập
       GoRoute(
         path: '/',
         name: MainPage.route,
