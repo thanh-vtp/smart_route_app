@@ -38,5 +38,21 @@ final addIncidentUsecaseProvider = Provider<AddIncidentUsecase>.internal(
 );
 
 typedef AddIncidentUsecaseRef = ProviderRef<AddIncidentUsecase>;
+String _$updateIncidentUsecaseHash() =>
+    r'e420ba11534eae4de1d3033dcec11125f69d66ca';
+
+/// See also [updateIncidentUsecase].
+@ProviderFor(updateIncidentUsecase)
+final updateIncidentUsecaseProvider = Provider<UpdateIncidentUsecase>.internal(
+  updateIncidentUsecase,
+  name: r'updateIncidentUsecaseProvider',
+  debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
+      ? null
+      : _$updateIncidentUsecaseHash,
+  dependencies: null,
+  allTransitiveDependencies: null,
+);
+
+typedef UpdateIncidentUsecaseRef = ProviderRef<UpdateIncidentUsecase>;
 // ignore_for_file: type=lint
 // ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member

@@ -7,6 +7,7 @@ import 'package:smart_route_app/features/auth/presentation/states/auth.dart';
 import 'package:smart_route_app/features/map/domain/entities/incident.dart';
 import 'package:smart_route_app/features/map/presentation/providers/states/map_page_notifier.dart';
 import 'package:smart_route_app/features/map/presentation/widgets/incident_type_widgets.dart';
+import 'package:smart_route_app/features/map/presentation/widgets/location_picker_map_widget.dart';
 
 /// Bottom sheet để thêm incident mới
 class AddIncidentBottomSheet extends HookConsumerWidget {
@@ -27,6 +28,10 @@ class AddIncidentBottomSheet extends HookConsumerWidget {
         useTextEditingController(); // use HookConsumerWidget
     final customTypeDescription = useState<String>('');
     final isSubmitting = useState(false);
+
+    // State cho location (có thể cập nhật từ map picker)
+    final currentLatitude = useState<double>(latitude);
+    final currentLongitude = useState<double>(longitude);
 
     return Container(
       padding: EdgeInsets.only(
@@ -86,39 +91,71 @@ class AddIncidentBottomSheet extends HookConsumerWidget {
 
               const SizedBox(height: 24),
 
-              // Location info
-              Container(
-                padding: const EdgeInsets.all(12),
-                decoration: BoxDecoration(
-                  color: Colors.blue.shade50,
-                  borderRadius: BorderRadius.circular(12),
-                ),
-                child: Row(
-                  children: [
-                    Icon(Icons.location_on, color: Colors.blue.shade700),
-                    const SizedBox(width: 8),
-                    Expanded(
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          const Text(
-                            'Vị trí sự cố',
-                            style: TextStyle(
-                              fontSize: 12,
-                              fontWeight: FontWeight.w500,
-                            ),
-                          ),
-                          Text(
-                            'Lat: ${latitude.toStringAsFixed(6)}, Lng: ${longitude.toStringAsFixed(6)}',
-                            style: TextStyle(
-                              fontSize: 11,
-                              color: Colors.grey.shade700,
-                            ),
-                          ),
-                        ],
+              // Location info với khả năng chọn lại vị trí
+              InkWell(
+                onTap: () async {
+                  // Navigate đến map picker để chọn vị trí mới
+                  final result = await Navigator.push<Map<String, double>>(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => LocationPickerMapWidget(
+                        initialLatitude: currentLatitude.value,
+                        initialLongitude: currentLongitude.value,
                       ),
                     ),
-                  ],
+                  );
+
+                  // Cập nhật location nếu user chọn vị trí mới
+                  if (result != null) {
+                    currentLatitude.value = result['latitude']!;
+                    currentLongitude.value = result['longitude']!;
+                    AppLogger.ui(
+                      "User picked: ${currentLatitude.value}, ${currentLongitude.value}",
+                    );
+                  }
+                },
+                borderRadius: BorderRadius.circular(12),
+                child: Container(
+                  padding: const EdgeInsets.all(12),
+                  decoration: BoxDecoration(
+                    color: Colors.blue.shade50,
+                    borderRadius: BorderRadius.circular(12),
+                    border: Border.all(color: Colors.blue.shade200, width: 1),
+                  ),
+                  child: Row(
+                    children: [
+                      Icon(Icons.location_on, color: Colors.blue.shade700),
+                      const SizedBox(width: 8),
+                      Expanded(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            const Text(
+                              'Vị trí sự cố',
+                              style: TextStyle(
+                                fontSize: 12,
+                                fontWeight: FontWeight.w500,
+                              ),
+                            ),
+                            Text(
+                              'Lat: ${currentLatitude.value.toStringAsFixed(6)}, Lng: ${currentLongitude.value.toStringAsFixed(6)}',
+                              style: TextStyle(
+                                fontSize: 11,
+                                color: Colors.grey.shade700,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                      Icon(
+                        Icons.edit_location_alt,
+                        color: Colors.blue.shade700,
+                        size: 20,
+                      ),
+                      const SizedBox(width: 4),
+                      Icon(Icons.chevron_right, color: Colors.blue.shade700),
+                    ],
+                  ),
                 ),
               ),
 
@@ -255,8 +292,8 @@ class AddIncidentBottomSheet extends HookConsumerWidget {
                           final incident = Incident(
                             id: DateTime.now().millisecondsSinceEpoch
                                 .toString(),
-                            latitude: latitude.toString(),
-                            longitude: longitude.toString(),
+                            latitude: currentLatitude.value.toString(),
+                            longitude: currentLongitude.value.toString(),
                             type: selectedType.value,
                             severity: selectedSeverity.value,
                             description: finalDescription,
@@ -264,7 +301,7 @@ class AddIncidentBottomSheet extends HookConsumerWidget {
                           );
 
                           AppLogger.ui(
-                            'Creating incident - Lat: $latitude, Lng: $longitude',
+                            'Creating incident - Lat: ${currentLatitude.value}, Lng: ${currentLongitude.value}',
                           );
 
                           final success = await ref

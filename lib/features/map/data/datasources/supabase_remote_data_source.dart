@@ -15,6 +15,9 @@ abstract class SupabaseRemoteDataSource {
 
   /// Lấy danh sách incidents từ Supabase (user report)
   Future<List<IncidentModel>> getIncidents({String? userUid});
+
+  /// Cập nhật incident
+  Future<void> updateIncident(IncidentModel incident, String userUid);
 }
 
 class SupabaseRemoteDataSourceImpl implements SupabaseRemoteDataSource {
@@ -173,6 +176,49 @@ class SupabaseRemoteDataSourceImpl implements SupabaseRemoteDataSource {
     } catch (e, st) {
       AppLogger.error('Supabase GET Failed', error: e, stackTrace: st);
       rethrow;
+    }
+  }
+
+  @override
+  Future<void> updateIncident(IncidentModel incident, String userUid) async {
+    if (userUid.isEmpty) {
+      throw ValidationException.requiredInput(
+        'reportedByUid is required to delete incident from Supabase',
+      );
+    }
+    try {
+      AppLogger.data(
+        'Updating incident in Supabase: ${incident.id} by user $userUid',
+        source: 'SupabaseRemoteDataSource',
+      );
+
+      final data = {
+        'latitude': incident.latitude,
+        'longitude': incident.longitude,
+        'type': incident.type,
+        'severity': incident.severity,
+        'description': incident.description,
+        // Không update reported_by, reported_time
+        // Supabase có thể tự update cột updated_at nếu có trigger, hoặc gửi lên:
+        'updated_at': DateTime.now().toIso8601String(),
+      };
+
+      final response = await _supabase
+          .from(_tableName)
+          .update(data)
+          .eq('id', incident.id);
+      AppLogger.data(
+        'Supabase update completed: $response',
+        source: 'SupabaseRemoteDataSource',
+      );
+    } catch (e, st) {
+      AppLogger.error(
+        'Failed to update incident in Supabase',
+        name: 'SupabaseRemoteDataSource',
+        error: e,
+        stackTrace: st,
+      );
+      rethrow; // Tầng Data Source → chỉ ném error thô
     }
   }
 }

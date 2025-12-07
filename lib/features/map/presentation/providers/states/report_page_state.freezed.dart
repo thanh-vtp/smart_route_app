@@ -21,7 +21,9 @@ mixin _$ReportPageState {
     required TResult Function() initial,
     required TResult Function() loading,
     required TResult Function(List<Incident> incidents) loaded,
-    required TResult Function(Failure failure) error,
+    required TResult Function(List<Incident> incidents) submitting,
+    required TResult Function(List<Incident> incidents) submitted,
+    required TResult Function(Failure failure, List<Incident>? incidents) error,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
@@ -29,7 +31,9 @@ mixin _$ReportPageState {
     TResult? Function()? initial,
     TResult? Function()? loading,
     TResult? Function(List<Incident> incidents)? loaded,
-    TResult? Function(Failure failure)? error,
+    TResult? Function(List<Incident> incidents)? submitting,
+    TResult? Function(List<Incident> incidents)? submitted,
+    TResult? Function(Failure failure, List<Incident>? incidents)? error,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
@@ -37,7 +41,9 @@ mixin _$ReportPageState {
     TResult Function()? initial,
     TResult Function()? loading,
     TResult Function(List<Incident> incidents)? loaded,
-    TResult Function(Failure failure)? error,
+    TResult Function(List<Incident> incidents)? submitting,
+    TResult Function(List<Incident> incidents)? submitted,
+    TResult Function(Failure failure, List<Incident>? incidents)? error,
     required TResult orElse(),
   }) =>
       throw _privateConstructorUsedError;
@@ -46,6 +52,8 @@ mixin _$ReportPageState {
     required TResult Function(_Initial value) initial,
     required TResult Function(_Loading value) loading,
     required TResult Function(_Loaded value) loaded,
+    required TResult Function(_Submitting value) submitting,
+    required TResult Function(_Submitted value) submitted,
     required TResult Function(_Error value) error,
   }) =>
       throw _privateConstructorUsedError;
@@ -54,6 +62,8 @@ mixin _$ReportPageState {
     TResult? Function(_Initial value)? initial,
     TResult? Function(_Loading value)? loading,
     TResult? Function(_Loaded value)? loaded,
+    TResult? Function(_Submitting value)? submitting,
+    TResult? Function(_Submitted value)? submitted,
     TResult? Function(_Error value)? error,
   }) =>
       throw _privateConstructorUsedError;
@@ -62,6 +72,8 @@ mixin _$ReportPageState {
     TResult Function(_Initial value)? initial,
     TResult Function(_Loading value)? loading,
     TResult Function(_Loaded value)? loaded,
+    TResult Function(_Submitting value)? submitting,
+    TResult Function(_Submitted value)? submitted,
     TResult Function(_Error value)? error,
     required TResult orElse(),
   }) =>
@@ -127,7 +139,9 @@ class _$InitialImpl implements _Initial {
     required TResult Function() initial,
     required TResult Function() loading,
     required TResult Function(List<Incident> incidents) loaded,
-    required TResult Function(Failure failure) error,
+    required TResult Function(List<Incident> incidents) submitting,
+    required TResult Function(List<Incident> incidents) submitted,
+    required TResult Function(Failure failure, List<Incident>? incidents) error,
   }) {
     return initial();
   }
@@ -138,7 +152,9 @@ class _$InitialImpl implements _Initial {
     TResult? Function()? initial,
     TResult? Function()? loading,
     TResult? Function(List<Incident> incidents)? loaded,
-    TResult? Function(Failure failure)? error,
+    TResult? Function(List<Incident> incidents)? submitting,
+    TResult? Function(List<Incident> incidents)? submitted,
+    TResult? Function(Failure failure, List<Incident>? incidents)? error,
   }) {
     return initial?.call();
   }
@@ -149,7 +165,9 @@ class _$InitialImpl implements _Initial {
     TResult Function()? initial,
     TResult Function()? loading,
     TResult Function(List<Incident> incidents)? loaded,
-    TResult Function(Failure failure)? error,
+    TResult Function(List<Incident> incidents)? submitting,
+    TResult Function(List<Incident> incidents)? submitted,
+    TResult Function(Failure failure, List<Incident>? incidents)? error,
     required TResult orElse(),
   }) {
     if (initial != null) {
@@ -164,6 +182,8 @@ class _$InitialImpl implements _Initial {
     required TResult Function(_Initial value) initial,
     required TResult Function(_Loading value) loading,
     required TResult Function(_Loaded value) loaded,
+    required TResult Function(_Submitting value) submitting,
+    required TResult Function(_Submitted value) submitted,
     required TResult Function(_Error value) error,
   }) {
     return initial(this);
@@ -175,6 +195,8 @@ class _$InitialImpl implements _Initial {
     TResult? Function(_Initial value)? initial,
     TResult? Function(_Loading value)? loading,
     TResult? Function(_Loaded value)? loaded,
+    TResult? Function(_Submitting value)? submitting,
+    TResult? Function(_Submitted value)? submitted,
     TResult? Function(_Error value)? error,
   }) {
     return initial?.call(this);
@@ -186,6 +208,8 @@ class _$InitialImpl implements _Initial {
     TResult Function(_Initial value)? initial,
     TResult Function(_Loading value)? loading,
     TResult Function(_Loaded value)? loaded,
+    TResult Function(_Submitting value)? submitting,
+    TResult Function(_Submitted value)? submitted,
     TResult Function(_Error value)? error,
     required TResult orElse(),
   }) {
@@ -241,7 +265,9 @@ class _$LoadingImpl implements _Loading {
     required TResult Function() initial,
     required TResult Function() loading,
     required TResult Function(List<Incident> incidents) loaded,
-    required TResult Function(Failure failure) error,
+    required TResult Function(List<Incident> incidents) submitting,
+    required TResult Function(List<Incident> incidents) submitted,
+    required TResult Function(Failure failure, List<Incident>? incidents) error,
   }) {
     return loading();
   }
@@ -252,7 +278,9 @@ class _$LoadingImpl implements _Loading {
     TResult? Function()? initial,
     TResult? Function()? loading,
     TResult? Function(List<Incident> incidents)? loaded,
-    TResult? Function(Failure failure)? error,
+    TResult? Function(List<Incident> incidents)? submitting,
+    TResult? Function(List<Incident> incidents)? submitted,
+    TResult? Function(Failure failure, List<Incident>? incidents)? error,
   }) {
     return loading?.call();
   }
@@ -263,7 +291,9 @@ class _$LoadingImpl implements _Loading {
     TResult Function()? initial,
     TResult Function()? loading,
     TResult Function(List<Incident> incidents)? loaded,
-    TResult Function(Failure failure)? error,
+    TResult Function(List<Incident> incidents)? submitting,
+    TResult Function(List<Incident> incidents)? submitted,
+    TResult Function(Failure failure, List<Incident>? incidents)? error,
     required TResult orElse(),
   }) {
     if (loading != null) {
@@ -278,6 +308,8 @@ class _$LoadingImpl implements _Loading {
     required TResult Function(_Initial value) initial,
     required TResult Function(_Loading value) loading,
     required TResult Function(_Loaded value) loaded,
+    required TResult Function(_Submitting value) submitting,
+    required TResult Function(_Submitted value) submitted,
     required TResult Function(_Error value) error,
   }) {
     return loading(this);
@@ -289,6 +321,8 @@ class _$LoadingImpl implements _Loading {
     TResult? Function(_Initial value)? initial,
     TResult? Function(_Loading value)? loading,
     TResult? Function(_Loaded value)? loaded,
+    TResult? Function(_Submitting value)? submitting,
+    TResult? Function(_Submitted value)? submitted,
     TResult? Function(_Error value)? error,
   }) {
     return loading?.call(this);
@@ -300,6 +334,8 @@ class _$LoadingImpl implements _Loading {
     TResult Function(_Initial value)? initial,
     TResult Function(_Loading value)? loading,
     TResult Function(_Loaded value)? loaded,
+    TResult Function(_Submitting value)? submitting,
+    TResult Function(_Submitted value)? submitted,
     TResult Function(_Error value)? error,
     required TResult orElse(),
   }) {
@@ -389,7 +425,9 @@ class _$LoadedImpl implements _Loaded {
     required TResult Function() initial,
     required TResult Function() loading,
     required TResult Function(List<Incident> incidents) loaded,
-    required TResult Function(Failure failure) error,
+    required TResult Function(List<Incident> incidents) submitting,
+    required TResult Function(List<Incident> incidents) submitted,
+    required TResult Function(Failure failure, List<Incident>? incidents) error,
   }) {
     return loaded(incidents);
   }
@@ -400,7 +438,9 @@ class _$LoadedImpl implements _Loaded {
     TResult? Function()? initial,
     TResult? Function()? loading,
     TResult? Function(List<Incident> incidents)? loaded,
-    TResult? Function(Failure failure)? error,
+    TResult? Function(List<Incident> incidents)? submitting,
+    TResult? Function(List<Incident> incidents)? submitted,
+    TResult? Function(Failure failure, List<Incident>? incidents)? error,
   }) {
     return loaded?.call(incidents);
   }
@@ -411,7 +451,9 @@ class _$LoadedImpl implements _Loaded {
     TResult Function()? initial,
     TResult Function()? loading,
     TResult Function(List<Incident> incidents)? loaded,
-    TResult Function(Failure failure)? error,
+    TResult Function(List<Incident> incidents)? submitting,
+    TResult Function(List<Incident> incidents)? submitted,
+    TResult Function(Failure failure, List<Incident>? incidents)? error,
     required TResult orElse(),
   }) {
     if (loaded != null) {
@@ -426,6 +468,8 @@ class _$LoadedImpl implements _Loaded {
     required TResult Function(_Initial value) initial,
     required TResult Function(_Loading value) loading,
     required TResult Function(_Loaded value) loaded,
+    required TResult Function(_Submitting value) submitting,
+    required TResult Function(_Submitted value) submitted,
     required TResult Function(_Error value) error,
   }) {
     return loaded(this);
@@ -437,6 +481,8 @@ class _$LoadedImpl implements _Loaded {
     TResult? Function(_Initial value)? initial,
     TResult? Function(_Loading value)? loading,
     TResult? Function(_Loaded value)? loaded,
+    TResult? Function(_Submitting value)? submitting,
+    TResult? Function(_Submitted value)? submitted,
     TResult? Function(_Error value)? error,
   }) {
     return loaded?.call(this);
@@ -448,6 +494,8 @@ class _$LoadedImpl implements _Loaded {
     TResult Function(_Initial value)? initial,
     TResult Function(_Loading value)? loading,
     TResult Function(_Loaded value)? loaded,
+    TResult Function(_Submitting value)? submitting,
+    TResult Function(_Submitted value)? submitted,
     TResult Function(_Error value)? error,
     required TResult orElse(),
   }) {
@@ -469,12 +517,344 @@ abstract class _Loaded implements ReportPageState {
 }
 
 /// @nodoc
+abstract class _$$SubmittingImplCopyWith<$Res> {
+  factory _$$SubmittingImplCopyWith(
+          _$SubmittingImpl value, $Res Function(_$SubmittingImpl) then) =
+      __$$SubmittingImplCopyWithImpl<$Res>;
+  @useResult
+  $Res call({List<Incident> incidents});
+}
+
+/// @nodoc
+class __$$SubmittingImplCopyWithImpl<$Res>
+    extends _$ReportPageStateCopyWithImpl<$Res, _$SubmittingImpl>
+    implements _$$SubmittingImplCopyWith<$Res> {
+  __$$SubmittingImplCopyWithImpl(
+      _$SubmittingImpl _value, $Res Function(_$SubmittingImpl) _then)
+      : super(_value, _then);
+
+  @pragma('vm:prefer-inline')
+  @override
+  $Res call({
+    Object? incidents = null,
+  }) {
+    return _then(_$SubmittingImpl(
+      incidents: null == incidents
+          ? _value._incidents
+          : incidents // ignore: cast_nullable_to_non_nullable
+              as List<Incident>,
+    ));
+  }
+}
+
+/// @nodoc
+
+class _$SubmittingImpl implements _Submitting {
+  const _$SubmittingImpl({required final List<Incident> incidents})
+      : _incidents = incidents;
+
+  final List<Incident> _incidents;
+  @override
+  List<Incident> get incidents {
+    if (_incidents is EqualUnmodifiableListView) return _incidents;
+    // ignore: implicit_dynamic_type
+    return EqualUnmodifiableListView(_incidents);
+  }
+
+  @override
+  String toString() {
+    return 'ReportPageState.submitting(incidents: $incidents)';
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType &&
+            other is _$SubmittingImpl &&
+            const DeepCollectionEquality()
+                .equals(other._incidents, _incidents));
+  }
+
+  @override
+  int get hashCode =>
+      Object.hash(runtimeType, const DeepCollectionEquality().hash(_incidents));
+
+  @JsonKey(ignore: true)
+  @override
+  @pragma('vm:prefer-inline')
+  _$$SubmittingImplCopyWith<_$SubmittingImpl> get copyWith =>
+      __$$SubmittingImplCopyWithImpl<_$SubmittingImpl>(this, _$identity);
+
+  @override
+  @optionalTypeArgs
+  TResult when<TResult extends Object?>({
+    required TResult Function() initial,
+    required TResult Function() loading,
+    required TResult Function(List<Incident> incidents) loaded,
+    required TResult Function(List<Incident> incidents) submitting,
+    required TResult Function(List<Incident> incidents) submitted,
+    required TResult Function(Failure failure, List<Incident>? incidents) error,
+  }) {
+    return submitting(incidents);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? whenOrNull<TResult extends Object?>({
+    TResult? Function()? initial,
+    TResult? Function()? loading,
+    TResult? Function(List<Incident> incidents)? loaded,
+    TResult? Function(List<Incident> incidents)? submitting,
+    TResult? Function(List<Incident> incidents)? submitted,
+    TResult? Function(Failure failure, List<Incident>? incidents)? error,
+  }) {
+    return submitting?.call(incidents);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeWhen<TResult extends Object?>({
+    TResult Function()? initial,
+    TResult Function()? loading,
+    TResult Function(List<Incident> incidents)? loaded,
+    TResult Function(List<Incident> incidents)? submitting,
+    TResult Function(List<Incident> incidents)? submitted,
+    TResult Function(Failure failure, List<Incident>? incidents)? error,
+    required TResult orElse(),
+  }) {
+    if (submitting != null) {
+      return submitting(incidents);
+    }
+    return orElse();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult map<TResult extends Object?>({
+    required TResult Function(_Initial value) initial,
+    required TResult Function(_Loading value) loading,
+    required TResult Function(_Loaded value) loaded,
+    required TResult Function(_Submitting value) submitting,
+    required TResult Function(_Submitted value) submitted,
+    required TResult Function(_Error value) error,
+  }) {
+    return submitting(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? mapOrNull<TResult extends Object?>({
+    TResult? Function(_Initial value)? initial,
+    TResult? Function(_Loading value)? loading,
+    TResult? Function(_Loaded value)? loaded,
+    TResult? Function(_Submitting value)? submitting,
+    TResult? Function(_Submitted value)? submitted,
+    TResult? Function(_Error value)? error,
+  }) {
+    return submitting?.call(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeMap<TResult extends Object?>({
+    TResult Function(_Initial value)? initial,
+    TResult Function(_Loading value)? loading,
+    TResult Function(_Loaded value)? loaded,
+    TResult Function(_Submitting value)? submitting,
+    TResult Function(_Submitted value)? submitted,
+    TResult Function(_Error value)? error,
+    required TResult orElse(),
+  }) {
+    if (submitting != null) {
+      return submitting(this);
+    }
+    return orElse();
+  }
+}
+
+abstract class _Submitting implements ReportPageState {
+  const factory _Submitting({required final List<Incident> incidents}) =
+      _$SubmittingImpl;
+
+  List<Incident> get incidents;
+  @JsonKey(ignore: true)
+  _$$SubmittingImplCopyWith<_$SubmittingImpl> get copyWith =>
+      throw _privateConstructorUsedError;
+}
+
+/// @nodoc
+abstract class _$$SubmittedImplCopyWith<$Res> {
+  factory _$$SubmittedImplCopyWith(
+          _$SubmittedImpl value, $Res Function(_$SubmittedImpl) then) =
+      __$$SubmittedImplCopyWithImpl<$Res>;
+  @useResult
+  $Res call({List<Incident> incidents});
+}
+
+/// @nodoc
+class __$$SubmittedImplCopyWithImpl<$Res>
+    extends _$ReportPageStateCopyWithImpl<$Res, _$SubmittedImpl>
+    implements _$$SubmittedImplCopyWith<$Res> {
+  __$$SubmittedImplCopyWithImpl(
+      _$SubmittedImpl _value, $Res Function(_$SubmittedImpl) _then)
+      : super(_value, _then);
+
+  @pragma('vm:prefer-inline')
+  @override
+  $Res call({
+    Object? incidents = null,
+  }) {
+    return _then(_$SubmittedImpl(
+      incidents: null == incidents
+          ? _value._incidents
+          : incidents // ignore: cast_nullable_to_non_nullable
+              as List<Incident>,
+    ));
+  }
+}
+
+/// @nodoc
+
+class _$SubmittedImpl implements _Submitted {
+  const _$SubmittedImpl({required final List<Incident> incidents})
+      : _incidents = incidents;
+
+  final List<Incident> _incidents;
+  @override
+  List<Incident> get incidents {
+    if (_incidents is EqualUnmodifiableListView) return _incidents;
+    // ignore: implicit_dynamic_type
+    return EqualUnmodifiableListView(_incidents);
+  }
+
+  @override
+  String toString() {
+    return 'ReportPageState.submitted(incidents: $incidents)';
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType &&
+            other is _$SubmittedImpl &&
+            const DeepCollectionEquality()
+                .equals(other._incidents, _incidents));
+  }
+
+  @override
+  int get hashCode =>
+      Object.hash(runtimeType, const DeepCollectionEquality().hash(_incidents));
+
+  @JsonKey(ignore: true)
+  @override
+  @pragma('vm:prefer-inline')
+  _$$SubmittedImplCopyWith<_$SubmittedImpl> get copyWith =>
+      __$$SubmittedImplCopyWithImpl<_$SubmittedImpl>(this, _$identity);
+
+  @override
+  @optionalTypeArgs
+  TResult when<TResult extends Object?>({
+    required TResult Function() initial,
+    required TResult Function() loading,
+    required TResult Function(List<Incident> incidents) loaded,
+    required TResult Function(List<Incident> incidents) submitting,
+    required TResult Function(List<Incident> incidents) submitted,
+    required TResult Function(Failure failure, List<Incident>? incidents) error,
+  }) {
+    return submitted(incidents);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? whenOrNull<TResult extends Object?>({
+    TResult? Function()? initial,
+    TResult? Function()? loading,
+    TResult? Function(List<Incident> incidents)? loaded,
+    TResult? Function(List<Incident> incidents)? submitting,
+    TResult? Function(List<Incident> incidents)? submitted,
+    TResult? Function(Failure failure, List<Incident>? incidents)? error,
+  }) {
+    return submitted?.call(incidents);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeWhen<TResult extends Object?>({
+    TResult Function()? initial,
+    TResult Function()? loading,
+    TResult Function(List<Incident> incidents)? loaded,
+    TResult Function(List<Incident> incidents)? submitting,
+    TResult Function(List<Incident> incidents)? submitted,
+    TResult Function(Failure failure, List<Incident>? incidents)? error,
+    required TResult orElse(),
+  }) {
+    if (submitted != null) {
+      return submitted(incidents);
+    }
+    return orElse();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult map<TResult extends Object?>({
+    required TResult Function(_Initial value) initial,
+    required TResult Function(_Loading value) loading,
+    required TResult Function(_Loaded value) loaded,
+    required TResult Function(_Submitting value) submitting,
+    required TResult Function(_Submitted value) submitted,
+    required TResult Function(_Error value) error,
+  }) {
+    return submitted(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? mapOrNull<TResult extends Object?>({
+    TResult? Function(_Initial value)? initial,
+    TResult? Function(_Loading value)? loading,
+    TResult? Function(_Loaded value)? loaded,
+    TResult? Function(_Submitting value)? submitting,
+    TResult? Function(_Submitted value)? submitted,
+    TResult? Function(_Error value)? error,
+  }) {
+    return submitted?.call(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeMap<TResult extends Object?>({
+    TResult Function(_Initial value)? initial,
+    TResult Function(_Loading value)? loading,
+    TResult Function(_Loaded value)? loaded,
+    TResult Function(_Submitting value)? submitting,
+    TResult Function(_Submitted value)? submitted,
+    TResult Function(_Error value)? error,
+    required TResult orElse(),
+  }) {
+    if (submitted != null) {
+      return submitted(this);
+    }
+    return orElse();
+  }
+}
+
+abstract class _Submitted implements ReportPageState {
+  const factory _Submitted({required final List<Incident> incidents}) =
+      _$SubmittedImpl;
+
+  List<Incident> get incidents;
+  @JsonKey(ignore: true)
+  _$$SubmittedImplCopyWith<_$SubmittedImpl> get copyWith =>
+      throw _privateConstructorUsedError;
+}
+
+/// @nodoc
 abstract class _$$ErrorImplCopyWith<$Res> {
   factory _$$ErrorImplCopyWith(
           _$ErrorImpl value, $Res Function(_$ErrorImpl) then) =
       __$$ErrorImplCopyWithImpl<$Res>;
   @useResult
-  $Res call({Failure failure});
+  $Res call({Failure failure, List<Incident>? incidents});
 }
 
 /// @nodoc
@@ -489,12 +869,17 @@ class __$$ErrorImplCopyWithImpl<$Res>
   @override
   $Res call({
     Object? failure = null,
+    Object? incidents = freezed,
   }) {
     return _then(_$ErrorImpl(
       failure: null == failure
           ? _value.failure
           : failure // ignore: cast_nullable_to_non_nullable
               as Failure,
+      incidents: freezed == incidents
+          ? _value._incidents
+          : incidents // ignore: cast_nullable_to_non_nullable
+              as List<Incident>?,
     ));
   }
 }
@@ -502,14 +887,24 @@ class __$$ErrorImplCopyWithImpl<$Res>
 /// @nodoc
 
 class _$ErrorImpl implements _Error {
-  const _$ErrorImpl({required this.failure});
+  const _$ErrorImpl({required this.failure, final List<Incident>? incidents})
+      : _incidents = incidents;
 
   @override
   final Failure failure;
+  final List<Incident>? _incidents;
+  @override
+  List<Incident>? get incidents {
+    final value = _incidents;
+    if (value == null) return null;
+    if (_incidents is EqualUnmodifiableListView) return _incidents;
+    // ignore: implicit_dynamic_type
+    return EqualUnmodifiableListView(value);
+  }
 
   @override
   String toString() {
-    return 'ReportPageState.error(failure: $failure)';
+    return 'ReportPageState.error(failure: $failure, incidents: $incidents)';
   }
 
   @override
@@ -517,11 +912,14 @@ class _$ErrorImpl implements _Error {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _$ErrorImpl &&
-            (identical(other.failure, failure) || other.failure == failure));
+            (identical(other.failure, failure) || other.failure == failure) &&
+            const DeepCollectionEquality()
+                .equals(other._incidents, _incidents));
   }
 
   @override
-  int get hashCode => Object.hash(runtimeType, failure);
+  int get hashCode => Object.hash(
+      runtimeType, failure, const DeepCollectionEquality().hash(_incidents));
 
   @JsonKey(ignore: true)
   @override
@@ -535,9 +933,11 @@ class _$ErrorImpl implements _Error {
     required TResult Function() initial,
     required TResult Function() loading,
     required TResult Function(List<Incident> incidents) loaded,
-    required TResult Function(Failure failure) error,
+    required TResult Function(List<Incident> incidents) submitting,
+    required TResult Function(List<Incident> incidents) submitted,
+    required TResult Function(Failure failure, List<Incident>? incidents) error,
   }) {
-    return error(failure);
+    return error(failure, incidents);
   }
 
   @override
@@ -546,9 +946,11 @@ class _$ErrorImpl implements _Error {
     TResult? Function()? initial,
     TResult? Function()? loading,
     TResult? Function(List<Incident> incidents)? loaded,
-    TResult? Function(Failure failure)? error,
+    TResult? Function(List<Incident> incidents)? submitting,
+    TResult? Function(List<Incident> incidents)? submitted,
+    TResult? Function(Failure failure, List<Incident>? incidents)? error,
   }) {
-    return error?.call(failure);
+    return error?.call(failure, incidents);
   }
 
   @override
@@ -557,11 +959,13 @@ class _$ErrorImpl implements _Error {
     TResult Function()? initial,
     TResult Function()? loading,
     TResult Function(List<Incident> incidents)? loaded,
-    TResult Function(Failure failure)? error,
+    TResult Function(List<Incident> incidents)? submitting,
+    TResult Function(List<Incident> incidents)? submitted,
+    TResult Function(Failure failure, List<Incident>? incidents)? error,
     required TResult orElse(),
   }) {
     if (error != null) {
-      return error(failure);
+      return error(failure, incidents);
     }
     return orElse();
   }
@@ -572,6 +976,8 @@ class _$ErrorImpl implements _Error {
     required TResult Function(_Initial value) initial,
     required TResult Function(_Loading value) loading,
     required TResult Function(_Loaded value) loaded,
+    required TResult Function(_Submitting value) submitting,
+    required TResult Function(_Submitted value) submitted,
     required TResult Function(_Error value) error,
   }) {
     return error(this);
@@ -583,6 +989,8 @@ class _$ErrorImpl implements _Error {
     TResult? Function(_Initial value)? initial,
     TResult? Function(_Loading value)? loading,
     TResult? Function(_Loaded value)? loaded,
+    TResult? Function(_Submitting value)? submitting,
+    TResult? Function(_Submitted value)? submitted,
     TResult? Function(_Error value)? error,
   }) {
     return error?.call(this);
@@ -594,6 +1002,8 @@ class _$ErrorImpl implements _Error {
     TResult Function(_Initial value)? initial,
     TResult Function(_Loading value)? loading,
     TResult Function(_Loaded value)? loaded,
+    TResult Function(_Submitting value)? submitting,
+    TResult Function(_Submitted value)? submitted,
     TResult Function(_Error value)? error,
     required TResult orElse(),
   }) {
@@ -605,9 +1015,12 @@ class _$ErrorImpl implements _Error {
 }
 
 abstract class _Error implements ReportPageState {
-  const factory _Error({required final Failure failure}) = _$ErrorImpl;
+  const factory _Error(
+      {required final Failure failure,
+      final List<Incident>? incidents}) = _$ErrorImpl;
 
   Failure get failure;
+  List<Incident>? get incidents;
   @JsonKey(ignore: true)
   _$$ErrorImplCopyWith<_$ErrorImpl> get copyWith =>
       throw _privateConstructorUsedError;

@@ -257,6 +257,7 @@ class _LocationInfoBottomSheetState
     required String value,
     required VoidCallback onCopy,
   }) {
+    AppLogger.ui('Coordinate row: $label = $value');
     return Row(
       children: [
         Icon(icon, size: 20, color: Colors.blue.shade700),

@@ -15,6 +15,9 @@ abstract class ArcGISRemoteDataSource {
 
   /// Xóa incident khỏi ArcGIS Feature Layer dựa trên ObjectID
   Future<void> deleteIncident(String objectId);
+
+  /// Cập nhật incident khỏi ArcGIS Feature Layer dựa trên ObjectID
+  Future<void> updateIncident(IncidentModel incident);
 }
 
 class ArcGISRemoteDataSourceImpl implements ArcGISRemoteDataSource {
@@ -96,14 +99,14 @@ class ArcGISRemoteDataSourceImpl implements ArcGISRemoteDataSource {
         );
       }
 
-      for (var i = 0; i < features.length; i++) {
-        final feature = features[i];
-        final featureJson = _featureToJson(feature);
-        AppLogger.data(
-          'Feature #$i JSON:\n${JsonEncoder.withIndent('  ').convert(featureJson)}',
-          source: 'ArcGISRemoteDataSourceImpl',
-        );
-      }
+      // for (var i = 0; i < features.length; i++) {
+      //   final feature = features[i];
+      //   final featureJson = _featureToJson(feature);
+      //   AppLogger.data(
+      //     'Feature #$i JSON:\n${JsonEncoder.withIndent('  ').convert(featureJson)}',
+      //     source: 'ArcGISRemoteDataSourceImpl',
+      //   );
+      // }
 
       final incidentModels = features
           .map((feature) => IncidentModel.fromFeature(feature))
@@ -259,6 +262,94 @@ class ArcGISRemoteDataSourceImpl implements ArcGISRemoteDataSource {
         stackTrace: st,
       );
       throw Exception('Failed to delete incident from ArcGIS: $e');
+    }
+  }
+
+  @override
+  Future<void> updateIncident(IncidentModel incident) async {
+    try {
+      final table = _featureLayer.featureTable;
+      if (table == null) {
+        throw Exception('Feature table is null, cannot delete incident');
+      }
+
+      if (table is! ServiceFeatureTable) {
+        throw Exception('Feature table is not a ServiceFeatureTable');
+      }
+
+      // 1. Kiểm tra xem có ObjectID không (Bắt buộc để tìm feature)
+      if (incident.arcgisObjectId == null || incident.arcgisObjectId!.isEmpty) {
+        throw Exception('Missing ArcGIS ObjectID for update');
+      }
+
+      // 2. Query tìm feature cần xóa theo OBJECTID
+      final objectId = int.parse(incident.arcgisObjectId!);
+      final query = QueryParameters()..whereClause = "OBJECTID = $objectId";
+      final result = await table.queryFeatures(query);
+      final features = result.features().toList();
+
+      if (features.isEmpty) {
+        // Nếu không tìm thấy thì coi như đã xóa hoặc ID sai, không throw lỗi để flow tiếp tục
+        AppLogger.warning(
+          'Feature not found with ObjectID: $objectId to delete',
+        );
+        return;
+      }
+
+      final feature = features.first;
+
+      // 3. Cập nhật Attributes (Chỉ cập nhật các trường cho phép)
+      feature.attributes['LoaiSuCo'] = incident.type;
+      feature.attributes['MucDo'] = incident.severity;
+      feature.attributes['MoTa'] = incident.description;
+      // Không cập nhật ThoiGianBaoCao, NguoiBaoCao (giữ nguyên gốc)
+
+      // 4. Cập nhật Geometry
+      final double lng = double.parse(incident.longitude);
+      final double lat = double.parse(incident.latitude);
+
+      // Tạo Point với WGS84 (Kinh/Vĩ độ). SDK sẽ tự project sang hệ tọa độ của Server (Mét/UTM)
+      final point = ArcGISPoint(
+        x: lng,
+        y: lat,
+        spatialReference: SpatialReference.wgs84,
+      );
+      feature.geometry = point;
+
+      // 5. Cập nhật feature vào local table
+      await table.updateFeature(feature); // Cập nhật vào bảng tạm
+
+      // 6. Apply edits để đồng bộ với server
+      final results = await table.applyEdits();
+
+      if (results.isEmpty) {
+        throw Exception('No edit results returned from applyEdits');
+      }
+
+      // Kiểm tra lỗi
+      final editResults = results.first;
+
+      if (results.isNotEmpty && editResults.error != null) {
+        throw Exception(
+          'Failed to ArcGIS Update feature: ${editResults.error?.message}',
+        );
+      }
+
+      // 4. RETURN OBJECT ID
+      final objectIdResult = editResults.objectId.toString();
+
+      AppLogger.data(
+        'Edit to ArcGIS Success - ObjectID: $objectIdResult',
+        source: 'ArcGISRemoteDataSource',
+      );
+    } catch (e, st) {
+      AppLogger.error(
+        'Error updating incident to ArcGIS',
+        name: 'ArcGISRemoteDataSource',
+        error: e,
+        stackTrace: st,
+      );
+      throw Exception('Failed to update incident to ArcGIS: $e');
     }
   }
 }

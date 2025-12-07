@@ -1,9 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:smart_route_app/core/utils/app_logger.dart';
 import 'package:smart_route_app/features/auth/domain/entities/app_user.dart';
 import 'package:smart_route_app/features/auth/presentation/states/auth.dart';
 import 'package:smart_route_app/features/map/domain/entities/incident.dart';
+import 'package:smart_route_app/features/map/presentation/models/incident_button_action.dart';
+import 'package:smart_route_app/features/map/presentation/providers/current_location_providers.dart';
 import 'package:smart_route_app/features/map/presentation/providers/states/report_page_notifier.dart';
+import 'package:smart_route_app/features/map/presentation/widgets/action_button_item.dart';
+import 'package:smart_route_app/features/map/presentation/widgets/add_incident_bottom_sheet.dart';
 import 'package:smart_route_app/features/map/presentation/widgets/map_state_overlays.dart';
 import 'package:smart_route_app/features/map/presentation/widgets/review_loaction_card_widget.dart';
 
@@ -35,41 +40,116 @@ class _ReportMapPageState extends ConsumerState<ReportMapPage> {
       initial: () => const SizedBox.shrink(),
       loading: () => const MapLoadingOverlay(),
       loaded: (incidents) {
-        return ListView(
-          controller: widget.scrollController,
-          padding: EdgeInsets.symmetric(horizontal: 16),
-          children: [
-            // Tiêu đề
-            Text(
-              "Đóng góp",
-              style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
-            ),
-            SizedBox(height: 20),
-            _buildProfileSection(context, user),
-            SizedBox(height: 20),
-            _buildActionButtons(),
-            SizedBox(height: 20),
-            _buildBadgeCard(),
-            SizedBox(height: 24),
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 4.0),
-              child: Text(
-                "Chúng tôi liệt kê các địa điểm dựa trên nội dung bạn tìm kiếm, vị trí của bạn và các yếu tố khác.",
-                style: TextStyle(color: Colors.grey[600], fontSize: 13),
-              ),
-            ),
+        return _buildStateUI(context, user, incidents);
+      },
 
-            SizedBox(height: 12),
-            _incidentListView(incidents),
-            SizedBox(height: 80),
+      submitting: (incidents) {
+        return Stack(
+          children: [
+            _buildStateUI(context, user, incidents),
+            const MapSubmittingOverlay(),
           ],
         );
       },
-      error: (failure) => MapErrorOverlay(
-        message: failure.message,
-        onRetry: () =>
-            ref.read(reportPageNotifierProvider.notifier).fetchIncidents(),
+      submitted: (incidents) {
+        return _buildStateUI(context, user, incidents);
+      },
+      error: (failure, incidents) => Stack(
+        children: [
+          if (incidents != null) _buildStateUI(context, user, incidents),
+          MapErrorOverlay(
+            message: failure.message,
+            onRetry: () =>
+                ref.read(reportPageNotifierProvider.notifier).fetchIncidents(),
+          ),
+        ],
       ),
+    );
+  }
+
+  Widget _buildStateUI(
+    BuildContext context,
+    AppUser user,
+    List<Incident> incidents,
+  ) {
+    final actions = [
+      IncidentButtonAction(
+        icon: Icons.add_location_alt,
+        label: "Thêm địa điểm",
+        onTap: () {
+          // Lấy vị trí GPS hiện tại nếu có, nếu không thì dùng vị trí mặc định
+          final currentLocation = ref.read(currentLocationProviderProvider);
+          final double latitude;
+          final double longitude;
+
+          if (currentLocation != null) {
+            // Ưu tiên sử dụng vị trí GPS
+            latitude = currentLocation.position.y;
+            longitude = currentLocation.position.x;
+            AppLogger.ui('Report: Using GPS location: $latitude, $longitude');
+          } else {
+            // Vị trí mặc định (Nha Trang)
+            latitude = 12.2259317;
+            longitude = 109.1954123;
+            AppLogger.ui('Report: Using default location (GPS not ready)');
+          }
+
+          showModalBottomSheet(
+            context: context,
+            isScrollControlled: true,
+            backgroundColor: Colors.transparent,
+            builder: (context) => AddIncidentBottomSheet(
+              latitude: latitude,
+              longitude: longitude,
+            ),
+          );
+        },
+      ),
+      IncidentButtonAction(
+        icon: Icons.edit_location_alt,
+        label: "Cập nhật địa điểm",
+        onTap: () => print("Cập nhật địa điểm"),
+      ),
+      IncidentButtonAction(
+        icon: Icons.rate_review,
+        label: "Viết bài đánh giá",
+        onTap: () => print("Viết bài đánh giá"),
+      ),
+      IncidentButtonAction(
+        icon: Icons.add_a_photo,
+        label: "Thêm ảnh",
+        onTap: () => print("Thêm ảnh"),
+      ),
+    ];
+
+    return ListView(
+      controller: widget.scrollController,
+      padding: EdgeInsets.symmetric(horizontal: 16),
+      children: [
+        // Tiêu đề
+        Text(
+          "Đóng góp",
+          style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+        ),
+        SizedBox(height: 20),
+        _buildProfileSection(context, user),
+        SizedBox(height: 20),
+        _buildActionButtons(actions),
+        SizedBox(height: 20),
+        _buildBadgeCard(),
+        SizedBox(height: 24),
+        Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 4.0),
+          child: Text(
+            "Chúng tôi liệt kê các địa điểm dựa trên nội dung bạn tìm kiếm, vị trí của bạn và các yếu tố khác.",
+            style: TextStyle(color: Colors.grey[600], fontSize: 13),
+          ),
+        ),
+
+        SizedBox(height: 12),
+        _incidentListView(incidents),
+        SizedBox(height: 80),
+      ],
     );
   }
 
@@ -174,43 +254,13 @@ Widget _buildProfileSection(BuildContext context, AppUser user) {
   );
 }
 
-Widget _buildActionButtons() {
-  // Danh sách các nút tròn
-  final actions = [
-    {"icon": Icons.add_location_alt, "label": "Thêm địa điểm"},
-    {"icon": Icons.edit_location_alt, "label": "Cập nhật địa điểm"},
-    {"icon": Icons.rate_review, "label": "Viết bài đánh giá"},
-    {"icon": Icons.add_a_photo, "label": "Thêm ảnh"},
-  ];
-
+Widget _buildActionButtons(List<IncidentButtonAction> items) {
   return SingleChildScrollView(
     scrollDirection: Axis.horizontal,
     child: Row(
       crossAxisAlignment: CrossAxisAlignment.start,
-      children: actions.map((item) {
-        return Padding(
-          padding: const EdgeInsets.only(right: 20.0),
-          child: Column(
-            children: [
-              CircleAvatar(
-                radius: 26,
-                backgroundColor: Colors.teal[100],
-                child: Icon(item["icon"] as IconData, color: Colors.teal[700]),
-                // Thêm shadow cho CircleAvatar nếu muốn giống hệt
-              ),
-              SizedBox(height: 8),
-              SizedBox(
-                width: 70,
-                child: Text(
-                  item["label"] as String,
-                  textAlign: TextAlign.center,
-                  style: TextStyle(fontSize: 12, fontWeight: FontWeight.w500),
-                  maxLines: 2,
-                ),
-              ),
-            ],
-          ),
-        );
+      children: items.map((item) {
+        return ActionButtonItem(item: item);
       }).toList(),
     ),
   );

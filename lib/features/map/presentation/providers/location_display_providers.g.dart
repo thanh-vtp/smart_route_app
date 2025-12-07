@@ -1,13 +1,13 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'location_display_provider.dart';
+part of 'location_display_providers.dart';
 
 // **************************************************************************
 // RiverpodGenerator
 // **************************************************************************
 
 String _$locationDisplayProviderHash() =>
-    r'44b7d3c88cb5597d990562432091c4316224dc62';
+    r'56851efae21a6227af04c5e405ada85501704ee3';
 
 /// Provider để quản lý trạng thái LocationDisplay (GPS)
 ///

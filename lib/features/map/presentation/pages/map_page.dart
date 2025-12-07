@@ -11,7 +11,7 @@ import 'package:smart_route_app/features/map/presentation/helpers/map_configurat
 import 'package:smart_route_app/features/map/presentation/helpers/map_initializer.dart';
 import 'package:smart_route_app/features/map/presentation/helpers/map_interaction_handler.dart';
 import 'package:smart_route_app/features/map/presentation/providers/base_map_style_providers.dart';
-import 'package:smart_route_app/features/map/presentation/providers/location_display_provider.dart';
+import 'package:smart_route_app/features/map/presentation/providers/location_display_providers.dart';
 import 'package:smart_route_app/features/map/presentation/providers/map_mode_provider.dart';
 import 'package:smart_route_app/features/map/presentation/providers/states/map_page_notifier.dart';
 import 'package:smart_route_app/features/map/presentation/providers/states/map_page_state.dart';
@@ -46,8 +46,8 @@ class _MapPageState extends ConsumerState<MapPage> {
   late final IncidentHighlighter _highlighter;
   late final LocationMarkerHelper _locationMarkerHelper;
   late final MapCameraController _cameraController;
-  late LocationDisplayManager? _locationDisplayManager;
-  late MapInteractionHandler? _interactionHandler;
+  LocationDisplayManager? _locationDisplayManager;
+  MapInteractionHandler? _interactionHandler;
 
   @override
   void initState() {

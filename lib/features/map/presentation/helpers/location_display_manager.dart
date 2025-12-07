@@ -2,7 +2,8 @@ import 'package:arcgis_maps/arcgis_maps.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:smart_route_app/core/utils/app_logger.dart';
-import 'package:smart_route_app/features/map/presentation/providers/location_display_provider.dart';
+import 'package:smart_route_app/features/map/presentation/providers/current_location_providers.dart';
+import 'package:smart_route_app/features/map/presentation/providers/location_display_providers.dart';
 import 'package:smart_route_app/features/map/presentation/providers/map_mode_provider.dart';
 
 /// Helper class để quản lý LocationDisplay (GPS tracking)
@@ -11,7 +12,7 @@ class LocationDisplayManager {
   final SystemLocationDataSource _locationDataSource;
   final WidgetRef _ref;
   final BuildContext _context;
-  
+
   bool _mapViewReady = false;
 
   LocationDisplayManager({
@@ -19,10 +20,10 @@ class LocationDisplayManager {
     required SystemLocationDataSource locationDataSource,
     required WidgetRef ref,
     required BuildContext context,
-  })  : _mapViewController = mapViewController,
-        _locationDataSource = locationDataSource,
-        _ref = ref,
-        _context = context;
+  }) : _mapViewController = mapViewController,
+       _locationDataSource = locationDataSource,
+       _ref = ref,
+       _context = context;
 
   /// Set map view ready state
   void setMapViewReady(bool ready) {
@@ -78,6 +79,11 @@ class LocationDisplayManager {
             final lat = location.position.y;
             final lon = location.position.x;
             AppLogger.ui('Location updated: Lat: $lat, Lon: $lon');
+
+            // Lưu vị trí hiện tại vào provider
+            _ref
+                .read(currentLocationProviderProvider.notifier)
+                .updateLocation(location);
           });
         } on ArcGISException catch (e) {
           AppLogger.ui(
@@ -139,5 +145,7 @@ class LocationDisplayManager {
   /// Stop location data source
   void stop() {
     _locationDataSource.stop();
+    // Xóa vị trí hiện tại khỏi provider
+    _ref.read(currentLocationProviderProvider.notifier).clearLocation();
   }
 }

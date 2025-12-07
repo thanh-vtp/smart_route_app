@@ -20,4 +20,10 @@ abstract class IncidentRepository {
   Future<Either<Failure, List<Incident>>> getIncidentsFromSupabase({
     String? userUid,
   });
+
+  /// Cập nhật incident
+  Future<Either<Failure, void>> updateIncident(
+    Incident incident, {
+    required String userUid,
+  });
 }

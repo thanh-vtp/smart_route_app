@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:smart_route_app/features/map/presentation/providers/location_display_provider.dart';
+import 'package:smart_route_app/features/map/presentation/providers/location_display_providers.dart';
 import 'package:smart_route_app/features/map/presentation/providers/map_mode_provider.dart';
 
 /// Widget button để bật/tắt LocationDisplay (GPS)
