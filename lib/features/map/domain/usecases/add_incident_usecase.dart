@@ -1,4 +1,5 @@
 import 'package:fpdart/fpdart.dart';
+import 'package:smart_route_app/core/errors/failure_handler.dart';
 import 'package:smart_route_app/core/errors/failures.dart';
 import 'package:smart_route_app/core/utils/app_logger.dart';
 import 'package:smart_route_app/features/auth/domain/entities/app_user.dart';
@@ -24,11 +25,7 @@ class AddIncidentUsecase {
           'User not authenticated - cannot add incident',
           name: 'AddIncidentUsecase',
         );
-        return left(
-          NetworkFailure.unauthorized(
-            'Bạn phải đăng nhập để thực hiện chức năng này',
-          ),
-        );
+        return left(NetworkFailure.unauthorized());
       }
 
       // Validation: Kiểm tra user có uid và email hợp lệ
@@ -37,7 +34,12 @@ class AddIncidentUsecase {
           'Invalid user data - uid or email missing',
           name: 'AddIncidentUsecase',
         );
-        return left(NetworkFailure.unauthorized('Invalid user credentials'));
+        return left(
+          ValidationFailure(
+            code: 'INVALID_USER_DATA',
+            technicalMessage: 'User UID or Email is empty',
+          ),
+        );
       }
 
       AppLogger.domain(
@@ -84,7 +86,7 @@ class AddIncidentUsecase {
         error: e,
         stackTrace: stackTrace,
       );
-      return left(NetworkFailure.serverError(e.toString()));
+      return left(e.toFailure(stackTrace));
     }
   }
 }

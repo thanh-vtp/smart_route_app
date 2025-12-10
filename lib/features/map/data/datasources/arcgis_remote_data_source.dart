@@ -99,14 +99,14 @@ class ArcGISRemoteDataSourceImpl implements ArcGISRemoteDataSource {
         );
       }
 
-      // for (var i = 0; i < features.length; i++) {
-      //   final feature = features[i];
-      //   final featureJson = _featureToJson(feature);
-      //   AppLogger.data(
-      //     'Feature #$i JSON:\n${JsonEncoder.withIndent('  ').convert(featureJson)}',
-      //     source: 'ArcGISRemoteDataSourceImpl',
-      //   );
-      // }
+      for (var i = 0; i < features.length; i++) {
+        final feature = features[i];
+        final featureJson = _featureToJson(feature);
+        AppLogger.data(
+          'Feature #$i JSON:\n${JsonEncoder.withIndent('  ').convert(featureJson)}',
+          source: 'ArcGISRemoteDataSourceImpl',
+        );
+      }
 
       final incidentModels = features
           .map((feature) => IncidentModel.fromFeature(feature))

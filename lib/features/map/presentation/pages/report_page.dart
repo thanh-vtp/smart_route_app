@@ -7,6 +7,7 @@ import 'package:smart_route_app/features/map/domain/entities/incident.dart';
 import 'package:smart_route_app/features/map/presentation/models/incident_button_action.dart';
 import 'package:smart_route_app/features/map/presentation/providers/current_location_providers.dart';
 import 'package:smart_route_app/features/map/presentation/providers/states/report_page_notifier.dart';
+import 'package:smart_route_app/core/errors/failure_mapper.dart';
 import 'package:smart_route_app/features/map/presentation/widgets/action_button_item.dart';
 import 'package:smart_route_app/features/map/presentation/widgets/add_incident_bottom_sheet.dart';
 import 'package:smart_route_app/features/map/presentation/widgets/map_state_overlays.dart';
@@ -54,16 +55,21 @@ class _ReportMapPageState extends ConsumerState<ReportMapPage> {
       submitted: (incidents) {
         return _buildStateUI(context, user, incidents);
       },
-      error: (failure, incidents) => Stack(
-        children: [
-          if (incidents != null) _buildStateUI(context, user, incidents),
-          MapErrorOverlay(
-            message: failure.message,
-            onRetry: () =>
-                ref.read(reportPageNotifierProvider.notifier).fetchIncidents(),
-          ),
-        ],
-      ),
+      error: (failure, incidents) {
+        final userMessage = FailureMapper.toUserMessage(failure);
+        return Stack(
+          children: [
+            if (incidents != null) _buildStateUI(context, user, incidents),
+
+            MapErrorOverlay(
+              message: userMessage,
+              onRetry: () => ref
+                  .read(reportPageNotifierProvider.notifier)
+                  .fetchIncidents(),
+            ),
+          ],
+        );
+      },
     );
   }
 

@@ -1,4 +1,5 @@
 import 'package:fpdart/fpdart.dart';
+import 'package:smart_route_app/core/errors/failure_handler.dart';
 import 'package:smart_route_app/core/errors/failures.dart';
 import 'package:smart_route_app/core/utils/app_logger.dart';
 import 'package:smart_route_app/features/auth/domain/entities/app_user.dart';
@@ -25,11 +26,7 @@ class UpdateIncidentUsecase {
           'Unauthenticated user tried to update incident $incident.id',
           name: 'UpdateIncidentUsecase',
         );
-        return left(
-          NetworkFailure.unauthorized(
-            'Bạn phải đăng nhập để thực hiện chức năng này',
-          ),
-        );
+        return left(NetworkFailure.unauthorized());
       }
 
       AppLogger.domain(
@@ -41,15 +38,17 @@ class UpdateIncidentUsecase {
       // So sánh uid của người tạo ra sự cố (trong data) với uid người đang login
       if (incident.reportedByUid != currentUser.uid) {
         return left(
-          NetworkFailure.unauthorized(
-            'Bạn không có quyền chỉnh sửa báo cáo này',
+          ValidationFailure(
+            code: 'UPDATE_DENIED_NOT_OWNER',
+            technicalMessage:
+                'User ${currentUser.uid} is not the owner of incident ${incident.id}',
           ),
         );
       }
 
       // 3. Validate Data (Ví dụ: không được để trống mô tả)
       if (incident.description.isEmpty) {
-        return left(NetworkFailure.serverError('Mô tả không được để trống'));
+        return left(ValidationFailure.invalidInput('Description'));
       }
       final result = await repository.updateIncident(
         incident,
@@ -82,7 +81,7 @@ class UpdateIncidentUsecase {
         stackTrace: st,
       );
 
-      return left(NetworkFailure.serverError(e.toString()));
+      return left(e.toFailure(st));
     }
   }
 }

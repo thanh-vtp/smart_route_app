@@ -1,4 +1,5 @@
 import 'package:fpdart/fpdart.dart';
+import 'package:smart_route_app/core/errors/failure_handler.dart';
 import 'package:smart_route_app/core/errors/failures.dart';
 import 'package:smart_route_app/core/utils/app_logger.dart';
 import 'package:smart_route_app/features/auth/domain/entities/app_user.dart';
@@ -20,11 +21,7 @@ class DeleteIncidentUsecase {
           'Unauthenticated user tried to delete incident $incidentId',
           name: 'DeleteIncidentUsecase',
         );
-        return left(
-          NetworkFailure.unauthorized(
-            'Bạn phải đăng nhập để thực hiện chức năng này',
-          ),
-        );
+        return left(NetworkFailure.unauthorized());
       }
 
       AppLogger.domain(
@@ -64,8 +61,7 @@ class DeleteIncidentUsecase {
         error: e,
         stackTrace: st,
       );
-
-      return left(NetworkFailure.serverError(e.toString()));
+      return left(e.toFailure(st));
     }
   }
 }

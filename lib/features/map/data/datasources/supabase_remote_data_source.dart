@@ -1,4 +1,3 @@
-import 'package:smart_route_app/core/errors/exceptions.dart';
 import 'package:smart_route_app/core/utils/app_logger.dart';
 import 'package:smart_route_app/features/map/data/models/incident_model.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
@@ -36,9 +35,7 @@ class SupabaseRemoteDataSourceImpl implements SupabaseRemoteDataSource {
       //   'Cannot save incident to Supabase - missing reportedByUid',
       //   name: 'SupabaseRemoteDataSource',
       // );
-      throw ValidationException.requiredInput(
-        'reportedByUid is required for Supabase storage',
-      );
+      throw Exception('reportedByUid is required for Supabase storage');
     }
     try {
       AppLogger.data(
@@ -120,7 +117,7 @@ class SupabaseRemoteDataSourceImpl implements SupabaseRemoteDataSource {
   @override
   Future<void> deleteIncident(String incidentId, String userUid) async {
     if (userUid.isEmpty) {
-      throw ValidationException.requiredInput(
+      throw Exception(
         'reportedByUid is required to delete incident from Supabase',
       );
     }
@@ -152,7 +149,7 @@ class SupabaseRemoteDataSourceImpl implements SupabaseRemoteDataSource {
   @override
   Future<List<IncidentModel>> getIncidents({String? userUid}) async {
     if (userUid!.isEmpty) {
-      throw ValidationException.requiredInput(
+      throw Exception(
         'reportedByUid is required to delete incident from Supabase',
       );
     }
@@ -182,7 +179,7 @@ class SupabaseRemoteDataSourceImpl implements SupabaseRemoteDataSource {
   @override
   Future<void> updateIncident(IncidentModel incident, String userUid) async {
     if (userUid.isEmpty) {
-      throw ValidationException.requiredInput(
+      throw Exception(
         'reportedByUid is required to delete incident from Supabase',
       );
     }

@@ -94,25 +94,25 @@ class AddIncidentBottomSheet extends HookConsumerWidget {
               // Location info với khả năng chọn lại vị trí
               InkWell(
                 onTap: () async {
-                  // Navigate đến map picker để chọn vị trí mới
-                  final result = await Navigator.push<Map<String, double>>(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => LocationPickerMapWidget(
-                        initialLatitude: currentLatitude.value,
-                        initialLongitude: currentLongitude.value,
-                      ),
-                    ),
-                  );
+                  // // Navigate đến map picker để chọn vị trí mới
+                  // final result = await Navigator.push<Map<String, double>>(
+                  //   context,
+                  //   MaterialPageRoute(
+                  //     builder: (context) => LocationPickerMapWidget(
+                  //       initialLatitude: currentLatitude.value,
+                  //       initialLongitude: currentLongitude.value,
+                  //     ),
+                  //   ),
+                  // );
 
-                  // Cập nhật location nếu user chọn vị trí mới
-                  if (result != null) {
-                    currentLatitude.value = result['latitude']!;
-                    currentLongitude.value = result['longitude']!;
-                    AppLogger.ui(
-                      "User picked: ${currentLatitude.value}, ${currentLongitude.value}",
-                    );
-                  }
+                  // // Cập nhật location nếu user chọn vị trí mới
+                  // if (result != null) {
+                  //   currentLatitude.value = result['latitude']!;
+                  //   currentLongitude.value = result['longitude']!;
+                  //   AppLogger.ui(
+                  //     "User picked: ${currentLatitude.value}, ${currentLongitude.value}",
+                  //   );
+                  // }
                 },
                 borderRadius: BorderRadius.circular(12),
                 child: Container(

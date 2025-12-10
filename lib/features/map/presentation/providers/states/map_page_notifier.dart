@@ -28,7 +28,9 @@ class MapPageNotifier extends Notifier<MapPageState> {
     result.fold(
       (failure) {
         AppLogger.ui('Failed to fetch incidents', error: failure);
-        state = MapPageState.error(failure: failure);
+        state = MapPageState.error(
+          failure: failure,
+        ); // State chỉ chứa Failure object
       },
       (incidents) {
         AppLogger.ui('Successfully fetched ${incidents.length} incidents');

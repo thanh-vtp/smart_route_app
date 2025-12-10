@@ -6,6 +6,7 @@ import 'package:smart_route_app/features/map/domain/entities/incident.dart'
 import 'package:smart_route_app/features/map/presentation/helpers/incident_display_helper.dart';
 import 'package:smart_route_app/features/map/presentation/providers/map_mode_provider.dart';
 import 'package:smart_route_app/features/map/presentation/providers/states/map_page_notifier.dart';
+import 'package:smart_route_app/core/errors/failure_mapper.dart';
 import 'package:smart_route_app/features/map/presentation/widgets/incident_type_widgets.dart';
 
 class NavigatorIncidentsBottomSheet extends ConsumerStatefulWidget {
@@ -134,23 +135,28 @@ class _State extends ConsumerState<NavigatorIncidentsBottomSheet> {
                               incidents,
                               scrollController,
                             ),
-                            error: (failure) => Center(
-                              child: Column(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  Icon(
-                                    Icons.error_outline,
-                                    size: 48,
-                                    color: Colors.red,
-                                  ),
-                                  SizedBox(height: 16),
-                                  Text(
-                                    'Lỗi: ${failure.message}',
-                                    style: TextStyle(color: Colors.red),
-                                  ),
-                                ],
-                              ),
-                            ),
+                            error: (failure) {
+                              final message = FailureMapper.toUserMessage(
+                                failure,
+                              );
+                              return Center(
+                                child: Column(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    Icon(
+                                      Icons.error_outline,
+                                      size: 48,
+                                      color: Colors.red,
+                                    ),
+                                    SizedBox(height: 16),
+                                    Text(
+                                      'Lỗi: $message',
+                                      style: TextStyle(color: Colors.red),
+                                    ),
+                                  ],
+                                ),
+                              );
+                            },
                           ),
                         ),
                       ],

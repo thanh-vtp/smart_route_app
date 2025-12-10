@@ -1,4 +1,5 @@
 import 'package:fpdart/fpdart.dart';
+import 'package:smart_route_app/core/errors/failure_handler.dart';
 import 'package:smart_route_app/core/errors/failures.dart';
 import 'package:smart_route_app/core/utils/app_logger.dart';
 import 'package:smart_route_app/features/map/data/datasources/arcgis_remote_data_source.dart';
@@ -37,9 +38,14 @@ class IncidentRepositoryImpl implements IncidentRepository {
 
       AppLogger.repository('GET Success - ${incidents.length} incidents');
       return right(incidents);
-    } catch (e) {
-      AppLogger.error('GET Failed', name: 'IncidentRepository', error: e);
-      return left(NetworkFailure.serverError(e.toString()));
+    } catch (e, st) {
+      AppLogger.error(
+        'GET Failed',
+        name: 'IncidentRepository',
+        error: e,
+        stackTrace: st,
+      );
+      return left(e.toFailure(st));
     }
   }
 
@@ -52,7 +58,12 @@ class IncidentRepositoryImpl implements IncidentRepository {
         'ADD Failed - missing reportedByUid',
         name: 'IncidentRepository',
       );
-      return left(NetworkFailure.badRequest('User information required'));
+      return left(
+        ValidationFailure(
+          code: 'MISSING_USER_INFO',
+          technicalMessage: 'Incident.reportedByUid is null or empty',
+        ),
+      );
     }
 
     AppLogger.repository(
@@ -69,15 +80,21 @@ class IncidentRepositoryImpl implements IncidentRepository {
 
       // Thêm vào ArcGIS trước để lấy ObjectID
       arcgisObjectId = await _arcGISDataSource.addIncident(incidentModel);
-      AppLogger.repository('ADD to ArcGIS Success');
+      AppLogger.repository('ADD to ArcGIS Success (ObjectID: $arcgisObjectId)');
       // Cập nhật ObjectID vào model và thêm vào Supabase
       incidentModel = incidentModel.copyWith(arcgisObjectId: arcgisObjectId);
       await _supabaseDataSource.saveIncident(incidentModel);
       AppLogger.repository('ADD to Supabase Success');
 
       return right(null);
-    } catch (e) {
-      AppLogger.error('ADD Failed', name: 'IncidentRepository', error: e);
+    } catch (e, st) {
+      // Error Handling & Rollback
+      AppLogger.error(
+        'ADD Failed',
+        name: 'IncidentRepository',
+        error: e,
+        stackTrace: st,
+      );
 
       // ROLLBACK: Nếu ArcGIS thành công nhưng Supabase lỗi, xóa khỏi ArcGIS
       if (arcgisObjectId != null) {
@@ -86,17 +103,18 @@ class IncidentRepositoryImpl implements IncidentRepository {
         );
         try {
           await _arcGISDataSource.deleteIncident(arcgisObjectId);
-          AppLogger.repository('Rollback completed');
+          AppLogger.repository('Rollback completed successfully');
         } catch (rollbackError) {
           AppLogger.error(
-            'Rollback failed',
+            'Rollback failed (Critical Data Inconsistency)',
             name: 'IncidentRepository',
             error: rollbackError,
           );
         }
       }
 
-      return left(NetworkFailure.serverError(e.toString()));
+      // Sử dụng extension đã viết ở để quy hoạch lỗi
+      return left(e.toFailure(st));
     }
   }
 
@@ -117,7 +135,7 @@ class IncidentRepositoryImpl implements IncidentRepository {
           'Incident not found in Supabase: $incidentId',
           name: 'IncidentRepository',
         );
-        return left(NetworkFailure.notFound('Incident not found'));
+        return left(NetworkFailure.notFound('IncidentId: $incidentId'));
       }
 
       // Check: Người đang yêu cầu xóa có phải là người tạo ra nó không?
@@ -126,7 +144,10 @@ class IncidentRepositoryImpl implements IncidentRepository {
           'User $userUid tried to delete incident of ${incident.reportedByUid}',
         );
         return left(
-          NetworkFailure.unauthorized('Bạn không có quyền xóa báo cáo này'),
+          PermissionFailure.denied(
+            code: 'DELETE_DENIED_NOT_OWNER',
+            technicalMessage: 'User $userUid is not the owner of $incidentId',
+          ),
         );
       }
 
@@ -150,11 +171,16 @@ class IncidentRepositoryImpl implements IncidentRepository {
         AppLogger.repository('Skip DELETE from ArcGIS - no ObjectID found');
       }
 
-      AppLogger.repository('DELETE from dual storage completed');
+      // AppLogger.repository('DELETE from dual storage completed');
       return right(null);
-    } catch (e) {
-      AppLogger.error('DELETE Failed', name: 'IncidentRepository', error: e);
-      return left(NetworkFailure.serverError(e.toString()));
+    } catch (e, st) {
+      AppLogger.error(
+        'DELETE Failed',
+        name: 'IncidentRepository',
+        error: e,
+        stackTrace: st,
+      );
+      return left(e.toFailure(st));
     }
   }
 
@@ -163,10 +189,19 @@ class IncidentRepositoryImpl implements IncidentRepository {
     String? userUid,
   }) async {
     try {
+      AppLogger.repository('GET incidents from Supabase (User: $userUid)');
       final models = await _supabaseDataSource.getIncidents(userUid: userUid);
-      return right(models.map((m) => m.toEntity()).toList());
-    } catch (e) {
-      return left(NetworkFailure.serverError(e.toString()));
+      final incidents = models.map((m) => m.toEntity()).toList();
+      AppLogger.repository('GET Success - ${incidents.length} incidents');
+      return right(incidents);
+    } catch (e, st) {
+      AppLogger.error(
+        'GET Supabase Failed',
+        name: 'IncidentRepository',
+        error: e,
+        stackTrace: st,
+      );
+      return left(e.toFailure(st));
     }
   }
 
@@ -206,8 +241,10 @@ class IncidentRepositoryImpl implements IncidentRepository {
           'User $userUid tried to update incident of ${incident.reportedByUid}',
         );
         return left(
-          NetworkFailure.unauthorized(
-            'Bạn không có quyền cập nhật báo cáo này',
+          PermissionFailure.denied(
+            code: 'UPDATE_DENIED_NOT_OWNER',
+            technicalMessage:
+                'User $userUid is not the owner of ${incident.id}',
           ),
         );
       }
@@ -218,11 +255,16 @@ class IncidentRepositoryImpl implements IncidentRepository {
 
       AppLogger.repository('UPDATE in Supabase Success');
 
-      AppLogger.repository('UPDATE from dual storage completed');
+      // AppLogger.repository('UPDATE from dual storage completed');
       return right(null);
-    } catch (e) {
-      AppLogger.error('UPDATE Failed', name: 'IncidentRepository', error: e);
-      return left(NetworkFailure.serverError(e.toString()));
+    } catch (e, st) {
+      AppLogger.error(
+        'UPDATE Failed',
+        name: 'IncidentRepository',
+        error: e,
+        stackTrace: st,
+      );
+      return left(e.toFailure(st));
     }
   }
 }
