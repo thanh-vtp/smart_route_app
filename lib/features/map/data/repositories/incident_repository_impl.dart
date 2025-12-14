@@ -1,5 +1,5 @@
 import 'package:fpdart/fpdart.dart';
-import 'package:smart_route_app/core/errors/failure_handler.dart';
+import 'package:smart_route_app/core/errors/exceptions.dart';
 import 'package:smart_route_app/core/errors/failures.dart';
 import 'package:smart_route_app/core/utils/app_logger.dart';
 import 'package:smart_route_app/features/map/data/datasources/arcgis_remote_data_source.dart';
@@ -38,6 +38,8 @@ class IncidentRepositoryImpl implements IncidentRepository {
 
       AppLogger.repository('GET Success - ${incidents.length} incidents');
       return right(incidents);
+    } on NetworkException catch (_) {
+      return left(NetworkFailure.noInternet());
     } catch (e, st) {
       AppLogger.error(
         'GET Failed',
@@ -45,7 +47,10 @@ class IncidentRepositoryImpl implements IncidentRepository {
         error: e,
         stackTrace: st,
       );
-      return left(e.toFailure(st));
+
+      return left(
+        UnexpectedFailure(e, st),
+      ); // return UnexpectedFailure (lỗi chưa xác định)
     }
   }
 
@@ -54,21 +59,8 @@ class IncidentRepositoryImpl implements IncidentRepository {
     String? arcgisObjectId;
     // Validation
     if (incident.reportedByUid == null || incident.reportedByUid!.isEmpty) {
-      AppLogger.error(
-        'ADD Failed - missing reportedByUid',
-        name: 'IncidentRepository',
-      );
-      return left(
-        ValidationFailure(
-          code: 'MISSING_USER_INFO',
-          technicalMessage: 'Incident.reportedByUid is null or empty',
-        ),
-      );
+      return left(ValidationFailure.missingUserInfo());
     }
-
-    AppLogger.repository(
-      'ADD incident to dual storage by user: ${incident.reportedBy}',
-    );
     try {
       // Tạo UUID
       final newUuid = const Uuid().v4();
@@ -87,6 +79,20 @@ class IncidentRepositoryImpl implements IncidentRepository {
       AppLogger.repository('ADD to Supabase Success');
 
       return right(null);
+    } on NetworkException catch (_) {
+      return left(NetworkFailure.noInternet());
+    } on PermissionFailure catch (e, st) {
+      return left(
+        PermissionFailure(
+          code: e.code,
+          technicalMessage: e.technicalMessage,
+          stackTrace: st,
+        ),
+      );
+    } on ValidationFailure catch (e, _) {
+      return left(
+        ValidationFailure(code: e.code, technicalMessage: e.technicalMessage),
+      );
     } catch (e, st) {
       // Error Handling & Rollback
       AppLogger.error(
@@ -113,8 +119,9 @@ class IncidentRepositoryImpl implements IncidentRepository {
         }
       }
 
-      // Sử dụng extension đã viết ở để quy hoạch lỗi
-      return left(e.toFailure(st));
+      return left(
+        UnexpectedFailure(e, st),
+      ); // return UnexpectedFailure (lỗi chưa xác định)
     }
   }
 
@@ -124,25 +131,20 @@ class IncidentRepositoryImpl implements IncidentRepository {
     required String userUid,
   }) async {
     try {
-      AppLogger.repository('DELETE incident from dual storage: $incidentId');
-
       // BƯỚC 1: Query incident từ Supabase để lấy arcgisObjectId
-      AppLogger.repository('Query incident from Supabase...');
       final incident = await _supabaseDataSource.getIncidentById(incidentId);
 
       if (incident == null) {
-        AppLogger.error(
-          'Incident not found in Supabase: $incidentId',
-          name: 'IncidentRepository',
+        return left(
+          SupabaseFailure.apiError(
+            'Incident not found in Supabase: $incidentId',
+            'NOT_FOUND',
+          ),
         );
-        return left(NetworkFailure.notFound('IncidentId: $incidentId'));
       }
 
       // Check: Người đang yêu cầu xóa có phải là người tạo ra nó không?
       if (incident.reportedByUid != userUid) {
-        AppLogger.warning(
-          'User $userUid tried to delete incident of ${incident.reportedByUid}',
-        );
         return left(
           PermissionFailure.denied(
             code: 'DELETE_DENIED_NOT_OWNER',
@@ -173,6 +175,20 @@ class IncidentRepositoryImpl implements IncidentRepository {
 
       // AppLogger.repository('DELETE from dual storage completed');
       return right(null);
+    } on NetworkException catch (_) {
+      return left(NetworkFailure.noInternet());
+    } on PermissionFailure catch (e, st) {
+      return left(
+        PermissionFailure(
+          code: e.code,
+          technicalMessage: e.technicalMessage,
+          stackTrace: st,
+        ),
+      );
+    } on ValidationFailure catch (e, _) {
+      return left(
+        ValidationFailure(code: e.code, technicalMessage: e.technicalMessage),
+      );
     } catch (e, st) {
       AppLogger.error(
         'DELETE Failed',
@@ -180,7 +196,10 @@ class IncidentRepositoryImpl implements IncidentRepository {
         error: e,
         stackTrace: st,
       );
-      return left(e.toFailure(st));
+
+      return left(
+        UnexpectedFailure(e, st),
+      ); // return UnexpectedFailure (lỗi chưa xác định)
     }
   }
 
@@ -194,6 +213,20 @@ class IncidentRepositoryImpl implements IncidentRepository {
       final incidents = models.map((m) => m.toEntity()).toList();
       AppLogger.repository('GET Success - ${incidents.length} incidents');
       return right(incidents);
+    } on NetworkException catch (_) {
+      return left(NetworkFailure.noInternet());
+    } on PermissionFailure catch (e, st) {
+      return left(
+        PermissionFailure(
+          code: e.code,
+          technicalMessage: e.technicalMessage,
+          stackTrace: st,
+        ),
+      );
+    } on ValidationFailure catch (e, _) {
+      return left(
+        ValidationFailure(code: e.code, technicalMessage: e.technicalMessage),
+      );
     } catch (e, st) {
       AppLogger.error(
         'GET Supabase Failed',
@@ -201,7 +234,9 @@ class IncidentRepositoryImpl implements IncidentRepository {
         error: e,
         stackTrace: st,
       );
-      return left(e.toFailure(st));
+      return left(
+        UnexpectedFailure(e, st),
+      ); // return UnexpectedFailure (lỗi chưa xác định)
     }
   }
 
@@ -211,8 +246,6 @@ class IncidentRepositoryImpl implements IncidentRepository {
     required String userUid,
   }) async {
     try {
-      AppLogger.repository('UPDATE incident in dual storage: ${incident.id}');
-
       // BƯỚC 1: Query incident từ Supabase để lấy arcgisObjectId
       final model = IncidentModel.fromEntity(incident);
 
@@ -257,6 +290,20 @@ class IncidentRepositoryImpl implements IncidentRepository {
 
       // AppLogger.repository('UPDATE from dual storage completed');
       return right(null);
+    } on NetworkException catch (_) {
+      return left(NetworkFailure.noInternet());
+    } on PermissionFailure catch (e, st) {
+      return left(
+        PermissionFailure(
+          code: e.code,
+          technicalMessage: e.technicalMessage,
+          stackTrace: st,
+        ),
+      );
+    } on ValidationFailure catch (e, _) {
+      return left(
+        ValidationFailure(code: e.code, technicalMessage: e.technicalMessage),
+      );
     } catch (e, st) {
       AppLogger.error(
         'UPDATE Failed',
@@ -264,7 +311,9 @@ class IncidentRepositoryImpl implements IncidentRepository {
         error: e,
         stackTrace: st,
       );
-      return left(e.toFailure(st));
+      return left(
+        UnexpectedFailure(e, st),
+      ); // return UnexpectedFailure (lỗi chưa xác định)
     }
   }
 }

@@ -1,5 +1,8 @@
+import 'dart:async';
 import 'dart:convert';
+import 'dart:io';
 import 'package:arcgis_maps/arcgis_maps.dart';
+import 'package:smart_route_app/core/errors/exceptions.dart';
 import 'package:smart_route_app/core/utils/app_logger.dart';
 import 'package:smart_route_app/features/map/data/models/incident_model.dart';
 
@@ -32,6 +35,7 @@ class ArcGISRemoteDataSourceImpl implements ArcGISRemoteDataSource {
       if (table == null) {
         throw Exception('Feature table is null, cannot get incidents');
       }
+
       // Tạo query parameters với where clause "1=1" để lấy tất cả features
       final query = QueryParameters()..whereClause = "1=1";
 
@@ -43,8 +47,17 @@ class ArcGISRemoteDataSourceImpl implements ArcGISRemoteDataSource {
           source: 'ArcGISRemoteDataSourceImpl',
         );
 
-        // Load table để đảm bảo có tất cả metadata và fields
-        await table.load();
+        // load status để retry data
+        if (table.loadStatus == LoadStatus.failedToLoad) {
+          AppLogger.data(
+            'Table failed previously. Retrying load...',
+            source: 'ArcGISRemoteDataSourceImpl',
+          );
+          await table.retryLoad(); // thử lại nếu fail
+        } else if (table.loadStatus == LoadStatus.notLoaded) {
+          // Load table để đảm bảo có tất cả metadata và fields
+          await table.load();
+        }
 
         AppLogger.data(
           'Table loaded - loadStatus: ${table.loadStatus}, '
@@ -54,18 +67,22 @@ class ArcGISRemoteDataSourceImpl implements ArcGISRemoteDataSource {
         );
 
         // Log fields trong table metadata
-        final fields = table.fields;
-        final fieldNames = fields.map((f) => f.name).toList();
-        AppLogger.data(
-          'Table fields from metadata: $fieldNames',
-          source: 'ArcGISRemoteDataSourceImpl',
-        );
+        // final fields = table.fields;
+        // final fieldNames = fields.map((f) => f.name).toList();
+        // AppLogger.data(
+        //   'Table fields from metadata: $fieldNames',
+        //   source: 'ArcGISRemoteDataSourceImpl',
+        // );
 
         // Nếu dùng MANUAL_CACHE mode, cần populate features từ service
         if (table.featureRequestMode == FeatureRequestMode.manualCache) {
+          AppLogger.data(
+            'Populating from service...',
+            source: 'ArcGISRemoteDataSourceImpl',
+          );
           await table.populateFromService(
             parameters: query,
-            clearCache: false,
+            clearCache: true, // Đổi thành true để force refresh khi retry
             outFields: ['*'], // Lấy tất cả fields
           );
 
@@ -114,13 +131,19 @@ class ArcGISRemoteDataSourceImpl implements ArcGISRemoteDataSource {
 
       return incidentModels;
     } catch (e, st) {
+      // log info error
       AppLogger.error(
         'Error getting incidents from ArcGIS',
         name: 'ArcGISRemoteDataSourceImpl',
         error: e,
         stackTrace: st,
       );
-      throw Exception('Failed to get incidents from ArcGIS: $e');
+
+      if (e is SocketException) {
+        throw NetworkException.noInternet(st);
+      }
+
+      throw UnexpectedException(e.toString());
     }
   }
 
@@ -151,7 +174,6 @@ class ArcGISRemoteDataSourceImpl implements ArcGISRemoteDataSource {
       feature.attributes['MucDo'] = incident.severity;
       feature.attributes['MoTa'] = incident.description;
       feature.attributes['NguoiBaoCao'] = incident.reportedBy;
-      feature.attributes['NguoiBaoCaoUid'] = incident.reportedByUid;
 
       // QUAN TRỌNG: Truyền DateTime object, không truyền String
       feature.attributes['ThoiGianBaoCao'] = incident.reportedTime;
@@ -201,7 +223,11 @@ class ArcGISRemoteDataSourceImpl implements ArcGISRemoteDataSource {
         error: e,
         stackTrace: st,
       );
-      throw Exception('Failed to add incident to ArcGIS: $e');
+      if (e is SocketException) {
+        throw NetworkException.noInternet(st);
+      }
+
+      throw UnexpectedException(e.toString());
     }
   }
 
@@ -261,7 +287,11 @@ class ArcGISRemoteDataSourceImpl implements ArcGISRemoteDataSource {
         error: e,
         stackTrace: st,
       );
-      throw Exception('Failed to delete incident from ArcGIS: $e');
+      if (e is SocketException) {
+        throw NetworkException.noInternet(st);
+      }
+
+      throw UnexpectedException(e.toString());
     }
   }
 
@@ -349,7 +379,11 @@ class ArcGISRemoteDataSourceImpl implements ArcGISRemoteDataSource {
         error: e,
         stackTrace: st,
       );
-      throw Exception('Failed to update incident to ArcGIS: $e');
+      if (e is SocketException) {
+        throw NetworkException.noInternet(st);
+      }
+
+      throw UnexpectedException(e.toString());
     }
   }
 }

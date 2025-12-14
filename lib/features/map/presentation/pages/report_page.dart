@@ -1,3 +1,5 @@
+import 'package:arcgis_maps/arcgis_maps.dart' hide Incident;
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:smart_route_app/core/utils/app_logger.dart';
@@ -5,11 +7,13 @@ import 'package:smart_route_app/features/auth/domain/entities/app_user.dart';
 import 'package:smart_route_app/features/auth/presentation/states/auth.dart';
 import 'package:smart_route_app/features/map/domain/entities/incident.dart';
 import 'package:smart_route_app/features/map/presentation/models/incident_button_action.dart';
-import 'package:smart_route_app/features/map/presentation/providers/current_location_providers.dart';
+import 'package:smart_route_app/features/map/presentation/providers/location_display_providers.dart';
+import 'package:smart_route_app/features/map/presentation/providers/map_center_providers.dart';
+import 'package:smart_route_app/features/map/presentation/providers/map_controller_provider.dart';
 import 'package:smart_route_app/features/map/presentation/providers/states/report_page_notifier.dart';
-import 'package:smart_route_app/core/errors/failure_mapper.dart';
 import 'package:smart_route_app/features/map/presentation/widgets/action_button_item.dart';
 import 'package:smart_route_app/features/map/presentation/widgets/add_incident_bottom_sheet.dart';
+import 'package:smart_route_app/features/map/presentation/widgets/location_picker_map_widget.dart';
 import 'package:smart_route_app/features/map/presentation/widgets/map_state_overlays.dart';
 import 'package:smart_route_app/features/map/presentation/widgets/review_loaction_card_widget.dart';
 
@@ -55,21 +59,17 @@ class _ReportMapPageState extends ConsumerState<ReportMapPage> {
       submitted: (incidents) {
         return _buildStateUI(context, user, incidents);
       },
-      error: (failure, incidents) {
-        final userMessage = FailureMapper.toUserMessage(failure);
-        return Stack(
-          children: [
-            if (incidents != null) _buildStateUI(context, user, incidents),
-
-            MapErrorOverlay(
-              message: userMessage,
-              onRetry: () => ref
-                  .read(reportPageNotifierProvider.notifier)
-                  .fetchIncidents(),
-            ),
-          ],
-        );
-      },
+      error: (failure, incidents) => Stack(
+        children: [
+          if (incidents != null) _buildStateUI(context, user, incidents),
+          MapErrorOverlay(
+            message: failure.technicalMessage!,
+            onRetry: () => ref
+                .read(reportPageNotifierProvider.notifier)
+                .fetchIncidents(currentUser: user),
+          ),
+        ],
+      ),
     );
   }
 
@@ -83,21 +83,19 @@ class _ReportMapPageState extends ConsumerState<ReportMapPage> {
         icon: Icons.add_location_alt,
         label: "Thêm địa điểm",
         onTap: () {
-          // Lấy vị trí GPS hiện tại nếu có, nếu không thì dùng vị trí mặc định
-          final currentLocation = ref.read(currentLocationProviderProvider);
-          final double latitude;
-          final double longitude;
+          // Lấy tâm map hiện tại từ Provider
+          final currentCenter = ref.read(mapCenterProvider.notifier).current();
 
-          if (currentLocation != null) {
-            // Ưu tiên sử dụng vị trí GPS
-            latitude = currentLocation.position.y;
-            longitude = currentLocation.position.x;
-            AppLogger.ui('Report: Using GPS location: $latitude, $longitude');
-          } else {
-            // Vị trí mặc định (Nha Trang)
-            latitude = 12.2259317;
-            longitude = 109.1954123;
-            AppLogger.ui('Report: Using default location (GPS not ready)');
+          // Khởi tạo tọa độ mặc định (VD: Nha Trang) phòng hờ map chưa load
+          double targetLat = 12.2388;
+          double targetLong = 109.1967;
+
+          if (currentCenter != null) {
+            targetLat = currentCenter.y;
+            targetLong = currentCenter.x;
+            AppLogger.ui(
+              "Map Center Updated - report_page: $targetLat, $targetLong",
+            );
           }
 
           showModalBottomSheet(
@@ -105,8 +103,8 @@ class _ReportMapPageState extends ConsumerState<ReportMapPage> {
             isScrollControlled: true,
             backgroundColor: Colors.transparent,
             builder: (context) => AddIncidentBottomSheet(
-              latitude: latitude,
-              longitude: longitude,
+              latitude: targetLat,
+              longitude: targetLong,
             ),
           );
         },
@@ -180,9 +178,14 @@ Widget _buildProfileSection(BuildContext context, AppUser user) {
     children: [
       Row(
         children: [
-          CircleAvatar(
-            radius: 24,
-            backgroundImage: NetworkImage(user.photoUrl!),
+          CachedNetworkImage(
+            imageUrl: user.photoUrl!,
+            imageBuilder: (context, imageProvider) =>
+                CircleAvatar(backgroundImage: imageProvider),
+            placeholder: (context, url) =>
+                const CircleAvatar(child: CircularProgressIndicator()),
+            errorWidget: (context, url, error) =>
+                CircleAvatar(child: Icon(Icons.person)),
           ),
           SizedBox(width: 12),
           Expanded(

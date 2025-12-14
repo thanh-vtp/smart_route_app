@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:arcgis_maps/arcgis_maps.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
@@ -14,9 +16,18 @@ class MapLocationLogic {
   /// Getter để truy cập dataSource
   SystemLocationDataSource get locationDataSource => _locationDataSource;
 
+  // Biến để quản lý việc lắng nghe stream, giúp tránh memory leak
+  StreamSubscription<ArcGISLocation>? _locationSubscription;
+
   void dispose() {
+    _stopLocationUpdates();
     // Stop location data source when exiting (best practice từ sample code)
     _locationDataSource.stop();
+  }
+
+  void _stopLocationUpdates() {
+    _locationSubscription?.cancel();
+    _locationSubscription = null;
   }
 
   /// Cập nhật LocationDisplay cho view đang active
@@ -30,6 +41,26 @@ class MapLocationLogic {
     required bool mapViewReady,
     required bool mounted,
   }) async {
+    // 1. 3D không hỗ trợ GPS → auto tắt nếu user bật
+    if (mode == MapMode.scene3D) {
+      if (enabled && mounted) {
+        ref.read(locationDisplayProviderProvider.notifier).disable();
+
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Text('GPS chỉ hỗ trợ ở chế độ 2D'),
+            backgroundColor: Colors.orange,
+            duration: Duration(seconds: 2),
+          ),
+        );
+
+        AppLogger.ui(
+          'GPS disabled — 3D SceneView không hỗ trợ LocationDisplay',
+        );
+      }
+      return;
+    }
+
     if (mode == MapMode.map2D) {
       // Kiểm tra xem map view đã sẵn sàng chưa
       if (!mapViewReady) {
@@ -45,84 +76,80 @@ class MapLocationLogic {
       final locationDisplay = mapViewController.locationDisplay;
 
       if (enabled) {
-        // Set auto-pan mode trước khi start
-        locationDisplay.autoPanMode = LocationDisplayAutoPanMode.recenter;
+        if (locationDisplay.started) return;
 
         // Attempt to start the location data source (best practice từ sample code)
         // Ref: https://developers.arcgis.com/flutter/sample-code/show-device-location/
         try {
-          await _locationDataSource.start();
+          // Set auto-pan mode trước khi start
+          locationDisplay.autoPanMode = LocationDisplayAutoPanMode.recenter;
+
+          // Gán data source, dùng SystemLocationDataSource
+          locationDisplay.dataSource = _locationDataSource;
+          locationDisplay.start();
+
+          _stopLocationUpdates();
 
           // Log current location after starting
-          final location = locationDisplay.location;
-          if (location != null) {
-            final lat = location.position.y;
-            final lon = location.position.x;
-            AppLogger.ui(
-              'LocationDisplay started - Current location: Lat: $lat, Lon: $lon',
-            );
-          } else {
-            AppLogger.ui('LocationDisplay started for 2D map');
-          }
+          // final location = locationDisplay.location;
+          // if (location != null) {
+          //   final lat = location.position.y;
+          //   final lon = location.position.x;
+          //   AppLogger.ui(
+          //     'LocationDisplay started - Current location: Lat: $lat, Lon: $lon',
+          //   );
+          // } else {
+          //   AppLogger.ui('LocationDisplay started for 2D map');
+          // }
 
           // Listen to location changes and log them
-          locationDisplay.onLocationChanged.listen((location) {
-            final lat = location.position.y;
-            final lon = location.position.x;
-            AppLogger.ui('Location updated: Lat: $lat, Lon: $lon');
-          });
+          // locationDisplay.onLocationChanged.listen((location) {
+          //   final lat = location.position.y;
+          //   final lon = location.position.x;
+          //   AppLogger.ui('Location updated: Lat: $lat, Lon: $lon');
+          // });
         } on ArcGISException catch (e) {
-          AppLogger.ui(
-            'ArcGIS Error starting LocationDisplay: ${e.message}',
-            error: e,
+          _handelCatchError(
+            message: e.toString(),
+            mounted: mounted,
+            ref: ref,
+            context: context,
           );
-          if (mounted) {
-            // Tắt LocationDisplay trong provider nếu có lỗi
-            ref.read(locationDisplayProviderProvider.notifier).disable();
-
-            // Hiển thị thông báo cho user
-            ScaffoldMessenger.of(context).showSnackBar(
-              SnackBar(
-                content: Text('Không thể bật GPS: ${e.message}'),
-                backgroundColor: Colors.red,
-                duration: const Duration(seconds: 3),
-              ),
-            );
-          }
         } catch (e) {
-          AppLogger.ui('Error starting LocationDisplay: $e', error: e);
-          if (mounted) {
-            ref.read(locationDisplayProviderProvider.notifier).disable();
-            ScaffoldMessenger.of(context).showSnackBar(
-              SnackBar(
-                content: Text('Không thể bật GPS: $e'),
-                backgroundColor: Colors.red,
-                duration: const Duration(seconds: 3),
-              ),
-            );
-          }
+          _handelCatchError(
+            message: e.toString(),
+            mounted: mounted,
+            ref: ref,
+            context: context,
+          );
         }
       } else {
+        _stopLocationUpdates();
         // Stop location data source
-        _locationDataSource.stop();
+        if (locationDisplay.started) {
+          locationDisplay.stop();
+        }
         AppLogger.ui('LocationDisplay stopped for 2D map');
       }
-    } else {
-      // 3D Scene không hỗ trợ LocationDisplay
-      if (enabled && mounted) {
-        // Tự động tắt LocationDisplay trong provider
-        ref.read(locationDisplayProviderProvider.notifier).disable();
+    }
+  }
 
-        // Thông báo cho user
-        ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(
-            content: Text('GPS chỉ khả dụng ở chế độ 2D'),
-            backgroundColor: Colors.orange,
-            duration: Duration(seconds: 2),
-          ),
-        );
-        AppLogger.ui('LocationDisplay not supported in 3D scene');
-      }
+  _handelCatchError({
+    required String message,
+    required bool mounted,
+    required WidgetRef ref,
+    required BuildContext context,
+  }) {
+    AppLogger.ui('Error starting LocationDisplay: $message', error: message);
+    if (mounted) {
+      ref.read(locationDisplayProviderProvider.notifier).disable();
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text('Không thể bật GPS: $message'),
+          backgroundColor: Colors.red,
+          duration: const Duration(seconds: 3),
+        ),
+      );
     }
   }
 }

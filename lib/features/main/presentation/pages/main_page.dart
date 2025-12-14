@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:smart_route_app/features/auth/presentation/states/auth.dart';
@@ -27,10 +28,13 @@ class _MainPageState extends ConsumerState<MainPage> {
       backgroundColor: Colors.black87,
 
       body: Stack(
+        fit: StackFit.expand,
         children: [
-          MapPage(),
-          if (_selectedIndex == 0) _ExploreLayer(),
-          if (_selectedIndex == 1) _buildPersistentSheet(),
+          const MapPage(),
+          if (_selectedIndex == 0)
+            const Positioned(top: 0, left: 0, right: 0, child: _ExploreLayer()),
+          if (_selectedIndex == 1)
+            Positioned.fill(child: _buildPersistentSheet()),
         ],
       ),
 
@@ -101,11 +105,14 @@ class _ExploreLayer extends ConsumerWidget {
               // User avatar với popup menu
               PopupMenuButton<void>(
                 offset: Offset(0, 50),
-                child: CircleAvatar(
-                  backgroundImage: user.photoUrl != null
-                      ? NetworkImage(user.photoUrl!)
-                      : null,
-                  child: user.photoUrl == null ? Icon(Icons.person) : null,
+                child: CachedNetworkImage(
+                  imageUrl: user.photoUrl!,
+                  imageBuilder: (context, imageProvider) =>
+                      CircleAvatar(backgroundImage: imageProvider),
+                  placeholder: (context, url) =>
+                      const CircleAvatar(child: CircularProgressIndicator()),
+                  errorWidget: (context, url, error) =>
+                      CircleAvatar(child: Icon(Icons.person)),
                 ),
                 itemBuilder: (context) => <PopupMenuEntry<void>>[
                   PopupMenuItem(
@@ -151,9 +158,9 @@ class _ExploreLayer extends ConsumerWidget {
 
 Widget _buildPersistentSheet() {
   return DraggableScrollableSheet(
-    initialChildSize: 0.95, // Mở lên ban đầu 95% màn hình
-    minChildSize: 0.25, // Thu nhỏ tối đa 40%
-    maxChildSize: 0.95, // Kéo lên tối đa 95%
+    initialChildSize: 0.9, // Mở lên ban đầu 90% màn hình
+    minChildSize: 0.1, // Thu nhỏ tối đa 10%
+    maxChildSize: 0.9, // Kéo lên tối đa 90%
     builder: (context, scrollController) => Container(
       decoration: BoxDecoration(
         color: Colors.white,

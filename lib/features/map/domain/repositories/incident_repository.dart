@@ -18,7 +18,7 @@ abstract class IncidentRepository {
 
   /// Lấy danh sách incidents (supabase)
   Future<Either<Failure, List<Incident>>> getIncidentsFromSupabase({
-    String? userUid,
+    required String userUid,
   });
 
   /// Cập nhật incident

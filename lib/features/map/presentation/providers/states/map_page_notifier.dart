@@ -21,20 +21,31 @@ class MapPageNotifier extends Notifier<MapPageState> {
   Future<void> fetchIncidents() async {
     AppLogger.ui('User requested to fetch incidents on the map');
 
-    state = const MapPageState.loading();
+    // 1. Lấy danh sách incidents hiện tại (để backup)
+    final currentIncidents = state.maybeWhen(
+      loaded: (incidents, _) => incidents,
+      submitted: (incidents) => incidents,
+      orElse: () => <Incident>[], // List rỗng nếu chưa có gì
+    );
 
-    final result = await _getIncidentsUsecase.call();
+    // Chỉ show loading lần đầu tiên. Nếu đã có data thì không show loading che map
+    if (currentIncidents.isEmpty) {
+      state = const MapPageState.loading();
+    }
+
+    final result = await _getIncidentsUsecase.call(userUid: '');
 
     result.fold(
       (failure) {
         AppLogger.ui('Failed to fetch incidents', error: failure);
-        state = MapPageState.error(
+        state = MapPageState.loaded(
+          incidents: currentIncidents,
           failure: failure,
         ); // State chỉ chứa Failure object
       },
       (incidents) {
         AppLogger.ui('Successfully fetched ${incidents.length} incidents');
-        state = MapPageState.loaded(incidents: incidents);
+        state = MapPageState.loaded(incidents: incidents, failure: null);
       },
     );
   }
@@ -49,7 +60,7 @@ class MapPageNotifier extends Notifier<MapPageState> {
 
     // Lấy danh sách incidents hiện tại
     final currentIncidents = state.maybeWhen(
-      loaded: (incidents) => incidents,
+      loaded: (incidents, _) => incidents,
       submitted: (incidents) => incidents,
       orElse: () => <Incident>[],
     );
@@ -71,7 +82,9 @@ class MapPageNotifier extends Notifier<MapPageState> {
         AppLogger.ui('Incident added successfully, refreshing list...');
 
         // Refresh danh sách incidents sau khi thêm thành công
-        final refreshResult = await _getIncidentsUsecase.call();
+        final refreshResult = await _getIncidentsUsecase.call(
+          userUid: currentUser.uid,
+        );
 
         refreshResult.fold(
           (failure) {

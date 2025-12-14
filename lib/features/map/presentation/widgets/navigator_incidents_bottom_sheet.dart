@@ -6,7 +6,7 @@ import 'package:smart_route_app/features/map/domain/entities/incident.dart'
 import 'package:smart_route_app/features/map/presentation/helpers/incident_display_helper.dart';
 import 'package:smart_route_app/features/map/presentation/providers/map_mode_provider.dart';
 import 'package:smart_route_app/features/map/presentation/providers/states/map_page_notifier.dart';
-import 'package:smart_route_app/core/errors/failure_mapper.dart';
+
 import 'package:smart_route_app/features/map/presentation/widgets/incident_type_widgets.dart';
 
 class NavigatorIncidentsBottomSheet extends ConsumerStatefulWidget {
@@ -123,7 +123,7 @@ class _State extends ConsumerState<NavigatorIncidentsBottomSheet> {
                                 Center(child: Text('Chưa có dữ liệu')),
                             loading: () =>
                                 Center(child: CircularProgressIndicator()),
-                            loaded: (incidents) => _buildIncidentsList(
+                            loaded: (incidents, failure) => _buildIncidentsList(
                               incidents,
                               scrollController,
                             ),
@@ -136,9 +136,7 @@ class _State extends ConsumerState<NavigatorIncidentsBottomSheet> {
                               scrollController,
                             ),
                             error: (failure) {
-                              final message = FailureMapper.toUserMessage(
-                                failure,
-                              );
+                              final message = failure.technicalMessage;
                               return Center(
                                 child: Column(
                                   mainAxisAlignment: MainAxisAlignment.center,

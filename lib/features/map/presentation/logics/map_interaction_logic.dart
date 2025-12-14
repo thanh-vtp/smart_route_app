@@ -57,48 +57,86 @@ class MapInteractionLogic {
   }
 
   /// Update GraphicsOverlay với danh sách incidents mới
-  void updateGraphicsOverlay(List<domain.Incident> incidents) async {
+  void updateGraphicsOverlay(
+    List<domain.Incident> incidents, {
+    required ArcGISMapViewController mapViewController,
+  }) async {
+    if (incidents.isEmpty) {
+      _graphicsOverlay.graphics.clear();
+      return;
+    }
+
     // Factory instance
     final symbolFactory = IncidentSymbolFactory();
 
-    // Tạo danh sách graphics tạm thời để add một lần (tốt hơn add từng cái)
-    final List<Graphic> newGraphics = [];
-
     // Convert từ Incident entities sang Graphics và thêm vào overlay
-    for (final incident in incidents) {
-      try {
-        final incidentModel = IncidentModel.fromEntity(incident);
-        final graphic = incidentModel.toGraphic();
+    // dùng Future.wait để tạo tất cả graphic cùng lúc
+    final List<Graphic?> results = await Future.wait(
+      incidents.map((incident) async {
+        try {
+          final incidentModel = IncidentModel.fromEntity(incident);
+          final graphic = incidentModel.toGraphic();
 
-        // Lấy config type để tạo symbol
-        final config = IncidentTypes.getByDisplayName(incident.type);
+          // Lấy config type để tạo symbol
+          final config = IncidentTypes.getByDisplayName(incident.type);
 
-        // Tạo và gán symbol tương ứng
-        graphic.symbol = await symbolFactory.getSymbol(config.id);
+          // Tạo và gán symbol tương ứng
+          graphic.symbol = await symbolFactory.getSymbol(config.id);
 
-        // Gán zIndex từ config để kiểm soát thứ tự hiển thị
-        // zIndex cao hơn sẽ hiển thị trên cùng
-        graphic.zIndex = config.zIndex;
+          // Gán zIndex từ config để kiểm soát thứ tự hiển thị
+          // zIndex cao hơn sẽ hiển thị trên cùng
+          graphic.zIndex = config.zIndex;
 
-        // Lưu thông tin incident vào attributes để dùng khi tap
-        graphic.attributes['incident_id'] = incident.id;
+          // Lưu thông tin incident vào attributes để dùng khi tap
+          graphic.attributes['incident_id'] = incident.id;
+          return graphic;
+        } catch (e) {
+          AppLogger.ui(
+            'Error creating graphic for incident ${incident.id}: $e',
+          );
+          return null;
+        }
+      }),
+    );
 
-        newGraphics.add(graphic);
-      } catch (e) {
-        AppLogger.ui(
-          'Error creating graphic for incident ${incident.id}: $e',
-          error: e,
-        );
-      }
+    // Lọc bỏ các graphic bị null (nếu có lỗi)
+    final newGraphics = results.whereType<Graphic>().toList();
 
-      // Update overlay
-      _graphicsOverlay.graphics.clear();
-      _graphicsOverlay.graphics.addAll(newGraphics);
-    }
+    // Update overlay
+    _graphicsOverlay.graphics.clear();
+    _graphicsOverlay.graphics.addAll(newGraphics);
 
     AppLogger.ui(
-      'Updated graphics overlay with ${_graphicsOverlay.graphics.length} incidents',
+      'Updated graphics overlay with ${newGraphics.length} incidents',
     );
+
+    // Fix lỗi Incident ở Mỹ mà màn hình ở VN thì không thấy gì
+    _zoomToGraphicsExtent(mapViewController: mapViewController);
+  }
+
+  // Zoom to fit all graphics in the overlay
+  void _zoomToGraphicsExtent({
+    required ArcGISMapViewController mapViewController,
+  }) {
+    try {
+      if (_graphicsOverlay.graphics.isNotEmpty) {
+        // Lấy extent bao phủ tất cả các điểm
+        final extent = _graphicsOverlay.extent;
+
+        if (extent != null) {
+          // Kiểm tra xem controller nào đang active (2D hay 3D)
+          if (mapViewController.arcGISMap != null) {
+            // Logic check đơn giản
+            // Padding 50px để các điểm không nằm sát mép
+            mapViewController.setViewpointGeometry(extent, paddingInDiPs: 50);
+          }
+          // Nếu bạn có logic switch controller, hãy dùng controller đang active
+        }
+      }
+    } catch (e) {
+      // Ignore lỗi nếu extent tính toán sai (vd chỉ có 1 điểm)
+      AppLogger.ui('Auto zoom failed: $e');
+    }
   }
 
   /// Xử lý sự kiện tap trên bản đồ 2D
@@ -127,7 +165,7 @@ class MapInteractionLogic {
           // Lấy incident details từ state
           final mapState = ref.read(mapPageNotifierProvider);
           mapState.whenOrNull(
-            loaded: (incidents) {
+            loaded: (incidents, _) {
               final incident = incidents.firstWhere(
                 (inc) => inc.id == incidentId,
                 orElse: () => incidents.first,
@@ -378,8 +416,8 @@ class MapInteractionLogic {
   }
 
   /// Xử lý sự kiện tap trên scene 3D
-  Future<void> onSceneTap(
-   {required   Offset screenPoint,
+  Future<void> onSceneTap({
+    required Offset screenPoint,
     required bool mounted,
     required BuildContext context,
     required WidgetRef ref,
@@ -403,7 +441,7 @@ class MapInteractionLogic {
           // Lấy incident details từ state
           final mapState = ref.read(mapPageNotifierProvider);
           mapState.whenOrNull(
-            loaded: (incidents) {
+            loaded: (incidents, _) {
               final incident = incidents.firstWhere(
                 (inc) => inc.id == incidentId,
                 orElse: () => incidents.first,

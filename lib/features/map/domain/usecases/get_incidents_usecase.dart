@@ -1,5 +1,4 @@
 import 'package:smart_route_app/core/errors/failures.dart';
-import 'package:smart_route_app/core/utils/utils.dart';
 import 'package:smart_route_app/features/map/domain/entities/incident.dart';
 import 'package:smart_route_app/features/map/domain/repositories/incident_repository.dart';
 import 'package:fpdart/fpdart.dart';
@@ -17,7 +16,7 @@ class GetIncidentsUsecase {
 
   Future<Either<Failure, List<Incident>>> call({
     IncidentDataSourceType source = IncidentDataSourceType.arcGIS,
-    String? userUid,
+    required String userUid,
   }) async {
     switch (source) {
       case IncidentDataSourceType.arcGIS:
@@ -25,18 +24,10 @@ class GetIncidentsUsecase {
             .getIncidentsFormArcGis();
         return repositoryArcgisResult.fold(
           (failure) {
-            AppLogger.error(
-              '(GetIncidents): Get Map Incidents Failed from ArcGIS',
-              error: failure,
-            );
             return left(failure);
           },
-          (incidents) {
-            AppLogger.domain(
-              '(GetIncidents): Get Map Incidents Success from ArcGIS - ${incidents.length} incidents',
-              useCase: 'GetIncidents',
-            );
-            return right(incidents);
+          (result) {
+            return right(result);
           },
         );
       case IncidentDataSourceType.supabase:
@@ -44,18 +35,10 @@ class GetIncidentsUsecase {
             .getIncidentsFromSupabase(userUid: userUid);
         return repositorySupabaseResult.fold(
           (failure) {
-            AppLogger.error(
-              '(GetIncidents): Get Incidents Failed from Supabase',
-              error: failure,
-            );
             return left(failure);
           },
-          (incidents) {
-            AppLogger.domain(
-              '(GetIncidents): Get Incidents Success from Supabase - ${incidents.length} incidents',
-              useCase: 'GetIncidents',
-            );
-            return right(incidents);
+          (result) {
+            return right(result);
           },
         );
     }

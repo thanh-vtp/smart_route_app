@@ -11,8 +11,10 @@ class MapPageState with _$MapPageState {
   const factory MapPageState.loading() = _Loading;
 
   /// State khi đã load xong danh sách incidents
-  const factory MapPageState.loaded({required List<Incident> incidents}) =
-      _Loaded;
+  const factory MapPageState.loaded({
+    required List<Incident> incidents,
+    Failure? failure,
+  }) = _Loaded;
 
   /// State khi đang submit/add incident mới
   const factory MapPageState.submitting({

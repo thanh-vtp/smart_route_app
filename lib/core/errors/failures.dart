@@ -1,9 +1,13 @@
 import 'package:equatable/equatable.dart';
 import 'package:meta/meta.dart';
 
-/// Base class cho tất cả failures trong domain layer
-/// Sử dụng sealed class để exhaustive switch checking
-/// Mục tiêu: Class này chỉ định danh lỗi, không quan tâm hiển thị gì
+// Failure → thuộc Domain Layer
+// Là lỗi dạng business logic hoặc lỗi được chuẩn hóa
+// Gửi về UseCase, Bloc, UI
+// Không liên quan đến framework, không liên quan đến dữ liệu platform
+// Luôn là object bất biến (immutable)
+// → Failure là lỗi business hoặc lỗi đã convert từ kỹ thuật sang domain-safe
+
 @immutable
 sealed class Failure extends Equatable {
   final String? technicalMessage;
@@ -25,24 +29,10 @@ final class NetworkFailure extends Failure {
     technicalMessage: 'SocketException: No connection',
   );
 
-  factory NetworkFailure.timeout() => const NetworkFailure(
-    code: 'TIMEOUT',
-    technicalMessage: 'Connection timeout',
-  );
-
-  factory NetworkFailure.serverError(String? details, [int? statusCode]) =>
-      NetworkFailure(
-        code: 'SERVER_ERROR',
-        technicalMessage: 'Status: $statusCode - $details',
-      );
-
-  factory NetworkFailure.unauthorized() => const NetworkFailure(
-    code: 'UNAUTHORIZED',
-    technicalMessage: 'User not authenticated',
-  );
-
-  factory NetworkFailure.notFound(String? details) =>
-      NetworkFailure(code: 'NOT_FOUND', technicalMessage: details);
+  // factory NetworkFailure.unauthorized() => const NetworkFailure(
+  //   code: 'UNAUTHORIZED',
+  //   technicalMessage: 'User not authenticated',
+  // );
 }
 
 /// Lỗi liên quan đến validation dữ liệu
@@ -78,6 +68,17 @@ final class PermissionFailure extends Failure {
         code: code ?? 'PERMISSION_DENIED',
         technicalMessage: technicalMessage ?? 'Access denied',
       );
+}
+
+final class SupabaseFailure extends Failure {
+  const SupabaseFailure({super.technicalMessage, super.code, super.stackTrace});
+
+  factory SupabaseFailure.apiError(String message, String code) =>
+      SupabaseFailure(code: code, technicalMessage: message);
+  factory SupabaseFailure.unauthorized() => const SupabaseFailure(
+    code: 'UNAUTHORIZED',
+    technicalMessage: 'User not authenticated',
+  );
 }
 
 /// Lỗi không xác định

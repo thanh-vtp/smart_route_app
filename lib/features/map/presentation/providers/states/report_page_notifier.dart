@@ -19,7 +19,7 @@ class ReportPageNotifier extends Notifier<ReportPageState> {
 
   Future<void> fetchIncidents({
     IncidentDataSourceType source = IncidentDataSourceType.supabase,
-    AppUser? currentUser,
+    required AppUser currentUser,
   }) async {
     // Chỉ set loading nếu là lần đầu hoặc user muốn full refresh
     // Nếu đang có data rồi thì có thể không cần set .loading() để tránh nháy màn hình
@@ -35,7 +35,7 @@ class ReportPageNotifier extends Notifier<ReportPageState> {
 
     final result = await _getIncidentsUsecase.call(
       source: source,
-      userUid: currentUser?.uid,
+      userUid: currentUser.uid,
     );
 
     result.fold(
