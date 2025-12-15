@@ -5,6 +5,7 @@
 list(APPEND FLUTTER_PLUGIN_LIST
   app_links
   arcgis_maps
+  connectivity_plus
   desktop_webview_window
   flutter_secure_storage_windows
   geolocator_windows

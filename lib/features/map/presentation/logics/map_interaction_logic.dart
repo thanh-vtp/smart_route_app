@@ -29,6 +29,9 @@ class MapInteractionLogic {
   Graphic? _highlightedGraphic;
   ArcGISSymbol? _originalSymbol;
 
+  /// Cache highlight symbol để không tạo mới mỗi lần
+  ArcGISSymbol? _cachedHighlightSymbol;
+
   void initialize() {
     // Khởi tạo LocationMarkerHelper với overlay
     _locationMarkerHelper.initialize(_locationMarkerOverlay);
@@ -57,7 +60,7 @@ class MapInteractionLogic {
   }
 
   /// Update GraphicsOverlay với danh sách incidents mới
-  void updateGraphicsOverlay(
+  Future<void> updateGraphicsOverlay(
     List<domain.Incident> incidents, {
     required ArcGISMapViewController mapViewController,
   }) async {
@@ -66,43 +69,36 @@ class MapInteractionLogic {
       return;
     }
 
-    // Factory instance
+    // Factory instance - symbols đã được pre-cache nên sẽ rất nhanh
     final symbolFactory = IncidentSymbolFactory();
 
-    // Convert từ Incident entities sang Graphics và thêm vào overlay
-    // dùng Future.wait để tạo tất cả graphic cùng lúc
-    final List<Graphic?> results = await Future.wait(
-      incidents.map((incident) async {
-        try {
-          final incidentModel = IncidentModel.fromEntity(incident);
-          final graphic = incidentModel.toGraphic();
+    // Tạo list graphics mới
+    final List<Graphic> newGraphics = [];
 
-          // Lấy config type để tạo symbol
-          final config = IncidentTypes.getByDisplayName(incident.type);
+    // Xử lý tuần tự để không block main thread quá lâu
+    for (final incident in incidents) {
+      try {
+        final incidentModel = IncidentModel.fromEntity(incident);
+        final graphic = incidentModel.toGraphic();
 
-          // Tạo và gán symbol tương ứng
-          graphic.symbol = await symbolFactory.getSymbol(config.id);
+        // Lấy config type để tạo symbol
+        final config = IncidentTypes.getById(incident.type);
 
-          // Gán zIndex từ config để kiểm soát thứ tự hiển thị
-          // zIndex cao hơn sẽ hiển thị trên cùng
-          graphic.zIndex = config.zIndex;
+        // Tạo và gán symbol tương ứng (đã cached nên instant)
+        graphic.symbol = await symbolFactory.getSymbol(config.id);
 
-          // Lưu thông tin incident vào attributes để dùng khi tap
-          graphic.attributes['incident_id'] = incident.id;
-          return graphic;
-        } catch (e) {
-          AppLogger.ui(
-            'Error creating graphic for incident ${incident.id}: $e',
-          );
-          return null;
-        }
-      }),
-    );
+        // Gán zIndex từ config để kiểm soát thứ tự hiển thị
+        graphic.zIndex = config.zIndex;
 
-    // Lọc bỏ các graphic bị null (nếu có lỗi)
-    final newGraphics = results.whereType<Graphic>().toList();
+        // Lưu thông tin incident vào attributes để dùng khi tap
+        graphic.attributes['incident_id'] = incident.id;
+        newGraphics.add(graphic);
+      } catch (e) {
+        AppLogger.ui('Error creating graphic for incident ${incident.id}: $e');
+      }
+    }
 
-    // Update overlay
+    // Update overlay một lần duy nhất
     _graphicsOverlay.graphics.clear();
     _graphicsOverlay.graphics.addAll(newGraphics);
 
@@ -111,32 +107,11 @@ class MapInteractionLogic {
     );
 
     // Fix lỗi Incident ở Mỹ mà màn hình ở VN thì không thấy gì
-    _zoomToGraphicsExtent(mapViewController: mapViewController);
-  }
-
-  // Zoom to fit all graphics in the overlay
-  void _zoomToGraphicsExtent({
-    required ArcGISMapViewController mapViewController,
-  }) {
-    try {
-      if (_graphicsOverlay.graphics.isNotEmpty) {
-        // Lấy extent bao phủ tất cả các điểm
-        final extent = _graphicsOverlay.extent;
-
-        if (extent != null) {
-          // Kiểm tra xem controller nào đang active (2D hay 3D)
-          if (mapViewController.arcGISMap != null) {
-            // Logic check đơn giản
-            // Padding 50px để các điểm không nằm sát mép
-            mapViewController.setViewpointGeometry(extent, paddingInDiPs: 50);
-          }
-          // Nếu bạn có logic switch controller, hãy dùng controller đang active
-        }
-      }
-    } catch (e) {
-      // Ignore lỗi nếu extent tính toán sai (vd chỉ có 1 điểm)
-      AppLogger.ui('Auto zoom failed: $e');
-    }
+    // NOTE: Không auto zoom đến extent vì:
+    // 1. _onMapViewReady đã set viewpoint đến initialPoint
+    // 2. Nếu có incident ở xa (vd: Mỹ), extent sẽ bao gồm cả điểm đó
+    //    gây ra zoom out quá xa và center sai
+    // _zoomToGraphicsExtent(mapViewController: mapViewController);
   }
 
   /// Xử lý sự kiện tap trên bản đồ 2D
@@ -271,8 +246,13 @@ class MapInteractionLogic {
     }
   }
 
-  /// Tạo highlight symbol (marker lớn hơn)
+  /// Tạo highlight symbol (marker lớn hơn) - CÓ CACHE
   Future<ArcGISSymbol> _createHighlightSymbol() async {
+    // Trả về cached symbol nếu đã có
+    if (_cachedHighlightSymbol != null) {
+      return _cachedHighlightSymbol!;
+    }
+
     try {
       // Load marker image từ assets
       final image = await ArcGISImage.fromAsset(
@@ -280,24 +260,28 @@ class MapInteractionLogic {
       );
 
       // Tạo picture marker lớn hơn bình thường
-      return PictureMarkerSymbol.withImage(image)
+      _cachedHighlightSymbol = PictureMarkerSymbol.withImage(image)
         ..width =
             50 // Lớn hơn symbol thường (40)
         ..height = 50
         ..offsetY = 25; // Offset để pin trỏ đúng vị trí
+
+      return _cachedHighlightSymbol!;
     } catch (e) {
       AppLogger.ui('Error creating highlight symbol: $e', error: e);
       // Fallback: dùng SimpleMarkerSymbol màu vàng
-      return SimpleMarkerSymbol(
-          style: SimpleMarkerSymbolStyle.circle,
-          color: Colors.yellow,
-          size: 24,
-        )
-        ..outline = SimpleLineSymbol(
-          style: SimpleLineSymbolStyle.solid,
-          color: Colors.orange,
-          width: 3,
-        );
+      _cachedHighlightSymbol =
+          SimpleMarkerSymbol(
+              style: SimpleMarkerSymbolStyle.circle,
+              color: Colors.yellow,
+              size: 24,
+            )
+            ..outline = SimpleLineSymbol(
+              style: SimpleLineSymbolStyle.solid,
+              color: Colors.orange,
+              width: 3,
+            );
+      return _cachedHighlightSymbol!;
     }
   }
 

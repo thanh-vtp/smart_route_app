@@ -1,5 +1,4 @@
 import 'package:arcgis_maps/arcgis_maps.dart';
-import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 part 'map_center_providers.g.dart';

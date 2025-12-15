@@ -2,21 +2,22 @@ import 'package:flutter/material.dart';
 import 'package:smart_route_app/features/map/presentation/models/incident_type_config.dart';
 
 /// Widget hiển thị icon của incident type
+/// Nhận typeId (String) vì widget này dùng cho cả form (chưa có entity) và display
 class IncidentTypeIcon extends StatelessWidget {
-  final String incidentType;
+  final String typeId; // id từ incident.type hoặc config.id
   final double size;
   final bool showBackground;
 
   const IncidentTypeIcon({
     super.key,
-    required this.incidentType,
+    required this.typeId,
     this.size = 40,
     this.showBackground = true,
   });
 
   @override
   Widget build(BuildContext context) {
-    final config = IncidentTypes.getByDisplayName(incidentType);
+    final config = IncidentTypes.getById(typeId);
 
     if (showBackground) {
       return Stack(
@@ -53,20 +54,20 @@ class IncidentTypeIcon extends StatelessWidget {
 
 /// Widget hiển thị chip với icon và tên incident type
 class IncidentTypeChip extends StatelessWidget {
-  final String incidentType;
+  final String typeId;
   final bool isSelected;
   final VoidCallback? onTap;
 
   const IncidentTypeChip({
     super.key,
-    required this.incidentType,
+    required this.typeId,
     this.isSelected = false,
     this.onTap,
   });
 
   @override
   Widget build(BuildContext context) {
-    final config = IncidentTypes.getByDisplayName(incidentType);
+    final config = IncidentTypes.getById(typeId);
 
     return InkWell(
       onTap: onTap,
@@ -81,11 +82,7 @@ class IncidentTypeChip extends StatelessWidget {
         child: Row(
           mainAxisSize: MainAxisSize.min,
           children: [
-            IncidentTypeIcon(
-              incidentType: incidentType,
-              size: 20,
-              showBackground: false,
-            ),
+            IncidentTypeIcon(typeId: typeId, size: 20, showBackground: false),
             const SizedBox(width: 8),
             Text(
               config.displayName,
@@ -121,7 +118,7 @@ class IncidentTypeSelector extends StatelessWidget {
   Widget build(BuildContext context) {
     final isOtherSelected =
         selectedType == 'other' ||
-        IncidentTypes.getByDisplayName(selectedType).id == 'other';
+        IncidentTypes.getById(selectedType).id == 'other';
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -141,10 +138,10 @@ class IncidentTypeSelector extends StatelessWidget {
               final config = IncidentTypes.all[i];
               final isSelected =
                   selectedType == config.id ||
-                  IncidentTypes.getByDisplayName(selectedType).id == config.id;
+                  IncidentTypes.getById(selectedType).id == config.id;
 
               return IncidentTypeChip(
-                incidentType: config.id,
+                typeId: config.id,
                 isSelected: isSelected,
                 onTap: () => onTypeChanged(config.id),
               );

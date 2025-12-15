@@ -96,18 +96,8 @@ class IncidentTypes {
     other, // Thêm option "Khác" cho user tự nhập
   ];
 
-  static IncidentTypeConfig getByDisplayName(String name) {
-    final normalized = name.toLowerCase();
-    if (normalized.contains('tai nạn') || normalized.contains('accident'))
-      return accident;
-    if (normalized.contains('kẹt xe') || normalized.contains('traffic'))
-      return traffic;
-    if (normalized.contains('công trình') ||
-        normalized.contains('construction'))
-      return construction;
-    // if (normalized.contains('đóng')) return roadClosed;
-    // if (normalized.contains('nguy hiểm')) return hazard;
-    // if (normalized.contains('cảnh sát')) return police;
-    return other;
+  /// Lấy config theo id (dùng cho lưu/get từ DB)
+  static IncidentTypeConfig getById(String id) {
+    return all.firstWhere((config) => config.id == id, orElse: () => other);
   }
 }

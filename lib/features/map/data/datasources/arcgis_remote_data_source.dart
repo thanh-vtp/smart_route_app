@@ -1,5 +1,4 @@
 import 'dart:async';
-import 'dart:convert';
 import 'dart:io';
 import 'package:arcgis_maps/arcgis_maps.dart';
 import 'package:smart_route_app/core/errors/exceptions.dart';
@@ -116,14 +115,14 @@ class ArcGISRemoteDataSourceImpl implements ArcGISRemoteDataSource {
         );
       }
 
-      for (var i = 0; i < features.length; i++) {
-        final feature = features[i];
-        final featureJson = _featureToJson(feature);
-        AppLogger.data(
-          'Feature #$i JSON:\n${JsonEncoder.withIndent('  ').convert(featureJson)}',
-          source: 'ArcGISRemoteDataSourceImpl',
-        );
-      }
+      // for (var i = 0; i < features.length; i++) {
+      //   final feature = features[i];
+      //   final featureJson = _featureToJson(feature);
+      //   AppLogger.data(
+      //     'Feature #$i JSON:\n${JsonEncoder.withIndent('  ').convert(featureJson)}',
+      //     source: 'ArcGISRemoteDataSourceImpl',
+      //   );
+      // }
 
       final incidentModels = features
           .map((feature) => IncidentModel.fromFeature(feature))
@@ -174,6 +173,8 @@ class ArcGISRemoteDataSourceImpl implements ArcGISRemoteDataSource {
       feature.attributes['MucDo'] = incident.severity;
       feature.attributes['MoTa'] = incident.description;
       feature.attributes['NguoiBaoCao'] = incident.reportedBy;
+      feature.attributes['NguoiBaoCaoUid'] =
+          incident.reportedByUid; // UID để check ownership
 
       // QUAN TRỌNG: Truyền DateTime object, không truyền String
       feature.attributes['ThoiGianBaoCao'] = incident.reportedTime;

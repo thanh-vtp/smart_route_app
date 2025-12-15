@@ -127,17 +127,19 @@ class IncidentRepositoryImpl implements IncidentRepository {
 
   @override
   Future<Either<Failure, void>> deleteIncident({
-    required String incidentId,
+    required String incidentId, // Đây là ArcGIS OBJECTID
     required String userUid,
   }) async {
     try {
-      // BƯỚC 1: Query incident từ Supabase để lấy arcgisObjectId
-      final incident = await _supabaseDataSource.getIncidentById(incidentId);
+      // BƯỚC 1: Query incident từ Supabase bằng ArcGIS ObjectID
+      final incident = await _supabaseDataSource.getIncidentByArcgisObjectId(
+        incidentId,
+      );
 
       if (incident == null) {
         return left(
           SupabaseFailure.apiError(
-            'Incident not found in Supabase: $incidentId',
+            'Incident not found in Supabase with ArcGIS ObjectID: $incidentId',
             'NOT_FOUND',
           ),
         );
@@ -154,12 +156,15 @@ class IncidentRepositoryImpl implements IncidentRepository {
       }
 
       final arcgisObjectId = incident.arcgisObjectId;
-      AppLogger.repository('Found incident - ObjectID: $arcgisObjectId');
+      final supabaseId = incident.id; // UUID trong Supabase
+      AppLogger.repository(
+        'Found incident - UUID: $supabaseId, ObjectID: $arcgisObjectId',
+      );
 
-      // BƯỚC 2: Xóa từ Supabase trước
+      // BƯỚC 2: Xóa từ Supabase trước (dùng UUID)
       AppLogger.repository('DELETE from Supabase...');
       await _supabaseDataSource.deleteIncident(
-        incidentId,
+        supabaseId,
         incident.reportedByUid!,
       );
       AppLogger.repository('DELETE from Supabase Success');
@@ -246,28 +251,39 @@ class IncidentRepositoryImpl implements IncidentRepository {
     required String userUid,
   }) async {
     try {
-      // BƯỚC 1: Query incident từ Supabase để lấy arcgisObjectId
-      final model = IncidentModel.fromEntity(incident);
+      // BƯỚC 1: Query incident từ Supabase bằng ArcGIS ObjectID
+      // incident.id từ ArcGIS chính là OBJECTID
+      final existingIncident = await _supabaseDataSource
+          .getIncidentByArcgisObjectId(incident.id);
 
-      // Cần chắc chắn model có arcgisObjectId.
-      if (model.arcgisObjectId != null) {
-        AppLogger.repository(
-          'Updating incident in ArcGIS - ObjectID: ${model.arcgisObjectId}',
-        );
-
-        await _arcGISDataSource.updateIncident(model);
-
-        AppLogger.repository('UPDATE in ArcGIS Success');
-      } else {
-        // Fallback: Nếu không có ObjectID, có thể phải query lại từ Supabase để lấy
-        // (Tùy logic app của bạn có lưu ObjectID vào Entity khi get về không)
-        AppLogger.repository(
-          'No ArcGIS ObjectID in incident model, querying Supabase for it...',
+      if (existingIncident == null) {
+        return left(
+          SupabaseFailure.apiError(
+            'Incident not found in Supabase with ArcGIS ObjectID: ${incident.id}',
+            'NOT_FOUND',
+          ),
         );
       }
 
-      // BƯỚC 2: Cập nhật Supabase
+      final arcgisObjectId = existingIncident.arcgisObjectId;
+      // Dùng UUID từ Supabase làm id cho model
+      final model = IncidentModel.fromEntity(
+        incident,
+        arcgisObjectId: arcgisObjectId,
+      ).copyWith(id: existingIncident.id);
 
+      // BƯỚC 2: Cập nhật ArcGIS nếu có ObjectID
+      if (arcgisObjectId != null && arcgisObjectId.isNotEmpty) {
+        AppLogger.repository(
+          'Updating incident in ArcGIS - ObjectID: $arcgisObjectId',
+        );
+        await _arcGISDataSource.updateIncident(model);
+        AppLogger.repository('UPDATE in ArcGIS Success');
+      } else {
+        AppLogger.repository('Skip UPDATE ArcGIS - no ObjectID found');
+      }
+
+      // BƯỚC 3: Cập nhật Supabase
       // Check: Người đang yêu cầu cập nhật có phải là người tạo ra nó không?
       if (incident.reportedByUid != userUid) {
         AppLogger.warning(

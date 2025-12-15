@@ -54,5 +54,21 @@ final updateIncidentUsecaseProvider = Provider<UpdateIncidentUsecase>.internal(
 );
 
 typedef UpdateIncidentUsecaseRef = ProviderRef<UpdateIncidentUsecase>;
+String _$deleteIncidentUsecaseHash() =>
+    r'ee95e41361c208fbd0d3833268ccc4b46b9b0dcc';
+
+/// See also [deleteIncidentUsecase].
+@ProviderFor(deleteIncidentUsecase)
+final deleteIncidentUsecaseProvider = Provider<DeleteIncidentUsecase>.internal(
+  deleteIncidentUsecase,
+  name: r'deleteIncidentUsecaseProvider',
+  debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
+      ? null
+      : _$deleteIncidentUsecaseHash,
+  dependencies: null,
+  allTransitiveDependencies: null,
+);
+
+typedef DeleteIncidentUsecaseRef = ProviderRef<DeleteIncidentUsecase>;
 // ignore_for_file: type=lint
 // ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member

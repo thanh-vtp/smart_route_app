@@ -16,3 +16,14 @@ class BaseMapStyleProvider extends _$BaseMapStyleProvider {
     state = style;
   }
 }
+
+/// Provider để track trạng thái loading khi đổi basemap
+@Riverpod(keepAlive: true)
+class BasemapLoading extends _$BasemapLoading {
+  @override
+  bool build() => false;
+
+  void setLoading(bool loading) {
+    state = loading;
+  }
+}

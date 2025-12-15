@@ -3,18 +3,24 @@ import 'package:smart_route_app/core/utils/utils.dart';
 import 'package:smart_route_app/features/auth/domain/entities/app_user.dart';
 import 'package:smart_route_app/features/map/domain/entities/incident.dart';
 import 'package:smart_route_app/features/map/domain/usecases/add_incident_usecase.dart';
+import 'package:smart_route_app/features/map/domain/usecases/delete_incident_usecase.dart';
 import 'package:smart_route_app/features/map/domain/usecases/get_incidents_usecase.dart';
+import 'package:smart_route_app/features/map/domain/usecases/update_incident_usecase.dart';
 import 'package:smart_route_app/features/map/presentation/providers/states/map_page_state.dart';
 import 'package:smart_route_app/features/map/presentation/providers/use_case_providers.dart';
 
 class MapPageNotifier extends Notifier<MapPageState> {
   late final GetIncidentsUsecase _getIncidentsUsecase;
   late final AddIncidentUsecase _addIncidentUsecase;
+  late final UpdateIncidentUsecase _updateIncidentUsecase;
+  late final DeleteIncidentUsecase _deleteIncidentUsecase;
 
   @override
   MapPageState build() {
     _getIncidentsUsecase = ref.read(getIncidentsUsecaseProvider);
     _addIncidentUsecase = ref.read(addIncidentUsecaseProvider);
+    _updateIncidentUsecase = ref.read(updateIncidentUsecaseProvider);
+    _deleteIncidentUsecase = ref.read(deleteIncidentUsecaseProvider);
     return const MapPageState.initial();
   }
 
@@ -105,6 +111,92 @@ class MapPageNotifier extends Notifier<MapPageState> {
         );
 
         return true;
+      },
+    );
+  }
+
+  /// Cập nhật incident
+  Future<bool> updateIncident(Incident incident, AppUser currentUser) async {
+    AppLogger.ui('User ${currentUser.email} updating incident: ${incident.id}');
+
+    final currentIncidents = state.maybeWhen(
+      loaded: (incidents, _) => incidents,
+      submitted: (incidents) => incidents,
+      orElse: () => <Incident>[],
+    );
+
+    state = MapPageState.submitting(incidents: currentIncidents);
+
+    final result = await _updateIncidentUsecase.call(
+      incident: incident,
+      currentUser: currentUser,
+    );
+
+    return result.fold(
+      (failure) {
+        AppLogger.ui('Failed to update incident', error: failure);
+        state = MapPageState.loaded(
+          incidents: currentIncidents,
+          failure: failure,
+        );
+        return false;
+      },
+      (_) async {
+        AppLogger.ui('Incident updated successfully, refreshing list...');
+        await _refreshIncidents(currentUser, currentIncidents);
+        return true;
+      },
+    );
+  }
+
+  /// Xóa incident
+  Future<bool> deleteIncident(String incidentId, AppUser currentUser) async {
+    AppLogger.ui('User ${currentUser.email} deleting incident: $incidentId');
+
+    final currentIncidents = state.maybeWhen(
+      loaded: (incidents, _) => incidents,
+      submitted: (incidents) => incidents,
+      orElse: () => <Incident>[],
+    );
+
+    state = MapPageState.submitting(incidents: currentIncidents);
+
+    final result = await _deleteIncidentUsecase.call(
+      incidentId: incidentId,
+      currentUser: currentUser,
+    );
+
+    return result.fold(
+      (failure) {
+        AppLogger.ui('Failed to delete incident', error: failure);
+        state = MapPageState.loaded(
+          incidents: currentIncidents,
+          failure: failure,
+        );
+        return false;
+      },
+      (_) async {
+        AppLogger.ui('Incident deleted successfully, refreshing list...');
+        await _refreshIncidents(currentUser, currentIncidents);
+        return true;
+      },
+    );
+  }
+
+  /// Helper để refresh danh sách incidents
+  Future<void> _refreshIncidents(
+    AppUser currentUser,
+    List<Incident> fallbackIncidents,
+  ) async {
+    final refreshResult = await _getIncidentsUsecase.call(
+      userUid: currentUser.uid,
+    );
+    refreshResult.fold(
+      (failure) {
+        state = MapPageState.submitted(incidents: fallbackIncidents);
+      },
+      (incidents) {
+        state = MapPageState.submitted(incidents: incidents);
       },
     );
   }

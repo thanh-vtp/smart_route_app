@@ -4,7 +4,7 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:smart_route_app/core/ui/widgets/btn_child.dart';
 import 'package:smart_route_app/core/utils/app_logger.dart';
 import 'package:smart_route_app/features/auth/presentation/states/auth.dart';
-import 'package:smart_route_app/features/map/domain/entities/incident.dart';
+import 'package:smart_route_app/features/map/presentation/models/add_incident_form_data.dart';
 import 'package:smart_route_app/features/map/presentation/providers/states/map_page_notifier.dart';
 import 'package:smart_route_app/features/map/presentation/widgets/incident_type_widgets.dart';
 import 'package:smart_route_app/features/map/presentation/widgets/location_picker_map_widget.dart';
@@ -22,16 +22,12 @@ class AddIncidentBottomSheet extends HookConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final selectedType = useState<String>('traffic');
-    final selectedSeverity = useState<String>('medium');
-    final descriptionController =
-        useTextEditingController(); // use HookConsumerWidget
-    final customTypeDescription = useState<String>('');
+    // Sử dụng AddIncidentFormData để quản lý state
+    final formData = useState(
+      AddIncidentFormData(latitude: latitude, longitude: longitude),
+    );
+    final descriptionController = useTextEditingController();
     final isSubmitting = useState(false);
-
-    // State cho location (có thể cập nhật từ map picker)
-    final currentLatitude = useState<double>(latitude);
-    final currentLongitude = useState<double>(longitude);
 
     return Container(
       padding: EdgeInsets.only(
@@ -94,23 +90,23 @@ class AddIncidentBottomSheet extends HookConsumerWidget {
               // Location info với khả năng chọn lại vị trí
               InkWell(
                 onTap: () async {
-                  // Navigate đến map picker để chọn vị trí mới
                   final result = await Navigator.push<Map<String, double>>(
                     context,
                     MaterialPageRoute(
                       builder: (context) => LocationPickerMapWidget(
-                        initialLatitude: currentLatitude.value,
-                        initialLongitude: currentLongitude.value,
+                        initialLatitude: formData.value.latitude,
+                        initialLongitude: formData.value.longitude,
                       ),
                     ),
                   );
 
-                  // Cập nhật location nếu user chọn vị trí mới
                   if (result != null) {
-                    currentLatitude.value = result['latitude']!;
-                    currentLongitude.value = result['longitude']!;
+                    formData.value = formData.value.copyWith(
+                      latitude: result['latitude']!,
+                      longitude: result['longitude']!,
+                    );
                     AppLogger.ui(
-                      "User picked: ${currentLatitude.value}, ${currentLongitude.value}",
+                      "User picked: ${formData.value.latitude}, ${formData.value.longitude}",
                     );
                   }
                 },
@@ -138,7 +134,7 @@ class AddIncidentBottomSheet extends HookConsumerWidget {
                               ),
                             ),
                             Text(
-                              'Lat: ${currentLatitude.value.toStringAsFixed(6)}, Lng: ${currentLongitude.value.toStringAsFixed(6)}',
+                              'Lat: ${formData.value.latitude.toStringAsFixed(6)}, Lng: ${formData.value.longitude.toStringAsFixed(6)}',
                               style: TextStyle(
                                 fontSize: 11,
                                 color: Colors.grey.shade700,
@@ -163,19 +159,22 @@ class AddIncidentBottomSheet extends HookConsumerWidget {
 
               // Loại sự cố - Sử dụng widget mới
               IncidentTypeSelector(
-                selectedType: selectedType.value,
+                selectedType: formData.value.typeId,
                 onTypeChanged: (type) {
-                  selectedType.value = type;
-                  // Reset custom description khi đổi type
-                  if (type != 'other') {
-                    customTypeDescription.value = '';
-                  }
+                  formData.value = formData.value.copyWith(
+                    typeId: type,
+                    // Reset custom description khi đổi type
+                    customTypeDescription: type != 'other' ? '' : null,
+                  );
                 },
-                customTypeDescription: customTypeDescription.value.isEmpty
+                customTypeDescription:
+                    formData.value.customTypeDescription.isEmpty
                     ? null
-                    : customTypeDescription.value,
+                    : formData.value.customTypeDescription,
                 onCustomDescriptionChanged: (value) {
-                  customTypeDescription.value = value;
+                  formData.value = formData.value.copyWith(
+                    customTypeDescription: value,
+                  );
                 },
               ),
 
@@ -195,8 +194,9 @@ class AddIncidentBottomSheet extends HookConsumerWidget {
                       icon: Icons.check_circle_outline,
                       color: Colors.green,
                       value: 'low',
-                      groupValue: selectedSeverity.value,
-                      onSelected: (val) => selectedSeverity.value = val,
+                      groupValue: formData.value.severityId,
+                      onSelected: (val) => formData.value = formData.value
+                          .copyWith(severityId: val),
                     ),
                   ),
                   const SizedBox(width: 8),
@@ -206,8 +206,9 @@ class AddIncidentBottomSheet extends HookConsumerWidget {
                       icon: Icons.warning_amber_outlined,
                       color: Colors.orange,
                       value: 'medium',
-                      groupValue: selectedSeverity.value,
-                      onSelected: (val) => selectedSeverity.value = val,
+                      groupValue: formData.value.severityId,
+                      onSelected: (val) => formData.value = formData.value
+                          .copyWith(severityId: val),
                     ),
                   ),
                   const SizedBox(width: 8),
@@ -217,8 +218,9 @@ class AddIncidentBottomSheet extends HookConsumerWidget {
                       icon: Icons.error_outline,
                       color: Colors.red,
                       value: 'high',
-                      groupValue: selectedSeverity.value,
-                      onSelected: (val) => selectedSeverity.value = val,
+                      groupValue: formData.value.severityId,
+                      onSelected: (val) => formData.value = formData.value
+                          .copyWith(severityId: val),
                     ),
                   ),
                 ],
@@ -272,36 +274,34 @@ class AddIncidentBottomSheet extends HookConsumerWidget {
                             return;
                           }
 
-                          isSubmitting.value = true;
-
-                          // Tạo description: nếu chọn "Khác" thì thêm custom type vào đầu
-                          String finalDescription = descriptionController.text;
-                          if (selectedType.value == 'other' &&
-                              customTypeDescription.value.isNotEmpty) {
-                            finalDescription = customTypeDescription.value
-                                .trim();
-                            // Thêm mô tả chi tiết nếu user nhập thêm
-                            if (descriptionController.text.isNotEmpty) {
-                              finalDescription +=
-                                  ' - ${descriptionController.text}';
-                            }
-                          } else if (finalDescription.isEmpty) {
-                            finalDescription = 'Không có mô tả';
-                          }
-
-                          final incident = Incident(
-                            id: DateTime.now().millisecondsSinceEpoch
-                                .toString(),
-                            latitude: currentLatitude.value.toString(),
-                            longitude: currentLongitude.value.toString(),
-                            type: selectedType.value,
-                            severity: selectedSeverity.value,
-                            description: finalDescription,
-                            reportedTime: DateTime.now(),
+                          // Cập nhật description từ controller vào formData
+                          final finalFormData = formData.value.copyWith(
+                            description: descriptionController.text,
                           );
 
+                          // Validate form
+                          if (!finalFormData.isValid) {
+                            if (context.mounted) {
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                SnackBar(
+                                  content: Text(
+                                    finalFormData.validationError ??
+                                        'Dữ liệu không hợp lệ',
+                                  ),
+                                  backgroundColor: Colors.red,
+                                ),
+                              );
+                            }
+                            return;
+                          }
+
+                          isSubmitting.value = true;
+
+                          // Chuyển formData thành Incident entity
+                          final incident = finalFormData.toIncident();
+
                           AppLogger.ui(
-                            'Creating incident - Lat: ${currentLatitude.value}, Lng: ${currentLongitude.value}',
+                            'Creating incident - Lat: ${finalFormData.latitude}, Lng: ${finalFormData.longitude}',
                           );
 
                           final success = await ref

@@ -6,8 +6,11 @@ abstract class SupabaseRemoteDataSource {
   /// Lưu incident vào Supabase database
   Future<void> saveIncident(IncidentModel incident);
 
-  /// Lấy incident theo ID (để lấy arcgisObjectId)
+  /// Lấy incident theo ID (UUID trong Supabase)
   Future<IncidentModel?> getIncidentById(String incidentId);
+
+  /// Lấy incident theo ArcGIS ObjectID
+  Future<IncidentModel?> getIncidentByArcgisObjectId(String arcgisObjectId);
 
   /// Xóa incident khỏi Supabase database
   Future<void> deleteIncident(String incidentId, String userUid);
@@ -53,6 +56,7 @@ class SupabaseRemoteDataSourceImpl implements SupabaseRemoteDataSource {
         'reported_time': incident.reportedTime.toIso8601String(),
         'reported_by': incident.reportedBy,
         'reported_by_uid': incident.reportedByUid,
+        'arcgis_object_id': incident.arcgisObjectId, // Lưu ArcGIS ObjectID
         'created_at': DateTime.now().toIso8601String(),
       };
 
@@ -106,6 +110,49 @@ class SupabaseRemoteDataSourceImpl implements SupabaseRemoteDataSource {
     } catch (e, stackTrace) {
       AppLogger.error(
         'Failed to get incident by ID from Supabase',
+        name: 'SupabaseRemoteDataSource',
+        error: e,
+        stackTrace: stackTrace,
+      );
+      rethrow;
+    }
+  }
+
+  @override
+  Future<IncidentModel?> getIncidentByArcgisObjectId(
+    String arcgisObjectId,
+  ) async {
+    try {
+      AppLogger.data(
+        'GET incident by ArcGIS ObjectID: $arcgisObjectId',
+        source: 'SupabaseRemoteDataSource',
+      );
+
+      final response = await _supabase
+          .from(_tableName)
+          .select()
+          .eq('arcgis_object_id', arcgisObjectId)
+          .maybeSingle();
+
+      if (response == null) {
+        AppLogger.data(
+          'Incident not found with ArcGIS ObjectID: $arcgisObjectId',
+          source: 'SupabaseRemoteDataSource',
+        );
+        return null;
+      }
+
+      final incident = IncidentModel.fromSupabaseJson(response);
+
+      AppLogger.data(
+        'GET incident Success - UUID: ${incident.id}, ObjectID: ${incident.arcgisObjectId}',
+        source: 'SupabaseRemoteDataSource',
+      );
+
+      return incident;
+    } catch (e, stackTrace) {
+      AppLogger.error(
+        'Failed to get incident by ArcGIS ObjectID from Supabase',
         name: 'SupabaseRemoteDataSource',
         error: e,
         stackTrace: stackTrace,

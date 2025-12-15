@@ -31,8 +31,7 @@ class _MainPageState extends ConsumerState<MainPage> {
         fit: StackFit.expand,
         children: [
           const MapPage(),
-          if (_selectedIndex == 0)
-            const Positioned(top: 0, left: 0, right: 0, child: _ExploreLayer()),
+          const Positioned(top: 0, left: 0, right: 0, child: _ExploreLayer()),
           if (_selectedIndex == 1)
             Positioned.fill(child: _buildPersistentSheet()),
         ],

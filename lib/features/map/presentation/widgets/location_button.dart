@@ -84,20 +84,24 @@ class _LocationButtonState extends ConsumerState<LocationButton> {
                   } else {
                     // Trường hợp 2: GPS đang BẬT -> Chỉ Re-center (Khóa camera lại)
                     final mapController = ref.read(mapControllerProvider);
+                    final locationDisplay = mapController.locationDisplay;
 
-                    // Nếu chưa start thì start (đề phòng)
-                    if (!mapController.locationDisplay.started) {
-                      mapController.locationDisplay.start;
+                    // Nếu chưa start, trigger lại flow qua provider
+                    // để MapLocationLogic thiết lập dataSource đúng cách
+                    if (!locationDisplay.started) {
+                      // Tắt rồi bật lại để MapLocationLogic xử lý
+                      await ref
+                          .read(locationDisplayProviderProvider.notifier)
+                          .disable();
+                      await ref
+                          .read(locationDisplayProviderProvider.notifier)
+                          .enable();
+                      return;
                     }
 
                     // Kéo camera về người dùng
-                    mapController.locationDisplay.autoPanMode =
+                    locationDisplay.autoPanMode =
                         LocationDisplayAutoPanMode.recenter;
-
-                    // (Tùy chọn) Zoom thêm vào nếu đang ở quá xa
-                    if (mapController.locationDisplay.location != null) {
-                      // mapController.setViewpointScale(5000);
-                    }
                   }
                 },
 

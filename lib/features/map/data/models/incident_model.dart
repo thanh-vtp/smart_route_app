@@ -115,7 +115,11 @@ class IncidentModel with _$IncidentModel {
   }
 
   // Chuyển đổi Domain Entity -> Data Model
-  factory IncidentModel.fromEntity(domain.Incident entity) {
+  // arcgisObjectId cần được set riêng vì Entity không chứa field này
+  factory IncidentModel.fromEntity(
+    domain.Incident entity, {
+    String? arcgisObjectId,
+  }) {
     return IncidentModel(
       id: entity.id,
       latitude: entity.latitude,
@@ -126,7 +130,7 @@ class IncidentModel with _$IncidentModel {
       reportedTime: entity.reportedTime,
       reportedBy: entity.reportedBy,
       reportedByUid: entity.reportedByUid,
-      arcgisObjectId: null, // Sẽ được set sau khi ADD vào ArcGIS
+      arcgisObjectId: arcgisObjectId,
       creationDate: entity.creationDate,
       editDate: entity.editDate,
     );

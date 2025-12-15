@@ -1,4 +1,3 @@
-import 'package:arcgis_maps/arcgis_maps.dart' hide Incident;
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
@@ -6,16 +5,12 @@ import 'package:smart_route_app/core/utils/app_logger.dart';
 import 'package:smart_route_app/features/auth/domain/entities/app_user.dart';
 import 'package:smart_route_app/features/auth/presentation/states/auth.dart';
 import 'package:smart_route_app/features/map/domain/entities/incident.dart';
-import 'package:smart_route_app/features/map/presentation/models/incident_button_action.dart';
-import 'package:smart_route_app/features/map/presentation/providers/location_display_providers.dart';
+import 'package:smart_route_app/features/map/presentation/helpers/incident_display_helper.dart';
 import 'package:smart_route_app/features/map/presentation/providers/map_center_providers.dart';
-import 'package:smart_route_app/features/map/presentation/providers/map_controller_provider.dart';
 import 'package:smart_route_app/features/map/presentation/providers/states/report_page_notifier.dart';
-import 'package:smart_route_app/features/map/presentation/widgets/action_button_item.dart';
 import 'package:smart_route_app/features/map/presentation/widgets/add_incident_bottom_sheet.dart';
-import 'package:smart_route_app/features/map/presentation/widgets/location_picker_map_widget.dart';
+import 'package:smart_route_app/features/map/presentation/widgets/incident_type_widgets.dart';
 import 'package:smart_route_app/features/map/presentation/widgets/map_state_overlays.dart';
-import 'package:smart_route_app/features/map/presentation/widgets/review_loaction_card_widget.dart';
 
 class ReportMapPage extends ConsumerStatefulWidget {
   const ReportMapPage({super.key, required this.scrollController});
@@ -41,27 +36,21 @@ class _ReportMapPageState extends ConsumerState<ReportMapPage> {
   Widget build(BuildContext context) {
     final user = ref.watch(authProvider);
     final reportState = ref.watch(reportPageNotifierProvider);
+
     return reportState.when(
       initial: () => const SizedBox.shrink(),
       loading: () => const MapLoadingOverlay(),
-      loaded: (incidents) {
-        return _buildStateUI(context, user, incidents);
-      },
-
-      submitting: (incidents) {
-        return Stack(
-          children: [
-            _buildStateUI(context, user, incidents),
-            const MapSubmittingOverlay(),
-          ],
-        );
-      },
-      submitted: (incidents) {
-        return _buildStateUI(context, user, incidents);
-      },
+      loaded: (incidents) => _buildContent(context, user, incidents),
+      submitting: (incidents) => Stack(
+        children: [
+          _buildContent(context, user, incidents),
+          const MapSubmittingOverlay(),
+        ],
+      ),
+      submitted: (incidents) => _buildContent(context, user, incidents),
       error: (failure, incidents) => Stack(
         children: [
-          if (incidents != null) _buildStateUI(context, user, incidents),
+          if (incidents != null) _buildContent(context, user, incidents),
           MapErrorOverlay(
             message: failure.technicalMessage!,
             onRetry: () => ref
@@ -73,278 +62,576 @@ class _ReportMapPageState extends ConsumerState<ReportMapPage> {
     );
   }
 
-  Widget _buildStateUI(
+  Widget _buildContent(
     BuildContext context,
     AppUser user,
     List<Incident> incidents,
   ) {
-    final actions = [
-      IncidentButtonAction(
-        icon: Icons.add_location_alt,
-        label: "Thêm địa điểm",
-        onTap: () {
-          // Lấy tâm map hiện tại từ Provider
-          final currentCenter = ref.read(mapCenterProvider.notifier).current();
-
-          // Khởi tạo tọa độ mặc định (VD: Nha Trang) phòng hờ map chưa load
-          double targetLat = 12.2388;
-          double targetLong = 109.1967;
-
-          if (currentCenter != null) {
-            targetLat = currentCenter.y;
-            targetLong = currentCenter.x;
-            AppLogger.ui(
-              "Map Center Updated - report_page: $targetLat, $targetLong",
-            );
-          }
-
-          showModalBottomSheet(
-            context: context,
-            isScrollControlled: true,
-            backgroundColor: Colors.transparent,
-            builder: (context) => AddIncidentBottomSheet(
-              latitude: targetLat,
-              longitude: targetLong,
-            ),
-          );
-        },
-      ),
-      IncidentButtonAction(
-        icon: Icons.edit_location_alt,
-        label: "Cập nhật địa điểm",
-        onTap: () => print("Cập nhật địa điểm"),
-      ),
-      IncidentButtonAction(
-        icon: Icons.rate_review,
-        label: "Viết bài đánh giá",
-        onTap: () => print("Viết bài đánh giá"),
-      ),
-      IncidentButtonAction(
-        icon: Icons.add_a_photo,
-        label: "Thêm ảnh",
-        onTap: () => print("Thêm ảnh"),
-      ),
-    ];
-
     return ListView(
       controller: widget.scrollController,
-      padding: EdgeInsets.symmetric(horizontal: 16),
+      padding: const EdgeInsets.symmetric(horizontal: 20),
       children: [
-        // Tiêu đề
-        Text(
-          "Đóng góp",
-          style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+        const SizedBox(height: 8),
+        _buildHeader(),
+        const SizedBox(height: 24),
+        _ProfileCard(user: user),
+        const SizedBox(height: 20),
+        _QuickActionsSection(
+          onAddIncident: () => _showAddIncidentSheet(context),
         ),
-        SizedBox(height: 20),
-        _buildProfileSection(context, user),
-        SizedBox(height: 20),
-        _buildActionButtons(actions),
-        SizedBox(height: 20),
-        _buildBadgeCard(),
-        SizedBox(height: 24),
-        Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 4.0),
-          child: Text(
-            "Chúng tôi liệt kê các địa điểm dựa trên nội dung bạn tìm kiếm, vị trí của bạn và các yếu tố khác.",
-            style: TextStyle(color: Colors.grey[600], fontSize: 13),
-          ),
-        ),
-
-        SizedBox(height: 12),
-        _incidentListView(incidents),
-        SizedBox(height: 80),
+        const SizedBox(height: 24),
+        _StatsCard(incidentCount: incidents.length),
+        const SizedBox(height: 24),
+        _MyIncidentsSection(incidents: incidents),
+        const SizedBox(height: 100),
       ],
     );
   }
 
-  Widget _incidentListView(List<Incident> incidents) {
-    return Column(
-      children: incidents.map((incident) {
-        return ReviewLocationCard(
-          // name: 'Hẻm A2/2 Vũ Ngọc Nhạ, Hòn Nghê,...',
-          // info: 'Bạn đã ghé thăm 3 ngày trước · Khu vực đường địa...',
-          name:
-              'Vị trí: Latitude${incident.latitude}, Longitude${incident.longitude}',
-          info: incident.description,
-        );
-      }).toList(),
+  Widget _buildHeader() {
+    return Row(
+      children: [
+        Container(
+          padding: const EdgeInsets.all(10),
+          decoration: BoxDecoration(
+            color: Colors.blue.shade50,
+            borderRadius: BorderRadius.circular(12),
+          ),
+          child: Icon(
+            Icons.volunteer_activism,
+            color: Colors.blue.shade700,
+            size: 24,
+          ),
+        ),
+        const SizedBox(width: 12),
+        const Expanded(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                'Đóng góp',
+                style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+              ),
+              Text(
+                'Giúp cộng đồng cập nhật giao thông',
+                style: TextStyle(color: Colors.grey, fontSize: 13),
+              ),
+            ],
+          ),
+        ),
+      ],
+    );
+  }
+
+  void _showAddIncidentSheet(BuildContext context) {
+    final currentCenter = ref.read(mapCenterProvider.notifier).current();
+    double targetLat = 12.2388;
+    double targetLong = 109.1967;
+
+    if (currentCenter != null) {
+      targetLat = currentCenter.y;
+      targetLong = currentCenter.x;
+      AppLogger.ui("Map Center - report_page: $targetLat, $targetLong");
+    }
+
+    showModalBottomSheet(
+      context: context,
+      isScrollControlled: true,
+      backgroundColor: Colors.transparent,
+      builder: (context) =>
+          AddIncidentBottomSheet(latitude: targetLat, longitude: targetLong),
     );
   }
 }
 
-Widget _buildProfileSection(BuildContext context, AppUser user) {
-  return Column(
-    crossAxisAlignment: CrossAxisAlignment.start,
-    children: [
-      Row(
-        children: [
-          CachedNetworkImage(
-            imageUrl: user.photoUrl!,
-            imageBuilder: (context, imageProvider) =>
-                CircleAvatar(backgroundImage: imageProvider),
-            placeholder: (context, url) =>
-                const CircleAvatar(child: CircularProgressIndicator()),
-            errorWidget: (context, url, error) =>
-                CircleAvatar(child: Icon(Icons.person)),
+/// Profile Card
+class _ProfileCard extends StatelessWidget {
+  final AppUser user;
+  const _ProfileCard({required this.user});
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      padding: const EdgeInsets.all(20),
+      decoration: BoxDecoration(
+        gradient: LinearGradient(
+          colors: [Colors.blue.shade600, Colors.blue.shade800],
+          begin: Alignment.topLeft,
+          end: Alignment.bottomRight,
+        ),
+        borderRadius: BorderRadius.circular(20),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.blue.withValues(alpha: 0.3),
+            blurRadius: 12,
+            offset: const Offset(0, 6),
           ),
-          SizedBox(width: 12),
+        ],
+      ),
+      child: Column(
+        children: [
+          Row(
+            children: [
+              Container(
+                padding: const EdgeInsets.all(3),
+                decoration: BoxDecoration(
+                  shape: BoxShape.circle,
+                  border: Border.all(color: Colors.white, width: 2),
+                ),
+                child: CachedNetworkImage(
+                  imageUrl: user.photoUrl ?? '',
+                  imageBuilder: (_, imageProvider) =>
+                      CircleAvatar(radius: 28, backgroundImage: imageProvider),
+                  placeholder: (_, __) => const CircleAvatar(
+                    radius: 28,
+                    child: CircularProgressIndicator(strokeWidth: 2),
+                  ),
+                  errorWidget: (_, __, ___) => CircleAvatar(
+                    radius: 28,
+                    backgroundColor: Colors.white24,
+                    child: Icon(Icons.person, color: Colors.white),
+                  ),
+                ),
+              ),
+              const SizedBox(width: 16),
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      user.displayName ?? 'Người dùng',
+                      style: const TextStyle(
+                        color: Colors.white,
+                        fontWeight: FontWeight.bold,
+                        fontSize: 18,
+                      ),
+                    ),
+                    const SizedBox(height: 4),
+                    Container(
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 10,
+                        vertical: 4,
+                      ),
+                      decoration: BoxDecoration(
+                        color: Colors.white24,
+                        borderRadius: BorderRadius.circular(12),
+                      ),
+                      child: const Row(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          Icon(Icons.star, color: Colors.amber, size: 14),
+                          SizedBox(width: 4),
+                          Text(
+                            'Cấp 2',
+                            style: TextStyle(
+                              color: Colors.white,
+                              fontSize: 12,
+                              fontWeight: FontWeight.w500,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              IconButton(
+                onPressed: () {},
+                icon: const Icon(
+                  Icons.settings_outlined,
+                  color: Colors.white70,
+                ),
+              ),
+            ],
+          ),
+          const SizedBox(height: 20),
+          // Progress
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  const Text(
+                    'Tiến độ lên cấp',
+                    style: TextStyle(color: Colors.white70, fontSize: 12),
+                  ),
+                  Text(
+                    '55/100 điểm',
+                    style: TextStyle(
+                      color: Colors.white.withValues(alpha: 0.9),
+                      fontSize: 12,
+                      fontWeight: FontWeight.w500,
+                    ),
+                  ),
+                ],
+              ),
+              const SizedBox(height: 8),
+              ClipRRect(
+                borderRadius: BorderRadius.circular(4),
+                child: LinearProgressIndicator(
+                  value: 0.55,
+                  minHeight: 6,
+                  backgroundColor: Colors.white24,
+                  valueColor: const AlwaysStoppedAnimation<Color>(Colors.amber),
+                ),
+              ),
+            ],
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+/// Quick Actions Section
+class _QuickActionsSection extends StatelessWidget {
+  final VoidCallback onAddIncident;
+  const _QuickActionsSection({required this.onAddIncident});
+
+  @override
+  Widget build(BuildContext context) {
+    final actions = [
+      _QuickAction(
+        icon: Icons.add_location_alt,
+        label: 'Báo cáo\nsự cố',
+        color: Colors.red,
+        onTap: onAddIncident,
+      ),
+      _QuickAction(
+        icon: Icons.edit_location_alt,
+        label: 'Cập nhật\nđịa điểm',
+        color: Colors.orange,
+        onTap: () {},
+      ),
+      _QuickAction(
+        icon: Icons.rate_review,
+        label: 'Viết\nđánh giá',
+        color: Colors.green,
+        onTap: () {},
+      ),
+      _QuickAction(
+        icon: Icons.add_a_photo,
+        label: 'Thêm\nảnh',
+        color: Colors.purple,
+        onTap: () {},
+      ),
+    ];
+
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        const Text(
+          'Hành động nhanh',
+          style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+        ),
+        const SizedBox(height: 12),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: actions.map((action) => Expanded(child: action)).toList(),
+        ),
+      ],
+    );
+  }
+}
+
+class _QuickAction extends StatelessWidget {
+  final IconData icon;
+  final String label;
+  final Color color;
+  final VoidCallback onTap;
+
+  const _QuickAction({
+    required this.icon,
+    required this.label,
+    required this.color,
+    required this.onTap,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return GestureDetector(
+      onTap: onTap,
+      child: Container(
+        margin: const EdgeInsets.symmetric(horizontal: 4),
+        padding: const EdgeInsets.symmetric(vertical: 16),
+        decoration: BoxDecoration(
+          color: color.withValues(alpha: 0.1),
+          borderRadius: BorderRadius.circular(16),
+          border: Border.all(color: color.withValues(alpha: 0.2)),
+        ),
+        child: Column(
+          children: [
+            Container(
+              padding: const EdgeInsets.all(10),
+              decoration: BoxDecoration(
+                color: color.withValues(alpha: 0.15),
+                shape: BoxShape.circle,
+              ),
+              child: Icon(icon, color: color, size: 22),
+            ),
+            const SizedBox(height: 8),
+            Text(
+              label,
+              textAlign: TextAlign.center,
+              style: TextStyle(
+                fontSize: 11,
+                fontWeight: FontWeight.w500,
+                color: Colors.grey.shade700,
+                height: 1.3,
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+/// Stats Card
+class _StatsCard extends StatelessWidget {
+  final int incidentCount;
+  const _StatsCard({required this.incidentCount});
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      padding: const EdgeInsets.all(20),
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(16),
+        border: Border.all(color: Colors.grey.shade200),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withValues(alpha: 0.04),
+            blurRadius: 10,
+            offset: const Offset(0, 4),
+          ),
+        ],
+      ),
+      child: Row(
+        children: [
+          _StatItem(
+            value: '$incidentCount',
+            label: 'Báo cáo',
+            icon: Icons.flag_outlined,
+            color: Colors.blue,
+          ),
+          _divider(),
+          _StatItem(
+            value: '12',
+            label: 'Đánh giá',
+            icon: Icons.star_outline,
+            color: Colors.amber,
+          ),
+          _divider(),
+          _StatItem(
+            value: '5',
+            label: 'Ảnh',
+            icon: Icons.photo_outlined,
+            color: Colors.green,
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _divider() => Container(
+    height: 40,
+    width: 1,
+    color: Colors.grey.shade200,
+    margin: const EdgeInsets.symmetric(horizontal: 8),
+  );
+}
+
+class _StatItem extends StatelessWidget {
+  final String value;
+  final String label;
+  final IconData icon;
+  final Color color;
+
+  const _StatItem({
+    required this.value,
+    required this.label,
+    required this.icon,
+    required this.color,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Expanded(
+      child: Column(
+        children: [
+          Icon(icon, color: color, size: 24),
+          const SizedBox(height: 8),
+          Text(
+            value,
+            style: TextStyle(
+              fontSize: 20,
+              fontWeight: FontWeight.bold,
+              color: Colors.grey.shade800,
+            ),
+          ),
+          Text(
+            label,
+            style: TextStyle(fontSize: 12, color: Colors.grey.shade500),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+/// My Incidents Section
+class _MyIncidentsSection extends StatelessWidget {
+  final List<Incident> incidents;
+  const _MyIncidentsSection({required this.incidents});
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            const Text(
+              'Báo cáo của tôi',
+              style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+            ),
+            if (incidents.isNotEmpty)
+              TextButton(
+                onPressed: () {},
+                child: Text(
+                  'Xem tất cả',
+                  style: TextStyle(color: Colors.blue.shade600, fontSize: 13),
+                ),
+              ),
+          ],
+        ),
+        const SizedBox(height: 12),
+        if (incidents.isEmpty)
+          _EmptyState()
+        else
+          ...incidents
+              .take(5)
+              .map((incident) => _IncidentListItem(incident: incident)),
+      ],
+    );
+  }
+}
+
+class _EmptyState extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      padding: const EdgeInsets.all(32),
+      decoration: BoxDecoration(
+        color: Colors.grey.shade50,
+        borderRadius: BorderRadius.circular(16),
+        border: Border.all(color: Colors.grey.shade200),
+      ),
+      child: Column(
+        children: [
+          Icon(Icons.inbox_outlined, size: 48, color: Colors.grey.shade300),
+          const SizedBox(height: 12),
+          Text(
+            'Chưa có báo cáo nào',
+            style: TextStyle(color: Colors.grey.shade500, fontSize: 14),
+          ),
+          const SizedBox(height: 4),
+          Text(
+            'Hãy bắt đầu đóng góp cho cộng đồng!',
+            style: TextStyle(color: Colors.grey.shade400, fontSize: 12),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+class _IncidentListItem extends StatelessWidget {
+  final Incident incident;
+  const _IncidentListItem({required this.incident});
+
+  @override
+  Widget build(BuildContext context) {
+    final config = incident.typeConfig;
+
+    return Container(
+      margin: const EdgeInsets.only(bottom: 12),
+      padding: const EdgeInsets.all(16),
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(16),
+        border: Border.all(color: Colors.grey.shade200),
+      ),
+      child: Row(
+        children: [
+          Container(
+            padding: const EdgeInsets.all(10),
+            decoration: BoxDecoration(
+              color: config.backgroundColor,
+              borderRadius: BorderRadius.circular(12),
+            ),
+            child: IncidentTypeIcon(
+              typeId: incident.type,
+              size: 28,
+              showBackground: false,
+            ),
+          ),
+          const SizedBox(width: 12),
           Expanded(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text(
-                  user.displayName ?? "User",
-                  style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
-                ),
-                Text(
-                  "Local Guide Cấp 2",
-                  style: TextStyle(color: Colors.grey[600], fontSize: 13),
-                ),
-              ],
-            ),
-          ),
-          TextButton(
-            onPressed: () {
-              showModalBottomSheet(
-                context: context,
-                isScrollControlled: true,
-                builder: (context) {
-                  return Padding(
-                    padding: const EdgeInsets.all(16.0),
-                    child: Column(
-                      mainAxisSize: MainAxisSize.min,
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          "Hồ sơ Local Guide",
-                          style: TextStyle(
-                            fontSize: 20,
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
-                        SizedBox(height: 10),
-                        Text(
-                          "Xem và quản lý các đóng góp của bạn với tư cách là Local Guide.",
-                        ),
-                        SizedBox(height: 20),
-                        ElevatedButton(
-                          onPressed: () {
-                            Navigator.pop(context);
-                          },
-                          child: Text("Đóng"),
-                        ),
-                      ],
+                Row(
+                  children: [
+                    Text(
+                      incident.typeDisplayName,
+                      style: const TextStyle(
+                        fontWeight: FontWeight.w600,
+                        fontSize: 14,
+                      ),
                     ),
-                  );
-                },
-              );
-            },
-            child: Text("Xem hồ sơ", style: TextStyle(color: Colors.blue)),
-          ),
-        ],
-      ),
-      SizedBox(height: 10),
-      // Thanh tiến trình (Progress Bar)
-      ClipRRect(
-        borderRadius: BorderRadius.circular(4),
-        child: LinearProgressIndicator(
-          value: 0.7, // 70%
-          minHeight: 6,
-          backgroundColor: Colors.orange[100],
-          valueColor: AlwaysStoppedAnimation<Color>(Colors.orange),
-        ),
-      ),
-      SizedBox(height: 6),
-      Text(
-        "Còn 45 điểm nữa là lên Cấp 3",
-        style: TextStyle(color: Colors.grey, fontSize: 12),
-      ),
-    ],
-  );
-}
-
-Widget _buildActionButtons(List<IncidentButtonAction> items) {
-  return SingleChildScrollView(
-    scrollDirection: Axis.horizontal,
-    child: Row(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: items.map((item) {
-        return ActionButtonItem(item: item);
-      }).toList(),
-    ),
-  );
-}
-
-Widget _buildBadgeCard() {
-  return Card(
-    elevation: 2,
-    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
-    child: Padding(
-      padding: const EdgeInsets.all(16.0),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Row(
-            children: [
-              Expanded(
-                child: Text(
-                  "Nhận huy hiệu Người đóng góp mới của bạn",
-                  style: TextStyle(fontSize: 18, fontWeight: FontWeight.w500),
+                    const SizedBox(width: 8),
+                    _buildSeverityDot(incident.severity),
+                  ],
                 ),
-              ),
-              Icon(Icons.verified, size: 40, color: Colors.green), // Icon mẫu
-            ],
-          ),
-          SizedBox(height: 10),
-          Text(
-            "Bắt đầu bằng cách đóng góp những nội dung...",
-            style: TextStyle(color: Colors.grey[600]),
-          ),
-          SizedBox(height: 16),
-          _buildTaskItem("Đăng 2 ảnh", "0/2"),
-          Divider(),
-          _buildTaskItem("Viết 2 bài đánh giá", "1/2"),
-          Divider(),
-          Container(
-            padding: EdgeInsets.symmetric(vertical: 12),
-            decoration: BoxDecoration(
-              color: Colors.green[50],
-              borderRadius: BorderRadius.circular(8),
-            ),
-            child: Row(
-              children: [
-                SizedBox(width: 16),
+                const SizedBox(height: 4),
                 Text(
-                  "Trả lời 2 câu hỏi",
-                  style: TextStyle(fontWeight: FontWeight.w500),
+                  incident.description,
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
+                  style: TextStyle(color: Colors.grey.shade600, fontSize: 13),
                 ),
-                Spacer(),
-                Icon(Icons.check, color: Colors.green),
-                SizedBox(width: 16),
+                const SizedBox(height: 4),
+                Text(
+                  IncidentDisplayHelper.formatDateTime(
+                    incident.editDate ?? incident.reportedTime,
+                  ),
+                  style: TextStyle(color: Colors.grey.shade400, fontSize: 11),
+                ),
               ],
             ),
           ),
+          Icon(Icons.chevron_right, color: Colors.grey.shade400),
         ],
       ),
-    ),
-  );
-}
+    );
+  }
 
-Widget _buildTaskItem(String title, String progress) {
-  return Padding(
-    padding: const EdgeInsets.symmetric(vertical: 12.0),
-    child: Row(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      children: [
-        Text(title, style: TextStyle(fontWeight: FontWeight.w500)),
-        Row(
-          children: [
-            Text(progress, style: TextStyle(color: Colors.grey)),
-            SizedBox(width: 8),
-            Icon(Icons.chevron_right, color: Colors.grey),
-          ],
-        ),
-      ],
-    ),
-  );
+  Widget _buildSeverityDot(String severity) {
+    final color = switch (severity.toLowerCase()) {
+      'high' => Colors.red,
+      'medium' => Colors.orange,
+      'low' => Colors.green,
+      _ => Colors.grey,
+    };
+    return Container(
+      width: 8,
+      height: 8,
+      decoration: BoxDecoration(color: color, shape: BoxShape.circle),
+    );
+  }
 }

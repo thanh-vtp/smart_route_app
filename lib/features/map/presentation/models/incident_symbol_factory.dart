@@ -16,6 +16,25 @@ class IncidentSymbolFactory {
   // Cache: Lưu trữ Symbol đã tạo để không phải load lại
   final Map<String, PictureMarkerSymbol> _cache = {};
 
+  // Flag để biết đã pre-cache chưa
+  bool _isPreCached = false;
+
+  /// Pre-cache tất cả symbols để tránh lag khi hiển thị map
+  /// Gọi hàm này sau khi app khởi động (có thể trong background)
+  Future<void> preCacheAllSymbols() async {
+    if (_isPreCached) return;
+
+    // Tạo symbol cho tất cả incident types
+    for (final config in IncidentTypes.all) {
+      await getSymbol(config.id);
+    }
+    _isPreCached = true;
+    AppLogger.info(
+      'Pre-cached all incident symbols',
+      name: 'IncidentSymbolFactory',
+    );
+  }
+
   /// Hàm lấy Symbol với Stack (background + border + image)
   Future<PictureMarkerSymbol> getSymbol(String incidentId) async {
     // Nếu đã load rồi thì trả về ngay (Tốc độ tức thì)

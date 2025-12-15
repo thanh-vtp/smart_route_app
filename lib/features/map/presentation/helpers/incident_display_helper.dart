@@ -1,18 +1,23 @@
 import 'package:smart_route_app/features/map/domain/entities/incident.dart';
+import 'package:smart_route_app/features/map/presentation/models/incident_type_config.dart';
 
-/// Helper class để quản lý việc hiển thị incident một cách thống nhất
-/// Đảm bảo tính nhất quán giữa detail view, list view, và map markers
+/// Extension để thêm display properties cho Incident entity
+extension IncidentDisplay on Incident {
+  /// Display name cho loại sự cố (traffic -> "Kẹt xe")
+  String get typeDisplayName => IncidentTypes.getById(type).displayName;
+
+  /// Display name cho mức độ (low -> "Thấp")
+  String get severityDisplayName {
+    const names = {'low': 'Thấp', 'medium': 'Trung bình', 'high': 'Cao'};
+    return names[severity.toLowerCase()] ?? severity;
+  }
+
+  /// Config của loại sự cố (để lấy color, icon, etc.)
+  IncidentTypeConfig get typeConfig => IncidentTypes.getById(type);
+}
+
+/// Helper class cho format date/time
 class IncidentDisplayHelper {
-  /// Lấy display name thống nhất từ incident type
-  static String getDisplayName(Incident incident) {
-    return incident.type;
-  }
-
-  /// Lấy description hiển thị
-  static String getDescription(Incident incident) {
-    return incident.description;
-  }
-
   static String formatDateTime(DateTime dateTime) {
     final now = DateTime.now();
     final diff = now.difference(dateTime);
@@ -67,12 +72,5 @@ class IncidentDisplayHelper {
       DateTime.sunday: "Chủ Nhật",
     };
     return names[weekday]!;
-  }
-
-  /// Format vị trí hiển thị thống nhất
-  static String formatLocation(Incident incident) {
-    final lat = double.parse(incident.latitude);
-    final lon = double.parse(incident.longitude);
-    return '${lat.toStringAsFixed(6)}, ${lon.toStringAsFixed(6)}';
   }
 }
