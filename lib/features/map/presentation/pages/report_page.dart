@@ -5,7 +5,7 @@ import 'package:smart_route_app/core/utils/app_logger.dart';
 import 'package:smart_route_app/features/auth/domain/entities/app_user.dart';
 import 'package:smart_route_app/features/auth/presentation/states/auth.dart';
 import 'package:smart_route_app/features/map/domain/entities/incident.dart';
-import 'package:smart_route_app/features/map/presentation/helpers/incident_display_helper.dart';
+import 'package:smart_route_app/features/map/presentation/extensions/incident_display_extensions.dart';
 import 'package:smart_route_app/features/map/presentation/providers/map_center_providers.dart';
 import 'package:smart_route_app/features/map/presentation/providers/states/report_page_notifier.dart';
 import 'package:smart_route_app/features/map/presentation/widgets/add_incident_bottom_sheet.dart';
@@ -556,8 +556,6 @@ class _IncidentListItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final config = incident.typeConfig;
-
     return Container(
       margin: const EdgeInsets.only(bottom: 12),
       padding: const EdgeInsets.all(16),
@@ -571,7 +569,7 @@ class _IncidentListItem extends StatelessWidget {
           Container(
             padding: const EdgeInsets.all(10),
             decoration: BoxDecoration(
-              color: config.backgroundColor,
+              color: incident.backgroundColor,
               borderRadius: BorderRadius.circular(12),
             ),
             child: IncidentTypeIcon(
@@ -607,7 +605,7 @@ class _IncidentListItem extends StatelessWidget {
                 ),
                 const SizedBox(height: 4),
                 Text(
-                  IncidentDisplayHelper.formatDateTime(
+                  incident.formatCustomDate(
                     incident.editDate ?? incident.reportedTime,
                   ),
                   style: TextStyle(color: Colors.grey.shade400, fontSize: 11),

@@ -1,305 +1,418 @@
-import 'package:arcgis_maps/arcgis_maps.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
+import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:go_router/go_router.dart';
+import 'package:smart_route_app/core/core.dart';
 import 'package:smart_route_app/core/utils/app_logger.dart';
+import 'package:smart_route_app/features/map/presentation/providers/states/get_location_imagery_state.dart';
+import 'package:smart_route_app/features/map/presentation/providers/states/nearby_places_state.dart';
+import 'package:smart_route_app/features/map/presentation/providers/states/reverse_geocode_state.dart';
+import 'package:smart_route_app/features/map/presentation/widgets/add_incident_bottom_sheet.dart';
+import '../../domain/entities/address_result.dart' as entities;
+import '../../domain/entities/location_imagery.dart' as entities;
 
-/// Bottom sheet hiển thị thông tin vị trí (long, lat) trên map
-/// Được sử dụng để xác nhận vị trí trước khi báo cáo sự cố
-class LocationInfoBottomSheet extends ConsumerStatefulWidget {
-  final double initialLatitude;
-  final double initialLongitude;
-  final ArcGISMapViewController? mapViewController;
-  final ArcGISSceneViewController? sceneViewController;
-  final VoidCallback? onReport;
-  final String title;
-  final String? description;
+class LocationInfoBottomSheet extends HookConsumerWidget {
+  final double latitude;
+  final double longitude;
+  final ScrollController scrollController;
+  final bool useListView;
 
   const LocationInfoBottomSheet({
     super.key,
-    required this.initialLatitude,
-    required this.initialLongitude,
-    this.mapViewController,
-    this.sceneViewController,
-    this.onReport,
-    this.title = 'Thông tin vị trí',
-    this.description,
+    required this.latitude,
+    required this.longitude,
+    required this.scrollController,
+    this.useListView = true,
   });
 
   @override
-  ConsumerState<LocationInfoBottomSheet> createState() =>
-      _LocationInfoBottomSheetState();
-}
+  Widget build(BuildContext context, WidgetRef ref) {
+    final reverseGeocodingState = ref.watch(reverseGeocodingStateProvider);
+    final locationImageryState = ref.watch(locationImageryStateProvider);
+    final nearbyPlacesState = ref.watch(nearbyPlacesNotifierProvider);
 
-class _LocationInfoBottomSheetState
-    extends ConsumerState<LocationInfoBottomSheet> {
-  String? _addressInfo;
-  bool _isLoadingAddress = false;
+    useEffect(() {
+      // Tự động load thông tin khi widget được tạo
+      AppLogger.ui(
+        'LocationInfoBottomSheet useEffect called with lat: $latitude, lon: $longitude',
+      );
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        AppLogger.ui('Starting reverse geocoding...');
+        ref
+            .read(reverseGeocodingStateProvider.notifier)
+            .reverseGeocode(latitude, longitude);
 
-  @override
-  void initState() {
-    super.initState();
-    _loadAddressInfo();
-  }
+        AppLogger.ui('Starting location imagery...');
+        ref
+            .read(locationImageryStateProvider.notifier)
+            .getLocationImagery(latitude, longitude);
 
-  /// Load thông tin địa chỉ từ tọa độ (reverse geocoding)
-  Future<void> _loadAddressInfo() async {
-    setState(() {
-      _isLoadingAddress = true;
-    });
+        AppLogger.ui('Starting nearby places...');
+        ref
+            .read(nearbyPlacesNotifierProvider.notifier)
+            .findNearbyPlaces(latitude: latitude, longitude: longitude);
+      });
+      return null;
+    }, [latitude, longitude]);
 
-    try {
-      // TODO: Implement reverse geocoding với ArcGIS Locator
-      // Tạm thời hiển thị formatted coordinates
-      _addressInfo = _formatCoordinates();
-    } catch (e) {
-      AppLogger.ui('Error loading address info: $e');
-      _addressInfo = 'Không thể tải thông tin địa chỉ';
-    } finally {
-      if (mounted) {
-        setState(() {
-          _isLoadingAddress = false;
-        });
-      }
+    // Hiển thị form báo cáo sự cố mới
+    void showReportForm(
+      BuildContext context,
+      double latitude,
+      double longitude,
+    ) {
+      showModalBottomSheet(
+        context: context,
+        isScrollControlled: true,
+        backgroundColor: Colors.transparent,
+        builder: (context) =>
+            AddIncidentBottomSheet(latitude: latitude, longitude: longitude),
+      );
     }
-  }
 
-  /// Format tọa độ thành chuỗi dễ đọc
-  String _formatCoordinates() {
-    final latDeg = widget.initialLatitude.abs().floor();
-    final latMin = ((widget.initialLatitude.abs() - latDeg) * 60).floor();
-    final latSec =
-        (((widget.initialLatitude.abs() - latDeg) * 60 - latMin) * 60);
-    final latDir = widget.initialLatitude >= 0 ? 'N' : 'S';
-
-    final lngDeg = widget.initialLongitude.abs().floor();
-    final lngMin = ((widget.initialLongitude.abs() - lngDeg) * 60).floor();
-    final lngSec =
-        (((widget.initialLongitude.abs() - lngDeg) * 60 - lngMin) * 60);
-    final lngDir = widget.initialLongitude >= 0 ? 'E' : 'W';
-
-    return '$latDeg°$latMin\'${latSec.toStringAsFixed(2)}"$latDir, '
-        '$lngDeg°$lngMin\'${lngSec.toStringAsFixed(2)}"$lngDir';
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      decoration: const BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
-      ),
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          // Drag handle
-          Container(
-            margin: const EdgeInsets.only(top: 12),
-            width: 40,
-            height: 4,
-            decoration: BoxDecoration(
-              color: Colors.grey[300],
-              borderRadius: BorderRadius.circular(2),
-            ),
-          ),
-
-          Padding(
-            padding: const EdgeInsets.all(24),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                // Header
-                Row(
-                  children: [
-                    Icon(Icons.location_on, color: Colors.blue, size: 28),
-                    const SizedBox(width: 12),
-                    Expanded(
-                      child: Text(
-                        widget.title,
-                        style: const TextStyle(
-                          fontSize: 20,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                    ),
-                    IconButton(
-                      onPressed: () => Navigator.pop(context),
-                      icon: const Icon(Icons.close),
-                    ),
-                  ],
-                ),
-
-                if (widget.description != null) ...[
-                  const SizedBox(height: 8),
-                  Text(
-                    widget.description!,
-                    style: TextStyle(fontSize: 14, color: Colors.grey[600]),
-                  ),
-                ],
-
-                const SizedBox(height: 24),
-
-                // Coordinates card
-                Card(
-                  elevation: 0,
-                  color: Colors.blue.shade50,
-                  child: Padding(
-                    padding: const EdgeInsets.all(16),
-                    child: Column(
-                      children: [
-                        _buildCoordinateRow(
-                          icon: Icons.north,
-                          label: 'Vĩ độ (Latitude)',
-                          value: widget.initialLatitude.toStringAsFixed(6),
-                          onCopy: () => _copyToClipboard(
-                            widget.initialLatitude.toString(),
-                            'Đã copy vĩ độ',
-                          ),
-                        ),
-                        const Divider(height: 24),
-                        _buildCoordinateRow(
-                          icon: Icons.east,
-                          label: 'Kinh độ (Longitude)',
-                          value: widget.initialLongitude.toStringAsFixed(6),
-                          onCopy: () => _copyToClipboard(
-                            widget.initialLongitude.toString(),
-                            'Đã copy kinh độ',
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                ),
-
-                const SizedBox(height: 16),
-
-                // Address info
-                if (_isLoadingAddress)
-                  const Center(
-                    child: Padding(
-                      padding: EdgeInsets.all(16.0),
-                      child: CircularProgressIndicator(),
-                    ),
-                  )
-                else if (_addressInfo != null)
-                  Container(
-                    padding: const EdgeInsets.all(16),
-                    decoration: BoxDecoration(
-                      border: Border.all(color: Colors.grey.shade300),
-                      borderRadius: BorderRadius.circular(12),
-                    ),
-                    child: Row(
-                      children: [
-                        Icon(Icons.place, color: Colors.grey[600], size: 20),
-                        const SizedBox(width: 12),
-                        Expanded(
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(
-                                'Tọa độ DMS',
-                                style: TextStyle(
-                                  fontSize: 12,
-                                  color: Colors.grey[600],
-                                  fontWeight: FontWeight.w500,
-                                ),
-                              ),
-                              const SizedBox(height: 4),
-                              Text(
-                                _addressInfo!,
-                                style: const TextStyle(
-                                  fontSize: 14,
-                                  fontWeight: FontWeight.w500,
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-
-                const SizedBox(height: 24),
-
-                // Action button - chỉ hiển thị nút Báo cáo nếu có onReport
-                if (widget.onReport != null)
-                  SizedBox(
-                    width: double.infinity,
-                    child: ElevatedButton.icon(
-                      onPressed: () {
-                        Navigator.pop(context);
-                        widget.onReport?.call();
-                      },
-                      icon: const Icon(Icons.report),
-                      label: const Text('Báo cáo sự cố'),
-                      style: ElevatedButton.styleFrom(
-                        padding: const EdgeInsets.symmetric(vertical: 14),
-                        backgroundColor: Colors.red.shade600,
-                        foregroundColor: Colors.white,
-                      ),
-                    ),
-                  ),
-
-                // Safe area
-                SizedBox(height: MediaQuery.of(context).padding.bottom),
-              ],
-            ),
-          ),
-        ],
-      ),
+    return _buildContent(
+      context,
+      reverseGeocodingState,
+      locationImageryState,
+      nearbyPlacesState,
+      showReportForm,
     );
   }
 
-  /// Widget để hiển thị một dòng tọa độ
-  Widget _buildCoordinateRow({
-    required IconData icon,
-    required String label,
-    required String value,
-    required VoidCallback onCopy,
-  }) {
-    AppLogger.ui('Coordinate row: $label = $value');
+  Widget _buildContent(
+    BuildContext context,
+    AsyncValue<entities.AddressResult?> reverseGeocodingState,
+    AsyncValue<entities.LocationImagery?> locationImageryState,
+    NearbyPlacesState nearbyPlacesState,
+    void Function(BuildContext context, double latitude, double longitude)
+    showReportForm,
+  ) {
+    final content = Padding(
+      padding: const EdgeInsets.all(16),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          // Action Buttons
+          _buildActionButtons(context),
+          const SizedBox(height: 16),
+
+          // Tọa độ
+          _buildCoordinatesSection(),
+
+          const SizedBox(height: 16),
+
+          // Thông tin địa chỉ
+          _buildAddressSection(reverseGeocodingState),
+
+          const SizedBox(height: 16),
+
+          // Hình ảnh vệ tinh
+          _buildSatelliteImageSection(locationImageryState),
+
+          const SizedBox(height: 16),
+
+          // Địa điểm gần đó
+          _buildNearbyPlacesSection(nearbyPlacesState),
+
+          const SizedBox(height: 20),
+
+          SizedBox(
+            width: double.infinity,
+            child: ElevatedButton.icon(
+              onPressed: () {
+                Navigator.pop(context);
+                showReportForm(context, latitude, longitude);
+              },
+              icon: const Icon(Icons.report),
+              label: const Text('Báo cáo sự cố'),
+              style: ElevatedButton.styleFrom(
+                padding: const EdgeInsets.symmetric(vertical: 14),
+                backgroundColor: Colors.red.shade600,
+                foregroundColor: Colors.white,
+              ),
+            ),
+          ),
+
+          // Safe area
+          SizedBox(height: MediaQuery.of(context).padding.bottom),
+        ],
+      ),
+    );
+
+    // Nếu không dùng ListView (parent đã có scroll), trả về content trực tiếp
+    if (!useListView) {
+      return content;
+    }
+
+    // Dùng ListView khi cần scroll riêng
+    return ListView(controller: scrollController, children: [content]);
+  }
+
+  Widget _buildActionButtons(BuildContext context) {
     return Row(
       children: [
-        Icon(icon, size: 20, color: Colors.blue.shade700),
-        const SizedBox(width: 12),
         Expanded(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(
-                label,
-                style: TextStyle(
-                  fontSize: 12,
-                  color: Colors.grey[600],
-                  fontWeight: FontWeight.w500,
-                ),
+          child: ElevatedButton.icon(
+            onPressed: () {
+              Navigator.pop(context);
+              // Use DirectionButton logic
+              context.push('/direction');
+            },
+            icon: const Icon(Icons.directions),
+            label: const Text('Chỉ đường'),
+            style: ElevatedButton.styleFrom(
+              backgroundColor: Colors.blue.shade600,
+              foregroundColor: Colors.white,
+              padding: const EdgeInsets.symmetric(vertical: 12),
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(8),
               ),
-              const SizedBox(height: 2),
-              Text(
-                value,
-                style: const TextStyle(
-                  fontSize: 16,
-                  fontWeight: FontWeight.bold,
-                  fontFamily: 'monospace',
-                ),
-              ),
-            ],
+            ),
           ),
         ),
-        IconButton(
-          onPressed: onCopy,
-          icon: const Icon(Icons.copy, size: 18),
-          tooltip: 'Copy',
+        const SizedBox(width: 12),
+        Expanded(
+          child: OutlinedButton.icon(
+            onPressed: () {
+              // TODO: Save location
+              ScaffoldMessenger.of(context).showSnackBar(
+                const SnackBar(
+                  content: Text('TODO: Save location, Đã lưu vị trí, '),
+                  duration: Duration(seconds: 2),
+                ),
+              );
+            },
+            icon: const Icon(Icons.bookmark_add),
+            label: const Text('Lưu'),
+            style: OutlinedButton.styleFrom(
+              padding: const EdgeInsets.symmetric(vertical: 12),
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(8),
+              ),
+            ),
+          ),
         ),
       ],
     );
   }
 
-  /// Copy text to clipboard
-  void _copyToClipboard(String text, String message) {
-    Clipboard.setData(ClipboardData(text: text));
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(content: Text(message), duration: const Duration(seconds: 1)),
+  Widget _buildCoordinatesSection() {
+    return Card(
+      child: Padding(
+        padding: const EdgeInsets.all(16),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            const Text(
+              'Tọa độ',
+              style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+            ),
+            const SizedBox(height: 8),
+            Row(
+              children: [
+                const Icon(Icons.my_location, size: 16, color: Colors.grey),
+                const SizedBox(width: 8),
+                Text('Vĩ độ: ${latitude.toStringAsFixed(6)}'),
+              ],
+            ),
+            const SizedBox(height: 4),
+            Row(
+              children: [
+                const Icon(Icons.my_location, size: 16, color: Colors.grey),
+                const SizedBox(width: 8),
+                Text('Kinh độ: ${longitude.toStringAsFixed(6)}'),
+              ],
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _buildAddressSection(AsyncValue<entities.AddressResult?> state) {
+    return Card(
+      child: Padding(
+        padding: const EdgeInsets.all(16),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            const Text(
+              'Địa chỉ',
+              style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+            ),
+            const SizedBox(height: 8),
+            state.when(
+              data: (address) {
+                if (address == null) {
+                  return const Text('Chưa có thông tin địa chỉ');
+                }
+                return Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    if (address.fullAddress.isNotEmpty)
+                      _buildAddressRow('Địa chỉ đầy đủ', address.fullAddress),
+                    if (address.streetName != null)
+                      _buildAddressRow('Tên đường', address.streetName!),
+                    if (address.neighborhood != null)
+                      _buildAddressRow('Khu vực', address.neighborhood!),
+                    if (address.district != null)
+                      _buildAddressRow('Quận/Huyện', address.district!),
+                    if (address.city != null)
+                      _buildAddressRow('Thành phố', address.city!),
+                    if (address.region != null)
+                      _buildAddressRow('Tỉnh/Thành', address.region!),
+                    if (address.countryName != null)
+                      _buildAddressRow('Quốc gia', address.countryName!),
+                  ],
+                );
+              },
+              loading: () => const Center(child: CircularProgressIndicator()),
+              error: (error, _) => Text(
+                'Lỗi: $error',
+                style: const TextStyle(color: Colors.red),
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _buildAddressRow(String label, String value) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 2),
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          SizedBox(
+            width: 80,
+            child: Text(
+              '$label:',
+              style: const TextStyle(
+                fontWeight: FontWeight.w500,
+                color: Colors.grey,
+              ),
+            ),
+          ),
+          Expanded(child: Text(value)),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildSatelliteImageSection(AsyncValue<entities.LocationImagery?> state) {
+    return Card(
+      child: Padding(
+        padding: const EdgeInsets.all(16),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            const Text(
+              'Hình ảnh vệ tinh',
+              style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+            ),
+            const SizedBox(height: 8),
+            state.when(
+              data: (imagery) {
+                if (imagery == null) {
+                  return const Text('Chưa có hình ảnh');
+                }
+                return Column(
+                  children: [
+                    ClipRRect(
+                      borderRadius: BorderRadius.circular(8),
+                      child: Image.memory(
+                        imagery.imageData,
+                        width: double.infinity,
+                        height: 200,
+                        fit: BoxFit.cover,
+                      ),
+                    ),
+                    if (imagery.copyrightText != null) ...[
+                      const SizedBox(height: 8),
+                      Text(
+                        imagery.copyrightText!,
+                        style: const TextStyle(
+                          fontSize: 12,
+                          color: Colors.grey,
+                        ),
+                      ),
+                    ],
+                  ],
+                );
+              },
+              loading: () => Container(
+                height: 200,
+                decoration: BoxDecoration(
+                  color: Colors.grey[200],
+                  borderRadius: BorderRadius.circular(8),
+                ),
+                child: const Center(child: CircularProgressIndicator()),
+              ),
+              error: (error, _) => Container(
+                height: 200,
+                decoration: BoxDecoration(
+                  color: Colors.grey[200],
+                  borderRadius: BorderRadius.circular(8),
+                ),
+                child: Center(
+                  child: Text(
+                    'Lỗi tải hình ảnh: $error',
+                    style: const TextStyle(color: Colors.red),
+                    textAlign: TextAlign.center,
+                  ),
+                ),
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _buildNearbyPlacesSection(NearbyPlacesState state) {
+    return Card(
+      child: Padding(
+        padding: const EdgeInsets.all(16),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            const Text(
+              'Địa điểm gần đó',
+              style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+            ),
+            const SizedBox(height: 8),
+            state.when(
+              initial: () =>
+                  const Center(child: Text('Hãy chọn vị trí để tìm kiếm')),
+              loading: () => const Center(child: CircularProgressIndicator()),
+              loaded: (places, category, isSearchingMore) {
+                if (places.isEmpty) {
+                  return const Text('Không có địa điểm gần đó');
+                }
+                return Column(
+                  children: places.take(5).map((place) {
+                    return ListTile(
+                      contentPadding: EdgeInsets.zero,
+                      leading: const Icon(Icons.place, color: Colors.orange),
+                      title: Text(place.name),
+                      subtitle: Text(
+                        '${place.address}\nKhoảng cách: ${(place.distance / 1000).toStringAsFixed(2)} km',
+                      ),
+                      isThreeLine: true,
+                    );
+                  }).toList(),
+                );
+              },
+
+              error: (error, _) => Text(
+                'Lỗi: $error',
+                style: const TextStyle(color: Colors.red),
+              ),
+            ),
+          ],
+        ),
+      ),
     );
   }
 }

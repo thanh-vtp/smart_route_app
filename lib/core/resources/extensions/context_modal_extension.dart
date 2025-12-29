@@ -132,4 +132,47 @@ extension ContextModalExtension on BuildContext {
       enableDrag: enableDrag,
     );
   }
+
+  /// Extension for showing DraggableScrollableSheet for app
+  /// Tự động tính maxChildSize để không che status bar
+  DraggableScrollableSheet buildDraggableScrollableSheet({
+    required Widget Function(ScrollController scrollController) builder,
+  }) {
+    // Lấy status bar height để tính maxChildSize
+    final statusBarHeight = MediaQuery.of(this).padding.top;
+    final screenHeight = MediaQuery.of(this).size.height;
+    // maxChildSize = (screenHeight - statusBarHeight) / screenHeight
+    final maxSize = (screenHeight - statusBarHeight) / screenHeight;
+
+    return DraggableScrollableSheet(
+      initialChildSize: maxSize, // Mở lên ban đầu full (dưới status bar)
+      minChildSize: 0.14, // Thu nhỏ tối đa 14%
+      maxChildSize: maxSize, // Kéo lên tối đa dưới status bar
+      builder: (context, scrollController) => Container(
+        decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
+          boxShadow: [
+            BoxShadow(color: Colors.black12, blurRadius: 10, spreadRadius: 2),
+          ],
+        ),
+        child: Column(
+          children: [
+            Center(
+              child: Container(
+                margin: EdgeInsets.only(top: 10, bottom: 10),
+                width: 40,
+                height: 4,
+                decoration: BoxDecoration(
+                  color: Colors.grey[300],
+                  borderRadius: BorderRadius.circular(2),
+                ),
+              ),
+            ),
+            Expanded(child: builder(scrollController)),
+          ],
+        ),
+      ),
+    );
+  }
 }

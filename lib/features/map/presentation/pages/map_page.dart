@@ -3,12 +3,12 @@ import 'dart:async';
 import 'package:arcgis_maps/arcgis_maps.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:smart_route_app/core/errors/failures.dart';
 import 'package:smart_route_app/core/utils/app_logger.dart';
 import 'package:smart_route_app/features/map/presentation/helpers/map_configuration_helper.dart';
 import 'package:smart_route_app/features/map/presentation/logics/map_interaction_logic.dart';
 import 'package:smart_route_app/features/map/presentation/logics/map_location_logic.dart';
 import 'package:smart_route_app/features/map/presentation/providers/base_map_style_providers.dart';
-import 'package:smart_route_app/features/map/presentation/providers/connectivity_provider.dart';
 import 'package:smart_route_app/features/map/presentation/providers/feature_layer_providers.dart';
 import 'package:smart_route_app/features/map/presentation/providers/location_display_providers.dart';
 import 'package:smart_route_app/features/map/presentation/providers/map_center_providers.dart';
@@ -48,9 +48,6 @@ class _MapPageState extends ConsumerState<MapPage> {
 
   // Flag để tránh gọi updateGraphicsOverlay nhiều lần
   List<String>? _lastIncidentIds;
-
-  // Track trạng thái internet trước đó để detect reconnect
-  InternetStatus? _previousInternetStatus;
 
   // Stream subscriptions để dispose
   StreamSubscription? _mapViewpointChangedSubscription;
@@ -237,22 +234,6 @@ class _MapPageState extends ConsumerState<MapPage> {
           ref: ref,
           enabled: next,
         );
-      }
-    });
-
-    // Lắng nghe thay đổi trạng thái internet để auto retry khi reconnect
-    ref.listenManual(internetStatusNotifierProvider, (previous, next) {
-      if (!mounted) return;
-
-      // Lưu trạng thái trước đó
-      final wasDisconnected =
-          _previousInternetStatus == InternetStatus.disconnected;
-      _previousInternetStatus = next;
-
-      // Auto retry khi: trước đó mất kết nối -> bây giờ có kết nối
-      if (wasDisconnected && next == InternetStatus.connected) {
-        AppLogger.ui('Internet reconnected - Auto retrying data...');
-        _retryData();
       }
     });
   }
@@ -457,21 +438,27 @@ class _MapPageState extends ConsumerState<MapPage> {
   }
 
   Future<void> _retryData() async {
-    // 1. Retry load Map (Basemap)
+    // Invalidate ArcGIS Feature Layer
+    ref.invalidate(incidentFeatureLayerProvider);
+
+    // Retry load Map (Basemap)
     final map = _mapViewController.arcGISMap;
     if (map != null && map.loadStatus == LoadStatus.failedToLoad) {
       map.retryLoad();
     }
 
-    // 2. Retry load Scene
+    // Retry load Scene
     final scene = _sceneViewController.arcGISScene;
     if (scene != null && scene.loadStatus == LoadStatus.failedToLoad) {
       scene.retryLoad();
     }
 
-    // 3. Retry Data FeatureLayer
-    ref.invalidate(incidentFeatureLayerProvider);
-    ref.read(mapPageNotifierProvider.notifier).fetchIncidents();
+    // Fetch data
+    ref
+        .read(mapPageNotifierProvider.notifier)
+        .fetchIncidents(
+          isManualRetry: true, // Kích hoạt logic chuyển về .loading()
+        );
   }
 
   @override
@@ -545,17 +532,23 @@ class _MapPageState extends ConsumerState<MapPage> {
 
   Widget _buildErrorUI(MapPageState state) {
     return state.maybeWhen(
-      // Lỗi Fatal: Che toàn bộ màn hình
+      // Trạng thái Loading: Trả về rỗng để ẩn hoàn toàn ErrorOverlay
+      loading: () => const SizedBox.shrink(),
+
+      //  Trạng thái Error: Hiện overlay lỗi Fatal che toàn màn hình
       error: (failure) => MapErrorOverlay(
         message: failure.technicalMessage ?? "",
         onRetry: _retryData,
         isFatal: true,
       ),
 
-      // Lỗi Mạng (trong khi đã Loaded): Hiện thanh nhỏ
+      // Trạng thái Loaded: Hiện Banner nếu có failure
       loaded: (incidents, failure) {
         if (failure != null && failure.technicalMessage != null) {
-          final message = failure.technicalMessage!;
+          final message = failure is NetworkFailure
+              ? "Bạn đang ngoại tuyến. Dữ liệu có thể chưa được cập nhật."
+              : "Lỗi: ${failure.technicalMessage}";
+
           return MapErrorOverlay(
             message: message,
             onRetry: _retryData,

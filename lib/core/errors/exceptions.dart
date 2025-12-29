@@ -57,6 +57,16 @@ class SupabaseException extends AppException {
   ) => SupabaseException(message, code, stackTrace);
 }
 
+class ServerException extends AppException {
+  const ServerException(String message, String code, StackTrace? stackTrace)
+    : super(
+        message: message,
+        prefix: '[Server Error]: ',
+        code: code,
+        stackTrace: stackTrace,
+      );
+}
+
 class UnexpectedException extends AppException {
   const UnexpectedException(String message)
     : super(message: message, prefix: '[Unexpected Error]: ');

@@ -1,10 +1,11 @@
 import 'package:fpdart/fpdart.dart';
 import 'package:smart_route_app/core/errors/exceptions.dart';
 import 'package:smart_route_app/core/errors/failures.dart';
+import 'package:smart_route_app/core/network/network_info.dart';
 import 'package:smart_route_app/core/utils/app_logger.dart';
 import 'package:smart_route_app/features/map/data/datasources/arcgis_remote_data_source.dart';
-
 import 'package:smart_route_app/features/map/data/datasources/supabase_remote_data_source.dart';
+import 'package:smart_route_app/features/map/data/local_datasource/incident_local_datasourece.dart';
 import 'package:smart_route_app/features/map/data/models/incident_model.dart';
 import 'package:smart_route_app/features/map/domain/entities/incident.dart';
 import 'package:smart_route_app/features/map/domain/repositories/incident_repository.dart';
@@ -17,29 +18,83 @@ import 'package:uuid/uuid.dart';
 /// - ADD: Lưu vào CẢ ArcGIS và Supabase (dual storage)
 /// - DELETE: Xóa từ CẢ ArcGIS và Supabase (dual storage)
 class IncidentRepositoryImpl implements IncidentRepository {
-  final ArcGISRemoteDataSource _arcGISDataSource; // GET, ADD, DELETE
-  final SupabaseRemoteDataSource _supabaseDataSource; // ADD, DELETE, GET
+  final ArcGISRemoteDataSource _arcGISRemoteDataSource; // GET, ADD, DELETE
+  final SupabaseRemoteDataSource _supabaseRemoteDataSource; // ADD, DELETE, GET
+  final IncidentLocalDataSource _localDataSource; // Cache local
 
-  IncidentRepositoryImpl(this._arcGISDataSource, this._supabaseDataSource);
+  final NetworkInfo _networkInfo;
+
+  IncidentRepositoryImpl(
+    this._arcGISRemoteDataSource,
+    this._supabaseRemoteDataSource,
+    this._localDataSource,
+    this._networkInfo,
+  );
+
+  // Lấy dữ liệu cache khi có lỗi mạng/server
+  Future<Either<Failure, List<Incident>>> _getCachedIncidents(
+    Failure originalFailure,
+  ) async {
+    try {
+      final cachedModels = await _localDataSource.getCachedArcGisIncidents();
+      if (cachedModels.isNotEmpty) {
+        // Có dữ liệu cũ, trả về dữ liệu cũ (Right) dù đang có lỗi mạng/server
+        return right(cachedModels.map((m) => m.toEntity()).toList());
+      } else {
+        // Cache cũng không có dữ liệu -> Lúc này mới trả về lỗi gốc (Left)
+        return left(originalFailure);
+      }
+    } catch (cacheError) {
+      // Cache cũng không có dữ liệu -> Lúc này mới trả về lỗi gốc (Left)
+      return left(originalFailure);
+    }
+  }
+  // Presentation Layer
+  // Khi bạn trả về Right nhưng thực chất là dữ liệu từ Cache, đôi khi bạn muốn UI hiển thị một dòng thông báo nhỏ: "Đang hiển thị dữ liệu ngoại tuyến".
+  // Để làm được điều này, thay vì trả về List<Incident>, bạn có thể trả về một Wrapper Object:
+  //
+  //   class IncidentResult {
+  //   final List<Incident> incidents;
+  //   final bool isFromCache;
+  //   IncidentResult(this.incidents, this.isFromCache);
+  // }
+  // Repository sẽ trả về: Right(IncidentResult(data, true))
 
   @override
   Future<Either<Failure, List<Incident>>> getIncidentsFormArcGis() async {
+    final bool isConnected = await _networkInfo.isConnected;
     try {
-      AppLogger.repository('GET incidents from ArcGIS');
+      if (isConnected) {
+        try {
+          // AppLogger.repository('GET incidents from ArcGIS');
 
-      // Lấy từ ArcGIS Feature Layer (để hiển thị map)
-      final List<IncidentModel> incidentModels = await _arcGISDataSource
-          .getIncidents();
+          // Lấy từ ArcGIS Feature Layer (để hiển thị map)
+          final List<IncidentModel> incidentModels =
+              await _arcGISRemoteDataSource.getIncidents();
 
-      // Map Model -> Entity
-      final List<Incident> incidents = incidentModels
-          .map((model) => model.toEntity())
-          .toList();
+          // Cache
+          await _localDataSource.cacheArcGisIncidents(incidentModels);
 
-      AppLogger.repository('GET Success - ${incidents.length} incidents');
-      return right(incidents);
-    } on NetworkException catch (_) {
-      return left(NetworkFailure.noInternet());
+          // Map Model -> Entity
+          final List<Incident> incidents = incidentModels
+              .map((model) => model.toEntity())
+              .toList();
+
+          // AppLogger.repository('GET Success - ${incidents.length} incidents');
+          return right(incidents);
+        } catch (e, st) {
+          AppLogger.warning(
+            'ArcGIS Remote failed, falling back to cache. Error: $e',
+          );
+
+          // ONLINE NHƯNG LỖI (Server down/Timeout): Thử tìm trong Cache
+          return await _getCachedIncidents(UnexpectedFailure(e, st));
+        }
+      } else {
+        // Offline: Lấy từ Cache
+        AppLogger.repository('Device offline, fetching from local cache');
+        return _getCachedIncidents(NetworkFailure.noInternet());
+      }
     } catch (e, st) {
       AppLogger.error(
         'GET Failed',
@@ -71,11 +126,11 @@ class IncidentRepositoryImpl implements IncidentRepository {
       ).copyWith(id: newUuid);
 
       // Thêm vào ArcGIS trước để lấy ObjectID
-      arcgisObjectId = await _arcGISDataSource.addIncident(incidentModel);
+      arcgisObjectId = await _arcGISRemoteDataSource.addIncident(incidentModel);
       AppLogger.repository('ADD to ArcGIS Success (ObjectID: $arcgisObjectId)');
       // Cập nhật ObjectID vào model và thêm vào Supabase
       incidentModel = incidentModel.copyWith(arcgisObjectId: arcgisObjectId);
-      await _supabaseDataSource.saveIncident(incidentModel);
+      await _supabaseRemoteDataSource.saveIncident(incidentModel);
       AppLogger.repository('ADD to Supabase Success');
 
       return right(null);
@@ -108,7 +163,7 @@ class IncidentRepositoryImpl implements IncidentRepository {
           'Rolling back ArcGIS - deleting ObjectID: $arcgisObjectId',
         );
         try {
-          await _arcGISDataSource.deleteIncident(arcgisObjectId);
+          await _arcGISRemoteDataSource.deleteIncident(arcgisObjectId);
           AppLogger.repository('Rollback completed successfully');
         } catch (rollbackError) {
           AppLogger.error(
@@ -132,9 +187,8 @@ class IncidentRepositoryImpl implements IncidentRepository {
   }) async {
     try {
       // BƯỚC 1: Query incident từ Supabase bằng ArcGIS ObjectID
-      final incident = await _supabaseDataSource.getIncidentByArcgisObjectId(
-        incidentId,
-      );
+      final incident = await _supabaseRemoteDataSource
+          .getIncidentByArcgisObjectId(incidentId);
 
       if (incident == null) {
         return left(
@@ -163,7 +217,7 @@ class IncidentRepositoryImpl implements IncidentRepository {
 
       // BƯỚC 2: Xóa từ Supabase trước (dùng UUID)
       AppLogger.repository('DELETE from Supabase...');
-      await _supabaseDataSource.deleteIncident(
+      await _supabaseRemoteDataSource.deleteIncident(
         supabaseId,
         incident.reportedByUid!,
       );
@@ -172,7 +226,7 @@ class IncidentRepositoryImpl implements IncidentRepository {
       // BƯỚC 3: Xóa từ ArcGIS nếu có ObjectID
       if (arcgisObjectId != null && arcgisObjectId.isNotEmpty) {
         AppLogger.repository('DELETE from ArcGIS - ObjectID: $arcgisObjectId');
-        await _arcGISDataSource.deleteIncident(arcgisObjectId);
+        await _arcGISRemoteDataSource.deleteIncident(arcgisObjectId);
         AppLogger.repository('DELETE from ArcGIS Success');
       } else {
         AppLogger.repository('Skip DELETE from ArcGIS - no ObjectID found');
@@ -214,7 +268,9 @@ class IncidentRepositoryImpl implements IncidentRepository {
   }) async {
     try {
       AppLogger.repository('GET incidents from Supabase (User: $userUid)');
-      final models = await _supabaseDataSource.getIncidents(userUid: userUid);
+      final models = await _supabaseRemoteDataSource.getIncidents(
+        userUid: userUid,
+      );
       final incidents = models.map((m) => m.toEntity()).toList();
       AppLogger.repository('GET Success - ${incidents.length} incidents');
       return right(incidents);
@@ -253,7 +309,7 @@ class IncidentRepositoryImpl implements IncidentRepository {
     try {
       // BƯỚC 1: Query incident từ Supabase bằng ArcGIS ObjectID
       // incident.id từ ArcGIS chính là OBJECTID
-      final existingIncident = await _supabaseDataSource
+      final existingIncident = await _supabaseRemoteDataSource
           .getIncidentByArcgisObjectId(incident.id);
 
       if (existingIncident == null) {
@@ -277,7 +333,7 @@ class IncidentRepositoryImpl implements IncidentRepository {
         AppLogger.repository(
           'Updating incident in ArcGIS - ObjectID: $arcgisObjectId',
         );
-        await _arcGISDataSource.updateIncident(model);
+        await _arcGISRemoteDataSource.updateIncident(model);
         AppLogger.repository('UPDATE in ArcGIS Success');
       } else {
         AppLogger.repository('Skip UPDATE ArcGIS - no ObjectID found');
@@ -300,7 +356,7 @@ class IncidentRepositoryImpl implements IncidentRepository {
 
       AppLogger.repository('UPDATE in Supabase - Incident ID: ${incident.id}');
 
-      await _supabaseDataSource.updateIncident(model, userUid);
+      await _supabaseRemoteDataSource.updateIncident(model, userUid);
 
       AppLogger.repository('UPDATE in Supabase Success');
 
@@ -331,5 +387,17 @@ class IncidentRepositoryImpl implements IncidentRepository {
         UnexpectedFailure(e, st),
       ); // return UnexpectedFailure (lỗi chưa xác định)
     }
+  }
+
+  // ============ Cache Management ============
+
+  @override
+  Future<int> getCachedIncidentCount() async {
+    return await _localDataSource.getCacheCount();
+  }
+
+  @override
+  Future<void> clearIncidentCache() async {
+    await _localDataSource.clearAll();
   }
 }

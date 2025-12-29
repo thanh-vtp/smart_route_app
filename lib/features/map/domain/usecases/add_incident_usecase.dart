@@ -12,6 +12,7 @@ class AddIncidentUsecase {
   /// Add incident with user information from authenticated user
   /// [incident] - Incident data to add
   /// [currentUser] - Current authenticated user (from auth state)
+  /// Use name function execute or call for writing usecases
   Future<Either<Failure, void>> call(
     Incident incident,
     AppUser currentUser,

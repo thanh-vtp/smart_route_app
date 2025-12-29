@@ -1,9 +1,12 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:smart_route_app/core/resources/extensions/context_modal_extension.dart';
 import 'package:smart_route_app/features/auth/presentation/states/auth.dart';
 import 'package:smart_route_app/features/map/presentation/pages/map_page.dart';
 import 'package:smart_route_app/features/map/presentation/pages/report_page.dart';
+import 'package:smart_route_app/features/map/presentation/widgets/map_bottom_sheet_container.dart';
 
 class MainPage extends ConsumerStatefulWidget {
   static const String route = '/';
@@ -25,17 +28,31 @@ class _MainPageState extends ConsumerState<MainPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.black87,
+      backgroundColor: Colors.white,
 
       body: Stack(
         fit: StackFit.expand,
         children: [
           const MapPage(),
           const Positioned(top: 0, left: 0, right: 0, child: _ExploreLayer()),
+
           if (_selectedIndex == 1)
-            Positioned.fill(child: _buildPersistentSheet()),
+            Positioned.fill(child: _buildPersistentSheet(context)),
+
+          // Bottom Sheet Container (hiển thị LocationInfo hoặc IncidentDetail)
+          // Đặt ở đây để ngang cấp với ReportMapPage và có thể tương tác map bên dưới
+          const Positioned.fill(child: MapBottomSheetContainer()),
         ],
       ),
+
+      floatingActionButton: FloatingActionButton.extended(
+        onPressed: () => context.go('/arcgis-demo'),
+        backgroundColor: Colors.blue,
+        foregroundColor: Colors.white,
+        icon: const Icon(Icons.map),
+        label: const Text('ArcGIS Demo'),
+      ),
+      floatingActionButtonLocation: FloatingActionButtonLocation.endTop,
 
       bottomNavigationBar: Theme(
         data: Theme.of(context).copyWith(
@@ -135,6 +152,19 @@ class _ExploreLayer extends ConsumerWidget {
                   PopupMenuItem(
                     child: Row(
                       children: [
+                        Icon(Icons.map, size: 20, color: Colors.blue),
+                        SizedBox(width: 8),
+                        Text('ArcGIS Demo'),
+                      ],
+                    ),
+                    onTap: () {
+                      // Navigate to ArcGIS Demo page
+                      context.go('/arcgis-demo');
+                    },
+                  ),
+                  PopupMenuItem(
+                    child: Row(
+                      children: [
                         Icon(Icons.logout, size: 20),
                         SizedBox(width: 8),
                         Text('Đăng xuất'),
@@ -155,35 +185,40 @@ class _ExploreLayer extends ConsumerWidget {
   }
 }
 
-Widget _buildPersistentSheet() {
-  return DraggableScrollableSheet(
-    initialChildSize: 0.9, // Mở lên ban đầu 90% màn hình
-    minChildSize: 0.1, // Thu nhỏ tối đa 10%
-    maxChildSize: 0.9, // Kéo lên tối đa 90%
-    builder: (context, scrollController) => Container(
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
-        boxShadow: [
-          BoxShadow(color: Colors.black12, blurRadius: 10, spreadRadius: 2),
-        ],
-      ),
-      child: Column(
-        children: [
-          Center(
-            child: Container(
-              margin: EdgeInsets.only(top: 10, bottom: 10),
-              width: 40,
-              height: 4,
-              decoration: BoxDecoration(
-                color: Colors.grey[300],
-                borderRadius: BorderRadius.circular(2),
-              ),
-            ),
-          ),
-          Expanded(child: ReportMapPage(scrollController: scrollController)),
-        ],
-      ),
-    ),
+Widget _buildPersistentSheet(BuildContext context) {
+  // return DraggableScrollableSheet(
+  //   initialChildSize: 1.0, // Mở lên ban đầu 100% màn hình
+  //   minChildSize: 0.14, // Thu nhỏ tối đa 14%
+  //   maxChildSize: 1.0, // Kéo lên tối đa 100%
+  //   builder: (context, scrollController) => Container(
+  //     decoration: BoxDecoration(
+  //       color: Colors.white,
+  //       borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
+  //       boxShadow: [
+  //         BoxShadow(color: Colors.black12, blurRadius: 10, spreadRadius: 2),
+  //       ],
+  //     ),
+  //     child: Column(
+  //       children: [
+  //         Center(
+  //           child: Container(
+  //             margin: EdgeInsets.only(top: 10, bottom: 10),
+  //             width: 40,
+  //             height: 4,
+  //             decoration: BoxDecoration(
+  //               color: Colors.grey[300],
+  //               borderRadius: BorderRadius.circular(2),
+  //             ),
+  //           ),
+  //         ),
+  //         Expanded(child: ReportMapPage(scrollController: scrollController)),
+  //       ],
+  //     ),
+  //   ),
+  // );
+
+  return context.buildDraggableScrollableSheet(
+    builder: (scrollController) =>
+        ReportMapPage(scrollController: scrollController),
   );
 }

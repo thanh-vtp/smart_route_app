@@ -32,3 +32,5 @@ analyzer:
     - custom_lint
   errors:
     invalid_annotation_target: ignore # for freezed
+    avoid_types_as_parameter_names: ignore
+    deprecated_member_use: ignore

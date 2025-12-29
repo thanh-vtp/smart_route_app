@@ -148,8 +148,11 @@ class AppLogger {
   ///
   /// Uses developer.log() directly for better performance in data operations
   static void data(String message, {String? source, Object? error}) {
-    debug(message,
-        name: 'DataLayer${source != null ? '.$source' : ''}', error: error);
+    debug(
+      message,
+      name: 'DataLayer${source != null ? '.$source' : ''}',
+      error: error,
+    );
   }
 
   /// For detailed technical debugging (raw JSON, parsing details, etc.)
@@ -187,7 +190,10 @@ class AppLogger {
   /// According to Clean Architecture, domain layer should have minimal logging
   /// but this provides structured logging when needed for business operations
   static void domain(String message, {Object? error, String? useCase}) {
-    info(message,
-        name: 'Domain${useCase != null ? '.$useCase' : ''}', error: error);
+    info(
+      message,
+      name: 'Domain${useCase != null ? '.$useCase' : ''}',
+      error: error,
+    );
   }
 }

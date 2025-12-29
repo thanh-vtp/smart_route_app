@@ -4,6 +4,8 @@ import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:smart_route_app/features/auth/presentation/pages/login_page.dart';
 import 'package:smart_route_app/features/auth/presentation/states/auth.dart';
 import 'package:smart_route_app/features/main/presentation/pages/main_page.dart';
+import 'package:smart_route_app/features/map/presentation/pages/arcgis_demo_page.dart';
+import 'package:smart_route_app/features/map/presentation/pages/direction_page.dart';
 
 part 'router.g.dart';
 
@@ -74,7 +76,34 @@ GoRouter router(RouterRef ref) {
         path: '/',
         name: MainPage.route,
         builder: (context, state) => const MainPage(),
-        routes: [],
+        routes: [
+          // ArcGIS Demo Page - nested route
+          GoRoute(
+            path: 'arcgis-demo',
+            name: 'arcgis-demo',
+            builder: (context, state) => const ArcGISDemoPage(),
+          ),
+          // Direction Page - nested route
+          GoRoute(
+            path: 'direction',
+            name: 'direction',
+            builder: (context, state) => const DirectionPage(),
+          ),
+        ],
+      ),
+
+      // ArcGIS Demo Page - standalone route for easy testing
+      GoRoute(
+        path: '/arcgis-demo',
+        name: 'arcgis-demo-standalone',
+        builder: (context, state) => const ArcGISDemoPage(),
+      ),
+
+      // Direction Page - standalone route
+      GoRoute(
+        path: '/direction',
+        name: 'direction-standalone',
+        builder: (context, state) => const DirectionPage(),
       ),
     ],
   );

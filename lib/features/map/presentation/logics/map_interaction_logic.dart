@@ -1,18 +1,16 @@
 import 'package:arcgis_maps/arcgis_maps.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:smart_route_app/core/resources/extensions/build_context.dart';
 import 'package:smart_route_app/core/utils/app_logger.dart';
 import 'package:smart_route_app/features/map/data/models/incident_model.dart';
 import 'package:smart_route_app/features/map/domain/entities/incident.dart'
     as domain;
-import 'package:smart_route_app/features/map/presentation/helpers/location_marker_helper.dart';
-import 'package:smart_route_app/features/map/presentation/models/incident_symbol_factory.dart';
+import 'package:smart_route_app/features/map/presentation/logics/incident_symbol_factory.dart';
 import 'package:smart_route_app/features/map/presentation/models/incident_type_config.dart';
+import 'package:smart_route_app/features/map/presentation/providers/location_info_provider.dart';
 import 'package:smart_route_app/features/map/presentation/providers/map_mode_provider.dart';
 import 'package:smart_route_app/features/map/presentation/providers/states/map_page_notifier.dart';
-import 'package:smart_route_app/features/map/presentation/widgets/add_incident_bottom_sheet.dart';
-import 'package:smart_route_app/features/map/presentation/widgets/incident_detail_bottom_sheet.dart';
-import 'package:smart_route_app/features/map/presentation/widgets/location_info_bottom_sheet.dart';
 
 /// Xử lý các tương tác người dùng (Tap, Zoom) trên bản đồ
 class MapInteractionLogic {
@@ -22,19 +20,13 @@ class MapInteractionLogic {
   // Create a graphics overlay for location marker
   final _locationMarkerOverlay = GraphicsOverlay();
 
-  // Helper để quản lý location marker
-  final _locationMarkerHelper = LocationMarkerHelper();
-
   /// Highlight incident đã chọn bằng cách đổi symbol
   Graphic? _highlightedGraphic;
   ArcGISSymbol? _originalSymbol;
 
-  /// Cache highlight symbol để không tạo mới mỗi lần
-  ArcGISSymbol? _cachedHighlightSymbol;
-
   void initialize() {
-    // Khởi tạo LocationMarkerHelper với overlay
-    _locationMarkerHelper.initialize(_locationMarkerOverlay);
+    // Khởi tạo shared LocationMarkerHelper với overlay
+    sharedLocationMarkerHelper.initialize(_locationMarkerOverlay);
   }
 
   /// Di chuyển graphics overlay sang view đang active
@@ -150,11 +142,12 @@ class MapInteractionLogic {
               _zoomToIncident(
                 identifiedGraphic,
                 mapViewController: mapViewController,
+                context: context,
               );
               _highlightIncident(identifiedGraphic);
 
               // Hiển thị bottom sheet
-              _showIncidentBottomSheet(incident, context: context);
+              _showIncidentBottomSheet(incident, context: context, ref: ref);
             },
           );
         }
@@ -172,10 +165,29 @@ class MapInteractionLogic {
   Future<void> _zoomToIncident(
     Graphic graphic, {
     required ArcGISMapViewController mapViewController,
+    required BuildContext context,
   }) async {
     try {
       final geometry = graphic.geometry;
       if (geometry is ArcGISPoint) {
+        // 1. Xác định Target Scale
+        // Nếu user đang zoom out xa (>10000), zoom vào 8000 cho rõ
+        // Nếu user đang zoom in gần (<10000), giữ nguyên scale hiện tại để không làm họ khó chịu
+        final currentViewpoint = mapViewController.getCurrentViewpoint(
+          ViewpointType.centerAndScale,
+        );
+        final currentScale = currentViewpoint?.targetScale ?? 10000;
+        final targetScale = currentScale > 10000 ? 8000.0 : currentScale;
+
+        // 2. Tính Offset động
+        // Chúng ta muốn Marker nằm ở 25% màn hình từ trên xuống (screenRatioY: 0.25)
+        // Vì Sheet chiếm 50% dưới, nên 50% trên còn trống -> Tâm là 25%
+        final latitudeOffset = _calculateLatitudeOffset(
+          context: context,
+          targetScale: targetScale,
+          screenRatioY: 0.4,
+        );
+
         // --- LOGIC TÍNH TOÁN OFFSET ---
         // Tại scale 5000, 1 độ vĩ độ ~ 111km.
         // Chúng ta cần dịch chuyển tâm bản đồ xuống dưới khoảng 300-400 mét
@@ -183,7 +195,7 @@ class MapInteractionLogic {
 
         // 0.003 độ ~ 330 mét
         // Ước lượng hoạt động tốt cho mức scale: 5000
-        const double latitudeOffset = 0.0015; // Giảm số để đẩy marker xuống
+        // const double latitudeOffset = 0.0015; // Giảm số để đẩy marker xuống
 
         // Tạo điểm tâm mới nằm thấp hơn vị trí thật của incident
         // (Giữ nguyên kinh độ x, giảm vĩ độ y)
@@ -200,10 +212,10 @@ class MapInteractionLogic {
         );
 
         // Animate mượt mà
-        await mapViewController.setViewpointAnimated(
-          viewpoint,
-          duration: 0.8, // 0.8 giây là chuẩn Google Maps
-          // curve: AnimationCurve.easeInOut, // Hiệu ứng tăng giảm tốc
+        await mapViewController.setViewpointWithDurationAndCurve(
+          viewpoint: viewpoint,
+          durationSeconds: 0.8, // 0.8 giây là chuẩn Google Maps
+          curve: AnimationCurve.easeInOutCubic,
         );
 
         AppLogger.ui(
@@ -225,7 +237,8 @@ class MapInteractionLogic {
       _highlightedGraphic = graphic;
 
       // Tạo highlight symbol (marker lớn hơn, màu nổi bật)
-      final highlightSymbol = await _createHighlightSymbol();
+      final highlightSymbol = await IncidentSymbolFactory()
+          .getHighlightSymbol();
 
       // Đổi symbol của graphic
       graphic.symbol = highlightSymbol;
@@ -246,59 +259,14 @@ class MapInteractionLogic {
     }
   }
 
-  /// Tạo highlight symbol (marker lớn hơn) - CÓ CACHE
-  Future<ArcGISSymbol> _createHighlightSymbol() async {
-    // Trả về cached symbol nếu đã có
-    if (_cachedHighlightSymbol != null) {
-      return _cachedHighlightSymbol!;
-    }
-
-    try {
-      // Load marker image từ assets
-      final image = await ArcGISImage.fromAsset(
-        'assets/icons/location_marker.png',
-      );
-
-      // Tạo picture marker lớn hơn bình thường
-      _cachedHighlightSymbol = PictureMarkerSymbol.withImage(image)
-        ..width =
-            50 // Lớn hơn symbol thường (40)
-        ..height = 50
-        ..offsetY = 25; // Offset để pin trỏ đúng vị trí
-
-      return _cachedHighlightSymbol!;
-    } catch (e) {
-      AppLogger.ui('Error creating highlight symbol: $e', error: e);
-      // Fallback: dùng SimpleMarkerSymbol màu vàng
-      _cachedHighlightSymbol =
-          SimpleMarkerSymbol(
-              style: SimpleMarkerSymbolStyle.circle,
-              color: Colors.yellow,
-              size: 24,
-            )
-            ..outline = SimpleLineSymbol(
-              style: SimpleLineSymbolStyle.solid,
-              color: Colors.orange,
-              width: 3,
-            );
-      return _cachedHighlightSymbol!;
-    }
-  }
-
   /// Hiển thị modal bottom sheet với chi tiết sự cố
   void _showIncidentBottomSheet(
     domain.Incident incident, {
     required BuildContext context,
+    required WidgetRef ref,
   }) {
-    showModalBottomSheet(
-      context: context,
-      isScrollControlled: true,
-      backgroundColor: Colors.transparent,
-      builder: (context) => IncidentDetailBottomSheet(incident: incident),
-    ).then((_) {
-      // Clear highlight khi đóng bottom sheet
-      _clearHighlight();
-    });
+    // Sử dụng provider thay vì showModalBottomSheet trực tiếp
+    ref.read(mapBottomSheetProvider.notifier).showIncidentDetail(incident);
   }
 
   /// Xử lý sự kiện long press end trên bản đồ 2D
@@ -311,7 +279,7 @@ class MapInteractionLogic {
   }) async {
     try {
       if (mounted) {
-        // Llấy thông tin vị trí tap
+        // Lấy thông tin vị trí tap
         final mapPoint = mapViewController.screenToLocation(
           screen: screenPoint,
         );
@@ -329,7 +297,14 @@ class MapInteractionLogic {
             // Vẽ marker tại vị trí gốc (mapPoint) để hiển thị đúng trên map
             _addLocationMarker(mapPoint);
 
-            // Nhưng hiển thị thông tin tọa độ thì dùng điểm WGS84 (wgs84Point)
+            // Zoom và recenter đến vị trí long press
+            await _zoomToLongPressLocation(
+              mapPoint,
+              mapViewController: mapViewController,
+              context: context,
+            );
+
+            // Hiển thị thông tin tọa độ (dùng điểm WGS84)
             _showLocationInfo(
               wgs84Point.y,
               wgs84Point.x,
@@ -346,12 +321,113 @@ class MapInteractionLogic {
     }
   }
 
-  /// Thêm marker tạm thời tại vị trí được chọn
-  Future<void> _addLocationMarker(ArcGISPoint point) async {
-    await _locationMarkerHelper.addMarker(point);
+  /// Tính toán độ lệch Vĩ độ (Latitude) để đưa điểm target vào vùng hiển thị mong muốn
+  /// [context] - Để lấy chiều cao màn hình
+  /// [targetScale] - Mức zoom đích (ví dụ 8000)
+  /// [screenRatioY] - Vị trí Y mong muốn trên màn hình (0.0 - 1.0).
+  ///                  0.25 nghĩa là điểm đó sẽ nằm ở 1/4 màn hình từ trên xuống (giữa phần trống).
+  double _calculateLatitudeOffset({
+    required BuildContext context,
+    required double targetScale,
+    double screenRatioY = 0.25,
+  }) {
+    // 1. Lấy chiều cao màn hình (logical pixels)
+    final screenHeight = context.height;
+
+    // 2. Tính khoảng cách pixel từ tâm màn hình (0.5) đến điểm mong muốn
+    // Ví dụ: Muốn nằm ở 0.25, thì lệch 0.25 so với tâm 0.5
+    // Chúng ta cần dịch Map Center xuống dưới (Latitude giảm) để điểm Target chạy lên trên
+    final pixelOffset = screenHeight * (0.5 - screenRatioY);
+
+    // 3. Tính độ phân giải (Meters per Pixel) tại Scale đích
+    // Công thức: Resolution = Scale / (DPI * InchesPerMeter)
+    // Flutter logical DPI ~ 96, 1 meter = 39.37 inches
+    // Constant = 96 * 39.37 ≈ 3780
+    final resolution = targetScale / 3780;
+
+    // 4. Đổi Pixel sang Mét
+    final metersOffset = pixelOffset * resolution;
+
+    // 5. Đổi Mét sang Độ Vĩ Độ (Degrees Latitude)
+    // 1 độ vĩ độ ≈ 111,320 mét
+    final degreesOffset = metersOffset / 111320;
+
+    return degreesOffset;
   }
 
-  /// Hiển thị thông tin vị trí khi tap vào map (không phải incident)
+  /// Zoom và recenter map đến vị trí long press
+  Future<void> _zoomToLongPressLocation(
+    ArcGISPoint point, {
+    required ArcGISMapViewController mapViewController,
+    required BuildContext context,
+  }) async {
+    try {
+      // 1. Xác định Target Scale
+      // Nếu user đang zoom out xa (>10000), zoom vào 8000 cho rõ
+      // Nếu user đang zoom in gần (<10000), giữ nguyên scale hiện tại để không làm họ khó chịu
+      final currentViewpoint = mapViewController.getCurrentViewpoint(
+        ViewpointType.centerAndScale,
+      );
+      final currentScale = currentViewpoint?.targetScale ?? 10000;
+      final targetScale = currentScale > 10000 ? 8000.0 : currentScale;
+
+      // 2. Tính Offset động
+      // Chúng ta muốn Marker nằm ở 25% màn hình từ trên xuống (screenRatioY: 0.25)
+      // Vì Sheet chiếm 50% dưới, nên 50% trên còn trống -> Tâm là 25%
+      final latitudeOffset = _calculateLatitudeOffset(
+        context: context,
+        targetScale: targetScale,
+        screenRatioY: 0.3,
+      );
+
+      // Offset để marker nằm phía trên bottom sheet (khoảng 1/4 màn hình từ trên)
+      // Tại scale 5000, 0.0015 độ ~ 165 mét
+      // const double latitudeOffset = 0.0015;
+
+      // Chuyển sang WGS84 để tính offset
+      final wgs84Point =
+          GeometryEngine.project(
+                point,
+                outputSpatialReference: SpatialReference.wgs84,
+              )
+              as ArcGISPoint?;
+
+      if (wgs84Point == null) return;
+
+      // 4. Tạo tâm ảo (Virtual Center) thấp hơn điểm thật
+      // Trừ đi offset để tâm map chạy xuống nam -> điểm marker chạy lên bắc (lên trên)
+      final offsetPoint = ArcGISPoint(
+        x: wgs84Point.x,
+        y: wgs84Point.y - latitudeOffset,
+        spatialReference: SpatialReference.wgs84,
+      );
+
+      // Tạo viewpoint với tâm đã dịch chuyển
+      final viewpoint = Viewpoint.fromCenter(offsetPoint, scale: targetScale);
+
+      // Animate mượt mà
+      await mapViewController.setViewpointWithDurationAndCurve(
+        viewpoint: viewpoint,
+        durationSeconds:
+            0.6, // 0.6 giây cho long press (nhanh hơn tap incident)
+        curve: AnimationCurve.easeOutCubic,
+      );
+
+      AppLogger.ui(
+        'Zoomed to long press location: ${wgs84Point.y}, ${wgs84Point.x}, scale: $targetScale',
+      );
+    } catch (e) {
+      AppLogger.ui('Error zooming to long press location: $e', error: e);
+    }
+  }
+
+  /// Thêm marker tạm thời tại vị trí được chọn
+  Future<void> _addLocationMarker(ArcGISPoint point) async {
+    await sharedLocationMarkerHelper.addMarker(point);
+  }
+
+  /// Hiển thị thông tin vị trí khi long press/tap vào map (không phải incident)
+  /// Dùng provider để hiển thị DraggableScrollableSheet trong widget tree
   void _showLocationInfo(
     double latitude,
     double longitude, {
@@ -360,43 +436,71 @@ class MapInteractionLogic {
     ArcGISMapViewController? mapViewController,
     ArcGISSceneViewController? sceneViewController,
   }) {
-    final mapMode = ref.read(mapModeProviderProvider);
+    // Tìm incident gần vị trí long press (trong bán kính ~100m)
+    final nearbyIncident = _findNearbyIncident(latitude, longitude, ref);
 
-    showModalBottomSheet(
-      context: context,
-      isScrollControlled: true,
-      backgroundColor: Colors.transparent,
-      builder: (context) => LocationInfoBottomSheet(
-        initialLatitude: latitude,
-        initialLongitude: longitude,
-        mapViewController: mapMode == MapMode.map2D ? mapViewController : null,
-        sceneViewController: mapMode == MapMode.scene3D
-            ? sceneViewController
-            : null,
-        title: 'Thông tin vị trí',
-        description: 'Tọa độ của điểm bạn chạm vào',
-        onReport: () {
-          // Hiển thị form báo cáo với tọa độ cố định tại vị trí marker
-          showModalBottomSheet(
-            context: context,
-            isScrollControlled: true,
-            backgroundColor: Colors.transparent,
-            builder: (context) => AddIncidentBottomSheet(
-              latitude: latitude,
-              longitude: longitude,
-            ),
-          );
-        },
-      ),
-    ).then((_) {
-      // Xóa marker khi đóng bottom sheet
-      _removeLocationMarker();
-    });
+    // Update provider để hiển thị bottom sheet (kèm incident nếu có)
+    ref
+        .read(locationInfoProvider.notifier)
+        .show(latitude, longitude, nearbyIncident: nearbyIncident);
   }
 
-  /// Xóa location marker
-  void _removeLocationMarker() {
-    _locationMarkerHelper.removeMarker();
+  /// Tìm incident gần vị trí được chọn (trong bán kính ~100m)
+  domain.Incident? _findNearbyIncident(
+    double latitude,
+    double longitude,
+    WidgetRef ref,
+  ) {
+    const double thresholdMeters = 100; // Bán kính tìm kiếm 100m
+    const double metersPerDegree = 111320; // ~111km per degree at equator
+
+    final mapState = ref.read(mapPageNotifierProvider);
+    domain.Incident? nearestIncident;
+    double minDistance = double.infinity;
+
+    mapState.whenOrNull(
+      loaded: (incidents, _) {
+        for (final incident in incidents) {
+          try {
+            final incLat = double.parse(incident.latitude);
+            final incLon = double.parse(incident.longitude);
+
+            // Tính khoảng cách đơn giản (Euclidean approximation)
+            final dLat = (latitude - incLat) * metersPerDegree;
+            final dLon =
+                (longitude - incLon) *
+                metersPerDegree *
+                _cosine(latitude * 3.14159 / 180);
+            final distance = _sqrt(dLat * dLat + dLon * dLon);
+
+            if (distance < thresholdMeters && distance < minDistance) {
+              minDistance = distance;
+              nearestIncident = incident;
+            }
+          } catch (e) {
+            // Skip invalid coordinates
+          }
+        }
+      },
+    );
+
+    return nearestIncident;
+  }
+
+  /// Simple cosine approximation
+  double _cosine(double x) {
+    // Taylor series approximation for cos(x)
+    return 1 - (x * x) / 2 + (x * x * x * x) / 24;
+  }
+
+  /// Simple square root using Newton's method
+  double _sqrt(double x) {
+    if (x <= 0) return 0;
+    double guess = x / 2;
+    for (int i = 0; i < 10; i++) {
+      guess = (guess + x / guess) / 2;
+    }
+    return guess;
   }
 
   /// Xử lý sự kiện tap trên scene 3D
@@ -430,7 +534,7 @@ class MapInteractionLogic {
                 (inc) => inc.id == incidentId,
                 orElse: () => incidents.first,
               );
-              _showIncidentBottomSheet(incident, context: context);
+              _showIncidentBottomSheet(incident, context: context, ref: ref);
             },
           );
         }
@@ -450,6 +554,13 @@ class MapInteractionLogic {
                   as ArcGISPoint?;
           if (wgs84Point != null) {
             _addLocationMarker(scenePoint);
+
+            // Zoom và recenter scene đến vị trí tap
+            await _zoomToLongPressLocationScene(
+              wgs84Point,
+              sceneViewController: sceneViewController,
+            );
+
             _showLocationInfo(
               wgs84Point.y,
               wgs84Point.x,
@@ -463,6 +574,45 @@ class MapInteractionLogic {
       }
     } catch (e) {
       AppLogger.ui('Error identifying graphic in 3D scene: $e', error: e);
+    }
+  }
+
+  /// Zoom và recenter scene 3D đến vị trí tap/long press
+  Future<void> _zoomToLongPressLocationScene(
+    ArcGISPoint wgs84Point, {
+    required ArcGISSceneViewController sceneViewController,
+  }) async {
+    try {
+      // Offset để marker nằm phía trên bottom sheet
+      const double latitudeOffset = 0.0015;
+
+      // Tạo điểm tâm mới nằm thấp hơn vị trí thật
+      final offsetPoint = ArcGISPoint(
+        x: wgs84Point.x,
+        y: wgs84Point.y - latitudeOffset,
+        spatialReference: SpatialReference.wgs84,
+      );
+
+      // Lấy scale hiện tại
+      final currentViewpoint = sceneViewController.getCurrentViewpoint(
+        ViewpointType.centerAndScale,
+      );
+      final currentScale = currentViewpoint?.targetScale ?? 10000;
+
+      // Nếu scale > 10000, zoom vào scale 8000
+      final targetScale = currentScale > 10000 ? 8000.0 : currentScale;
+
+      // Tạo viewpoint với tâm đã dịch chuyển
+      final viewpoint = Viewpoint.fromCenter(offsetPoint, scale: targetScale);
+
+      // Set viewpoint cho Scene 3D
+      await sceneViewController.setViewpointAnimated(viewpoint, duration: 0.6);
+
+      AppLogger.ui(
+        'Zoomed scene to location: ${wgs84Point.y}, ${wgs84Point.x}, scale: $targetScale',
+      );
+    } catch (e) {
+      AppLogger.ui('Error zooming scene to location: $e', error: e);
     }
   }
 }

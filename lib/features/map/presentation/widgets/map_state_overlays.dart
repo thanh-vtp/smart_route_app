@@ -100,7 +100,7 @@ class MapErrorOverlay extends StatelessWidget {
     // TRƯỜNG HỢP 2: Lỗi nhẹ (Mất mạng) -> Hiện thanh nhỏ (như Google Maps)
     // Dùng Positioned để đặt nó lên trên cùng (dưới SafeArea)
     return Positioned(
-      top: 100, // Đặt dưới thanh tìm kiếm (tùy chỉnh theo UI của bạn)
+      bottom: 200, // Đặt dưới thanh tìm kiếm (tùy chỉnh theo UI của bạn)
       left: 20,
       right: 20,
       child: Material(

@@ -33,7 +33,8 @@ class MapConfigurationHelper {
     return BackgroundGrid(
       backgroundColor: const Color(0xFFA8C8E1), // Màu xanh nước biển
       lineColor: const Color(0xFFA8C8E1), // Ẩn grid lines
-      lineWidth: 0,
+      lineWidth: 1, // Độ dày đường lưới (0 để ẩn hoàn toàn)
+      size: 128, // Kích thước ô grid
     );
   }
 

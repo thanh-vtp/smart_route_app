@@ -1,6 +1,7 @@
 import 'package:arcgis_maps/arcgis_maps.dart';
 import 'package:flutter/material.dart';
 import 'package:smart_route_app/core/utils/app_logger.dart';
+import 'package:smart_route_app/features/map/presentation/logics/incident_symbol_factory.dart';
 
 /// Helper class để quản lý location marker trên bản đồ
 class LocationMarkerHelper {
@@ -15,9 +16,6 @@ class LocationMarkerHelper {
 
   // Graphic hiện tại của location marker
   Graphic? _currentLocationMarker;
-
-  // Cache cho picture marker symbol
-  PictureMarkerSymbol? _cachedPictureMarker;
 
   /// Khởi tạo overlay (gọi một lần khi khởi tạo map)
   void initialize(GraphicsOverlay overlay) {
@@ -84,25 +82,8 @@ class LocationMarkerHelper {
     if (_currentLocationMarker == null) return;
 
     try {
-      // Sử dụng cache nếu đã load trước đó
-      if (_cachedPictureMarker != null) {
-        _currentLocationMarker!.symbol = _cachedPictureMarker;
-        return;
-      }
-
-      // Load image từ assets
-      final image = await ArcGISImage.fromAsset(
-        'assets/icons/location_marker.png',
-      );
-
-      // Tạo picture marker symbol
-      final pictureMarkerSymbol = PictureMarkerSymbol.withImage(image)
-        ..width = 40
-        ..height = 40
-        ..offsetY = 20; // Offset để pin trỏ đúng vị trí
-
-      // Cache để dùng lại
-      _cachedPictureMarker = pictureMarkerSymbol;
+      final pictureMarkerSymbol = await IncidentSymbolFactory()
+          .getHighlightSymbol();
 
       // Cập nhật symbol
       _currentLocationMarker?.symbol = pictureMarkerSymbol;
@@ -124,6 +105,5 @@ class LocationMarkerHelper {
   void dispose() {
     removeMarker();
     _locationMarkerOverlay = null;
-    _cachedPictureMarker = null;
   }
 }

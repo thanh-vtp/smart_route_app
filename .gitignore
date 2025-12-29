@@ -46,3 +46,29 @@ app.*.map.json
 
 # Config arcgis_maps_core
 .arcgis_maps_core/
+
+# Markdown documentation files (sensitive info may be included)
+*.md
+!README.md
+
+# Sensitive files - NEVER push
+.env
+.env.*
+*.env
+secrets/
+**/secrets/
+*.secret
+*.secrets.json
+*.key
+*.pem
+google-services.json
+GoogleService-Info.plist
+local.properties
+keystore.jks
+*.keystore
+release-keystore.jks
+
+# API Keys & Credentials
+**/api_keys.dart
+**/credentials.dart
+**/secrets.dart

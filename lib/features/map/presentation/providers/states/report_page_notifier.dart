@@ -5,15 +5,15 @@ import 'package:smart_route_app/features/map/domain/entities/incident.dart';
 import 'package:smart_route_app/features/map/domain/usecases/get_incidents_usecase.dart';
 import 'package:smart_route_app/features/map/domain/usecases/update_incident_usecase.dart';
 import 'package:smart_route_app/features/map/presentation/providers/states/report_page_state.dart';
-import 'package:smart_route_app/features/map/presentation/providers/use_case_providers.dart';
+import 'package:smart_route_app/features/map/presentation/providers/usecase/use_case_providers.dart';
 
 class ReportPageNotifier extends Notifier<ReportPageState> {
   late final GetIncidentsUsecase _getIncidentsUsecase;
   late final UpdateIncidentUsecase _updateIncidentUsecase;
   @override
   ReportPageState build() {
-    _getIncidentsUsecase = ref.read(getIncidentsUsecaseProvider);
-    _updateIncidentUsecase = ref.read(updateIncidentUsecaseProvider);
+    _getIncidentsUsecase = ref.watch(getIncidentsUsecaseProvider);
+    _updateIncidentUsecase = ref.watch(updateIncidentUsecaseProvider);
     return const ReportPageState.initial();
   }
 
@@ -34,8 +34,7 @@ class ReportPageNotifier extends Notifier<ReportPageState> {
     }
 
     final result = await _getIncidentsUsecase.call(
-      source: source,
-      userUid: currentUser.uid,
+      GetIncidentsParams(source: source, userUid: currentUser.uid),
     );
 
     result.fold(
@@ -92,9 +91,10 @@ class ReportPageNotifier extends Notifier<ReportPageState> {
         // để tránh việc hàm đó set state .loading() đè lên logic của mình.
         // Vẫn giữ state submitted với danh sách cũ + incident mới
         final refreshResult = await _getIncidentsUsecase.call(
-          source: IncidentDataSourceType
-              .supabase, // Mặc định lấy từ DB sau khi edit
-          userUid: currentUser.uid,
+          GetIncidentsParams(
+            source: IncidentDataSourceType.supabase,
+            userUid: currentUser.uid,
+          ),
         );
 
         refreshResult.fold(

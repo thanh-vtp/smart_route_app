@@ -26,4 +26,12 @@ abstract class IncidentRepository {
     Incident incident, {
     required String userUid,
   });
+
+  // ============ Cache Management ============
+
+  /// Lấy số lượng incidents trong cache
+  Future<int> getCachedIncidentCount();
+
+  /// Xóa tất cả cache incidents
+  Future<void> clearIncidentCache();
 }

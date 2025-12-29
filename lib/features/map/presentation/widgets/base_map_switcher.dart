@@ -163,7 +163,9 @@ class _BasemapSelectorSheetState extends ConsumerState<_BasemapSelectorSheet>
                     Container(
                       padding: const EdgeInsets.all(10),
                       decoration: BoxDecoration(
-                        color: Theme.of(context).primaryColor.withOpacity(0.1),
+                        color: Theme.of(
+                          context,
+                        ).primaryColor.withValues(alpha: 0.1),
                         borderRadius: BorderRadius.circular(12),
                       ),
                       child: Icon(
@@ -295,8 +297,8 @@ class _BasemapCardState extends State<_BasemapCard> {
             boxShadow: [
               BoxShadow(
                 color: widget.isSelected
-                    ? Theme.of(context).primaryColor.withOpacity(0.3)
-                    : Colors.black.withOpacity(0.05),
+                    ? Theme.of(context).primaryColor.withValues(alpha: 0.3)
+                    : Colors.black.withValues(alpha: 0.05),
                 blurRadius: widget.isSelected ? 12 : 8,
                 offset: const Offset(0, 4),
               ),
@@ -321,7 +323,7 @@ class _BasemapCardState extends State<_BasemapCard> {
                       Container(
                         padding: const EdgeInsets.all(10),
                         decoration: BoxDecoration(
-                          color: Colors.white.withOpacity(0.9),
+                          color: Colors.white.withValues(alpha: 0.9),
                           borderRadius: BorderRadius.circular(12),
                         ),
                         child: Icon(
@@ -352,7 +354,7 @@ class _BasemapCardState extends State<_BasemapCard> {
                       Text(
                         widget.basemap.description,
                         style: TextStyle(
-                          color: Colors.white.withOpacity(0.9),
+                          color: Colors.white.withValues(alpha: 0.9),
                           fontSize: 11,
                           shadows: const [
                             Shadow(color: Colors.black26, blurRadius: 4),
@@ -377,7 +379,7 @@ class _BasemapCardState extends State<_BasemapCard> {
                         shape: BoxShape.circle,
                         boxShadow: [
                           BoxShadow(
-                            color: Colors.black.withOpacity(0.2),
+                            color: Colors.black.withValues(alpha: 0.2),
                             blurRadius: 8,
                           ),
                         ],

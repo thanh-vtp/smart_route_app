@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:smart_route_app/features/map/domain/entities/incident.dart'
     as domain;
-import 'package:smart_route_app/features/map/presentation/helpers/incident_display_helper.dart';
+import 'package:smart_route_app/features/map/presentation/extensions/incident_display_extensions.dart';
 import 'package:smart_route_app/features/map/presentation/providers/map_mode_provider.dart';
 import 'package:smart_route_app/features/map/presentation/providers/states/map_page_notifier.dart';
 import 'package:smart_route_app/features/map/presentation/widgets/incident_type_widgets.dart';
@@ -302,8 +302,6 @@ class _IncidentCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final config = incident.typeConfig;
-
     return Card(
       margin: const EdgeInsets.only(bottom: 12),
       elevation: 0,
@@ -323,7 +321,7 @@ class _IncidentCard extends StatelessWidget {
               Container(
                 padding: const EdgeInsets.all(12),
                 decoration: BoxDecoration(
-                  color: config.backgroundColor,
+                  color: incident.backgroundColor,
                   borderRadius: BorderRadius.circular(12),
                 ),
                 child: IncidentTypeIcon(
@@ -372,7 +370,7 @@ class _IncidentCard extends StatelessWidget {
                         ),
                         const SizedBox(width: 4),
                         Text(
-                          IncidentDisplayHelper.formatDateTime(
+                          incident.formatCustomDate(
                             incident.editDate ?? incident.reportedTime,
                           ),
                           style: TextStyle(

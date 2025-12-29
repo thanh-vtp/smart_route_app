@@ -6,6 +6,7 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:smart_route_app/core/utils/app_logger.dart';
 import 'package:smart_route_app/features/map/presentation/providers/location_display_providers.dart';
 import 'package:smart_route_app/features/map/presentation/providers/map_mode_provider.dart';
+import 'package:smart_route_app/features/map/presentation/providers/user_location_provider.dart';
 
 /// Xử lý logic liên quan đến Location Map / GPS
 class MapLocationLogic {
@@ -91,23 +92,29 @@ class MapLocationLogic {
           _stopLocationUpdates();
 
           // Log current location after starting
-          // final location = locationDisplay.location;
-          // if (location != null) {
-          //   final lat = location.position.y;
-          //   final lon = location.position.x;
-          //   AppLogger.ui(
-          //     'LocationDisplay started - Current location: Lat: $lat, Lon: $lon',
-          //   );
-          // } else {
-          //   AppLogger.ui('LocationDisplay started for 2D map');
-          // }
+          final location = locationDisplay.location;
+          if (location != null) {
+            final lat = location.position.y;
+            final lon = location.position.x;
+            AppLogger.ui(
+              'LocationDisplay started - Current location: Lat: $lat, Lon: $lon',
+            );
+            // Cập nhật UserLocationProvider
+            ref
+                .read(userLocationProvider.notifier)
+                .updateFromLocation(location);
+          } else {
+            AppLogger.ui('LocationDisplay started for 2D map');
+          }
 
-          // Listen to location changes and log them
-          // locationDisplay.onLocationChanged.listen((location) {
-          //   final lat = location.position.y;
-          //   final lon = location.position.x;
-          //   AppLogger.ui('Location updated: Lat: $lat, Lon: $lon');
-          // });
+          // Listen to location changes and update provider
+          _locationSubscription = locationDisplay.onLocationChanged.listen((
+            location,
+          ) {
+            ref
+                .read(userLocationProvider.notifier)
+                .updateFromLocation(location);
+          });
         } on ArcGISException catch (e) {
           _handelCatchError(
             message: e.toString(),
@@ -129,6 +136,8 @@ class MapLocationLogic {
         if (locationDisplay.started) {
           locationDisplay.stop();
         }
+        // Clear user location khi GPS tắt
+        ref.read(userLocationProvider.notifier).clear();
         AppLogger.ui('LocationDisplay stopped for 2D map');
       }
     }
