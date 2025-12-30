@@ -3,7 +3,7 @@ import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:smart_route_app/core/ui/widgets/btn_child.dart';
 import 'package:smart_route_app/core/utils/app_logger.dart';
-import 'package:smart_route_app/features/auth/presentation/states/auth.dart';
+import 'package:smart_route_app/features/auth/presentation/providers/states/auth.dart';
 import 'package:smart_route_app/features/map/presentation/models/add_incident_form_data.dart';
 import 'package:smart_route_app/features/map/presentation/providers/states/map_page_notifier.dart';
 import 'package:smart_route_app/features/map/presentation/widgets/incident_type_widgets.dart';

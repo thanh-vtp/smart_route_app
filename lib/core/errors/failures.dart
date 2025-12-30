@@ -188,6 +188,15 @@ final class CacheFailure extends Failure {
   );
 }
 
+final class AuthFailure extends Failure {
+  const AuthFailure(
+    String s, {
+    super.technicalMessage,
+    super.code,
+    super.stackTrace,
+  });
+}
+
 /// Lỗi không xác định
 final class UnexpectedFailure extends Failure {
   const UnexpectedFailure(Object error, StackTrace? st)

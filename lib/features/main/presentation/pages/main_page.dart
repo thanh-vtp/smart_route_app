@@ -1,12 +1,12 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
-import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:smart_route_app/core/resources/extensions/context_modal_extension.dart';
-import 'package:smart_route_app/features/auth/presentation/states/auth.dart';
+import 'package:smart_route_app/features/auth/presentation/providers/states/auth.dart';
 import 'package:smart_route_app/features/map/presentation/pages/map_page.dart';
 import 'package:smart_route_app/features/map/presentation/pages/report_page.dart';
 import 'package:smart_route_app/features/map/presentation/widgets/map_bottom_sheet_container.dart';
+import 'package:smart_route_app/features/profile/presentation/widgets/profile_drawers.dart';
 
 class MainPage extends ConsumerStatefulWidget {
   static const String route = '/';
@@ -30,6 +30,9 @@ class _MainPageState extends ConsumerState<MainPage> {
     return Scaffold(
       backgroundColor: Colors.white,
 
+      drawer: const ProfileDrawer(),
+      endDrawer: const EditProfileDrawer(),
+      resizeToAvoidBottomInset: false, //<-- caused the extra space
       body: Stack(
         fit: StackFit.expand,
         children: [
@@ -45,13 +48,13 @@ class _MainPageState extends ConsumerState<MainPage> {
         ],
       ),
 
-      floatingActionButton: FloatingActionButton.extended(
-        onPressed: () => context.go('/arcgis-demo'),
-        backgroundColor: Colors.blue,
-        foregroundColor: Colors.white,
-        icon: const Icon(Icons.map),
-        label: const Text('ArcGIS Demo'),
-      ),
+      // floatingActionButton: FloatingActionButton.extended(
+      //   onPressed: () => context.go('/arcgis-demo'),
+      //   backgroundColor: Colors.blue,
+      //   foregroundColor: Colors.white,
+      //   icon: const Icon(Icons.map),
+      //   label: const Text('ArcGIS Demo'),
+      // ),
       floatingActionButtonLocation: FloatingActionButtonLocation.endTop,
 
       bottomNavigationBar: Theme(
@@ -118,11 +121,13 @@ class _ExploreLayer extends ConsumerWidget {
               Expanded(child: Text("   Tìm kiếm ở đây")),
               Icon(Icons.mic),
               SizedBox(width: 8),
-              // User avatar với popup menu
-              PopupMenuButton<void>(
-                offset: Offset(0, 50),
+              // User avatar - tap to open profile drawer
+              GestureDetector(
+                onTap: () {
+                  Scaffold.of(context).openDrawer();
+                },
                 child: CachedNetworkImage(
-                  imageUrl: user.photoUrl!,
+                  imageUrl: user.avatarUrl ?? '',
                   imageBuilder: (context, imageProvider) =>
                       CircleAvatar(backgroundImage: imageProvider),
                   placeholder: (context, url) =>
@@ -130,51 +135,6 @@ class _ExploreLayer extends ConsumerWidget {
                   errorWidget: (context, url, error) =>
                       CircleAvatar(child: Icon(Icons.person)),
                 ),
-                itemBuilder: (context) => <PopupMenuEntry<void>>[
-                  PopupMenuItem(
-                    enabled: false,
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        Text(
-                          user.displayName ?? 'User',
-                          style: TextStyle(fontWeight: FontWeight.bold),
-                        ),
-                        Text(
-                          user.email,
-                          style: TextStyle(fontSize: 12, color: Colors.grey),
-                        ),
-                      ],
-                    ),
-                  ),
-                  PopupMenuDivider(),
-                  PopupMenuItem(
-                    child: Row(
-                      children: [
-                        Icon(Icons.map, size: 20, color: Colors.blue),
-                        SizedBox(width: 8),
-                        Text('ArcGIS Demo'),
-                      ],
-                    ),
-                    onTap: () {
-                      // Navigate to ArcGIS Demo page
-                      context.go('/arcgis-demo');
-                    },
-                  ),
-                  PopupMenuItem(
-                    child: Row(
-                      children: [
-                        Icon(Icons.logout, size: 20),
-                        SizedBox(width: 8),
-                        Text('Đăng xuất'),
-                      ],
-                    ),
-                    onTap: () async {
-                      await ref.read(authProvider.notifier).signOut();
-                    },
-                  ),
-                ],
               ),
               SizedBox(width: 16),
             ],

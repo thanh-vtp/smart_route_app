@@ -11,7 +11,7 @@ _$AppUserImpl _$$AppUserImplFromJson(Map<String, dynamic> json) =>
       uid: json['uid'] as String,
       email: json['email'] as String,
       displayName: json['displayName'] as String?,
-      photoUrl: json['photoUrl'] as String?,
+      avatarUrl: json['avatarUrl'] as String?,
     );
 
 Map<String, dynamic> _$$AppUserImplToJson(_$AppUserImpl instance) =>
@@ -19,5 +19,5 @@ Map<String, dynamic> _$$AppUserImplToJson(_$AppUserImpl instance) =>
       'uid': instance.uid,
       'email': instance.email,
       'displayName': instance.displayName,
-      'photoUrl': instance.photoUrl,
+      'avatarUrl': instance.avatarUrl,
     };

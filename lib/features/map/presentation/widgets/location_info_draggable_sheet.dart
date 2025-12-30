@@ -4,7 +4,6 @@ import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:intl/intl.dart';
 import 'package:smart_route_app/core/core.dart';
-import 'package:smart_route_app/core/utils/app_logger.dart';
 import 'package:smart_route_app/features/map/domain/entities/address_result.dart';
 import 'package:smart_route_app/features/map/domain/entities/incident.dart';
 import 'package:smart_route_app/features/map/domain/entities/location_imagery.dart';
@@ -153,6 +152,9 @@ class _LocationInfoContent extends HookConsumerWidget {
               surfaceTintColor: Colors.white,
               elevation: 0,
               toolbarHeight: 100,
+              actions: [
+                SizedBox(),
+              ], // remove auto create icon ☰ when using endDrawer
               flexibleSpace: _buildHeader(context, ref),
             ),
             // Content

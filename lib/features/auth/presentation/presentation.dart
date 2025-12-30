@@ -1,2 +1,2 @@
 export 'pages/login_page.dart';
-export 'states/auth.dart';
+export 'providers/states/auth.dart';
