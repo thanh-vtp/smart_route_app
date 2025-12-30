@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:smart_route_app/features/auth/presentation/pages/login_page.dart';
-import 'package:smart_route_app/features/auth/presentation/states/auth.dart';
+import 'package:smart_route_app/features/auth/presentation/providers/states/auth.dart';
 import 'package:smart_route_app/features/main/presentation/pages/main_page.dart';
 import 'package:smart_route_app/features/map/presentation/pages/arcgis_demo_page.dart';
 import 'package:smart_route_app/features/map/presentation/pages/direction_page.dart';

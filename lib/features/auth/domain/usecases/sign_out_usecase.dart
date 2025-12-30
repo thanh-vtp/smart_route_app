@@ -1,3 +1,5 @@
+import 'package:fpdart/fpdart.dart';
+import 'package:smart_route_app/core/errors/failures.dart';
 import 'package:smart_route_app/core/utils/app_logger.dart';
 import 'package:smart_route_app/features/auth/domain/repositories/auth_repository.dart';
 
@@ -6,19 +8,22 @@ class SignOutUsecase {
 
   SignOutUsecase(this._repository);
 
-  Future<void> call() async {
-    try {
-      AppLogger.domain('SignOut started', useCase: 'SignOut');
-      await _repository.signOut();
-      AppLogger.domain('SignOut completed', useCase: 'SignOut');
-    } catch (e, stackTrace) {
-      AppLogger.error(
-        'SignOut error',
-        name: 'SignOutUseCase',
-        error: e,
-        stackTrace: stackTrace,
-      );
-      rethrow;
-    }
+  Future<Either<Failure, void>> call() async {
+    AppLogger.domain('SignOut started', useCase: 'SignOut');
+    final repositoryResult = await _repository.signOut();
+
+    return repositoryResult.fold(
+      (failure) {
+        AppLogger.domain(
+          'SignOut failed: ${failure.technicalMessage}',
+          useCase: 'SignOut',
+        );
+        return left(failure);
+      },
+      (result) {
+        AppLogger.domain('SignOut succeeded', useCase: 'SignOut');
+        return right(result);
+      },
+    );
   }
 }

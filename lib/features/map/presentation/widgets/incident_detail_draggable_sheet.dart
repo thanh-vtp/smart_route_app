@@ -3,7 +3,7 @@ import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:smart_route_app/core/resources/extensions/build_context.dart';
 import 'package:smart_route_app/core/utils/app_logger.dart';
-import 'package:smart_route_app/features/auth/presentation/states/auth.dart';
+import 'package:smart_route_app/features/auth/presentation/providers/states/auth.dart';
 import 'package:smart_route_app/features/map/domain/entities/incident.dart';
 import 'package:smart_route_app/features/map/presentation/extensions/incident_display_extensions.dart';
 import 'package:smart_route_app/features/map/presentation/providers/location_info_provider.dart';
@@ -149,6 +149,9 @@ class _IncidentDetailContent extends HookConsumerWidget {
               surfaceTintColor: Colors.white,
               elevation: 0,
               toolbarHeight: 100,
+              actions: [
+                SizedBox(),
+              ], // remove auto create icon ☰ when using endDrawer
               flexibleSpace: _buildHeader(context, ref, isOwner),
             ),
             // Content

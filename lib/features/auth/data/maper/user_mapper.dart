@@ -7,8 +7,8 @@ extension UserMapper on User {
     return AppUser(
       uid: id,
       email: email ?? '',
-      displayName: userMetadata?['name'] ?? userMetadata?['full_name'],
-      photoUrl: userMetadata?['avatar_url'] ?? userMetadata?['picture'],
+      displayName: userMetadata?['full_name'] ?? userMetadata?['name'],
+      avatarUrl: userMetadata?['avatar_url'] ?? userMetadata?['picture'],
     );
   }
 }

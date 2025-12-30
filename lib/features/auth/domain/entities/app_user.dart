@@ -10,7 +10,7 @@ class AppUser with _$AppUser {
     required String uid,
     required String email,
     String? displayName,
-    String? photoUrl,
+    String? avatarUrl,
   }) = _AppUser;
 
   factory AppUser.fromJson(Map<String, Object?> json) =>
@@ -27,8 +27,9 @@ class AppUser with _$AppUser {
 
   static AppUser empty = const AppUser(uid: '', email: '');
 
-  bool get isEmpty => this == AppUser.empty;
-  bool get isNotEmpty => this != AppUser.empty;
+  bool get isEmpty => uid.isEmpty;
+  bool get isNotEmpty => uid.isNotEmpty;
+  bool get isAuthenticated => uid.isNotEmpty;
 }
 
 // extension UserX on AppUser {

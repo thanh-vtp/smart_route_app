@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:smart_route_app/core/utils/app_logger.dart';
 import 'package:smart_route_app/features/auth/domain/entities/app_user.dart';
-import 'package:smart_route_app/features/auth/presentation/states/auth.dart';
+import 'package:smart_route_app/features/auth/presentation/providers/states/auth.dart';
 import 'package:smart_route_app/features/map/domain/entities/incident.dart';
 import 'package:smart_route_app/features/map/presentation/extensions/incident_display_extensions.dart';
 import 'package:smart_route_app/features/map/presentation/providers/map_center_providers.dart';
@@ -179,7 +179,7 @@ class _ProfileCard extends StatelessWidget {
                   border: Border.all(color: Colors.white, width: 2),
                 ),
                 child: CachedNetworkImage(
-                  imageUrl: user.photoUrl ?? '',
+                  imageUrl: user.avatarUrl ?? '',
                   imageBuilder: (_, imageProvider) =>
                       CircleAvatar(radius: 28, backgroundImage: imageProvider),
                   placeholder: (_, __) => const CircleAvatar(
