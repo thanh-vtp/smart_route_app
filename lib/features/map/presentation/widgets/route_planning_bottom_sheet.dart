@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:smart_route_app/features/map/presentation/providers/states/route_state.dart';
-import 'package:smart_route_app/features/map/presentation/providers/usecase/use_case_providers.dart';
 import 'package:smart_route_app/features/map/domain/entities/route_result.dart';
+import 'package:smart_route_app/features/search/presentation/providers/usecases/use_case_providers.dart';
 
 class RoutePlanningBottomSheet extends HookConsumerWidget {
   final List<Map<String, double>> waypoints;

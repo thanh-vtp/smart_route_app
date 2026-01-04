@@ -3,7 +3,7 @@ import 'package:smart_route_app/features/map/data/repositories/geocoding_reposit
 import 'package:smart_route_app/features/map/data/repositories/incident_repository_impl.dart';
 import 'package:smart_route_app/features/map/domain/repositories/geocoding_repository.dart';
 import 'package:smart_route_app/features/map/domain/repositories/incident_repository.dart';
-import 'package:smart_route_app/features/map/presentation/providers/cache/network_info_providers.dart';
+import 'package:smart_route_app/core/providers/cache/network_info_providers.dart';
 import 'package:smart_route_app/features/map/presentation/providers/data/local_datasource_providers.dart';
 import 'package:smart_route_app/features/map/presentation/providers/data/remote_datasource_providers.dart';
 

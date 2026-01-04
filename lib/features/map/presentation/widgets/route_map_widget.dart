@@ -7,12 +7,12 @@ import 'package:smart_route_app/core/utils/app_logger.dart';
 import 'package:smart_route_app/features/map/presentation/providers/base_map_style_providers.dart';
 import 'package:smart_route_app/features/map/presentation/providers/location_display_providers.dart';
 import 'package:smart_route_app/features/map/presentation/widgets/base_map_switcher.dart';
-import '../../domain/entities/address_result.dart' as entities;
+import 'package:smart_route_app/features/search/domain/entities/address_result.dart';
 import '../../domain/entities/route_result.dart' as entities;
 import '../../domain/entities/incident.dart' as domain;
 
 class RouteMapWidget extends HookConsumerWidget {
-  final List<entities.AddressResult> waypoints;
+  final List<AddressResult> waypoints;
   final entities.RouteResult? route;
   final Function(double, double)? onMapTap;
   final bool showIncidents;
@@ -289,10 +289,7 @@ class RouteMapWidget extends HookConsumerWidget {
   }
 
   /// Draw start and end markers only (no labels - street names auto-highlight on zoom)
-  void _drawMarkers(
-    GraphicsOverlay overlay,
-    List<entities.AddressResult> waypoints,
-  ) {
+  void _drawMarkers(GraphicsOverlay overlay, List<AddressResult> waypoints) {
     overlay.graphics.clear();
 
     if (waypoints.isEmpty) return;
@@ -387,7 +384,7 @@ class RouteMapWidget extends HookConsumerWidget {
   Future<void> _zoomToRoute(
     ArcGISMapViewController controller,
     entities.RouteResult route,
-    List<entities.AddressResult> waypoints,
+    List<AddressResult> waypoints,
   ) async {
     if (route.routePoints.isEmpty && waypoints.isEmpty) return;
 

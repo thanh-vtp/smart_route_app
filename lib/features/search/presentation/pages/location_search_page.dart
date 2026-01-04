@@ -1,17 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:smart_route_app/features/map/domain/entities/address_result.dart'
-    as entities;
+import 'package:smart_route_app/features/search/domain/entities/address_result.dart';
 import 'package:smart_route_app/features/map/presentation/pages/direction_page.dart';
-import 'package:smart_route_app/features/map/presentation/providers/usecase/use_case_providers.dart';
 import 'package:smart_route_app/features/map/presentation/providers/user_location_provider.dart';
 import 'package:smart_route_app/features/map/presentation/widgets/location_picker_map_widget.dart';
 import 'package:smart_route_app/features/map/presentation/widgets/recent_search_widget.dart';
+import 'package:smart_route_app/features/search/presentation/providers/usecases/use_case_providers.dart';
 
 class LocationSearchPage extends ConsumerStatefulWidget {
   final LocationFieldType fieldType;
-  final entities.AddressResult? currentStart;
-  final entities.AddressResult? currentEnd;
+  final AddressResult? currentStart;
+  final AddressResult? currentEnd;
 
   const LocationSearchPage({
     super.key,
@@ -27,7 +26,7 @@ class LocationSearchPage extends ConsumerStatefulWidget {
 class _LocationSearchPageState extends ConsumerState<LocationSearchPage> {
   final TextEditingController _searchController = TextEditingController();
   final FocusNode _focusNode = FocusNode();
-  List<entities.AddressResult> _suggestions = [];
+  List<AddressResult> _suggestions = [];
   bool _isSearching = false;
 
   @override
@@ -71,7 +70,7 @@ class _LocationSearchPageState extends ConsumerState<LocationSearchPage> {
     }
   }
 
-  void _selectAddress(entities.AddressResult address) {
+  void _selectAddress(AddressResult address) {
     Navigator.pop(context, address);
   }
 
@@ -121,7 +120,7 @@ class _LocationSearchPageState extends ConsumerState<LocationSearchPage> {
       geocodeResult.fold(
         (failure) {
           // Nếu reverse geocode fail, vẫn trả về với tọa độ
-          final address = entities.AddressResult(
+          final address = AddressResult(
             fullAddress:
                 'Vị trí đã chọn\n${lat.toStringAsFixed(6)}, ${lon.toStringAsFixed(6)}',
             latitude: lat,

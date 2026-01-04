@@ -8,7 +8,7 @@ import 'package:smart_route_app/features/map/data/datasources/arcgis_geocoding_r
 import 'package:smart_route_app/features/map/data/local_datasource/geocoding_local_data_source.dart';
 import 'package:smart_route_app/features/map/data/local_datasource/imagery_local_data_source.dart';
 import 'package:smart_route_app/features/map/data/models/geocoding_models.dart';
-import 'package:smart_route_app/features/map/domain/entities/address_result.dart';
+import 'package:smart_route_app/features/search/domain/entities/address_result.dart';
 import 'package:smart_route_app/features/map/domain/entities/location_imagery.dart';
 import 'package:smart_route_app/features/map/domain/entities/nearby_place.dart';
 import 'package:smart_route_app/features/map/domain/entities/route_direction.dart';
@@ -35,7 +35,7 @@ class GeocodingRepositoryImpl implements GeocodingRepository {
       '${prefix}_${input.toString().hashCode}';
 
   @override
-  Future<Either<Failure, List<AddressResult>>> geocodeAddress(
+  Future<Either<Failure, List<AddressResult>>> findAddressCandidates(
     String address,
   ) async {
     final key = _makeKey('geocode', address.trim().toLowerCase());
@@ -56,9 +56,8 @@ class GeocodingRepositoryImpl implements GeocodingRepository {
     if (!isConnected) return left(NetworkFailure.noInternet());
 
     try {
-      final response = await _arcGISGeocodingRemoteDataSource.geocodeAddress(
-        address,
-      );
+      final response = await _arcGISGeocodingRemoteDataSource
+          .findAddressCandidates(address);
 
       // Lưu vào ROM cho lần sau
       await _localDataSource.saveCache(key, 'geocode', response.toJson());

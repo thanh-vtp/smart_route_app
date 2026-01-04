@@ -3,7 +3,7 @@ import 'package:smart_route_app/features/map/data/local_datasource/geocoding_loc
 import 'package:smart_route_app/features/map/data/local_datasource/geocoding_local_data_source_impl.dart';
 import 'package:smart_route_app/features/map/data/local_datasource/imagery_local_data_source.dart';
 import 'package:smart_route_app/features/map/data/local_datasource/incident_local_datasourece.dart';
-import 'package:smart_route_app/features/map/presentation/providers/cache/map_database_providers.dart';
+import 'package:smart_route_app/core/providers/cache/map_database_providers.dart';
 
 part 'local_datasource_providers.g.dart';
 
