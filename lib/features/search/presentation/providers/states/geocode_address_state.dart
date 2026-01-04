@@ -1,7 +1,7 @@
 // State providers for geocoding results
 import 'package:riverpod_annotation/riverpod_annotation.dart';
-import 'package:smart_route_app/features/map/domain/entities/address_result.dart';
-import 'package:smart_route_app/features/map/presentation/providers/usecase/use_case_providers.dart';
+import 'package:smart_route_app/features/search/domain/entities/address_result.dart';
+import 'package:smart_route_app/features/search/presentation/providers/usecases/use_case_providers.dart';
 
 part 'geocode_address_state.g.dart';
 

@@ -1,25 +1,28 @@
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 
 abstract class Constants {
-  static String supabaseUrl = dotenv.env['SUPABASE_URL'] ?? '';
-  static String supabaseAnon = dotenv.env['SUPABASE_ANON_KEY'] ?? '';
-  static String arcgisApiKey = dotenv.env['ARCGIS_API_KEY'] ?? '';
-  static String googleClientIdWeb = dotenv.env['GOOGLE_CLIENT_ID_WEB'] ?? '';
-  static String androidClientId = dotenv.env['GOOGLE_CLIENT_ID_ANDROID'] ?? '';
-  static String iosClientId = dotenv.env['GOOGLE_CLIENT_ID_IOS'] ?? '';
+  // ---Secret Keys---
+  static String get supabaseUrl => dotenv.env['SUPABASE_URL'] ?? '';
+  static String get supabaseAnon => dotenv.env['SUPABASE_ANON_KEY'] ?? '';
+  static String get arcgisApiKey => dotenv.env['ARCGIS_API_KEY'] ?? '';
+  static String get googleClientIdWeb =>
+      dotenv.env['GOOGLE_CLIENT_ID_WEB'] ?? '';
+  static String get androidClientId =>
+      dotenv.env['GOOGLE_CLIENT_ID_ANDROID'] ?? '';
+  static String get iosClientId => dotenv.env['GOOGLE_CLIENT_ID_IOS'] ?? '';
 
-  // ArcGIS Services URLs
-  static const String arcgisBaseUrl = 'https://services.arcgis.com';
-  static const String arcgisOnlinePortal = 'https://www.arcgis.com';
+  // --- Base URLs ---
+  static const String arcgisGeocodeBaseUrl =
+      'https://geocode-api.arcgis.com/arcgis/rest/services';
 
-  // Default map configuration
-  static const double defaultLatitude = 10.7769;
-  static const double defaultLongitude = 106.7009;
-  static const double defaultScale = 5000;
+  static const String arcgisRouteBaseUrl =
+      'https://route-api.arcgis.com/arcgis/rest/services';
 
-  // Layer IDs for common services
-  static const String worldBuildingsLayerId =
-      '0ec8512ad21e4bb987d7e848d14e7e24';
-  static const String worldTransportationLayerId =
-      'f42ecc08a3634182b8678514af35fac3';
+  // --- Endpoints ---
+  static const String findAddressCandidates =
+      '/World/GeocodeServer/findAddressCandidates';
+  static const String geocodeAddresses =
+      '/World/GeocodeServer/geocodeAddresses';
+  static const String reverseGeocode = '/World/GeocodeServer/reverseGeocode';
+  static const String suggest = '/World/GeocodeServer/suggest';
 }

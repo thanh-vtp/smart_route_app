@@ -4,7 +4,7 @@ import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:intl/intl.dart';
 import 'package:smart_route_app/core/core.dart';
-import 'package:smart_route_app/features/map/domain/entities/address_result.dart';
+import 'package:smart_route_app/features/search/domain/entities/address_result.dart';
 import 'package:smart_route_app/features/map/domain/entities/incident.dart';
 import 'package:smart_route_app/features/map/domain/entities/location_imagery.dart';
 import 'package:smart_route_app/features/map/presentation/models/incident_type_config.dart';
@@ -12,8 +12,9 @@ import 'package:smart_route_app/features/map/presentation/providers/location_inf
 import 'package:smart_route_app/features/map/presentation/providers/map_center_providers.dart';
 import 'package:smart_route_app/features/map/presentation/providers/states/get_location_imagery_state.dart';
 import 'package:smart_route_app/features/map/presentation/providers/states/nearby_places_state.dart';
-import 'package:smart_route_app/features/map/presentation/providers/states/reverse_geocode_state.dart';
+// import 'package:smart_route_app/features/map/presentation/providers/states/reverse_geocode_state.dart';
 import 'package:smart_route_app/features/map/presentation/widgets/add_incident_bottom_sheet.dart';
+import 'package:smart_route_app/features/search/presentation/providers/states/reverse_geocode_state.dart';
 
 /// DraggableScrollableSheet hiển thị thông tin vị trí
 /// Dùng CustomScrollView với SliverAppBar để header được giữ cố định khi scroll

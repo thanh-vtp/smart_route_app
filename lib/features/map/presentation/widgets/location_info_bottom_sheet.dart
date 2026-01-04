@@ -6,9 +6,10 @@ import 'package:smart_route_app/core/core.dart';
 import 'package:smart_route_app/core/utils/app_logger.dart';
 import 'package:smart_route_app/features/map/presentation/providers/states/get_location_imagery_state.dart';
 import 'package:smart_route_app/features/map/presentation/providers/states/nearby_places_state.dart';
-import 'package:smart_route_app/features/map/presentation/providers/states/reverse_geocode_state.dart';
+// import 'package:smart_route_app/features/map/presentation/providers/states/reverse_geocode_state.dart';
 import 'package:smart_route_app/features/map/presentation/widgets/add_incident_bottom_sheet.dart';
-import '../../domain/entities/address_result.dart' as entities;
+import 'package:smart_route_app/features/search/domain/entities/address_result.dart';
+import 'package:smart_route_app/features/search/presentation/providers/states/reverse_geocode_state.dart';
 import '../../domain/entities/location_imagery.dart' as entities;
 
 class LocationInfoBottomSheet extends HookConsumerWidget {
@@ -33,21 +34,21 @@ class LocationInfoBottomSheet extends HookConsumerWidget {
 
     useEffect(() {
       // Tự động load thông tin khi widget được tạo
-      AppLogger.ui(
-        'LocationInfoBottomSheet useEffect called with lat: $latitude, lon: $longitude',
-      );
+      // AppLogger.ui(
+      //   'LocationInfoBottomSheet useEffect called with lat: $latitude, lon: $longitude',
+      // );
       WidgetsBinding.instance.addPostFrameCallback((_) {
-        AppLogger.ui('Starting reverse geocoding...');
+        // AppLogger.ui('Starting reverse geocoding...');
         ref
             .read(reverseGeocodingStateProvider.notifier)
             .reverseGeocode(latitude, longitude);
 
-        AppLogger.ui('Starting location imagery...');
+        // AppLogger.ui('Starting location imagery...');
         ref
             .read(locationImageryStateProvider.notifier)
             .getLocationImagery(latitude, longitude);
 
-        AppLogger.ui('Starting nearby places...');
+        // AppLogger.ui('Starting nearby places...');
         ref
             .read(nearbyPlacesNotifierProvider.notifier)
             .findNearbyPlaces(latitude: latitude, longitude: longitude);
@@ -81,7 +82,7 @@ class LocationInfoBottomSheet extends HookConsumerWidget {
 
   Widget _buildContent(
     BuildContext context,
-    AsyncValue<entities.AddressResult?> reverseGeocodingState,
+    AsyncValue<AddressResult?> reverseGeocodingState,
     AsyncValue<entities.LocationImagery?> locationImageryState,
     NearbyPlacesState nearbyPlacesState,
     void Function(BuildContext context, double latitude, double longitude)
@@ -229,7 +230,7 @@ class LocationInfoBottomSheet extends HookConsumerWidget {
     );
   }
 
-  Widget _buildAddressSection(AsyncValue<entities.AddressResult?> state) {
+  Widget _buildAddressSection(AsyncValue<AddressResult?> state) {
     return Card(
       child: Padding(
         padding: const EdgeInsets.all(16),
@@ -300,7 +301,9 @@ class LocationInfoBottomSheet extends HookConsumerWidget {
     );
   }
 
-  Widget _buildSatelliteImageSection(AsyncValue<entities.LocationImagery?> state) {
+  Widget _buildSatelliteImageSection(
+    AsyncValue<entities.LocationImagery?> state,
+  ) {
     return Card(
       child: Padding(
         padding: const EdgeInsets.all(16),

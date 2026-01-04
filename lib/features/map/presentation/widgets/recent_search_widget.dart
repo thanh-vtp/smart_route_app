@@ -1,14 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:smart_route_app/features/map/domain/entities/address_result.dart'
-    as entities;
+import 'package:smart_route_app/features/search/domain/entities/address_result.dart';
 import 'package:smart_route_app/features/map/presentation/providers/states/recent_search_notifier.dart';
 
 /// Widget hiển thị danh sách lịch sử tìm kiếm gần đây
 /// Sử dụng RecentSearchNotifier để lấy data từ SQLite cache
 class RecentSearchWidget extends ConsumerWidget {
   /// Callback khi người dùng chọn một địa chỉ từ lịch sử
-  final void Function(entities.AddressResult address)? onAddressSelected;
+  final void Function(AddressResult address)? onAddressSelected;
 
   /// Hiển thị header với nút "Xóa tất cả"
   final bool showHeader;
@@ -114,7 +113,7 @@ class RecentSearchWidget extends ConsumerWidget {
 
 /// Item hiển thị một địa chỉ trong lịch sử
 class _RecentSearchItem extends StatelessWidget {
-  final entities.AddressResult address;
+  final AddressResult address;
   final VoidCallback? onTap;
 
   const _RecentSearchItem({required this.address, this.onTap});

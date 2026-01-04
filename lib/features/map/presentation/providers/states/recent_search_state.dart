@@ -1,5 +1,5 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
-import 'package:smart_route_app/features/map/domain/entities/address_result.dart';
+import 'package:smart_route_app/features/search/domain/entities/address_result.dart';
 
 part 'recent_search_state.freezed.dart';
 

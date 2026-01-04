@@ -1,13 +1,14 @@
 import 'dart:typed_data';
-import '../models/geocoding_models.dart';
+
+import 'package:smart_route_app/features/map/data/models/geocoding_models.dart';
 
 /// Abstract data source for ArcGIS Geocoding services
 /// Defines the contract for all ArcGIS geocoding operations
 abstract class ArcGISGeocodingRemoteDataSource {
-  /// Geocoding: Convert address to coordinates
-  Future<GeocodeResponse> geocodeAddress(String address);
+  /// Mã hóa địa lý địa chỉ : Chuyển đổi văn bản địa chỉ hoặc tên địa điểm thành địa chỉ đầy đủ kèm theo vị trí.
+  Future<GeocodeResponse> findAddressCandidates(String address);
 
-  /// Reverse Geocoding: Convert coordinates to address information
+  ///  Chuyển đổi tọa độ ngược : Chuyển đổi một điểm thành địa chỉ hoặc vị trí đầy đủ
   Future<ReverseGeocodeResponse> reverseGeocode(
     double latitude,
     double longitude,

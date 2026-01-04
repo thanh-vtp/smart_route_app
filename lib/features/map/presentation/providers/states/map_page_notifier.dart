@@ -7,7 +7,7 @@ import 'package:smart_route_app/features/map/domain/usecases/add_incident_usecas
 import 'package:smart_route_app/features/map/domain/usecases/delete_incident_usecase.dart';
 import 'package:smart_route_app/features/map/domain/usecases/get_incidents_usecase.dart';
 import 'package:smart_route_app/features/map/domain/usecases/update_incident_usecase.dart';
-import 'package:smart_route_app/features/map/presentation/providers/cache/network_info_providers.dart';
+import 'package:smart_route_app/core/providers/cache/network_info_providers.dart';
 import 'package:smart_route_app/features/map/presentation/providers/states/map_page_state.dart';
 import 'package:smart_route_app/features/map/presentation/providers/usecase/use_case_providers.dart';
 

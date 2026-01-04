@@ -177,6 +177,11 @@ final class ArcGISFailure extends Failure {
     code: 'INSUFFICIENT_STOPS',
     technicalMessage: 'At least 2 stops are required for routing',
   );
+
+  factory ArcGISFailure.unknown() => const ArcGISFailure(
+    code: 'UNKNOWN',
+    technicalMessage: 'An unknown error occurred',
+  );
 }
 
 final class CacheFailure extends Failure {
