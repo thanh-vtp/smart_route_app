@@ -3,9 +3,9 @@ import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:smart_route_app/core/resources/extensions/context_modal_extension.dart';
 import 'package:smart_route_app/features/auth/presentation/providers/states/auth.dart';
-import 'package:smart_route_app/features/map/presentation/pages/map_page.dart';
-import 'package:smart_route_app/features/map/presentation/pages/report_page.dart';
-import 'package:smart_route_app/features/map/presentation/widgets/map_bottom_sheet_container.dart';
+import 'package:smart_route_app/features/incident/presentation/pages/map_page.dart';
+import 'package:smart_route_app/features/incident/presentation/pages/report_page.dart';
+import 'package:smart_route_app/features/incident/presentation/widgets/map_bottom_sheet_container.dart';
 import 'package:smart_route_app/features/profile/presentation/widgets/profile_drawers.dart';
 
 class MainPage extends ConsumerStatefulWidget {

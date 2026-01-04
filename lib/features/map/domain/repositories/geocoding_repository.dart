@@ -7,16 +7,16 @@ import '../../../../core/errors/failures.dart';
 // import '../entities/geocoding_entities.dart';
 
 abstract class GeocodingRepository {
-  /// Chuyển đổi địa chỉ thành tọa độ
-  Future<Either<Failure, List<AddressResult>>> findAddressCandidates(
-    String address,
-  );
+  // /// Chuyển đổi địa chỉ thành tọa độ
+  // Future<Either<Failure, List<AddressResult>>> findAddressCandidates(
+  //   String address,
+  // );
 
-  /// Chuyển đổi tọa độ thành địa chỉ (lấy tên đường, khu vực)
-  Future<Either<Failure, AddressResult>> reverseGeocode(
-    double latitude,
-    double longitude,
-  );
+  // /// Chuyển đổi tọa độ thành địa chỉ (lấy tên đường, khu vực)
+  // Future<Either<Failure, AddressResult>> reverseGeocode(
+  //   double latitude,
+  //   double longitude,
+  // );
 
   /// Tính toán đường đi giữa các điểm
   Future<Either<Failure, RouteResult>> calculateRoute(

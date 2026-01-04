@@ -34,82 +34,82 @@ class GeocodingRepositoryImpl implements GeocodingRepository {
   String _makeKey(String prefix, dynamic input) =>
       '${prefix}_${input.toString().hashCode}';
 
-  @override
-  Future<Either<Failure, List<AddressResult>>> findAddressCandidates(
-    String address,
-  ) async {
-    final key = _makeKey('geocode', address.trim().toLowerCase());
+  // @override
+  // Future<Either<Failure, List<AddressResult>>> findAddressCandidates(
+  //   String address,
+  // ) async {
+  //   final key = _makeKey('geocode', address.trim().toLowerCase());
 
-    final bool isConnected = await _networkInfo.isConnected;
+  //   final bool isConnected = await _networkInfo.isConnected;
 
-    // 1. Check Cache trước (ROM)
-    final cached = await _localDataSource.getCache(
-      key,
-      const Duration(days: 7),
-    );
-    if (cached != null) {
-      final response = GeocodeResponse.fromJson(cached);
-      return right(_mapGeocodeToEntities(response));
-    }
+  //   // 1. Check Cache trước (ROM)
+  //   final cached = await _localDataSource.getCache(
+  //     key,
+  //     const Duration(days: 7),
+  //   );
+  //   if (cached != null) {
+  //     final response = GeocodeResponse.fromJson(cached);
+  //     return right(_mapGeocodeToEntities(response));
+  //   }
 
-    // 2. Nếu không có cache, check mạng và gọi Remote
-    if (!isConnected) return left(NetworkFailure.noInternet());
+  //   // 2. Nếu không có cache, check mạng và gọi Remote
+  //   if (!isConnected) return left(NetworkFailure.noInternet());
 
-    try {
-      final response = await _arcGISGeocodingRemoteDataSource
-          .findAddressCandidates(address);
+  //   try {
+  //     final response = await _arcGISGeocodingRemoteDataSource
+  //         .findAddressCandidates(address);
 
-      // Lưu vào ROM cho lần sau
-      await _localDataSource.saveCache(key, 'geocode', response.toJson());
+  //     // Lưu vào ROM cho lần sau
+  //     await _localDataSource.saveCache(key, 'geocode', response.toJson());
 
-      final results = _mapGeocodeToEntities(response);
+  //     final results = _mapGeocodeToEntities(response);
 
-      return right(results);
-    } catch (e, st) {
-      final failure = ArcGISExceptionHandler.handleException(e, st);
-      return left(failure);
-    }
-  }
+  //     return right(results);
+  //   } catch (e, st) {
+  //     final failure = ArcGISExceptionHandler.handleException(e, st);
+  //     return left(failure);
+  //   }
+  // }
 
-  @override
-  Future<Either<Failure, AddressResult>> reverseGeocode(
-    double latitude,
-    double longitude,
-  ) async {
-    final key =
-        'rev_${latitude.toStringAsFixed(5)}_${longitude.toStringAsFixed(5)}';
+  // @override
+  // Future<Either<Failure, AddressResult>> reverseGeocode(
+  //   double latitude,
+  //   double longitude,
+  // ) async {
+  //   final key =
+  //       'rev_${latitude.toStringAsFixed(5)}_${longitude.toStringAsFixed(5)}';
 
-    // 1. Check Cache (Nếu người dùng nhấn lại đúng điểm đó, không gọi API)
-    final cached = await _localDataSource.getCache(
-      key,
-      const Duration(days: 3),
-    );
-    if (cached != null) {
-      return right(
-        _mapReverseGeocodeToEntity(ReverseGeocodeResponse.fromJson(cached)),
-      );
-    }
-    try {
-      final response = await _arcGISGeocodingRemoteDataSource.reverseGeocode(
-        latitude,
-        longitude,
-      );
+  //   // 1. Check Cache (Nếu người dùng nhấn lại đúng điểm đó, không gọi API)
+  //   final cached = await _localDataSource.getCache(
+  //     key,
+  //     const Duration(days: 3),
+  //   );
+  //   if (cached != null) {
+  //     return right(
+  //       _mapReverseGeocodeToEntity(ReverseGeocodeResponse.fromJson(cached)),
+  //     );
+  //   }
+  //   try {
+  //     final response = await _arcGISGeocodingRemoteDataSource.reverseGeocode(
+  //       latitude,
+  //       longitude,
+  //     );
 
-      // 2. Lưu vào Lịch sử (SQLite)
-      await _localDataSource.saveCache(
-        key,
-        'reverse_geocode',
-        response.toJson(),
-      );
+  //     // 2. Lưu vào Lịch sử (SQLite)
+  //     await _localDataSource.saveCache(
+  //       key,
+  //       'reverse_geocode',
+  //       response.toJson(),
+  //     );
 
-      final result = _mapReverseGeocodeToEntity(response);
+  //     final result = _mapReverseGeocodeToEntity(response);
 
-      return right(result);
-    } catch (e, st) {
-      final failure = ArcGISExceptionHandler.handleException(e, st);
-      return left(failure);
-    }
-  }
+  //     return right(result);
+  //   } catch (e, st) {
+  //     final failure = ArcGISExceptionHandler.handleException(e, st);
+  //     return left(failure);
+  //   }
+  // }
 
   @override
   Future<Either<Failure, RouteResult>> calculateRoute(

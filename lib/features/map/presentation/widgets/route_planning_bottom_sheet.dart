@@ -5,6 +5,7 @@ import 'package:smart_route_app/features/map/presentation/providers/states/route
 import 'package:smart_route_app/features/map/domain/entities/route_result.dart';
 import 'package:smart_route_app/features/search/presentation/providers/usecases/use_case_providers.dart';
 
+// Widget hiển thị bottom sheet để lập kế hoạch đường đi với nhiều điểm đi qua
 class RoutePlanningBottomSheet extends HookConsumerWidget {
   final List<Map<String, double>> waypoints;
   final Function(RouteResult)? onRouteCalculated;

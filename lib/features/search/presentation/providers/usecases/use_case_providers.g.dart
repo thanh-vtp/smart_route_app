@@ -13,17 +13,17 @@ String _$geocodeAddressUseCaseHash() =>
 @ProviderFor(geocodeAddressUseCase)
 final geocodeAddressUseCaseProvider =
     AutoDisposeProvider<GeocodeAddressUseCase>.internal(
-      geocodeAddressUseCase,
-      name: r'geocodeAddressUseCaseProvider',
-      debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
-          ? null
-          : _$geocodeAddressUseCaseHash,
-      dependencies: null,
-      allTransitiveDependencies: null,
-    );
+  geocodeAddressUseCase,
+  name: r'geocodeAddressUseCaseProvider',
+  debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
+      ? null
+      : _$geocodeAddressUseCaseHash,
+  dependencies: null,
+  allTransitiveDependencies: null,
+);
 
-typedef GeocodeAddressUseCaseRef =
-    AutoDisposeProviderRef<GeocodeAddressUseCase>;
+typedef GeocodeAddressUseCaseRef
+    = AutoDisposeProviderRef<GeocodeAddressUseCase>;
 String _$reverseGeocodeUseCaseHash() =>
     r'df1cee879e72930b5a1d9336684b218a0054b42c';
 
@@ -31,16 +31,16 @@ String _$reverseGeocodeUseCaseHash() =>
 @ProviderFor(reverseGeocodeUseCase)
 final reverseGeocodeUseCaseProvider =
     AutoDisposeProvider<ReverseGeocodeUseCase>.internal(
-      reverseGeocodeUseCase,
-      name: r'reverseGeocodeUseCaseProvider',
-      debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
-          ? null
-          : _$reverseGeocodeUseCaseHash,
-      dependencies: null,
-      allTransitiveDependencies: null,
-    );
+  reverseGeocodeUseCase,
+  name: r'reverseGeocodeUseCaseProvider',
+  debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
+      ? null
+      : _$reverseGeocodeUseCaseHash,
+  dependencies: null,
+  allTransitiveDependencies: null,
+);
 
-typedef ReverseGeocodeUseCaseRef =
-    AutoDisposeProviderRef<ReverseGeocodeUseCase>;
+typedef ReverseGeocodeUseCaseRef
+    = AutoDisposeProviderRef<ReverseGeocodeUseCase>;
 // ignore_for_file: type=lint
 // ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member

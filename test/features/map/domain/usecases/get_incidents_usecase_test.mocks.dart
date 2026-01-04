@@ -9,9 +9,9 @@ import 'package:fpdart/fpdart.dart' as _i4;
 import 'package:mockito/mockito.dart' as _i1;
 import 'package:mockito/src/dummies.dart' as _i7;
 import 'package:smart_route_app/core/errors/failures.dart' as _i5;
-import 'package:smart_route_app/features/map/domain/entities/incident.dart'
+import 'package:smart_route_app/features/incident/domain/entities/incident.dart'
     as _i6;
-import 'package:smart_route_app/features/map/domain/repositories/incident_repository.dart'
+import 'package:smart_route_app/features/incident/domain/repositories/incident_repository.dart'
     as _i2;
 
 // ignore_for_file: type=lint

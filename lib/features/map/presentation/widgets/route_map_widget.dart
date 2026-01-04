@@ -4,12 +4,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:smart_route_app/core/utils/app_logger.dart';
-import 'package:smart_route_app/features/map/presentation/providers/base_map_style_providers.dart';
-import 'package:smart_route_app/features/map/presentation/providers/location_display_providers.dart';
-import 'package:smart_route_app/features/map/presentation/widgets/base_map_switcher.dart';
+import 'package:smart_route_app/features/incident/presentation/providers/base_map_style_providers.dart';
+import 'package:smart_route_app/features/incident/presentation/providers/location_display_providers.dart';
+import 'package:smart_route_app/features/incident/presentation/widgets/base_map_switcher.dart';
 import 'package:smart_route_app/features/search/domain/entities/address_result.dart';
 import '../../domain/entities/route_result.dart' as entities;
-import '../../domain/entities/incident.dart' as domain;
+import '../../../incident/domain/entities/incident.dart' as domain;
 
 class RouteMapWidget extends HookConsumerWidget {
   final List<AddressResult> waypoints;

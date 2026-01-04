@@ -6,49 +6,13 @@ part of 'remote_datasource_providers.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$arcgisRemoteDataSourceHash() =>
-    r'a9d21e27b30376883aa7fcf62e6670db7913b9fd';
+String _$arcgisGeocodingRemoteDataSourceHash() =>
+    r'5b764fcf1bf1a063b5b98cea5e5004f34c507d59';
 
 /// dùng Ref hoặc tự định nghĩa Ref type
 /// Quy tắc: name function + Ref
 /// Provider cho ArcGIS Data Source (chỉ GET)
-///
-/// Copied from [arcgisRemoteDataSource].
-@ProviderFor(arcgisRemoteDataSource)
-final arcgisRemoteDataSourceProvider =
-    Provider<ArcGISRemoteDataSource>.internal(
-  arcgisRemoteDataSource,
-  name: r'arcgisRemoteDataSourceProvider',
-  debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
-      ? null
-      : _$arcgisRemoteDataSourceHash,
-  dependencies: null,
-  allTransitiveDependencies: null,
-);
-
-typedef ArcgisRemoteDataSourceRef = ProviderRef<ArcGISRemoteDataSource>;
-String _$supabaseRemoteDataSourceHash() =>
-    r'00b76418bfdd2d6023d25f17ac2961a60599d378';
-
 /// Provider cho Supabase Data Source (ADD & DELETE)
-///
-/// Copied from [supabaseRemoteDataSource].
-@ProviderFor(supabaseRemoteDataSource)
-final supabaseRemoteDataSourceProvider =
-    Provider<SupabaseRemoteDataSource>.internal(
-  supabaseRemoteDataSource,
-  name: r'supabaseRemoteDataSourceProvider',
-  debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
-      ? null
-      : _$supabaseRemoteDataSourceHash,
-  dependencies: null,
-  allTransitiveDependencies: null,
-);
-
-typedef SupabaseRemoteDataSourceRef = ProviderRef<SupabaseRemoteDataSource>;
-String _$arcgisGeocodingRemoteDataSourceHash() =>
-    r'5b764fcf1bf1a063b5b98cea5e5004f34c507d59';
-
 /// Provider cho ArcGIS Geocoding Data Source
 ///
 /// Copied from [arcgisGeocodingRemoteDataSource].

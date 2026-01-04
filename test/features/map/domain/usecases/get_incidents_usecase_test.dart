@@ -1,10 +1,10 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:fpdart/fpdart.dart';
 import 'package:smart_route_app/core/errors/failures.dart';
-import 'package:smart_route_app/features/map/domain/entities/incident.dart'
+import 'package:smart_route_app/features/incident/domain/entities/incident.dart'
     as entity;
-import 'package:smart_route_app/features/map/domain/repositories/incident_repository.dart';
-import 'package:smart_route_app/features/map/domain/usecases/get_incidents_usecase.dart';
+import 'package:smart_route_app/features/incident/domain/repositories/incident_repository.dart';
+import 'package:smart_route_app/features/incident/domain/usecases/get_incidents_usecase.dart';
 import 'package:mockito/mockito.dart';
 import 'package:mockito/annotations.dart';
 
