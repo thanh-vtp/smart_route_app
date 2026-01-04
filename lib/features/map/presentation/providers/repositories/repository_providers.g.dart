@@ -6,25 +6,6 @@ part of 'repository_providers.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$incidentRepositoryHash() =>
-    r'e6d714b0073f1b6ee50d2b1d8741d88d8f0d9fc1';
-
-/// Provider cho Incident Repository
-/// Điều phối giữa ArcGIS (GET) và Supabase (ADD/DELETE)
-///
-/// Copied from [incidentRepository].
-@ProviderFor(incidentRepository)
-final incidentRepositoryProvider = Provider<IncidentRepository>.internal(
-  incidentRepository,
-  name: r'incidentRepositoryProvider',
-  debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
-      ? null
-      : _$incidentRepositoryHash,
-  dependencies: null,
-  allTransitiveDependencies: null,
-);
-
-typedef IncidentRepositoryRef = ProviderRef<IncidentRepository>;
 String _$geocodingRepositoryHash() =>
     r'0272fbbb8d396b40b00717fe444ea4f93bfdc809';
 

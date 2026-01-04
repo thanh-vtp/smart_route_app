@@ -1,7 +1,7 @@
 import 'dart:math' as math;
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:smart_route_app/core/utils/app_logger.dart';
-import 'package:smart_route_app/features/map/domain/entities/incident.dart';
+import 'package:smart_route_app/features/incident/domain/entities/incident.dart';
 import 'package:smart_route_app/features/map/domain/entities/route_result.dart';
 import 'package:smart_route_app/features/map/presentation/providers/usecase/use_case_providers.dart';
 

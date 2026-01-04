@@ -4,7 +4,7 @@ import 'package:flutter/widgets.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:smart_route_app/core/core.dart';
 import 'package:smart_route_app/core/database/map_database.dart';
-import 'package:smart_route_app/features/map/presentation/logics/incident_symbol_factory.dart';
+import 'package:smart_route_app/features/incident/presentation/logics/incident_symbol_factory.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 Future<void> initApp() async {
