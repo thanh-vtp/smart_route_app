@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import '../../domain/entities/route_direction.dart';
-import '../../domain/entities/route_result.dart' as entities;
+import '../../../navigation/domain/entities/route_direction.dart';
+import '../../../navigation/domain/entities/route_result.dart' as entities;
 
 /// Bottom sheet hiển thị chi tiết chỉ đường
 class RouteDirectionsSheet extends ConsumerWidget {

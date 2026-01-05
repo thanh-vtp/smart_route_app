@@ -4,13 +4,13 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:smart_route_app/core/core.dart';
 import 'package:smart_route_app/core/utils/app_logger.dart';
-import 'package:smart_route_app/features/map/presentation/providers/states/get_location_imagery_state.dart';
-import 'package:smart_route_app/features/map/presentation/providers/states/nearby_places_state.dart';
+import 'package:smart_route_app/features/navigation/presentation/providers/states/get_location_imagery_state.dart';
+import 'package:smart_route_app/features/navigation/presentation/providers/states/nearby_places_state.dart';
 // import 'package:smart_route_app/features/map/presentation/providers/states/reverse_geocode_state.dart';
 import 'package:smart_route_app/features/incident/presentation/widgets/add_incident_bottom_sheet.dart';
 import 'package:smart_route_app/features/search/domain/entities/address_result.dart';
 import 'package:smart_route_app/features/search/presentation/providers/states/reverse_geocode_state.dart';
-import '../../../map/domain/entities/location_imagery.dart' as entities;
+import '../../../navigation/domain/entities/location_imagery.dart' as entities;
 
 class LocationInfoBottomSheet extends HookConsumerWidget {
   final double latitude;

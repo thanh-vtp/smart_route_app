@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:smart_route_app/features/map/presentation/providers/data/remote_datasource_providers.dart';
+import 'package:smart_route_app/features/navigation/presentation/providers/data/remote_datasource_providers.dart';
 import 'offline_demo_widget.dart';
 
 class ConnectionStatusWidget extends HookConsumerWidget {
