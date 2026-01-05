@@ -6,7 +6,7 @@ import 'package:smart_route_app/features/incident/domain/usecases/get_incidents_
 import 'package:smart_route_app/features/incident/domain/usecases/update_incident_usecase.dart';
 import 'package:smart_route_app/features/incident/presentation/providers/states/report_page_state.dart';
 import 'package:smart_route_app/features/incident/presentation/providers/usecases/use_case_providers.dart';
-import 'package:smart_route_app/features/map/presentation/providers/usecase/use_case_providers.dart';
+import 'package:smart_route_app/features/navigation/presentation/providers/usecase/use_case_providers.dart';
 
 class ReportPageNotifier extends Notifier<ReportPageState> {
   late final GetIncidentsUsecase _getIncidentsUsecase;
