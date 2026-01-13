@@ -159,7 +159,7 @@ class _DirectionPageState extends ConsumerState<DirectionPage> {
       // Get incidents from map page state
       final mapState = ref.read(mapPageNotifierProvider);
       final incidents = mapState.maybeWhen(
-        loaded: (incidents, _) => incidents,
+        loaded: (incidents) => incidents,
         submitted: (incidents) => incidents,
         orElse: () => <Incident>[],
       );
@@ -419,7 +419,7 @@ class _DirectionPageState extends ConsumerState<DirectionPage> {
     // Lấy incidents để hiển thị trên map
     final mapState = ref.watch(mapPageNotifierProvider);
     final incidents = mapState.maybeWhen(
-      loaded: (incidents, _) => incidents,
+      loaded: (incidents) => incidents,
       submitted: (incidents) => incidents,
       orElse: () => <Incident>[],
     );
@@ -476,7 +476,7 @@ class _DirectionPageState extends ConsumerState<DirectionPage> {
 
     // Tổng số incidents trong khu vực
     final totalIncidents = mapState.maybeWhen(
-      loaded: (incidents, _) => incidents.length,
+      loaded: (incidents) => incidents.length,
       submitted: (incidents) => incidents.length,
       orElse: () => 0,
     );

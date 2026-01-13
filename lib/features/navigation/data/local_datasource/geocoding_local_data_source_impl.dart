@@ -1,6 +1,6 @@
 import 'dart:convert';
 
-import 'package:smart_route_app/core/database/map_database.dart';
+import 'package:smart_route_app/core/database/cache/map_database.dart';
 import 'package:smart_route_app/features/navigation/data/local_datasource/geocoding_local_data_source.dart';
 import 'package:sqflite/sqflite.dart';
 

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:smart_route_app/core/core.dart';
+import 'package:smart_route_app/core/network/presentation/widgets/global_connection_wrapper.dart';
 import 'package:smart_route_app/features/home/presentation/widgets/map_search_top_bar.dart';
 import 'package:smart_route_app/features/incident/presentation/pages/map_page.dart';
 import 'package:smart_route_app/features/incident/presentation/pages/report_page.dart';
@@ -49,6 +50,12 @@ class _HomePageState extends ConsumerState<HomePage> {
           // Bottom Sheet Container (hiển thị LocationInfo hoặc IncidentDetail)
           // Đặt ở đây để ngang cấp với ReportMapPage và có thể tương tác map bên dưới
           const Positioned.fill(child: MapBottomSheetContainer()),
+          const Positioned(
+            bottom: 0,
+            left: 0,
+            right: 0,
+            child: GlobalConnectionWrapper(),
+          ),
         ],
       ),
 

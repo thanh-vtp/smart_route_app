@@ -290,25 +290,31 @@ class EditIncidentBottomSheet extends HookConsumerWidget {
       description: description.isEmpty ? 'Không có mô tả' : description,
     );
 
-    final success = await ref
+    final failure = await ref
         .read(mapPageNotifierProvider.notifier)
         .updateIncident(updatedIncident, currentUser);
 
     isSubmitting.value = false;
 
     if (context.mounted) {
-      Navigator.pop(context, success); // Return result
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text(
-            success
-                ? 'Đã cập nhật sự cố!'
-                : 'Không thể cập nhật. Vui lòng thử lại.',
+      if (failure == null) {
+        Navigator.pop(context);
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('Đã cập nhật sự cố!'),
+            backgroundColor: Colors.green,
+            behavior: SnackBarBehavior.floating,
           ),
-          backgroundColor: success ? Colors.green : Colors.red,
-          behavior: SnackBarBehavior.floating,
-        ),
-      );
+        );
+      } else {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('Không thể cập nhật. Vui lòng thử lại.'),
+            backgroundColor: Colors.red,
+            behavior: SnackBarBehavior.floating,
+          ),
+        );
+      }
     }
   }
 }
