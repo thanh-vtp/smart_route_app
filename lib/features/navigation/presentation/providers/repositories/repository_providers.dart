@@ -1,5 +1,5 @@
 import 'package:riverpod_annotation/riverpod_annotation.dart';
-import 'package:smart_route_app/core/providers/cache/network_info_providers.dart';
+import 'package:smart_route_app/core/network/providers/network_info_providers.dart';
 import 'package:smart_route_app/features/navigation/data/repositories/geocoding_repository_impl.dart';
 import 'package:smart_route_app/features/navigation/domain/repositories/geocoding_repository.dart';
 import 'package:smart_route_app/features/navigation/presentation/providers/data/local_datasource_providers.dart';

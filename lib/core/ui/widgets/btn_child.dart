@@ -25,7 +25,10 @@ class BtnChild extends StatelessWidget {
             child: SizedBox(
               width: size,
               height: size,
-              child: const CircularProgressIndicator(strokeWidth: 1),
+              child: const CircularProgressIndicator(
+                strokeWidth: 1,
+                color: Colors.green,
+              ),
             ),
           ),
       ],

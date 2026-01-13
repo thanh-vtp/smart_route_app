@@ -1,15 +1,13 @@
 import 'dart:async';
-
 import 'package:arcgis_maps/arcgis_maps.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:smart_route_app/core/errors/failures.dart';
 import 'package:smart_route_app/core/utils/app_logger.dart';
 import 'package:smart_route_app/features/incident/presentation/helpers/map_configuration_helper.dart';
 import 'package:smart_route_app/features/incident/presentation/logics/map_interaction_logic.dart';
 import 'package:smart_route_app/features/incident/presentation/logics/map_location_logic.dart';
 import 'package:smart_route_app/features/incident/presentation/providers/base_map_style_providers.dart';
-import 'package:smart_route_app/core/providers/feature_layer/feature_layer_providers.dart';
+import 'package:smart_route_app/core/feature_layer/providers/feature_layer_providers.dart';
 import 'package:smart_route_app/features/incident/presentation/providers/location_display_providers.dart';
 import 'package:smart_route_app/features/incident/presentation/providers/map_center_providers.dart';
 import 'package:smart_route_app/features/incident/presentation/providers/map_controller_provider.dart';
@@ -22,8 +20,11 @@ import 'package:smart_route_app/features/incident/domain/entities/incident.dart'
 
 import 'package:smart_route_app/features/incident/presentation/widgets/map_controls_overlay.dart';
 import 'package:smart_route_app/features/incident/presentation/widgets/map_floating_actions.dart';
-import 'package:smart_route_app/features/incident/presentation/widgets/simmer/map_state_overlays.dart';
+import 'package:smart_route_app/features/incident/presentation/widgets/simmer/loading/base_map_loading_overlay.dart';
+import 'package:smart_route_app/features/incident/presentation/widgets/simmer/loading/map_loading_overlay.dart';
+import 'package:smart_route_app/features/incident/presentation/widgets/simmer/error/map_state_overlays.dart';
 import 'package:smart_route_app/features/incident/presentation/widgets/navigator_incidents_bottom_sheet.dart';
+import 'package:smart_route_app/features/incident/presentation/widgets/simmer/loading/map_submitting_overlay.dart';
 
 class MapPage extends ConsumerStatefulWidget {
   const MapPage({super.key});
@@ -34,8 +35,6 @@ class MapPage extends ConsumerStatefulWidget {
 
 class _MapPageState extends ConsumerState<MapPage> {
   // Create controllers for both 2D map and 3D scene.
-  // final _mapViewController = ArcGISMapView.createController();
-  // final _sceneViewController = ArcGISSceneView.createController();
   late ArcGISMapViewController _mapViewController;
   late ArcGISSceneViewController _sceneViewController;
 
@@ -512,7 +511,7 @@ class _MapPageState extends ConsumerState<MapPage> {
           ),
 
           // Loading overlay khi đang chuyển basemap
-          if (isBasemapLoading) const _BasemapLoadingOverlay(),
+          if (isBasemapLoading) const BasemapLoadingOverlay(),
 
           // Hiển thị UI dựa trên state
           _buildStateUI(mapPageState),
@@ -532,31 +531,17 @@ class _MapPageState extends ConsumerState<MapPage> {
 
   Widget _buildErrorUI(MapPageState state) {
     return state.maybeWhen(
-      // Trạng thái Loading: Trả về rỗng để ẩn hoàn toàn ErrorOverlay
-      loading: () => const SizedBox.shrink(),
-
-      //  Trạng thái Error: Hiện overlay lỗi Fatal che toàn màn hình
+      // Trạng thái Error: Hiện overlay lỗi Fatal che toàn màn hình
+      // Đây là trường hợp fetch data thất bại hoàn toàn (không có cache)
       error: (failure) => MapErrorOverlay(
-        message: failure.technicalMessage ?? "",
+        message: failure.technicalMessage ?? "Đã xảy ra lỗi tải dữ liệu",
         onRetry: _retryData,
-        isFatal: true,
+        isFatal: true, // Full screen error
       ),
 
-      // Trạng thái Loaded: Hiện Banner nếu có failure
-      loaded: (incidents, failure) {
-        if (failure != null && failure.technicalMessage != null) {
-          final message = failure is NetworkFailure
-              ? "Bạn đang ngoại tuyến. Dữ liệu có thể chưa được cập nhật."
-              : "Lỗi: ${failure.technicalMessage}";
-
-          return MapErrorOverlay(
-            message: message,
-            onRetry: _retryData,
-            isFatal: false, // Quan trọng: false để hiển thị floating bar
-          );
-        }
-        return const SizedBox.shrink();
-      },
+      // Các trạng thái khác (loaded, submitting...) không hiển thị ErrorOverlay ở đây.
+      // - Lỗi Internet: Đã có Global Internet Handler lo.
+      // - Lỗi Action (Add/Update): Đã có Snackbar lo.
       orElse: () => const SizedBox.shrink(),
     );
   }
@@ -566,7 +551,7 @@ class _MapPageState extends ConsumerState<MapPage> {
     return state.when(
       initial: () => const SizedBox.shrink(),
       loading: () => const MapLoadingOverlay(),
-      loaded: (incidents, failure) {
+      loaded: (incidents) {
         // CHỈ UPDATE KHI DANH SÁCH INCIDENTS THỰC SỰ THAY ĐỔI
         _updateGraphicsIfNeeded(incidents);
         return const SizedBox.shrink();
@@ -611,57 +596,5 @@ class _MapPageState extends ConsumerState<MapPage> {
       if (a[i] != b[i]) return false;
     }
     return true;
-  }
-}
-
-/// Loading overlay khi đang chuyển basemap
-class _BasemapLoadingOverlay extends StatelessWidget {
-  const _BasemapLoadingOverlay();
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      color: Colors.black.withValues(alpha: 0.3),
-      child: Center(
-        child: Container(
-          padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 16),
-          decoration: BoxDecoration(
-            color: Colors.white,
-            borderRadius: BorderRadius.circular(16),
-            boxShadow: [
-              BoxShadow(
-                color: Colors.black.withValues(alpha: 0.2),
-                blurRadius: 20,
-                offset: const Offset(0, 4),
-              ),
-            ],
-          ),
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              SizedBox(
-                width: 40,
-                height: 40,
-                child: CircularProgressIndicator(
-                  strokeWidth: 3,
-                  valueColor: AlwaysStoppedAnimation<Color>(
-                    Theme.of(context).primaryColor,
-                  ),
-                ),
-              ),
-              const SizedBox(height: 16),
-              const Text(
-                'Đang chuyển bản đồ...',
-                style: TextStyle(
-                  fontSize: 14,
-                  fontWeight: FontWeight.w500,
-                  color: Colors.black87,
-                ),
-              ),
-            ],
-          ),
-        ),
-      ),
-    );
   }
 }

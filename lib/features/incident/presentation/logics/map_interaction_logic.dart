@@ -27,6 +27,9 @@ class MapInteractionLogic {
   void initialize() {
     // Khởi tạo shared LocationMarkerHelper với overlay
     sharedLocationMarkerHelper.initialize(_locationMarkerOverlay);
+
+    // Đăng ký callback để clear highlight khi chuyển bottom sheet
+    setClearHighlightCallback(_clearHighlight);
   }
 
   /// Di chuyển graphics overlay sang view đang active
@@ -132,7 +135,7 @@ class MapInteractionLogic {
           // Lấy incident details từ state
           final mapState = ref.read(mapPageNotifierProvider);
           mapState.whenOrNull(
-            loaded: (incidents, _) {
+            loaded: (incidents) {
               final incident = incidents.firstWhere(
                 (inc) => inc.id == incidentId,
                 orElse: () => incidents.first,
@@ -459,7 +462,7 @@ class MapInteractionLogic {
     double minDistance = double.infinity;
 
     mapState.whenOrNull(
-      loaded: (incidents, _) {
+      loaded: (incidents) {
         for (final incident in incidents) {
           try {
             final incLat = double.parse(incident.latitude);
@@ -529,7 +532,7 @@ class MapInteractionLogic {
           // Lấy incident details từ state
           final mapState = ref.read(mapPageNotifierProvider);
           mapState.whenOrNull(
-            loaded: (incidents, _) {
+            loaded: (incidents) {
               final incident = incidents.firstWhere(
                 (inc) => inc.id == incidentId,
                 orElse: () => incidents.first,

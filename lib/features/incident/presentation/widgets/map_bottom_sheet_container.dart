@@ -6,6 +6,7 @@ import 'package:smart_route_app/features/incident/presentation/widgets/location_
 
 /// Container widget quản lý hiển thị bottom sheet trên map
 /// Chỉ hiển thị 1 bottom sheet tại 1 thời điểm dựa trên state
+/// Có animation khi chuyển đổi giữa các loại bottom sheet
 class MapBottomSheetContainer extends ConsumerWidget {
   const MapBottomSheetContainer({super.key});
 
@@ -18,13 +19,35 @@ class MapBottomSheetContainer extends ConsumerWidget {
       return const SizedBox.shrink();
     }
 
-    // Hiển thị bottom sheet tương ứng với type
-    return switch (bottomSheetState.type) {
-      BottomSheetType.locationInfo => const LocationInfoDraggableSheet(),
-      BottomSheetType.incidentDetail => IncidentDetailDraggableSheet(
-        incident: bottomSheetState.selectedIncident!,
+    // Sử dụng AnimatedSwitcher để có animation khi chuyển đổi bottom sheet
+    return AnimatedSwitcher(
+      duration: const Duration(milliseconds: 250),
+      switchInCurve: Curves.easeOutCubic,
+      switchOutCurve: Curves.easeInCubic,
+      transitionBuilder: (Widget child, Animation<double> animation) {
+        return SlideTransition(
+          position: Tween<Offset>(
+            begin: const Offset(0, 1), // Slide từ dưới lên
+            end: Offset.zero,
+          ).animate(animation),
+          child: child,
+        );
+      },
+      child: _buildBottomSheet(bottomSheetState),
+    );
+  }
+
+  Widget _buildBottomSheet(MapBottomSheetState state) {
+    // Key unique để AnimatedSwitcher nhận biết widget thay đổi
+    return switch (state.type) {
+      BottomSheetType.locationInfo => LocationInfoDraggableSheet(
+        key: ValueKey('location_${state.latitude}_${state.longitude}'),
       ),
-      BottomSheetType.none => const SizedBox.shrink(),
+      BottomSheetType.incidentDetail => IncidentDetailDraggableSheet(
+        key: ValueKey('incident_${state.selectedIncident!.id}'),
+        incident: state.selectedIncident!,
+      ),
+      BottomSheetType.none => const SizedBox.shrink(key: ValueKey('none')),
     };
   }
 }
