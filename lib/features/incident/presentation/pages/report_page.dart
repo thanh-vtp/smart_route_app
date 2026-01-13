@@ -10,7 +10,9 @@ import 'package:smart_route_app/features/incident/presentation/providers/map_cen
 import 'package:smart_route_app/features/incident/presentation/providers/states/report_page_notifier.dart';
 import 'package:smart_route_app/features/incident/presentation/widgets/add_incident_bottom_sheet.dart';
 import 'package:smart_route_app/features/incident/presentation/widgets/incident_type_widgets.dart';
-import 'package:smart_route_app/features/incident/presentation/widgets/simmer/map_state_overlays.dart';
+import 'package:smart_route_app/features/incident/presentation/widgets/simmer/loading/map_loading_overlay.dart';
+import 'package:smart_route_app/features/incident/presentation/widgets/simmer/error/map_state_overlays.dart';
+import 'package:smart_route_app/features/incident/presentation/widgets/simmer/loading/map_submitting_overlay.dart';
 
 class ReportMapPage extends ConsumerStatefulWidget {
   const ReportMapPage({super.key, required this.scrollController});

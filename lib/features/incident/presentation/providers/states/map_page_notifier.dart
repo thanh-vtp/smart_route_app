@@ -1,5 +1,6 @@
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:smart_route_app/core/errors/failures.dart';
+import 'package:smart_route_app/core/network/providers/state/app_connectivity_provider.dart';
 import 'package:smart_route_app/core/utils/utils.dart';
 import 'package:smart_route_app/features/auth/domain/entities/app_user.dart';
 import 'package:smart_route_app/features/incident/domain/entities/incident.dart';
@@ -7,42 +8,23 @@ import 'package:smart_route_app/features/incident/domain/usecases/add_incident_u
 import 'package:smart_route_app/features/incident/domain/usecases/delete_incident_usecase.dart';
 import 'package:smart_route_app/features/incident/domain/usecases/get_incidents_usecase.dart';
 import 'package:smart_route_app/features/incident/domain/usecases/update_incident_usecase.dart';
-import 'package:smart_route_app/core/providers/cache/network_info_providers.dart';
 import 'package:smart_route_app/features/incident/presentation/providers/states/map_page_state.dart';
 import 'package:smart_route_app/features/incident/presentation/providers/usecases/use_case_providers.dart';
-import 'package:smart_route_app/features/navigation/presentation/providers/usecase/use_case_providers.dart';
 
 class MapPageNotifier extends Notifier<MapPageState> {
   @override
   MapPageState build() {
-    // Lắng nghe thay đổi internet ngay trong Notifier
-    ref.listen(internetConnectionStreamProvider, (previous, next) {
-      final isOnline = next.value ?? true;
-      final wasOffline = previous?.value == false;
+    // Lắng nghe thay đổi internet
+    ref.listen(appConnectivityProvider, (previous, next) {
+      final wasOffline = previous == ConnectivityStatus.offline;
+      final isOnline = next == ConnectivityStatus.online;
 
-      if (!isOnline) {
-        // TRƯỜNG HỢP: Vừa mất mạng
-        _handleInternetLost();
-      } else if (wasOffline && isOnline) {
-        // TRƯỜNG HỢP: Vừa có mạng lại (Reconnect)
+      if (wasOffline && isOnline) {
         fetchIncidents(isManualRetry: true);
       }
     });
 
     return const MapPageState.initial();
-  }
-
-  void _handleInternetLost() {
-    state.maybeWhen(
-      loaded: (incidents, _) {
-        // Nếu đang ở màn hình Map, đính kèm Failure để hiện Banner cam
-        state = MapPageState.loaded(
-          incidents: incidents,
-          failure: NetworkFailure.noInternet(),
-        );
-      },
-      orElse: () {},
-    );
   }
 
   GetIncidentsUsecase get _getIncidentsUsecase =>
@@ -63,23 +45,24 @@ class MapPageNotifier extends Notifier<MapPageState> {
 
     // 1. Lấy danh sách incidents hiện tại (để backup)
     final previousIncidents = state.maybeWhen(
-      loaded: (incidents, _) => incidents,
+      loaded: (incidents) => incidents,
       submitted: (incidents) => incidents,
       orElse: () => <Incident>[], // List rỗng nếu chưa có gì
     );
 
-    // 2. Nếu là manual retry hoặc data trống, đưa về state loading hoàn toàn
-    // Khi state là .loading(), UI sẽ tự ẩn Error và hiện Loading
-    if (isManualRetry || previousIncidents.isEmpty) {
+    // 2. Chỉ hiện Loading xoay vòng tròn nếu chưa có data
+    if (previousIncidents.isEmpty) {
       state = const MapPageState.loading();
     }
+    // Nếu đã có data (previousIncidents.isNotEmpty), ta giữ nguyên state cũ
+    // để người dùng vẫn nhìn thấy Map trong lúc ngầm load lại.
 
     final result = await _getIncidentsUsecase.call(
       GetIncidentsParams(source: source, userUid: userUid),
     );
 
     // check network connection
-    final isConnected = await ref.read(networkInfoProvider).isConnected;
+    // final isConnected = await ref.read(networkInfoProvider).isConnected;
 
     result.fold(
       (failure) {
@@ -87,28 +70,24 @@ class MapPageNotifier extends Notifier<MapPageState> {
         AppLogger.ui('Fetch failed: ${failure.technicalMessage}');
 
         if (previousIncidents.isNotEmpty) {
-          // Nếu vẫn còn data cũ ở UI, giữ lại data và chỉ đính kèm lỗi để hiện banner
-          // Sau khi retry vẫn lỗi, hiện lại data kèm banner lỗi
-          state = MapPageState.loaded(
-            incidents: previousIncidents,
-            failure: failure,
-          );
-        } else {
-          // Lỗi fatal khi không có cache
-          // Nếu trắng tay hoàn toàn, mới đưa về state error (hiện màn hình lỗi to)
+          // TRƯỜNG HỢP 1: Chưa có data mà lỗi -> Lỗi Fatal
+          // Chuyển sang màn hình Error
           state = MapPageState.error(failure: failure);
+        } else {
+          // TRƯỜNG HỢP 2: Đã có data mà lỗi -> Lỗi Transient
+          // KHÔNG chuyển sang state error (để tránh mất Map).
+          // Giữ nguyên data cũ.
+          state = MapPageState.loaded(incidents: previousIncidents);
+
+          // Tùy chọn: Có thể bắn một sự kiện one-off (như Toast) tại đây
+          // thông qua một provider khác hoặc để UI tự handle nếu cần.
         }
       },
       (incidents) {
-        // TRƯỜNG HỢP THÀNH CÔNG (Hoặc lấy được từ Cache thành công)
+        // TRƯỜNG HỢP THÀNH CÔNG (lấy list mới)
         AppLogger.ui('Successfully fetched ${incidents.length} incidents');
 
-        state = MapPageState.loaded(
-          incidents: incidents,
-          failure: isConnected
-              ? null
-              : NetworkFailure.noInternet(), // Banner sẽ hiện dựa trên cái này
-        );
+        state = MapPageState.loaded(incidents: incidents);
       },
     );
   }
@@ -116,14 +95,14 @@ class MapPageNotifier extends Notifier<MapPageState> {
   /// Thêm incident mới và cập nhật UI
   /// [incident] - Incident cần thêm
   /// [currentUser] - User hiện tại đang đăng nhập
-  Future<bool> addIncident(Incident incident, AppUser currentUser) async {
+  Future<Failure?> addIncident(Incident incident, AppUser currentUser) async {
     AppLogger.ui(
       'User ${currentUser.email} attempting to add incident: ${incident.type}',
     );
 
     // Lấy danh sách incidents hiện tại
     final currentIncidents = state.maybeWhen(
-      loaded: (incidents, _) => incidents,
+      loaded: (incidents) => incidents,
       submitted: (incidents) => incidents,
       orElse: () => <Incident>[],
     );
@@ -137,47 +116,44 @@ class MapPageNotifier extends Notifier<MapPageState> {
     return result.fold(
       (failure) {
         AppLogger.ui('Failed to add incident', error: failure);
-        // Trả về state error
-        state = MapPageState.error(failure: failure);
-        return false;
+        // LỖI:
+        // Tuyệt đối KHÔNG chuyển sang MapPageState.error()
+        // Vì làm vậy sẽ biến mất Map và hiện màn hình lỗi to.
+
+        // Quay về trạng thái loaded với data cũ
+        state = MapPageState.loaded(incidents: currentIncidents);
+
+        // Trả lỗi về cho UI hiện Snackbar hoặc xử lý tiếp
+        return failure;
       },
       (_) async {
         AppLogger.ui('Incident added successfully, refreshing list...');
 
-        // Refresh danh sách incidents sau khi thêm thành công
-        final refreshResult = await _getIncidentsUsecase.call(
-          GetIncidentsParams(userUid: currentUser.uid),
-        );
+        // THÀNH CÔNG:
+        // Refresh lại list
+        await fetchIncidents(userUid: currentUser.uid);
 
-        refreshResult.fold(
-          (failure) {
-            AppLogger.ui(
-              'Failed to refresh incidents after adding',
-              error: failure,
-            );
-            // Vẫn giữ state submitted với danh sách cũ + incident mới
-            state = MapPageState.submitted(
-              incidents: [...currentIncidents, incident],
-            );
-          },
-          (incidents) {
-            AppLogger.ui('Refreshed incidents: ${incidents.length} total');
-            // Cập nhật với danh sách mới từ server
-            state = MapPageState.submitted(incidents: incidents);
-          },
+        // Chuyển sang submitted để UI biết đóng form/bottom sheet
+        final newIncidents = state.maybeWhen(
+          loaded: (i) => i,
+          orElse: () => currentIncidents,
         );
+        state = MapPageState.submitted(incidents: newIncidents);
 
-        return true;
+        return null; // Không có lỗi
       },
     );
   }
 
   /// Cập nhật incident
-  Future<bool> updateIncident(Incident incident, AppUser currentUser) async {
+  Future<Failure?> updateIncident(
+    Incident incident,
+    AppUser currentUser,
+  ) async {
     AppLogger.ui('User ${currentUser.email} updating incident: ${incident.id}');
 
     final currentIncidents = state.maybeWhen(
-      loaded: (incidents, _) => incidents,
+      loaded: (incidents) => incidents,
       submitted: (incidents) => incidents,
       orElse: () => <Incident>[],
     );
@@ -192,26 +168,27 @@ class MapPageNotifier extends Notifier<MapPageState> {
     return result.fold(
       (failure) {
         AppLogger.ui('Failed to update incident', error: failure);
-        state = MapPageState.loaded(
-          incidents: currentIncidents,
-          failure: failure,
-        );
-        return false;
+        // Lỗi: Quay lại loaded, không làm mất map
+        state = MapPageState.loaded(incidents: currentIncidents);
+        return failure; // Trả lỗi để UI hiện Snackbar
       },
       (_) async {
         AppLogger.ui('Incident updated successfully, refreshing list...');
         await _refreshIncidents(currentUser, currentIncidents);
-        return true;
+        return null; // Không có lỗi
       },
     );
   }
 
   /// Xóa incident
-  Future<bool> deleteIncident(String incidentId, AppUser currentUser) async {
+  Future<Failure?> deleteIncident(
+    String incidentId,
+    AppUser currentUser,
+  ) async {
     AppLogger.ui('User ${currentUser.email} deleting incident: $incidentId');
 
     final currentIncidents = state.maybeWhen(
-      loaded: (incidents, _) => incidents,
+      loaded: (incidents) => incidents,
       submitted: (incidents) => incidents,
       orElse: () => <Incident>[],
     );
@@ -226,16 +203,18 @@ class MapPageNotifier extends Notifier<MapPageState> {
     return result.fold(
       (failure) {
         AppLogger.ui('Failed to delete incident', error: failure);
-        state = MapPageState.loaded(
-          incidents: currentIncidents,
-          failure: failure,
-        );
-        return false;
+        // state = MapPageState.loaded(
+        //   incidents: currentIncidents,
+        //   failure: failure,
+        // );
+
+        state = MapPageState.loaded(incidents: currentIncidents);
+        return failure;
       },
       (_) async {
         AppLogger.ui('Incident deleted successfully, refreshing list...');
         await _refreshIncidents(currentUser, currentIncidents);
-        return true;
+        return null;
       },
     );
   }

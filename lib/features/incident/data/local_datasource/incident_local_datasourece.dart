@@ -1,5 +1,5 @@
 import 'dart:convert';
-import 'package:smart_route_app/core/database/map_database.dart';
+import 'package:smart_route_app/core/database/cache/map_database.dart';
 import 'package:smart_route_app/features/incident/data/models/incident_model.dart';
 
 /// Cache and retrieve incident data from ArchGIS Remote Data Source

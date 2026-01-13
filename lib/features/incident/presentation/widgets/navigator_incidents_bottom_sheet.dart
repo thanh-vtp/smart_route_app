@@ -93,7 +93,7 @@ class _State extends ConsumerState<NavigatorIncidentsBottomSheet> {
                     initial: () => _buildEmptyState('Chưa có dữ liệu'),
                     loading: () =>
                         const Center(child: CircularProgressIndicator()),
-                    loaded: (incidents, _) => _buildIncidentsList(
+                    loaded: (incidents) => _buildIncidentsList(
                       _filterIncidents(incidents),
                       scrollController,
                     ),

@@ -1,16 +1,14 @@
 import 'package:arcgis_maps/arcgis_maps.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
+import 'package:smart_route_app/core/core.dart';
 
 part 'feature_layer_providers.g.dart';
 
 @Riverpod(keepAlive: true)
 FeatureLayer incidentFeatureLayer(IncidentFeatureLayerRef ref) {
-  final serviceUrl =
-      "https://services7.arcgis.com/a062mjV7UpVWoyjr/arcgis/rest/services/smart_route_finder/FeatureServer/0";
-
   // Tạo ServiceFeatureTable từ URI
   final serviceFeatureTable = ServiceFeatureTable.withUri(
-    Uri.parse(serviceUrl),
+    Uri.parse(Constants.serviceTFeatureTableUrl),
   );
 
   // Đặt feature request mode để fetch tất cả attributes

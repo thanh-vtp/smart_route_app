@@ -304,28 +304,34 @@ class AddIncidentBottomSheet extends HookConsumerWidget {
                             'Creating incident - Lat: ${finalFormData.latitude}, Lng: ${finalFormData.longitude}',
                           );
 
-                          final success = await ref
+                          final failure = await ref
                               .read(mapPageNotifierProvider.notifier)
                               .addIncident(incident, currentUser);
 
                           isSubmitting.value = false;
 
                           if (context.mounted) {
-                            Navigator.pop(context);
-
-                            ScaffoldMessenger.of(context).showSnackBar(
-                              SnackBar(
-                                content: Text(
-                                  success
-                                      ? 'Đã báo cáo sự cố thành công!'
-                                      : 'Không thể báo cáo. Vui lòng thử lại.',
+                            if (failure == null) {
+                              Navigator.pop(context);
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                SnackBar(
+                                  content: Text('Đã báo cáo sự cố thành công!'),
+                                  backgroundColor: Colors.green,
+                                  behavior: SnackBarBehavior.floating,
                                 ),
-                                backgroundColor: success
-                                    ? Colors.green
-                                    : Colors.red,
-                                behavior: SnackBarBehavior.floating,
-                              ),
-                            );
+                              );
+                            } else {
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                SnackBar(
+                                  content: Text(
+                                    // failure.technicalMessage ??
+                                    'Không thể báo cáo. Vui lòng thử lại.',
+                                  ),
+                                  backgroundColor: Colors.red,
+                                  behavior: SnackBarBehavior.floating,
+                                ),
+                              );
+                            }
                           }
                         },
                   style: ElevatedButton.styleFrom(

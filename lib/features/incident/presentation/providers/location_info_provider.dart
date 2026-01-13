@@ -14,6 +14,9 @@ enum BottomSheetType {
   incidentDetail,
 }
 
+/// Callback để clear highlight incident khi chuyển sang location info
+typedef ClearHighlightCallback = void Function();
+
 /// Model chứa thông tin hiển thị trên bottom sheet
 class MapBottomSheetState {
   final BottomSheetType type;
@@ -75,6 +78,14 @@ final _sharedLocationMarkerHelper = LocationMarkerHelper();
 LocationMarkerHelper get sharedLocationMarkerHelper =>
     _sharedLocationMarkerHelper;
 
+/// Callback để clear highlight incident (được set từ MapInteractionLogic)
+ClearHighlightCallback? _clearHighlightCallback;
+
+/// Setter để đăng ký callback clear highlight
+void setClearHighlightCallback(ClearHighlightCallback? callback) {
+  _clearHighlightCallback = callback;
+}
+
 /// Provider quản lý state hiển thị bottom sheet trên map
 /// Chỉ cho phép hiển thị 1 bottom sheet tại 1 thời điểm
 class MapBottomSheetNotifier extends StateNotifier<MapBottomSheetState> {
@@ -86,6 +97,11 @@ class MapBottomSheetNotifier extends StateNotifier<MapBottomSheetState> {
     double longitude, {
     Incident? nearbyIncident,
   }) {
+    // Clear highlight incident nếu đang hiển thị incident detail
+    if (state.isIncidentDetail) {
+      _clearHighlightCallback?.call();
+    }
+
     state = MapBottomSheetState.locationInfo(
       lat: latitude,
       lon: longitude,
@@ -103,6 +119,11 @@ class MapBottomSheetNotifier extends StateNotifier<MapBottomSheetState> {
 
   /// Ẩn bottom sheet và xóa marker trên map
   void hide() {
+    // Clear highlight nếu đang hiển thị incident detail
+    if (state.isIncidentDetail) {
+      _clearHighlightCallback?.call();
+    }
+
     state = const MapBottomSheetState.hidden();
     // Xóa marker khi đóng bottom sheet
     _sharedLocationMarkerHelper.removeMarker();

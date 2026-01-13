@@ -6,7 +6,6 @@ import 'package:smart_route_app/core/utils/app_logger.dart';
 import 'package:smart_route_app/features/incident/data/datasources/arcgis_remote_data_source.dart';
 import 'package:smart_route_app/features/incident/data/models/incident_model.dart';
 
-
 class ArcGISRemoteDataSourceImpl implements ArcGISRemoteDataSource {
   final FeatureLayer _featureLayer;
 

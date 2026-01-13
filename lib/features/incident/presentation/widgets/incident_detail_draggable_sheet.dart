@@ -459,25 +459,34 @@ class _IncidentDetailContent extends HookConsumerWidget {
               ref.read(mapBottomSheetProvider.notifier).hide();
 
               final currentUser = ref.read(authProvider);
-              final success = await ref
+              final failure = await ref
                   .read(mapPageNotifierProvider.notifier)
                   .deleteIncident(incident.id, currentUser);
 
               if (context.mounted) {
-                ScaffoldMessenger.of(context).showSnackBar(
-                  SnackBar(
-                    content: Text(
-                      success
-                          ? 'Đã xóa sự cố!'
-                          : 'Không thể xóa. Vui lòng thử lại.',
+                if (failure == null) {
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    SnackBar(
+                      content: Text('Đã xóa sự cố!'),
+                      backgroundColor: Colors.green,
+                      behavior: SnackBarBehavior.floating,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(8),
+                      ),
                     ),
-                    backgroundColor: success ? Colors.green : Colors.red,
-                    behavior: SnackBarBehavior.floating,
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(8),
+                  );
+                } else {
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    SnackBar(
+                      content: Text('Không thể xóa. Vui lòng thử lại.'),
+                      backgroundColor: Colors.red,
+                      behavior: SnackBarBehavior.floating,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(8),
+                      ),
                     ),
-                  ),
-                );
+                  );
+                }
               }
             },
             style: ElevatedButton.styleFrom(

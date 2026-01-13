@@ -20,8 +20,7 @@ mixin _$MapPageState {
   TResult when<TResult extends Object?>({
     required TResult Function() initial,
     required TResult Function() loading,
-    required TResult Function(List<Incident> incidents, Failure? failure)
-        loaded,
+    required TResult Function(List<Incident> incidents) loaded,
     required TResult Function(List<Incident> incidents) submitting,
     required TResult Function(List<Incident> incidents) submitted,
     required TResult Function(Failure failure) error,
@@ -31,7 +30,7 @@ mixin _$MapPageState {
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function()? initial,
     TResult? Function()? loading,
-    TResult? Function(List<Incident> incidents, Failure? failure)? loaded,
+    TResult? Function(List<Incident> incidents)? loaded,
     TResult? Function(List<Incident> incidents)? submitting,
     TResult? Function(List<Incident> incidents)? submitted,
     TResult? Function(Failure failure)? error,
@@ -41,7 +40,7 @@ mixin _$MapPageState {
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? initial,
     TResult Function()? loading,
-    TResult Function(List<Incident> incidents, Failure? failure)? loaded,
+    TResult Function(List<Incident> incidents)? loaded,
     TResult Function(List<Incident> incidents)? submitting,
     TResult Function(List<Incident> incidents)? submitted,
     TResult Function(Failure failure)? error,
@@ -139,8 +138,7 @@ class _$InitialImpl implements _Initial {
   TResult when<TResult extends Object?>({
     required TResult Function() initial,
     required TResult Function() loading,
-    required TResult Function(List<Incident> incidents, Failure? failure)
-        loaded,
+    required TResult Function(List<Incident> incidents) loaded,
     required TResult Function(List<Incident> incidents) submitting,
     required TResult Function(List<Incident> incidents) submitted,
     required TResult Function(Failure failure) error,
@@ -153,7 +151,7 @@ class _$InitialImpl implements _Initial {
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function()? initial,
     TResult? Function()? loading,
-    TResult? Function(List<Incident> incidents, Failure? failure)? loaded,
+    TResult? Function(List<Incident> incidents)? loaded,
     TResult? Function(List<Incident> incidents)? submitting,
     TResult? Function(List<Incident> incidents)? submitted,
     TResult? Function(Failure failure)? error,
@@ -166,7 +164,7 @@ class _$InitialImpl implements _Initial {
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? initial,
     TResult Function()? loading,
-    TResult Function(List<Incident> incidents, Failure? failure)? loaded,
+    TResult Function(List<Incident> incidents)? loaded,
     TResult Function(List<Incident> incidents)? submitting,
     TResult Function(List<Incident> incidents)? submitted,
     TResult Function(Failure failure)? error,
@@ -266,8 +264,7 @@ class _$LoadingImpl implements _Loading {
   TResult when<TResult extends Object?>({
     required TResult Function() initial,
     required TResult Function() loading,
-    required TResult Function(List<Incident> incidents, Failure? failure)
-        loaded,
+    required TResult Function(List<Incident> incidents) loaded,
     required TResult Function(List<Incident> incidents) submitting,
     required TResult Function(List<Incident> incidents) submitted,
     required TResult Function(Failure failure) error,
@@ -280,7 +277,7 @@ class _$LoadingImpl implements _Loading {
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function()? initial,
     TResult? Function()? loading,
-    TResult? Function(List<Incident> incidents, Failure? failure)? loaded,
+    TResult? Function(List<Incident> incidents)? loaded,
     TResult? Function(List<Incident> incidents)? submitting,
     TResult? Function(List<Incident> incidents)? submitted,
     TResult? Function(Failure failure)? error,
@@ -293,7 +290,7 @@ class _$LoadingImpl implements _Loading {
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? initial,
     TResult Function()? loading,
-    TResult Function(List<Incident> incidents, Failure? failure)? loaded,
+    TResult Function(List<Incident> incidents)? loaded,
     TResult Function(List<Incident> incidents)? submitting,
     TResult Function(List<Incident> incidents)? submitted,
     TResult Function(Failure failure)? error,
@@ -359,7 +356,7 @@ abstract class _$$LoadedImplCopyWith<$Res> {
           _$LoadedImpl value, $Res Function(_$LoadedImpl) then) =
       __$$LoadedImplCopyWithImpl<$Res>;
   @useResult
-  $Res call({List<Incident> incidents, Failure? failure});
+  $Res call({List<Incident> incidents});
 }
 
 /// @nodoc
@@ -374,17 +371,12 @@ class __$$LoadedImplCopyWithImpl<$Res>
   @override
   $Res call({
     Object? incidents = null,
-    Object? failure = freezed,
   }) {
     return _then(_$LoadedImpl(
       incidents: null == incidents
           ? _value._incidents
           : incidents // ignore: cast_nullable_to_non_nullable
               as List<Incident>,
-      failure: freezed == failure
-          ? _value.failure
-          : failure // ignore: cast_nullable_to_non_nullable
-              as Failure?,
     ));
   }
 }
@@ -392,7 +384,7 @@ class __$$LoadedImplCopyWithImpl<$Res>
 /// @nodoc
 
 class _$LoadedImpl implements _Loaded {
-  const _$LoadedImpl({required final List<Incident> incidents, this.failure})
+  const _$LoadedImpl({required final List<Incident> incidents})
       : _incidents = incidents;
 
   final List<Incident> _incidents;
@@ -404,11 +396,8 @@ class _$LoadedImpl implements _Loaded {
   }
 
   @override
-  final Failure? failure;
-
-  @override
   String toString() {
-    return 'MapPageState.loaded(incidents: $incidents, failure: $failure)';
+    return 'MapPageState.loaded(incidents: $incidents)';
   }
 
   @override
@@ -417,13 +406,12 @@ class _$LoadedImpl implements _Loaded {
         (other.runtimeType == runtimeType &&
             other is _$LoadedImpl &&
             const DeepCollectionEquality()
-                .equals(other._incidents, _incidents) &&
-            (identical(other.failure, failure) || other.failure == failure));
+                .equals(other._incidents, _incidents));
   }
 
   @override
-  int get hashCode => Object.hash(
-      runtimeType, const DeepCollectionEquality().hash(_incidents), failure);
+  int get hashCode =>
+      Object.hash(runtimeType, const DeepCollectionEquality().hash(_incidents));
 
   @JsonKey(ignore: true)
   @override
@@ -436,13 +424,12 @@ class _$LoadedImpl implements _Loaded {
   TResult when<TResult extends Object?>({
     required TResult Function() initial,
     required TResult Function() loading,
-    required TResult Function(List<Incident> incidents, Failure? failure)
-        loaded,
+    required TResult Function(List<Incident> incidents) loaded,
     required TResult Function(List<Incident> incidents) submitting,
     required TResult Function(List<Incident> incidents) submitted,
     required TResult Function(Failure failure) error,
   }) {
-    return loaded(incidents, failure);
+    return loaded(incidents);
   }
 
   @override
@@ -450,12 +437,12 @@ class _$LoadedImpl implements _Loaded {
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function()? initial,
     TResult? Function()? loading,
-    TResult? Function(List<Incident> incidents, Failure? failure)? loaded,
+    TResult? Function(List<Incident> incidents)? loaded,
     TResult? Function(List<Incident> incidents)? submitting,
     TResult? Function(List<Incident> incidents)? submitted,
     TResult? Function(Failure failure)? error,
   }) {
-    return loaded?.call(incidents, failure);
+    return loaded?.call(incidents);
   }
 
   @override
@@ -463,14 +450,14 @@ class _$LoadedImpl implements _Loaded {
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? initial,
     TResult Function()? loading,
-    TResult Function(List<Incident> incidents, Failure? failure)? loaded,
+    TResult Function(List<Incident> incidents)? loaded,
     TResult Function(List<Incident> incidents)? submitting,
     TResult Function(List<Incident> incidents)? submitted,
     TResult Function(Failure failure)? error,
     required TResult orElse(),
   }) {
     if (loaded != null) {
-      return loaded(incidents, failure);
+      return loaded(incidents);
     }
     return orElse();
   }
@@ -520,12 +507,10 @@ class _$LoadedImpl implements _Loaded {
 }
 
 abstract class _Loaded implements MapPageState {
-  const factory _Loaded(
-      {required final List<Incident> incidents,
-      final Failure? failure}) = _$LoadedImpl;
+  const factory _Loaded({required final List<Incident> incidents}) =
+      _$LoadedImpl;
 
   List<Incident> get incidents;
-  Failure? get failure;
   @JsonKey(ignore: true)
   _$$LoadedImplCopyWith<_$LoadedImpl> get copyWith =>
       throw _privateConstructorUsedError;
@@ -605,8 +590,7 @@ class _$SubmittingImpl implements _Submitting {
   TResult when<TResult extends Object?>({
     required TResult Function() initial,
     required TResult Function() loading,
-    required TResult Function(List<Incident> incidents, Failure? failure)
-        loaded,
+    required TResult Function(List<Incident> incidents) loaded,
     required TResult Function(List<Incident> incidents) submitting,
     required TResult Function(List<Incident> incidents) submitted,
     required TResult Function(Failure failure) error,
@@ -619,7 +603,7 @@ class _$SubmittingImpl implements _Submitting {
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function()? initial,
     TResult? Function()? loading,
-    TResult? Function(List<Incident> incidents, Failure? failure)? loaded,
+    TResult? Function(List<Incident> incidents)? loaded,
     TResult? Function(List<Incident> incidents)? submitting,
     TResult? Function(List<Incident> incidents)? submitted,
     TResult? Function(Failure failure)? error,
@@ -632,7 +616,7 @@ class _$SubmittingImpl implements _Submitting {
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? initial,
     TResult Function()? loading,
-    TResult Function(List<Incident> incidents, Failure? failure)? loaded,
+    TResult Function(List<Incident> incidents)? loaded,
     TResult Function(List<Incident> incidents)? submitting,
     TResult Function(List<Incident> incidents)? submitted,
     TResult Function(Failure failure)? error,
@@ -772,8 +756,7 @@ class _$SubmittedImpl implements _Submitted {
   TResult when<TResult extends Object?>({
     required TResult Function() initial,
     required TResult Function() loading,
-    required TResult Function(List<Incident> incidents, Failure? failure)
-        loaded,
+    required TResult Function(List<Incident> incidents) loaded,
     required TResult Function(List<Incident> incidents) submitting,
     required TResult Function(List<Incident> incidents) submitted,
     required TResult Function(Failure failure) error,
@@ -786,7 +769,7 @@ class _$SubmittedImpl implements _Submitted {
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function()? initial,
     TResult? Function()? loading,
-    TResult? Function(List<Incident> incidents, Failure? failure)? loaded,
+    TResult? Function(List<Incident> incidents)? loaded,
     TResult? Function(List<Incident> incidents)? submitting,
     TResult? Function(List<Incident> incidents)? submitted,
     TResult? Function(Failure failure)? error,
@@ -799,7 +782,7 @@ class _$SubmittedImpl implements _Submitted {
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? initial,
     TResult Function()? loading,
-    TResult Function(List<Incident> incidents, Failure? failure)? loaded,
+    TResult Function(List<Incident> incidents)? loaded,
     TResult Function(List<Incident> incidents)? submitting,
     TResult Function(List<Incident> incidents)? submitted,
     TResult Function(Failure failure)? error,
@@ -931,8 +914,7 @@ class _$ErrorImpl implements _Error {
   TResult when<TResult extends Object?>({
     required TResult Function() initial,
     required TResult Function() loading,
-    required TResult Function(List<Incident> incidents, Failure? failure)
-        loaded,
+    required TResult Function(List<Incident> incidents) loaded,
     required TResult Function(List<Incident> incidents) submitting,
     required TResult Function(List<Incident> incidents) submitted,
     required TResult Function(Failure failure) error,
@@ -945,7 +927,7 @@ class _$ErrorImpl implements _Error {
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function()? initial,
     TResult? Function()? loading,
-    TResult? Function(List<Incident> incidents, Failure? failure)? loaded,
+    TResult? Function(List<Incident> incidents)? loaded,
     TResult? Function(List<Incident> incidents)? submitting,
     TResult? Function(List<Incident> incidents)? submitted,
     TResult? Function(Failure failure)? error,
@@ -958,7 +940,7 @@ class _$ErrorImpl implements _Error {
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? initial,
     TResult Function()? loading,
-    TResult Function(List<Incident> incidents, Failure? failure)? loaded,
+    TResult Function(List<Incident> incidents)? loaded,
     TResult Function(List<Incident> incidents)? submitting,
     TResult Function(List<Incident> incidents)? submitted,
     TResult Function(Failure failure)? error,
