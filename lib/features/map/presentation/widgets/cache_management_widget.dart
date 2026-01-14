@@ -15,7 +15,7 @@ class CacheManagementWidget extends HookConsumerWidget {
     Future<void> loadCacheStats() async {
       isLoading.value = true;
       try {
-        final geocodingRepo = ref.read(geocodingRepositoryProvider);
+        final geocodingRepo = ref.read(routingRepositoryProvider);
         final incidentRepo = ref.read(incidentRepositoryProvider);
 
         // Lấy stats từ cả 2 repository
@@ -59,7 +59,7 @@ class CacheManagementWidget extends HookConsumerWidget {
 
       if (confirmed == true) {
         try {
-          final geocodingRepo = ref.read(geocodingRepositoryProvider);
+          final geocodingRepo = ref.read(routingRepositoryProvider);
           final incidentRepo = ref.read(incidentRepositoryProvider);
 
           await geocodingRepo.clearAllCache();
@@ -82,8 +82,8 @@ class CacheManagementWidget extends HookConsumerWidget {
 
     Future<void> clearExpiredCache() async {
       try {
-        final repository = ref.read(geocodingRepositoryProvider);
-        await repository.clearExpiredCache();
+        final repository = ref.read(routingRepositoryProvider);
+        await repository.clearExpiredCache(Duration(days: 7));
         await loadCacheStats();
         if (context.mounted) {
           ScaffoldMessenger.of(
