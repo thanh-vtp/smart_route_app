@@ -42,5 +42,23 @@ final reverseGeocodeUseCaseProvider =
 
 typedef ReverseGeocodeUseCaseRef
     = AutoDisposeProviderRef<ReverseGeocodeUseCase>;
+String _$getLocationImageryUseCaseHash() =>
+    r'158e28454692d8ca29eb3f5c17e62813a34d108f';
+
+/// See also [getLocationImageryUseCase].
+@ProviderFor(getLocationImageryUseCase)
+final getLocationImageryUseCaseProvider =
+    AutoDisposeProvider<GetLocationImageryUseCase>.internal(
+  getLocationImageryUseCase,
+  name: r'getLocationImageryUseCaseProvider',
+  debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
+      ? null
+      : _$getLocationImageryUseCaseHash,
+  dependencies: null,
+  allTransitiveDependencies: null,
+);
+
+typedef GetLocationImageryUseCaseRef
+    = AutoDisposeProviderRef<GetLocationImageryUseCase>;
 // ignore_for_file: type=lint
 // ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member
