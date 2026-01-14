@@ -12,15 +12,11 @@ part 'repository_providers.g.dart';
 @Riverpod(keepAlive: true)
 RoutingRepository routingRepository(RoutingRepositoryRef ref) {
   final routingRemoteDataSource = ref.watch(routingRemoteDataSourceProvider);
-  final imageRemoteDataSource = ref.watch(imageRemoteDataSourceProvider);
   final placeLocalDataSource = ref.watch(placeLocalDataSourceProvider);
   final routeLocalDataSource = ref.watch(routeLocalDataSourceProvider);
-  final imageryLocalDataSource = ref.watch(imageryLocalDataSourceProvider);
   final networkInfo = ref.watch(networkInfoProvider);
   return RoutingRepositoryImpl(
     routingRemoteDataSource,
-    imageRemoteDataSource,
-    imageryLocalDataSource,
     placeLocalDataSource,
     routeLocalDataSource,
     networkInfo,

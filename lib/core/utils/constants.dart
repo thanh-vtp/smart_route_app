@@ -17,16 +17,18 @@ abstract class Constants {
 
   // --- Base URLs ---
   static const String arcgisGeocodeBaseUrl =
-      'https://geocode-api.arcgis.com/arcgis/rest/services';
+      'https://geocode-api.arcgis.com/arcgis/rest/services/World/GeocodeServer';
 
   static const String arcgisRouteBaseUrl =
-      'https://route-api.arcgis.com/arcgis/rest/services';
+      'https://route-api.arcgis.com/arcgis/rest/services/World';
 
   // --- Endpoints ---
-  static const String findAddressCandidates =
-      '/World/GeocodeServer/findAddressCandidates';
-  static const String geocodeAddresses =
-      '/World/GeocodeServer/geocodeAddresses';
-  static const String reverseGeocode = '/World/GeocodeServer/reverseGeocode';
-  static const String suggest = '/World/GeocodeServer/suggest';
+  // --- ArcGIS Geocoding service ---
+  static const String findAddressCandidates = '/findAddressCandidates';
+  static const String geocodeAddresses = '/geocodeAddresses';
+  static const String reverseGeocode = '/reverseGeocode';
+  static const String suggest = '/suggest';
+
+  // --- ArcGIS Routing service ---
+  static const String routeAndDirections = '/Route/NAServer/Route_World/solve';
 }

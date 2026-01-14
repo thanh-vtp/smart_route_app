@@ -5,8 +5,9 @@ import 'dart:io';
 import 'package:smart_route_app/core/errors/failures.dart';
 import 'package:smart_route_app/core/utils/app_logger.dart';
 import 'package:smart_route_app/core/utils/constants.dart';
-import 'package:smart_route_app/features/navigation/data/models/geocoding_models.dart';
+import 'package:smart_route_app/features/navigation/data/models/routing_models.dart';
 import 'package:http/http.dart' as http;
+import 'package:smart_route_app/features/search/data/models/geocoding_models.dart';
 
 abstract class RoutingRemoteDataSource {
   /// Test connection to ArcGIS services
@@ -24,7 +25,7 @@ abstract class RoutingRemoteDataSource {
     double latitude,
     double longitude, {
     String category = '',
-    int maxLocations = 10,
+    String maxLocations = '10',
     double searchRadius = 1000,
   });
 }
@@ -33,8 +34,8 @@ class RoutingRemoteDataSourceImpl implements RoutingRemoteDataSource {
   final http.Client _client;
   final String _apiKey;
 
-  static const String _baseUrl =
-      'https://geocode-api.arcgis.com/arcgis/rest/services';
+  // static const String _baseUrl =
+  //     'https://geocode-api.arcgis.com/arcgis/rest/services';
   static const String _routeBaseUrl =
       'https://route-api.arcgis.com/arcgis/rest/services';
 
@@ -122,7 +123,7 @@ class RoutingRemoteDataSourceImpl implements RoutingRemoteDataSource {
   Future<bool> testConnection() async {
     try {
       final uri = Uri.parse(
-        '$_baseUrl/World/GeocodeServer',
+        Constants.arcgisGeocodeBaseUrl,
       ).replace(queryParameters: {'f': 'json', 'token': _apiKey});
 
       final response = await _makeRequest(uri);
@@ -234,59 +235,44 @@ class RoutingRemoteDataSourceImpl implements RoutingRemoteDataSource {
     double latitude,
     double longitude, {
     String category = '',
-    int maxLocations = 10,
+    String format = 'json',
+    String attributes = '*',
+    String maxLocations = '10',
+    String forStorage = 'false',
     double searchRadius = 1000, // meters
   }) async {
+    final queryParameters = {
+      'location': '$longitude,$latitude',
+      'category': category,
+      'f': format,
+      'token': _apiKey,
+      'outFields': attributes,
+      'maxLocations': maxLocations,
+      'forStorage': forStorage,
+      'searchExtent': _calculateSearchExtent(latitude, longitude, searchRadius),
+    };
+
+    final uri = Uri.parse(
+      '${Constants.arcgisGeocodeBaseUrl}${Constants.findAddressCandidates}',
+    ).replace(queryParameters: queryParameters);
+
+    final response = await _makeRequest(uri);
+    final data = _parseAndValidateResponse(response);
+
     try {
-      // Check cache first
-      // final cachedResult = await _cacheService.getCachedNearbyPlacesResult(
-      //   latitude,
-      //   longitude,
-      //   category,
-      //   searchRadius,
-      // );
-      // if (cachedResult != null) {
-      //   return cachedResult;
-      // }
-
-      final uri =
-          Uri.parse(
-            '$_baseUrl/World/GeocodeServer/findAddressCandidates',
-          ).replace(
-            queryParameters: {
-              'location': '$longitude,$latitude',
-              'category': category,
-              'f': 'json',
-              'token': _apiKey,
-              'outFields': '*',
-              'maxLocations': maxLocations.toString(),
-              'searchExtent': _calculateSearchExtent(
-                latitude,
-                longitude,
-                searchRadius,
-              ),
-            },
-          );
-
-      final response = await _makeRequest(uri);
-      final data = _parseAndValidateResponse(response);
       final result = GeocodeResponse.fromJson(data);
 
-      try {
-        // Cache the result
-        // await _cacheService.cacheNearbyPlacesResult(
-        //   latitude,
-        //   longitude,
-        //   category,
-        //   searchRadius,
-        //   result,
-        // );
-      } catch (e) {
-        AppLogger.error(
-          'Failed to cache nearby places result: $e',
-          name: 'ArcGISGeocodingDataSource',
+      AppLogger.data(
+        'GeocodeResponse: '
+        'total=${result.candidates.length}',
+        source: 'RoutingRemoteDataSource',
+      );
+      for (var i = 0; i < result.candidates.length; i++) {
+        AppLogger.data(
+          '  [$i] ${result.candidates[i].address.split('\n').first} '
+          '(${result.candidates[i].attributes})',
+          source: 'RoutingRemoteDataSource',
         );
-        // Continue without caching
       }
 
       return result;

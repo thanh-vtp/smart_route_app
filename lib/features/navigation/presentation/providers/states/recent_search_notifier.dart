@@ -1,9 +1,11 @@
 import 'package:riverpod_annotation/riverpod_annotation.dart';
-import 'package:smart_route_app/features/navigation/presentation/providers/repositories/repository_providers.dart';
 import 'package:smart_route_app/features/navigation/presentation/providers/states/recent_search_state.dart';
+import 'package:smart_route_app/features/search/presentation/providers/repositories/repository_providers.dart';
 
 part 'recent_search_notifier.g.dart';
 
+/// Notifier quản lý lịch sử tìm kiếm gần đây
+/// Sử dụng GeocodingRepository để lấy data từ geocoding_cache và reverse_geocoding_cache
 @riverpod
 class RecentSearchNotifier extends _$RecentSearchNotifier {
   @override
@@ -12,11 +14,15 @@ class RecentSearchNotifier extends _$RecentSearchNotifier {
     return _fetchHistory();
   }
 
-  /// Hàm nội bộ để lấy dữ liệu từ Repository
+  /// Hàm nội bộ để lấy dữ liệu từ GeocodingRepository
+  /// Data được lưu từ findAddressCandidates() và reverseGeocode()
   Future<RecentSearchState> _fetchHistory() async {
     state = const AsyncValue.data(RecentSearchState(isLoading: true));
 
-    final repository = ref.read(routingRepositoryProvider);
+    // Dùng geocodingRepositoryProvider vì search history được lưu qua
+    // findAddressCandidates() -> geocoding_cache
+    // reverseGeocode() -> reverse_geocoding_cache
+    final repository = ref.read(geocodingRepositoryProvider);
     final result = await repository.getRecentSearchHistory();
 
     return result.fold(
@@ -34,9 +40,9 @@ class RecentSearchNotifier extends _$RecentSearchNotifier {
     state = AsyncValue.data(await _fetchHistory());
   }
 
-  /// Xóa toàn bộ lịch sử trong ROM
+  /// Xóa toàn bộ lịch sử trong ROM (cả geocoding_cache và reverse_geocoding_cache)
   Future<void> clearAll() async {
-    final repository = ref.read(routingRepositoryProvider);
+    final repository = ref.read(geocodingRepositoryProvider);
 
     final result = await repository.clearHistory();
     result.fold(
