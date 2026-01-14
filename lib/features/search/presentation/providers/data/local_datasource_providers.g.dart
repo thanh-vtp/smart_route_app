@@ -27,5 +27,42 @@ final geocodingLocalDataSourceProvider =
 );
 
 typedef GeocodingLocalDataSourceRef = ProviderRef<GeocodingLocalDataSource>;
+String _$reverseGeocodingLocalDataSourceHash() =>
+    r'25ddd330bb2cc39607c94b6f94c93ae94ae52c43';
+
+/// See also [reverseGeocodingLocalDataSource].
+@ProviderFor(reverseGeocodingLocalDataSource)
+final reverseGeocodingLocalDataSourceProvider =
+    Provider<ReverseGeocodingLocalDataSource>.internal(
+  reverseGeocodingLocalDataSource,
+  name: r'reverseGeocodingLocalDataSourceProvider',
+  debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
+      ? null
+      : _$reverseGeocodingLocalDataSourceHash,
+  dependencies: null,
+  allTransitiveDependencies: null,
+);
+
+typedef ReverseGeocodingLocalDataSourceRef
+    = ProviderRef<ReverseGeocodingLocalDataSource>;
+String _$imageryLocalDataSourceHash() =>
+    r'9765e333a38e34326eae6321494c6fe364bb439b';
+
+/// Provider cho Imagery Local Data Source
+///
+/// Copied from [imageryLocalDataSource].
+@ProviderFor(imageryLocalDataSource)
+final imageryLocalDataSourceProvider =
+    Provider<ImageryLocalDataSource>.internal(
+  imageryLocalDataSource,
+  name: r'imageryLocalDataSourceProvider',
+  debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
+      ? null
+      : _$imageryLocalDataSourceHash,
+  dependencies: null,
+  allTransitiveDependencies: null,
+);
+
+typedef ImageryLocalDataSourceRef = ProviderRef<ImageryLocalDataSource>;
 // ignore_for_file: type=lint
 // ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member

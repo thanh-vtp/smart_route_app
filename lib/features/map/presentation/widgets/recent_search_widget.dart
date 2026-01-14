@@ -136,11 +136,21 @@ class _RecentSearchItem extends StatelessWidget {
         maxLines: 1,
         overflow: TextOverflow.ellipsis,
       ),
-      subtitle: Text(
-        _buildSubtitle(),
-        style: TextStyle(fontSize: 14, color: Colors.grey.shade600),
-        maxLines: 1,
-        overflow: TextOverflow.ellipsis,
+      subtitle: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          Text(
+            _buildSubtitle(),
+            style: TextStyle(fontSize: 14, color: Colors.grey.shade600),
+            maxLines: 1,
+            overflow: TextOverflow.ellipsis,
+          ),
+
+          Text(
+            '(${address.latitude.toStringAsFixed(4)}, ${address.longitude.toStringAsFixed(4)})',
+            style: TextStyle(fontSize: 12, color: Colors.grey.shade500),
+          ),
+        ],
       ),
       onTap: onTap,
     );
