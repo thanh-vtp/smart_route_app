@@ -15,7 +15,7 @@ class FindNearbyPlacesUseCase {
     double latitude,
     double longitude, {
     String category = '',
-    int maxLocations = 10,
+    String maxLocations = '10',
     double searchRadius = 1000,
   }) async {
     if (latitude < -90 || latitude > 90) {
@@ -24,7 +24,7 @@ class FindNearbyPlacesUseCase {
     if (longitude < -180 || longitude > 180) {
       return Left(ArcGISFailure.invalidCoordinates());
     }
-    if (maxLocations <= 0) {
+    if (int.parse(maxLocations) <= 0) {
       return Left(ValidationFailure.invalidInput('maxLocations'));
     }
     if (searchRadius <= 0) {
@@ -42,6 +42,7 @@ class FindNearbyPlacesUseCase {
       'FindNearbyPlacesUseCase result: $result',
       useCase: 'FindNearbyPlacesUseCase',
     );
+
     return result;
   }
 }

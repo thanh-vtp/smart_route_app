@@ -7,7 +7,7 @@ part of 'nearby_places_state.dart';
 // **************************************************************************
 
 String _$nearbyPlacesNotifierHash() =>
-    r'febe4a4bab99f6023b2748958ef198bd5f690bc4';
+    r'7c6f9f552c0f87c77b543e3efcd7ffadbe41f85f';
 
 /// See also [NearbyPlacesNotifier].
 @ProviderFor(NearbyPlacesNotifier)

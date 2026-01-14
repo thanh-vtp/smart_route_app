@@ -11,7 +11,6 @@ String _$routingRemoteDataSourceHash() =>
 
 /// dùng Ref hoặc tự định nghĩa Ref type
 /// Quy tắc: name function + Ref
-/// Provider cho ArcGIS Geocoding Data Source
 ///
 /// Copied from [routingRemoteDataSource].
 @ProviderFor(routingRemoteDataSource)
@@ -27,21 +26,5 @@ final routingRemoteDataSourceProvider =
 );
 
 typedef RoutingRemoteDataSourceRef = ProviderRef<RoutingRemoteDataSource>;
-String _$imageRemoteDataSourceHash() =>
-    r'ab0faf563c07164626246170e63780266f26e1cc';
-
-/// See also [imageRemoteDataSource].
-@ProviderFor(imageRemoteDataSource)
-final imageRemoteDataSourceProvider = Provider<ImageRemoteDataSource>.internal(
-  imageRemoteDataSource,
-  name: r'imageRemoteDataSourceProvider',
-  debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
-      ? null
-      : _$imageRemoteDataSourceHash,
-  dependencies: null,
-  allTransitiveDependencies: null,
-);
-
-typedef ImageRemoteDataSourceRef = ProviderRef<ImageRemoteDataSource>;
 // ignore_for_file: type=lint
 // ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member

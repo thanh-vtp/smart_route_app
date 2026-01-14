@@ -15,6 +15,9 @@ abstract class LocalCacheDataSource {
 
   /// Xóa toàn bộ cache
   Future<void> clearAll();
+
+  /// Lấy số lượng bản ghi trong cache
+  Future<int> getCacheCount();
 }
 
 abstract class BaseSQLiteCache implements LocalCacheDataSource {
@@ -74,5 +77,15 @@ abstract class BaseSQLiteCache implements LocalCacheDataSource {
     final db = await dbHelper.database;
     final cutoff = DateTime.now().subtract(maxAge).millisecondsSinceEpoch;
     await db.delete(tableName, where: 'timestamp < ?', whereArgs: [cutoff]);
+  }
+
+  /// Đếm số lượng bản ghi trong cache
+  @override
+  Future<int> getCacheCount() async {
+    final db = await dbHelper.database;
+    final result = await db.rawQuery(
+      'SELECT COUNT(*) as count FROM $tableName',
+    );
+    return Sqflite.firstIntValue(result) ?? 0;
   }
 }

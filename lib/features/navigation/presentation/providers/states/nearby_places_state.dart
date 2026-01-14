@@ -33,7 +33,7 @@ class NearbyPlacesNotifier extends _$NearbyPlacesNotifier {
     required double latitude,
     required double longitude,
     String category = '',
-    int maxLocations = 10,
+    String maxLocations = '10',
     double searchRadius = 1000,
   }) async {
     // 1. Lưu lại data cũ nếu đang ở state loaded để dùng khi cần (ví dụ cho state refreshing)
