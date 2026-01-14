@@ -5,7 +5,6 @@ import 'package:smart_route_app/core/errors/failures.dart';
 import 'package:smart_route_app/features/search/domain/entities/address_result.dart';
 import 'package:smart_route_app/features/search/presentation/pages/location_search_page.dart';
 import 'package:smart_route_app/features/navigation/presentation/providers/states/route_state.dart';
-import 'package:smart_route_app/features/navigation/presentation/providers/usecase/use_case_providers.dart';
 import 'package:smart_route_app/features/search/presentation/providers/usecases/use_case_providers.dart';
 import '../../../incident/domain/entities/incident.dart';
 import '../../domain/entities/route_direction.dart';

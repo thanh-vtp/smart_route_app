@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:smart_route_app/core/core.dart';
 import 'package:smart_route_app/core/network/presentation/widgets/global_connection_wrapper.dart';
@@ -59,13 +60,13 @@ class _HomePageState extends ConsumerState<HomePage> {
         ],
       ),
 
-      // floatingActionButton: FloatingActionButton.extended(
-      //   onPressed: () => context.go('/arcgis-demo'),
-      //   backgroundColor: Colors.blue,
-      //   foregroundColor: Colors.white,
-      //   icon: const Icon(Icons.map),
-      //   label: const Text('ArcGIS Demo'),
-      // ),
+      floatingActionButton: FloatingActionButton.extended(
+        onPressed: () => context.go('/arcgis-demo'),
+        backgroundColor: Colors.blue,
+        foregroundColor: Colors.white,
+        icon: const Icon(Icons.map),
+        label: const Text('ArcGIS Demo'),
+      ),
       floatingActionButtonLocation: FloatingActionButtonLocation.endTop,
 
       bottomNavigationBar: Theme(

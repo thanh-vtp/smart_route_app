@@ -9,7 +9,10 @@ part of 'recent_search_notifier.dart';
 String _$recentSearchNotifierHash() =>
     r'45ea182576ef2ee774e1ee08439e3f735fe5ef43';
 
-/// See also [RecentSearchNotifier].
+/// Notifier quản lý lịch sử tìm kiếm gần đây
+/// Sử dụng GeocodingRepository để lấy data từ geocoding_cache và reverse_geocoding_cache
+///
+/// Copied from [RecentSearchNotifier].
 @ProviderFor(RecentSearchNotifier)
 final recentSearchNotifierProvider = AutoDisposeAsyncNotifierProvider<
     RecentSearchNotifier, RecentSearchState>.internal(

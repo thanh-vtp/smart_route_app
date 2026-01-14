@@ -1,6 +1,4 @@
 import 'package:fpdart/fpdart.dart';
-import 'package:smart_route_app/features/search/domain/entities/address_result.dart';
-import 'package:smart_route_app/features/navigation/domain/entities/location_imagery.dart';
 import 'package:smart_route_app/features/navigation/domain/entities/nearby_place.dart';
 import 'package:smart_route_app/features/navigation/domain/entities/route_result.dart';
 import '../../../../core/errors/failures.dart';
@@ -12,37 +10,18 @@ abstract class RoutingRepository {
     List<Map<String, double>> stops,
   );
 
-  /// Lấy hình ảnh vệ tinh tại vị trí
-  Future<Either<Failure, LocationImagery>> getLocationImagery(
-    double latitude,
-    double longitude, {
-    int width = 400,
-    int height = 400,
-    int zoomLevel = 15,
-  });
-
   /// Tìm kiếm địa điểm gần đó
   Future<Either<Failure, List<NearbyPlace>>> findNearbyPlaces(
     double latitude,
     double longitude, {
     String category = '',
-    int maxLocations = 10,
+    String maxLocations = '10',
     double searchRadius = 1000,
   });
-
-  /// Lấy danh sách lịch sử tìm kiếm gần đây
-  Future<Either<Failure, List<AddressResult>>> getRecentSearchHistory();
-
-  /// Xóa toàn bộ lịch sử tìm kiếm
-  Future<Either<Failure, void>> clearHistory();
-  // ============ Cache Management ============
 
   /// Xóa tất cả cache (geocoding, route, nearby, imagery)
   Future<void> clearAllCache();
 
-  /// Xóa cache đã hết hạn
-  Future<void> clearExpiredCache(Duration maxAge);
-
-  /// Lấy thống kê cache theo loại
+  /// Lấy thống kê cache (route, nearby)
   Future<Map<String, int>> getCacheStats();
 }

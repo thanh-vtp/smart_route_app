@@ -1,31 +1,23 @@
-import 'dart:convert';
 import 'dart:math' as math;
 import 'package:fpdart/fpdart.dart';
 import 'package:smart_route_app/core/network/network_info.dart';
 import 'package:smart_route_app/core/utils/app_logger.dart';
 import 'package:smart_route_app/core/errors/failures.dart';
-import 'package:smart_route_app/features/navigation/data/datasources/arcgis_geocoding_remote_data_source.dart';
-import 'package:smart_route_app/features/navigation/data/datasources/image_remote_data_source_impl.dart';
 import 'package:smart_route_app/features/navigation/data/datasources/routing_remote_data_source_impl.dart';
-import 'package:smart_route_app/features/navigation/data/local_datasource/geocoding_local_data_source.dart';
-import 'package:smart_route_app/features/navigation/data/local_datasource/imagery_local_data_source.dart';
 import 'package:smart_route_app/features/navigation/data/local_datasource/place_local_data_source_impl.dart';
 import 'package:smart_route_app/features/navigation/data/local_datasource/route_local_data_source_impl.dart';
-import 'package:smart_route_app/features/navigation/data/models/geocoding_models.dart';
-import 'package:smart_route_app/features/search/domain/entities/address_result.dart';
-import 'package:smart_route_app/features/navigation/domain/entities/location_imagery.dart';
+import 'package:smart_route_app/features/navigation/data/models/routing_models.dart';
 import 'package:smart_route_app/features/navigation/domain/entities/nearby_place.dart';
 import 'package:smart_route_app/features/navigation/domain/entities/route_direction.dart';
 import 'package:smart_route_app/features/navigation/domain/entities/route_point.dart';
+import 'package:smart_route_app/features/search/data/models/geocoding_models.dart';
 import '../../domain/repositories/routing_repository.dart';
 import '../../../navigation/data/datasources/arcgis_exception_handler.dart';
 import 'package:smart_route_app/features/navigation/domain/entities/route_result.dart';
 
 class RoutingRepositoryImpl implements RoutingRepository {
   final RoutingRemoteDataSource _routingRemoteDataSource;
-  final ImageRemoteDataSource _imageRemoteDataSource;
 
-  final ImageryLocalDataSource _imageryLocalSource; // File System
   final PlaceLocalDataSource _placeCache;
   final RouteLocalDataSource _routeCache;
 
@@ -33,8 +25,6 @@ class RoutingRepositoryImpl implements RoutingRepository {
 
   RoutingRepositoryImpl(
     this._routingRemoteDataSource,
-    this._imageRemoteDataSource,
-    this._imageryLocalSource,
     this._placeCache,
     this._routeCache,
     this._networkInfo,
@@ -50,11 +40,16 @@ class RoutingRepositoryImpl implements RoutingRepository {
   ) async {
     final key = _makeKey('route', stops);
 
-    // Lấy cache 1 ngày
-    final cached = await _routeCache.get(key, expiry: const Duration(days: 1));
+    final bool isConnected = await _networkInfo.isConnected;
+
+    // Lấy cache 7 ngày
+    final cached = await _routeCache.get(key, expiry: const Duration(days: 7));
     if (cached != null) {
       return right(_mapRouteResponseToEntity(RouteResponse.fromJson(cached)));
     }
+
+    if (!isConnected) return left(NetworkFailure.noInternet());
+
     try {
       final response = await _routingRemoteDataSource.calculateRoute(stops);
 
@@ -82,116 +77,29 @@ class RoutingRepositoryImpl implements RoutingRepository {
   }
 
   @override
-  Future<Either<Failure, LocationImagery>> getLocationImagery(
-    double latitude,
-    double longitude, {
-    int width = 400,
-    int height = 400,
-    int zoomLevel = 15,
-  }) async {
-    AppLogger.repository(
-      'Repository.getLocationImagery called with lat: $latitude, lon: $longitude',
-    );
-    final key =
-        'img_${latitude.toStringAsFixed(4)}_${longitude.toStringAsFixed(4)}_$zoomLevel';
-
-    final bool isConnected = await _networkInfo.isConnected;
-
-    // 1. Ưu tiên đọc từ ROM (File System) - Không cần check mạng
-    final cachedBytes = await _imageryLocalSource.getImage(
-      key,
-      const Duration(days: 30),
-    );
-    if (cachedBytes != null) {
-      AppLogger.repository('CACHE HIT: Satellite Image from ROM');
-      return right(
-        LocationImagery(
-          imageData: cachedBytes,
-          latitude: latitude,
-          longitude: longitude,
-          description: "Cached Imagery",
-        ),
-      );
-    }
-
-    if (!isConnected) {
-      return left(NetworkFailure.noInternet());
-    }
-
-    try {
-      AppLogger.repository('Calling dataSource.getSatelliteImage...');
-      final imageData = await _imageRemoteDataSource.getSatelliteImage(
-        latitude,
-        longitude,
-        width: width,
-        height: height,
-        level: zoomLevel,
-      );
-      AppLogger.repository('Got image data: ${imageData.length} bytes');
-
-      // Lấy thêm metadata nếu cần (optional - không block nếu fail)
-      AppLogger.repository('Getting imagery metadata...');
-
-      ImageryMetadataResponse metadata;
-      try {
-        metadata = await _imageRemoteDataSource.getImageryMetadata(
-          latitude,
-          longitude,
-        );
-        AppLogger.repository('Got metadata: ${metadata.description}');
-      } catch (metadataError) {
-        AppLogger.error(
-          'Failed to get metadata (continuing without): $metadataError',
-          name: 'RoutingRepositoryImpl',
-        );
-        metadata = const ImageryMetadataResponse();
-      }
-
-      // Cache ảnh vào ROM
-      await _imageryLocalSource.saveImage(key, imageData);
-
-      final result = LocationImagery(
-        imageData: imageData,
-        description: metadata.description,
-        copyrightText: metadata.copyrightText,
-        latitude: latitude,
-        longitude: longitude,
-      );
-
-      AppLogger.repository('Repository returning success');
-      return right(result);
-    } catch (e, st) {
-      AppLogger.error(
-        'Repository error: $e',
-        name: 'RoutingRepositoryImpl',
-        error: e,
-        stackTrace: st,
-      );
-      final failure = ArcGISExceptionHandler.handleException(e, st);
-      return left(failure);
-    }
-  }
-
-  @override
   Future<Either<Failure, List<NearbyPlace>>> findNearbyPlaces(
     double latitude,
     double longitude, {
     String category = '',
-    int maxLocations = 10,
+    String maxLocations = '10',
     double searchRadius = 1000,
   }) async {
     final key =
         'nearby_${latitude.toStringAsFixed(4)}_${longitude.toStringAsFixed(4)}_${category}_$searchRadius';
 
+    final bool isConnected = await _networkInfo.isConnected;
+
     // 1. Check Cache
     final cached = await _placeCache.get(
       key,
-      expiry: const Duration(hours: 2),
+      expiry: const Duration(hours: 1),
     ); // Nearby nên cache ngắn
     if (cached != null) {
       final response = GeocodeResponse.fromJson(cached);
       return right(_mapNearbyToEntities(response, latitude, longitude));
     }
+
+    if (!isConnected) return left(NetworkFailure.noInternet());
 
     try {
       final response = await _routingRemoteDataSource.findNearbyPlaces(
@@ -206,6 +114,17 @@ class RoutingRepositoryImpl implements RoutingRepository {
       await _placeCache.save(key, response.toJson());
 
       final places = _mapNearbyToEntities(response, latitude, longitude);
+
+      AppLogger.repository(
+        'Find Nearby Places fetched: '
+        'total=${places.length}',
+      );
+      for (var i = 0; i < places.length; i++) {
+        AppLogger.repository(
+          '  [$i] ${places[i].address.split('\n').first} '
+          '(${places[i].latitude.toStringAsFixed(4)}, ${places[i].longitude.toStringAsFixed(4)})',
+        );
+      }
 
       return right(places);
     } catch (e, st) {
@@ -245,44 +164,6 @@ class RoutingRepositoryImpl implements RoutingRepository {
 
   double _toRadians(double degrees) {
     return degrees * (math.pi / 180);
-  }
-
-  // Helper chuyển đổi GeocodeResponse thành List<AddressResult>
-  List<AddressResult> _mapGeocodeToEntities(GeocodeResponse response) {
-    return response.candidates.map((candidate) {
-      return AddressResult(
-        fullAddress: candidate.address,
-        streetName: candidate.attributes?['Address'] as String?,
-        neighborhood: candidate.attributes?['Neighborhood'] as String?,
-        district: candidate.attributes?['District'] as String?,
-        city: candidate.attributes?['City'] as String?,
-        region: candidate.attributes?['Region'] as String?,
-        countryName: candidate.attributes?['CntryName'] as String?,
-        postalCode: candidate.attributes?['Postal'] as String?,
-        latitude: candidate.location.latitude,
-        longitude: candidate.location.longitude,
-        score: candidate.score,
-      );
-    }).toList();
-  }
-
-  // Helper chuyển đổi ReverseGeocodeResponse thành AddressResult
-  AddressResult _mapReverseGeocodeToEntity(ReverseGeocodeResponse response) {
-    final result = AddressResult(
-      fullAddress: response.address.fullAddress ?? 'Không xác định',
-      streetName: response.address.streetName,
-      neighborhood: response.address.neighborhood,
-      district: response.address.district,
-      city: response.address.city,
-      region: response.address.region,
-      countryName: response.address.countryName,
-      postalCode: response.address.postalCode,
-      latitude: response.location.latitude,
-      longitude: response.location.longitude,
-      score: 100.0, // Reverse geocoding thường có độ chính xác cao
-    );
-
-    return result;
   }
 
   // Helper chuyển đổi RouteResponse thành RouteResult
@@ -383,93 +264,16 @@ class RoutingRepositoryImpl implements RoutingRepository {
   }
 
   @override
-  Future<Either<Failure, List<AddressResult>>> getRecentSearchHistory() async {
-    try {
-      final history = await _placeCache.getRecentHistory(10);
-
-      final results = history.map((item) {
-        final data = jsonDecode(item['data']);
-        // Tùy loại data mà map tương ứng (GeocodeResponse hoặc ReverseGeocodeResponse)
-        return item['type'] == 'geocode'
-            ? _mapGeocodeToEntities(GeocodeResponse.fromJson(data)).first
-            : _mapReverseGeocodeToEntity(ReverseGeocodeResponse.fromJson(data));
-      }).toList();
-      return right(results);
-    } catch (e, st) {
-      AppLogger.error(
-        'Error getting recent search history: $e',
-        name: 'RoutingRepositoryImpl',
-        error: e,
-        stackTrace: st,
-      );
-
-      final failure = CacheFailure.noData();
-      return left(failure);
-    }
-  }
-
-  @override
-  Future<Either<Failure, void>> clearHistory() async {
-    try {
-      AppLogger.repository('Clearing geocoding history from ROM...');
-      await _placeCache.clearHistory(); // clear sử tìm kiếm
-      return right(null);
-    } catch (e, st) {
-      AppLogger.error(
-        'Failed to clear history',
-        name: 'RoutingRepositoryImpl',
-        error: e,
-        stackTrace: st,
-      );
-      return left(UnexpectedFailure(e, st));
-    }
-  }
-
-  // ============ Cache Management ============
-
-  @override
   Future<void> clearAllCache() async {
     await _placeCache.clearAll();
     await _routeCache.clearAll();
-    await _imageryLocalSource.clearAll();
-  }
-
-  @override
-  Future<void> clearExpiredCache(Duration maxAge) async {
-    await _placeCache.clearExpired(maxAge);
-    await _routeCache.clearExpired(maxAge);
-    // Imagery cache tự động xóa khi hết hạn trong getImage()
   }
 
   @override
   Future<Map<String, int>> getCacheStats() async {
-    // Lấy thống kê từ SQLite theo type
-    // final geocodeHistory = await _localDataSource.getRecentHistory(
-    //   type: 'geocode',
-    //   limit: 1000,
-    // );
-    // final reverseHistory = await _localDataSource.getRecentHistory(
-    //   type: 'reverse_geocode',
-    //   limit: 1000,
-    // );
-    // final routeHistory = await _localDataSource.getRecentHistory(
-    //   type: 'route',
-    //   limit: 1000,
-    // );
-    // final nearbyHistory = await _localDataSource.getRecentHistory(
-    //   type: 'nearby',
-    //   limit: 1000,
-    // );
+    final routeCount = await _routeCache.getCacheCount();
+    final nearbyCount = await _placeCache.getCacheCount();
 
-    // Đếm số ảnh trong file system cache
-    final imageCount = await _imageryLocalSource.getCacheCount();
-
-    return {
-      // 'geocode': geocodeHistory.length,
-      // 'reverse_geocode': reverseHistory.length,
-      // 'route': routeHistory.length,
-      // 'nearby': nearbyHistory.length,
-      'image': imageCount,
-    };
+    return {'route': routeCount, 'nearby': nearbyCount};
   }
 }

@@ -31,7 +31,28 @@ class MapDatabase {
       )
     ''');
 
-    // Bảng lưu Geocoding, Reverse, Route (Dạng Key-Value)
+    // Bảng lưu Geocoding,(Dạng Key-Value)
+    await db.execute('''
+      CREATE TABLE geocoding_cache (
+        cache_key TEXT PRIMARY KEY,
+        data TEXT NOT NULL,
+        timestamp INTEGER NOT NULL
+      )
+    ''');
+
+    // Bảng lưu Reverse Geocoding(Dạng Key-Value)
+    await db.execute('''
+      CREATE TABLE reverse_geocoding_cache (
+        cache_key TEXT PRIMARY KEY,
+        data TEXT NOT NULL,
+        timestamp INTEGER NOT NULL
+      )
+    ''');
+
+    // // Index để query nhanh hơn
+    // await db.execute('CREATE INDEX idx_geo_type ON geocoding_cache(type)');
+
+    // Bảng lưu Nearby Places
     await db.execute('''
       CREATE TABLE place_cache (
         cache_key TEXT PRIMARY KEY,
@@ -39,9 +60,6 @@ class MapDatabase {
         timestamp INTEGER NOT NULL
       )
     ''');
-
-    // Index để query nhanh hơn
-    await db.execute('CREATE INDEX idx_geo_type ON geocoding_cache(type)');
 
     // Bảng cache cho Route
     await db.execute('''
