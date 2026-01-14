@@ -11,6 +11,10 @@ abstract class Constants {
       dotenv.env['GOOGLE_CLIENT_ID_ANDROID'] ?? '';
   static String get iosClientId => dotenv.env['GOOGLE_CLIENT_ID_IOS'] ?? '';
 
+  // --- Feature Table URLs ---
+  static const String serviceTFeatureTableUrl =
+      'https://services7.arcgis.com/a062mjV7UpVWoyjr/arcgis/rest/services/smart_route_finder/FeatureServer/0';
+
   // --- Base URLs ---
   static const String arcgisGeocodeBaseUrl =
       'https://geocode-api.arcgis.com/arcgis/rest/services';

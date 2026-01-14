@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:smart_route_app/features/search/domain/entities/address_result.dart';
-import 'package:smart_route_app/features/map/presentation/pages/direction_page.dart';
-import 'package:smart_route_app/features/map/presentation/providers/user_location_provider.dart';
-import 'package:smart_route_app/features/map/presentation/widgets/location_picker_map_widget.dart';
+import 'package:smart_route_app/features/navigation/presentation/pages/direction_page.dart';
+import 'package:smart_route_app/features/incident/presentation/providers/user_location_provider.dart';
+import 'package:smart_route_app/features/incident/presentation/widgets/location_picker_map_widget.dart';
 import 'package:smart_route_app/features/map/presentation/widgets/recent_search_widget.dart';
 import 'package:smart_route_app/features/search/presentation/providers/usecases/use_case_providers.dart';
 

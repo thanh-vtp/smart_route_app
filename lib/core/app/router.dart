@@ -3,9 +3,10 @@ import 'package:go_router/go_router.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:smart_route_app/features/auth/presentation/pages/login_page.dart';
 import 'package:smart_route_app/features/auth/presentation/providers/states/auth.dart';
+import 'package:smart_route_app/features/home/presentation/pages/home_page.dart';
 import 'package:smart_route_app/features/main/presentation/pages/main_page.dart';
 import 'package:smart_route_app/features/map/presentation/pages/arcgis_demo_page.dart';
-import 'package:smart_route_app/features/map/presentation/pages/direction_page.dart';
+import 'package:smart_route_app/features/navigation/presentation/pages/direction_page.dart';
 
 part 'router.g.dart';
 
@@ -71,11 +72,11 @@ GoRouter router(RouterRef ref) {
         name: 'login',
         builder: (context, state) => const LoginPage(),
       ),
-      // MainPage - chỉ truy cập được khi đã đăng nhập
+      // HomePage - chỉ truy cập được khi đã đăng nhập
       GoRoute(
         path: '/',
-        name: MainPage.route,
-        builder: (context, state) => const MainPage(),
+        name: HomePage.route,
+        builder: (context, state) => const HomePage(),
         routes: [
           // ArcGIS Demo Page - nested route
           GoRoute(

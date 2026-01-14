@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:smart_route_app/features/map/presentation/models/incident_button_action.dart';
+import 'package:smart_route_app/features/incident/presentation/models/incident_button_action.dart';
 
 class ActionButtonItem extends StatelessWidget {
   const ActionButtonItem({super.key, required this.item});

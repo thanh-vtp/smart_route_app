@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import '../providers/repositories/repository_providers.dart';
+import 'package:smart_route_app/features/incident/presentation/providers/repositories/repository_providers.dart';
+import '../../../navigation/presentation/providers/repositories/repository_providers.dart';
 
 class CacheManagementWidget extends HookConsumerWidget {
   const CacheManagementWidget({super.key});
@@ -14,7 +15,7 @@ class CacheManagementWidget extends HookConsumerWidget {
     Future<void> loadCacheStats() async {
       isLoading.value = true;
       try {
-        final geocodingRepo = ref.read(geocodingRepositoryProvider);
+        final geocodingRepo = ref.read(routingRepositoryProvider);
         final incidentRepo = ref.read(incidentRepositoryProvider);
 
         // Lấy stats từ cả 2 repository
@@ -58,7 +59,7 @@ class CacheManagementWidget extends HookConsumerWidget {
 
       if (confirmed == true) {
         try {
-          final geocodingRepo = ref.read(geocodingRepositoryProvider);
+          final geocodingRepo = ref.read(routingRepositoryProvider);
           final incidentRepo = ref.read(incidentRepositoryProvider);
 
           await geocodingRepo.clearAllCache();
@@ -81,8 +82,8 @@ class CacheManagementWidget extends HookConsumerWidget {
 
     Future<void> clearExpiredCache() async {
       try {
-        final repository = ref.read(geocodingRepositoryProvider);
-        await repository.clearExpiredCache();
+        final repository = ref.read(routingRepositoryProvider);
+        await repository.clearExpiredCache(Duration(days: 7));
         await loadCacheStats();
         if (context.mounted) {
           ScaffoldMessenger.of(
