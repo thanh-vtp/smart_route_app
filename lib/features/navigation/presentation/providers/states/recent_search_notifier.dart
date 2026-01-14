@@ -16,7 +16,7 @@ class RecentSearchNotifier extends _$RecentSearchNotifier {
   Future<RecentSearchState> _fetchHistory() async {
     state = const AsyncValue.data(RecentSearchState(isLoading: true));
 
-    final repository = ref.read(geocodingRepositoryProvider);
+    final repository = ref.read(routingRepositoryProvider);
     final result = await repository.getRecentSearchHistory();
 
     return result.fold(
@@ -36,7 +36,7 @@ class RecentSearchNotifier extends _$RecentSearchNotifier {
 
   /// Xóa toàn bộ lịch sử trong ROM
   Future<void> clearAll() async {
-    final repository = ref.read(geocodingRepositoryProvider);
+    final repository = ref.read(routingRepositoryProvider);
 
     final result = await repository.clearHistory();
     result.fold(

@@ -3,11 +3,11 @@ import 'package:smart_route_app/core/errors/failures.dart';
 import 'package:smart_route_app/core/utils/app_logger.dart';
 import 'package:smart_route_app/features/navigation/domain/entities/nearby_place.dart'
     as entities;
-import 'package:smart_route_app/features/navigation/domain/repositories/geocoding_repository.dart';
+import 'package:smart_route_app/features/navigation/domain/repositories/routing_repository.dart';
 
 /// Use case cho tìm các địa điểm gần vị trí
 class FindNearbyPlacesUseCase {
-  final GeocodingRepository _repository;
+  final RoutingRepository _repository;
 
   FindNearbyPlacesUseCase(this._repository);
 

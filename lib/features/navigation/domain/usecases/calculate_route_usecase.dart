@@ -1,11 +1,11 @@
 import 'package:fpdart/fpdart.dart';
 import 'package:smart_route_app/core/errors/failures.dart';
 import 'package:smart_route_app/features/navigation/domain/entities/route_result.dart';
-import 'package:smart_route_app/features/navigation/domain/repositories/geocoding_repository.dart';
+import 'package:smart_route_app/features/navigation/domain/repositories/routing_repository.dart';
 
 // Use case cho tính toán lộ trình giữa nhiều điểm dừng
 class CalculateRouteUseCase {
-  final GeocodingRepository _repository;
+  final RoutingRepository _repository;
 
   CalculateRouteUseCase(this._repository);
 

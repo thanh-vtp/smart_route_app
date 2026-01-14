@@ -6,7 +6,7 @@ import 'package:smart_route_app/features/navigation/domain/entities/route_result
 import '../../../../core/errors/failures.dart';
 // import '../entities/geocoding_entities.dart';
 
-abstract class GeocodingRepository {
+abstract class RoutingRepository {
   /// Tính toán đường đi giữa các điểm
   Future<Either<Failure, RouteResult>> calculateRoute(
     List<Map<String, double>> stops,
@@ -41,7 +41,7 @@ abstract class GeocodingRepository {
   Future<void> clearAllCache();
 
   /// Xóa cache đã hết hạn
-  Future<void> clearExpiredCache();
+  Future<void> clearExpiredCache(Duration maxAge);
 
   /// Lấy thống kê cache theo loại
   Future<Map<String, int>> getCacheStats();

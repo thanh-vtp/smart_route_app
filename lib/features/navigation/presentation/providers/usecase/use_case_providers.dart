@@ -10,13 +10,13 @@ part 'use_case_providers.g.dart';
 FindNearbyPlacesUseCase findNearbyPlacesUseCase(
   FindNearbyPlacesUseCaseRef ref,
 ) {
-  final repository = ref.watch(geocodingRepositoryProvider);
+  final repository = ref.watch(routingRepositoryProvider);
   return FindNearbyPlacesUseCase(repository);
 }
 
 @riverpod
 CalculateRouteUseCase calculateRouteUseCase(CalculateRouteUseCaseRef ref) {
-  final repository = ref.watch(geocodingRepositoryProvider);
+  final repository = ref.watch(routingRepositoryProvider);
   return CalculateRouteUseCase(repository);
 }
 
@@ -24,6 +24,6 @@ CalculateRouteUseCase calculateRouteUseCase(CalculateRouteUseCaseRef ref) {
 GetLocationImageryUseCase getLocationImageryUseCase(
   GetLocationImageryUseCaseRef ref,
 ) {
-  final repository = ref.watch(geocodingRepositoryProvider);
+  final repository = ref.watch(routingRepositoryProvider);
   return GetLocationImageryUseCase(repository);
 }
