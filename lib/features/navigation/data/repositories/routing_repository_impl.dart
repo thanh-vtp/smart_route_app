@@ -5,28 +5,38 @@ import 'package:smart_route_app/core/network/network_info.dart';
 import 'package:smart_route_app/core/utils/app_logger.dart';
 import 'package:smart_route_app/core/errors/failures.dart';
 import 'package:smart_route_app/features/navigation/data/datasources/arcgis_geocoding_remote_data_source.dart';
+import 'package:smart_route_app/features/navigation/data/datasources/image_remote_data_source_impl.dart';
+import 'package:smart_route_app/features/navigation/data/datasources/routing_remote_data_source_impl.dart';
 import 'package:smart_route_app/features/navigation/data/local_datasource/geocoding_local_data_source.dart';
 import 'package:smart_route_app/features/navigation/data/local_datasource/imagery_local_data_source.dart';
+import 'package:smart_route_app/features/navigation/data/local_datasource/place_local_data_source_impl.dart';
+import 'package:smart_route_app/features/navigation/data/local_datasource/route_local_data_source_impl.dart';
 import 'package:smart_route_app/features/navigation/data/models/geocoding_models.dart';
 import 'package:smart_route_app/features/search/domain/entities/address_result.dart';
 import 'package:smart_route_app/features/navigation/domain/entities/location_imagery.dart';
 import 'package:smart_route_app/features/navigation/domain/entities/nearby_place.dart';
 import 'package:smart_route_app/features/navigation/domain/entities/route_direction.dart';
 import 'package:smart_route_app/features/navigation/domain/entities/route_point.dart';
-import '../../domain/repositories/geocoding_repository.dart';
+import '../../domain/repositories/routing_repository.dart';
 import '../../../navigation/data/datasources/arcgis_exception_handler.dart';
 import 'package:smart_route_app/features/navigation/domain/entities/route_result.dart';
 
-class GeocodingRepositoryImpl implements GeocodingRepository {
-  final ArcGISGeocodingRemoteDataSource _arcGISGeocodingRemoteDataSource;
-  final GeocodingLocalDataSource _localDataSource; // SQLite
+class RoutingRepositoryImpl implements RoutingRepository {
+  final RoutingRemoteDataSource _routingRemoteDataSource;
+  final ImageRemoteDataSource _imageRemoteDataSource;
+
   final ImageryLocalDataSource _imageryLocalSource; // File System
+  final PlaceLocalDataSource _placeCache;
+  final RouteLocalDataSource _routeCache;
+
   final NetworkInfo _networkInfo;
 
-  GeocodingRepositoryImpl(
-    this._arcGISGeocodingRemoteDataSource,
-    this._localDataSource,
+  RoutingRepositoryImpl(
+    this._routingRemoteDataSource,
+    this._imageRemoteDataSource,
     this._imageryLocalSource,
+    this._placeCache,
+    this._routeCache,
     this._networkInfo,
   );
 
@@ -41,20 +51,15 @@ class GeocodingRepositoryImpl implements GeocodingRepository {
     final key = _makeKey('route', stops);
 
     // Lấy cache 1 ngày
-    final cached = await _localDataSource.getCache(
-      key,
-      const Duration(days: 1),
-    );
+    final cached = await _routeCache.get(key, expiry: const Duration(days: 1));
     if (cached != null) {
       return right(_mapRouteResponseToEntity(RouteResponse.fromJson(cached)));
     }
     try {
-      final response = await _arcGISGeocodingRemoteDataSource.calculateRoute(
-        stops,
-      );
+      final response = await _routingRemoteDataSource.calculateRoute(stops);
 
       // Cache
-      await _localDataSource.saveCache(key, 'route', response.toJson());
+      await _routeCache.save(key, response.toJson());
 
       // Kiểm tra kết quả
       if (response.routes.features.isEmpty) {
@@ -67,7 +72,7 @@ class GeocodingRepositoryImpl implements GeocodingRepository {
     } catch (e, st) {
       AppLogger.error(
         'Repository error: $e',
-        name: 'GeocodingRepositoryImpl',
+        name: 'RoutingRepositoryImpl',
         error: e,
         stackTrace: st,
       );
@@ -115,14 +120,13 @@ class GeocodingRepositoryImpl implements GeocodingRepository {
 
     try {
       AppLogger.repository('Calling dataSource.getSatelliteImage...');
-      final imageData = await _arcGISGeocodingRemoteDataSource
-          .getSatelliteImage(
-            latitude,
-            longitude,
-            width: width,
-            height: height,
-            level: zoomLevel,
-          );
+      final imageData = await _imageRemoteDataSource.getSatelliteImage(
+        latitude,
+        longitude,
+        width: width,
+        height: height,
+        level: zoomLevel,
+      );
       AppLogger.repository('Got image data: ${imageData.length} bytes');
 
       // Lấy thêm metadata nếu cần (optional - không block nếu fail)
@@ -130,7 +134,7 @@ class GeocodingRepositoryImpl implements GeocodingRepository {
 
       ImageryMetadataResponse metadata;
       try {
-        metadata = await _arcGISGeocodingRemoteDataSource.getImageryMetadata(
+        metadata = await _imageRemoteDataSource.getImageryMetadata(
           latitude,
           longitude,
         );
@@ -138,7 +142,7 @@ class GeocodingRepositoryImpl implements GeocodingRepository {
       } catch (metadataError) {
         AppLogger.error(
           'Failed to get metadata (continuing without): $metadataError',
-          name: 'GeocodingRepositoryImpl',
+          name: 'RoutingRepositoryImpl',
         );
         metadata = const ImageryMetadataResponse();
       }
@@ -159,7 +163,7 @@ class GeocodingRepositoryImpl implements GeocodingRepository {
     } catch (e, st) {
       AppLogger.error(
         'Repository error: $e',
-        name: 'GeocodingRepositoryImpl',
+        name: 'RoutingRepositoryImpl',
         error: e,
         stackTrace: st,
       );
@@ -180,9 +184,9 @@ class GeocodingRepositoryImpl implements GeocodingRepository {
         'nearby_${latitude.toStringAsFixed(4)}_${longitude.toStringAsFixed(4)}_${category}_$searchRadius';
 
     // 1. Check Cache
-    final cached = await _localDataSource.getCache(
+    final cached = await _placeCache.get(
       key,
-      const Duration(hours: 2),
+      expiry: const Duration(hours: 2),
     ); // Nearby nên cache ngắn
     if (cached != null) {
       final response = GeocodeResponse.fromJson(cached);
@@ -190,7 +194,7 @@ class GeocodingRepositoryImpl implements GeocodingRepository {
     }
 
     try {
-      final response = await _arcGISGeocodingRemoteDataSource.findNearbyPlaces(
+      final response = await _routingRemoteDataSource.findNearbyPlaces(
         latitude,
         longitude,
         category: category,
@@ -199,7 +203,7 @@ class GeocodingRepositoryImpl implements GeocodingRepository {
       );
 
       // 2. Lưu vào ROM
-      await _localDataSource.saveCache(key, 'nearby', response.toJson());
+      await _placeCache.save(key, response.toJson());
 
       final places = _mapNearbyToEntities(response, latitude, longitude);
 
@@ -207,7 +211,7 @@ class GeocodingRepositoryImpl implements GeocodingRepository {
     } catch (e, st) {
       AppLogger.error(
         'Repository error: $e',
-        name: 'GeocodingRepositoryImpl',
+        name: 'RoutingRepositoryImpl',
         error: e,
         stackTrace: st,
       );
@@ -381,22 +385,9 @@ class GeocodingRepositoryImpl implements GeocodingRepository {
   @override
   Future<Either<Failure, List<AddressResult>>> getRecentSearchHistory() async {
     try {
-      // Lấy cả geocode (tìm bằng text) và reverse_geocode (nhấn trên map)
-      final geoHistory = await _localDataSource.getRecentHistory(
-        type: 'geocode',
-        limit: 5,
-      );
-      final revHistory = await _localDataSource.getRecentHistory(
-        type: 'reverse_geocode',
-        limit: 5,
-      );
+      final history = await _placeCache.getRecentHistory(10);
 
-      final combined = [...geoHistory, ...revHistory];
-      // Sắp xếp lại theo thời gian giảm dần
-      combined.sort(
-        (a, b) => (b['timestamp'] as int).compareTo(a['timestamp'] as int),
-      );
-      final results = combined.map((item) {
+      final results = history.map((item) {
         final data = jsonDecode(item['data']);
         // Tùy loại data mà map tương ứng (GeocodeResponse hoặc ReverseGeocodeResponse)
         return item['type'] == 'geocode'
@@ -407,7 +398,7 @@ class GeocodingRepositoryImpl implements GeocodingRepository {
     } catch (e, st) {
       AppLogger.error(
         'Error getting recent search history: $e',
-        name: 'GeocodingRepositoryImpl',
+        name: 'RoutingRepositoryImpl',
         error: e,
         stackTrace: st,
       );
@@ -421,12 +412,12 @@ class GeocodingRepositoryImpl implements GeocodingRepository {
   Future<Either<Failure, void>> clearHistory() async {
     try {
       AppLogger.repository('Clearing geocoding history from ROM...');
-      await _localDataSource.clearHistory();
+      await _placeCache.clearHistory(); // clear sử tìm kiếm
       return right(null);
     } catch (e, st) {
       AppLogger.error(
         'Failed to clear history',
-        name: 'GeocodingRepositoryImpl',
+        name: 'RoutingRepositoryImpl',
         error: e,
         stackTrace: st,
       );
@@ -438,44 +429,46 @@ class GeocodingRepositoryImpl implements GeocodingRepository {
 
   @override
   Future<void> clearAllCache() async {
-    await _localDataSource.clearAll();
+    await _placeCache.clearAll();
+    await _routeCache.clearAll();
     await _imageryLocalSource.clearAll();
   }
 
   @override
-  Future<void> clearExpiredCache() async {
-    await _localDataSource.clearExpired();
+  Future<void> clearExpiredCache(Duration maxAge) async {
+    await _placeCache.clearExpired(maxAge);
+    await _routeCache.clearExpired(maxAge);
     // Imagery cache tự động xóa khi hết hạn trong getImage()
   }
 
   @override
   Future<Map<String, int>> getCacheStats() async {
     // Lấy thống kê từ SQLite theo type
-    final geocodeHistory = await _localDataSource.getRecentHistory(
-      type: 'geocode',
-      limit: 1000,
-    );
-    final reverseHistory = await _localDataSource.getRecentHistory(
-      type: 'reverse_geocode',
-      limit: 1000,
-    );
-    final routeHistory = await _localDataSource.getRecentHistory(
-      type: 'route',
-      limit: 1000,
-    );
-    final nearbyHistory = await _localDataSource.getRecentHistory(
-      type: 'nearby',
-      limit: 1000,
-    );
+    // final geocodeHistory = await _localDataSource.getRecentHistory(
+    //   type: 'geocode',
+    //   limit: 1000,
+    // );
+    // final reverseHistory = await _localDataSource.getRecentHistory(
+    //   type: 'reverse_geocode',
+    //   limit: 1000,
+    // );
+    // final routeHistory = await _localDataSource.getRecentHistory(
+    //   type: 'route',
+    //   limit: 1000,
+    // );
+    // final nearbyHistory = await _localDataSource.getRecentHistory(
+    //   type: 'nearby',
+    //   limit: 1000,
+    // );
 
     // Đếm số ảnh trong file system cache
     final imageCount = await _imageryLocalSource.getCacheCount();
 
     return {
-      'geocode': geocodeHistory.length,
-      'reverse_geocode': reverseHistory.length,
-      'route': routeHistory.length,
-      'nearby': nearbyHistory.length,
+      // 'geocode': geocodeHistory.length,
+      // 'reverse_geocode': reverseHistory.length,
+      // 'route': routeHistory.length,
+      // 'nearby': nearbyHistory.length,
       'image': imageCount,
     };
   }

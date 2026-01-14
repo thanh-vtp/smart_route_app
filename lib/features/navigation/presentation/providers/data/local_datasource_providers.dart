@@ -4,19 +4,26 @@ import 'package:smart_route_app/features/navigation/data/local_datasource/geocod
 import 'package:smart_route_app/features/navigation/data/local_datasource/geocoding_local_data_source_impl.dart';
 import 'package:smart_route_app/features/navigation/data/local_datasource/imagery_local_data_source.dart';
 import 'package:smart_route_app/features/navigation/data/local_datasource/imagery_local_data_source_impl.dart';
+import 'package:smart_route_app/features/navigation/data/local_datasource/place_local_data_source_impl.dart';
+import 'package:smart_route_app/features/navigation/data/local_datasource/route_local_data_source_impl.dart';
 
 part 'local_datasource_providers.g.dart';
 
 /// dùng Ref hoặc tự định nghĩa Ref type
 /// Quy tắc: name function + Ref
 
-/// Provider cho Geocoding Local Data Source
+/// Provider cho Place Local Data Source
 @Riverpod(keepAlive: true)
-GeocodingLocalDataSource geocodingLocalDataSource(
-  GeocodingLocalDataSourceRef ref,
-) {
+PlaceLocalDataSource placeLocalDataSource(PlaceLocalDataSourceRef ref) {
   final db = ref.watch(mapDatabaseProvider);
-  return GeocodingLocalDataSourceImpl(db);
+  return PlaceLocalDataSourceImpl(db);
+}
+
+/// Provider cho Route Local Data Source
+@Riverpod(keepAlive: true)
+RouteLocalDataSource routeLocalDataSource(RouteLocalDataSourceRef ref) {
+  final db = ref.watch(mapDatabaseProvider);
+  return RouteLocalDataSourceImpl(db);
 }
 
 /// Provider cho Imagery Local Data Source

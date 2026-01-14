@@ -33,15 +33,23 @@ class MapDatabase {
 
     // Bảng lưu Geocoding, Reverse, Route (Dạng Key-Value)
     await db.execute('''
-      CREATE TABLE geocoding_cache (
+      CREATE TABLE place_cache (
         cache_key TEXT PRIMARY KEY,
         data TEXT NOT NULL,
-        type TEXT NOT NULL,
         timestamp INTEGER NOT NULL
       )
     ''');
 
     // Index để query nhanh hơn
     await db.execute('CREATE INDEX idx_geo_type ON geocoding_cache(type)');
+
+    // Bảng cache cho Route
+    await db.execute('''
+      CREATE TABLE route_cache (
+        cache_key TEXT PRIMARY KEY,
+        data TEXT NOT NULL,
+        timestamp INTEGER NOT NULL
+      )
+    ''');
   }
 }

@@ -3,11 +3,11 @@ import 'package:smart_route_app/core/errors/failures.dart';
 import 'package:smart_route_app/core/utils/app_logger.dart';
 import 'package:smart_route_app/features/navigation/domain/entities/location_imagery.dart'
     as entities;
-import 'package:smart_route_app/features/navigation/domain/repositories/geocoding_repository.dart';
+import 'package:smart_route_app/features/navigation/domain/repositories/routing_repository.dart';
 
 /// Use case cho lấy hình ảnh vệ tinh tại vị trí
 class GetLocationImageryUseCase {
-  final GeocodingRepository _repository;
+  final RoutingRepository _repository;
 
   GetLocationImageryUseCase(this._repository);
 
