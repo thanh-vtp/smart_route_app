@@ -6,24 +6,6 @@ part of 'use_case_providers.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$findNearbyPlacesUseCaseHash() =>
-    r'b7407eded586d41e472dea3b989ef04b34e5ef10';
-
-/// See also [findNearbyPlacesUseCase].
-@ProviderFor(findNearbyPlacesUseCase)
-final findNearbyPlacesUseCaseProvider =
-    AutoDisposeProvider<FindNearbyPlacesUseCase>.internal(
-  findNearbyPlacesUseCase,
-  name: r'findNearbyPlacesUseCaseProvider',
-  debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
-      ? null
-      : _$findNearbyPlacesUseCaseHash,
-  dependencies: null,
-  allTransitiveDependencies: null,
-);
-
-typedef FindNearbyPlacesUseCaseRef
-    = AutoDisposeProviderRef<FindNearbyPlacesUseCase>;
 String _$calculateRouteUseCaseHash() =>
     r'c9b835e9bf648774b436b02a7cc15c352b686fc2';
 

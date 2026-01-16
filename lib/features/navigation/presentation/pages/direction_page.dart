@@ -3,7 +3,7 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:smart_route_app/core/core.dart';
 import 'package:smart_route_app/core/errors/failures.dart';
 import 'package:smart_route_app/features/search/domain/entities/address_result.dart';
-import 'package:smart_route_app/features/search/presentation/pages/location_search_page.dart';
+import 'package:smart_route_app/features/search/presentation/pages/search_directions_page.dart';
 import 'package:smart_route_app/features/navigation/presentation/providers/states/route_state.dart';
 import 'package:smart_route_app/features/search/presentation/providers/usecases/use_case_providers.dart';
 import '../../../incident/domain/entities/incident.dart';
@@ -111,7 +111,7 @@ class _DirectionPageState extends ConsumerState<DirectionPage> {
     final result = await Navigator.push<AddressResult>(
       context,
       MaterialPageRoute(
-        builder: (context) => LocationSearchPage(
+        builder: (context) => SearchDirectionsPage(
           fieldType: fieldType,
           currentStart: _startLocation,
           currentEnd: _endLocation,
