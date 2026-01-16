@@ -64,5 +64,23 @@ final imageryLocalDataSourceProvider =
 );
 
 typedef ImageryLocalDataSourceRef = ProviderRef<ImageryLocalDataSource>;
+String _$placeLocalDataSourceHash() =>
+    r'610b3e27eaf3879aebe1c2ee0f26135cd220e694';
+
+/// Provider cho Place Local Data Source
+///
+/// Copied from [placeLocalDataSource].
+@ProviderFor(placeLocalDataSource)
+final placeLocalDataSourceProvider = Provider<PlaceLocalDataSource>.internal(
+  placeLocalDataSource,
+  name: r'placeLocalDataSourceProvider',
+  debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
+      ? null
+      : _$placeLocalDataSourceHash,
+  dependencies: null,
+  allTransitiveDependencies: null,
+);
+
+typedef PlaceLocalDataSourceRef = ProviderRef<PlaceLocalDataSource>;
 // ignore_for_file: type=lint
 // ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member

@@ -1,9 +1,12 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:smart_route_app/core/core.dart';
 import 'package:smart_route_app/core/network/presentation/widgets/global_connection_wrapper.dart';
-import 'package:smart_route_app/features/home/presentation/widgets/map_search_top_bar.dart';
+import 'package:smart_route_app/features/auth/presentation/providers/states/auth.dart';
+import 'package:smart_route_app/features/search/presentation/providers/selected_address.dart';
+import 'package:smart_route_app/features/search/presentation/widgets/map_search_top_bar.dart';
 import 'package:smart_route_app/features/incident/presentation/pages/map_page.dart';
 import 'package:smart_route_app/features/incident/presentation/pages/report_page.dart';
 import 'package:smart_route_app/features/incident/presentation/widgets/map_bottom_sheet_container.dart';
@@ -61,13 +64,13 @@ class _HomePageState extends ConsumerState<HomePage> {
       ),
 
       floatingActionButton: FloatingActionButton.extended(
-        onPressed: () => context.go('/arcgis-demo'),
+        onPressed: () => context.push('/arcgis-demo'),
         backgroundColor: Colors.blue,
         foregroundColor: Colors.white,
         icon: const Icon(Icons.map),
         label: const Text('ArcGIS Demo'),
       ),
-      floatingActionButtonLocation: FloatingActionButtonLocation.endTop,
+      floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
 
       bottomNavigationBar: Theme(
         data: Theme.of(context).copyWith(
@@ -108,7 +111,62 @@ class _HomePageState extends ConsumerState<HomePage> {
   }
 
   Widget _buildSearchWithProfileBar() {
-    return const MapSearchTopBar();
+    final user = ref.watch(authProvider);
+    final selectedAddress = ref.watch(selectedAddressProvider);
+
+    final titleText =
+        selectedAddress?.fullAddress.split('\n').first ?? "Tìm kiếm ở đây";
+    return GestureDetector(
+      onTap: () => context.push('/search'), // or context.pushNamed('search');
+      child: MapSearchTopBar(
+        leadingIcon: Icon(Icons.location_pin, color: Colors.red),
+        title: Expanded(
+          child: Padding(
+            padding: EdgeInsetsGeometry.only(left: 12),
+            child: Text(
+              titleText,
+              style: TextStyle(
+                color: selectedAddress != null
+                    ? Colors.black87
+                    : Colors.grey[600],
+                fontSize: 16,
+              ),
+              maxLines: 1,
+              overflow: TextOverflow.ellipsis,
+            ),
+          ),
+        ),
+        trailingIcon: selectedAddress == null
+            ? Row(
+                children: [
+                  Icon(Icons.mic),
+                  SizedBox(width: 8),
+                  // User avatar - tap to open profile drawer
+                  GestureDetector(
+                    onTap: () {
+                      Scaffold.of(context).openDrawer();
+                    },
+                    child: CachedNetworkImage(
+                      imageUrl: user.avatarUrl ?? '',
+                      imageBuilder: (context, imageProvider) =>
+                          CircleAvatar(backgroundImage: imageProvider),
+                      placeholder: (context, url) => const CircleAvatar(
+                        child: CircularProgressIndicator(),
+                      ),
+                      errorWidget: (context, url, error) =>
+                          CircleAvatar(child: Icon(Icons.person)),
+                    ),
+                  ),
+                ],
+              )
+            : GestureDetector(
+                onTap: () {
+                  ref.read(selectedAddressProvider.notifier).clear();
+                },
+                child: Icon(Icons.clear),
+              ),
+      ),
+    );
   }
 
   Widget _buildPersistentSheet(BuildContext context) {

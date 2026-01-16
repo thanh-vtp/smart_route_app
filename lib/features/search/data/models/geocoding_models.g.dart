@@ -9,9 +9,10 @@ part of 'geocoding_models.dart';
 _$GeocodeResponseImpl _$$GeocodeResponseImplFromJson(
         Map<String, dynamic> json) =>
     _$GeocodeResponseImpl(
-      candidates: (json['candidates'] as List<dynamic>)
-          .map((e) => GeocodeCandidate.fromJson(e as Map<String, dynamic>))
-          .toList(),
+      candidates: (json['candidates'] as List<dynamic>?)
+              ?.map((e) => GeocodeCandidate.fromJson(e as Map<String, dynamic>))
+              .toList() ??
+          const [],
     );
 
 Map<String, dynamic> _$$GeocodeResponseImplToJson(
@@ -23,11 +24,12 @@ Map<String, dynamic> _$$GeocodeResponseImplToJson(
 _$GeocodeCandidateImpl _$$GeocodeCandidateImplFromJson(
         Map<String, dynamic> json) =>
     _$GeocodeCandidateImpl(
-      address: json['address'] as String,
+      address: json['address'] as String? ?? '',
       location:
           LocationPoint.fromJson(json['location'] as Map<String, dynamic>),
-      score: (json['score'] as num).toDouble(),
-      attributes: json['attributes'] as Map<String, dynamic>?,
+      score: (json['score'] as num?)?.toDouble() ?? 0.0,
+      attributes: json['attributes'] as Map<String, dynamic>? ?? const {},
+      extent: json['extent'] as Map<String, dynamic>?,
     );
 
 Map<String, dynamic> _$$GeocodeCandidateImplToJson(
@@ -37,6 +39,19 @@ Map<String, dynamic> _$$GeocodeCandidateImplToJson(
       'location': instance.location,
       'score': instance.score,
       'attributes': instance.attributes,
+      'extent': instance.extent,
+    };
+
+_$LocationPointImpl _$$LocationPointImplFromJson(Map<String, dynamic> json) =>
+    _$LocationPointImpl(
+      longitude: (json['x'] as num?)?.toDouble() ?? 0.0,
+      latitude: (json['y'] as num?)?.toDouble() ?? 0.0,
+    );
+
+Map<String, dynamic> _$$LocationPointImplToJson(_$LocationPointImpl instance) =>
+    <String, dynamic>{
+      'x': instance.longitude,
+      'y': instance.latitude,
     };
 
 _$ReverseGeocodeResponseImpl _$$ReverseGeocodeResponseImplFromJson(
@@ -102,16 +117,4 @@ Map<String, dynamic> _$$AddressInfoImplToJson(_$AddressInfoImpl instance) =>
       'PostalExt': instance.postalExtension,
       'CntryName': instance.countryName,
       'CountryCode': instance.countryCode,
-    };
-
-_$LocationPointImpl _$$LocationPointImplFromJson(Map<String, dynamic> json) =>
-    _$LocationPointImpl(
-      longitude: (json['x'] as num).toDouble(),
-      latitude: (json['y'] as num).toDouble(),
-    );
-
-Map<String, dynamic> _$$LocationPointImplToJson(_$LocationPointImpl instance) =>
-    <String, dynamic>{
-      'x': instance.longitude,
-      'y': instance.latitude,
     };

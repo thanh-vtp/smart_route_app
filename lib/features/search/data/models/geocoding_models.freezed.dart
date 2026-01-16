@@ -100,7 +100,7 @@ class __$$GeocodeResponseImplCopyWithImpl<$Res>
 class _$GeocodeResponseImpl implements _GeocodeResponse {
   const _$GeocodeResponseImpl(
       {@JsonKey(name: 'candidates')
-      required final List<GeocodeCandidate> candidates})
+      final List<GeocodeCandidate> candidates = const []})
       : _candidates = candidates;
 
   factory _$GeocodeResponseImpl.fromJson(Map<String, dynamic> json) =>
@@ -151,9 +151,8 @@ class _$GeocodeResponseImpl implements _GeocodeResponse {
 
 abstract class _GeocodeResponse implements GeocodeResponse {
   const factory _GeocodeResponse(
-          {@JsonKey(name: 'candidates')
-          required final List<GeocodeCandidate> candidates}) =
-      _$GeocodeResponseImpl;
+      {@JsonKey(name: 'candidates')
+      final List<GeocodeCandidate> candidates}) = _$GeocodeResponseImpl;
 
   factory _GeocodeResponse.fromJson(Map<String, dynamic> json) =
       _$GeocodeResponseImpl.fromJson;
@@ -180,7 +179,9 @@ mixin _$GeocodeCandidate {
   @JsonKey(name: 'score')
   double get score => throw _privateConstructorUsedError;
   @JsonKey(name: 'attributes')
-  Map<String, dynamic>? get attributes => throw _privateConstructorUsedError;
+  Map<String, dynamic> get attributes => throw _privateConstructorUsedError;
+  @JsonKey(name: 'extent')
+  Map<String, dynamic>? get extent => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
@@ -198,7 +199,8 @@ abstract class $GeocodeCandidateCopyWith<$Res> {
       {@JsonKey(name: 'address') String address,
       @JsonKey(name: 'location') LocationPoint location,
       @JsonKey(name: 'score') double score,
-      @JsonKey(name: 'attributes') Map<String, dynamic>? attributes});
+      @JsonKey(name: 'attributes') Map<String, dynamic> attributes,
+      @JsonKey(name: 'extent') Map<String, dynamic>? extent});
 
   $LocationPointCopyWith<$Res> get location;
 }
@@ -219,7 +221,8 @@ class _$GeocodeCandidateCopyWithImpl<$Res, $Val extends GeocodeCandidate>
     Object? address = null,
     Object? location = null,
     Object? score = null,
-    Object? attributes = freezed,
+    Object? attributes = null,
+    Object? extent = freezed,
   }) {
     return _then(_value.copyWith(
       address: null == address
@@ -234,9 +237,13 @@ class _$GeocodeCandidateCopyWithImpl<$Res, $Val extends GeocodeCandidate>
           ? _value.score
           : score // ignore: cast_nullable_to_non_nullable
               as double,
-      attributes: freezed == attributes
+      attributes: null == attributes
           ? _value.attributes
           : attributes // ignore: cast_nullable_to_non_nullable
+              as Map<String, dynamic>,
+      extent: freezed == extent
+          ? _value.extent
+          : extent // ignore: cast_nullable_to_non_nullable
               as Map<String, dynamic>?,
     ) as $Val);
   }
@@ -262,7 +269,8 @@ abstract class _$$GeocodeCandidateImplCopyWith<$Res>
       {@JsonKey(name: 'address') String address,
       @JsonKey(name: 'location') LocationPoint location,
       @JsonKey(name: 'score') double score,
-      @JsonKey(name: 'attributes') Map<String, dynamic>? attributes});
+      @JsonKey(name: 'attributes') Map<String, dynamic> attributes,
+      @JsonKey(name: 'extent') Map<String, dynamic>? extent});
 
   @override
   $LocationPointCopyWith<$Res> get location;
@@ -282,7 +290,8 @@ class __$$GeocodeCandidateImplCopyWithImpl<$Res>
     Object? address = null,
     Object? location = null,
     Object? score = null,
-    Object? attributes = freezed,
+    Object? attributes = null,
+    Object? extent = freezed,
   }) {
     return _then(_$GeocodeCandidateImpl(
       address: null == address
@@ -297,9 +306,13 @@ class __$$GeocodeCandidateImplCopyWithImpl<$Res>
           ? _value.score
           : score // ignore: cast_nullable_to_non_nullable
               as double,
-      attributes: freezed == attributes
+      attributes: null == attributes
           ? _value._attributes
           : attributes // ignore: cast_nullable_to_non_nullable
+              as Map<String, dynamic>,
+      extent: freezed == extent
+          ? _value._extent
+          : extent // ignore: cast_nullable_to_non_nullable
               as Map<String, dynamic>?,
     ));
   }
@@ -307,13 +320,17 @@ class __$$GeocodeCandidateImplCopyWithImpl<$Res>
 
 /// @nodoc
 @JsonSerializable()
-class _$GeocodeCandidateImpl implements _GeocodeCandidate {
+class _$GeocodeCandidateImpl extends _GeocodeCandidate {
   const _$GeocodeCandidateImpl(
-      {@JsonKey(name: 'address') required this.address,
+      {@JsonKey(name: 'address') this.address = '',
       @JsonKey(name: 'location') required this.location,
-      @JsonKey(name: 'score') required this.score,
-      @JsonKey(name: 'attributes') final Map<String, dynamic>? attributes})
-      : _attributes = attributes;
+      @JsonKey(name: 'score') this.score = 0.0,
+      @JsonKey(name: 'attributes')
+      final Map<String, dynamic> attributes = const {},
+      @JsonKey(name: 'extent') final Map<String, dynamic>? extent})
+      : _attributes = attributes,
+        _extent = extent,
+        super._();
 
   factory _$GeocodeCandidateImpl.fromJson(Map<String, dynamic> json) =>
       _$$GeocodeCandidateImplFromJson(json);
@@ -327,20 +344,29 @@ class _$GeocodeCandidateImpl implements _GeocodeCandidate {
   @override
   @JsonKey(name: 'score')
   final double score;
-  final Map<String, dynamic>? _attributes;
+  final Map<String, dynamic> _attributes;
   @override
   @JsonKey(name: 'attributes')
-  Map<String, dynamic>? get attributes {
-    final value = _attributes;
-    if (value == null) return null;
+  Map<String, dynamic> get attributes {
     if (_attributes is EqualUnmodifiableMapView) return _attributes;
+    // ignore: implicit_dynamic_type
+    return EqualUnmodifiableMapView(_attributes);
+  }
+
+  final Map<String, dynamic>? _extent;
+  @override
+  @JsonKey(name: 'extent')
+  Map<String, dynamic>? get extent {
+    final value = _extent;
+    if (value == null) return null;
+    if (_extent is EqualUnmodifiableMapView) return _extent;
     // ignore: implicit_dynamic_type
     return EqualUnmodifiableMapView(value);
   }
 
   @override
   String toString() {
-    return 'GeocodeCandidate(address: $address, location: $location, score: $score, attributes: $attributes)';
+    return 'GeocodeCandidate(address: $address, location: $location, score: $score, attributes: $attributes, extent: $extent)';
   }
 
   @override
@@ -353,13 +379,19 @@ class _$GeocodeCandidateImpl implements _GeocodeCandidate {
                 other.location == location) &&
             (identical(other.score, score) || other.score == score) &&
             const DeepCollectionEquality()
-                .equals(other._attributes, _attributes));
+                .equals(other._attributes, _attributes) &&
+            const DeepCollectionEquality().equals(other._extent, _extent));
   }
 
   @JsonKey(ignore: true)
   @override
-  int get hashCode => Object.hash(runtimeType, address, location, score,
-      const DeepCollectionEquality().hash(_attributes));
+  int get hashCode => Object.hash(
+      runtimeType,
+      address,
+      location,
+      score,
+      const DeepCollectionEquality().hash(_attributes),
+      const DeepCollectionEquality().hash(_extent));
 
   @JsonKey(ignore: true)
   @override
@@ -376,13 +408,15 @@ class _$GeocodeCandidateImpl implements _GeocodeCandidate {
   }
 }
 
-abstract class _GeocodeCandidate implements GeocodeCandidate {
+abstract class _GeocodeCandidate extends GeocodeCandidate {
   const factory _GeocodeCandidate(
-      {@JsonKey(name: 'address') required final String address,
-      @JsonKey(name: 'location') required final LocationPoint location,
-      @JsonKey(name: 'score') required final double score,
-      @JsonKey(name: 'attributes')
-      final Map<String, dynamic>? attributes}) = _$GeocodeCandidateImpl;
+          {@JsonKey(name: 'address') final String address,
+          @JsonKey(name: 'location') required final LocationPoint location,
+          @JsonKey(name: 'score') final double score,
+          @JsonKey(name: 'attributes') final Map<String, dynamic> attributes,
+          @JsonKey(name: 'extent') final Map<String, dynamic>? extent}) =
+      _$GeocodeCandidateImpl;
+  const _GeocodeCandidate._() : super._();
 
   factory _GeocodeCandidate.fromJson(Map<String, dynamic> json) =
       _$GeocodeCandidateImpl.fromJson;
@@ -398,10 +432,182 @@ abstract class _GeocodeCandidate implements GeocodeCandidate {
   double get score;
   @override
   @JsonKey(name: 'attributes')
-  Map<String, dynamic>? get attributes;
+  Map<String, dynamic> get attributes;
+  @override
+  @JsonKey(name: 'extent')
+  Map<String, dynamic>? get extent;
   @override
   @JsonKey(ignore: true)
   _$$GeocodeCandidateImplCopyWith<_$GeocodeCandidateImpl> get copyWith =>
+      throw _privateConstructorUsedError;
+}
+
+LocationPoint _$LocationPointFromJson(Map<String, dynamic> json) {
+  return _LocationPoint.fromJson(json);
+}
+
+/// @nodoc
+mixin _$LocationPoint {
+  @JsonKey(name: 'x')
+  double get longitude => throw _privateConstructorUsedError; // Kinh độ
+  @JsonKey(name: 'y')
+  double get latitude => throw _privateConstructorUsedError;
+
+  Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
+  @JsonKey(ignore: true)
+  $LocationPointCopyWith<LocationPoint> get copyWith =>
+      throw _privateConstructorUsedError;
+}
+
+/// @nodoc
+abstract class $LocationPointCopyWith<$Res> {
+  factory $LocationPointCopyWith(
+          LocationPoint value, $Res Function(LocationPoint) then) =
+      _$LocationPointCopyWithImpl<$Res, LocationPoint>;
+  @useResult
+  $Res call(
+      {@JsonKey(name: 'x') double longitude,
+      @JsonKey(name: 'y') double latitude});
+}
+
+/// @nodoc
+class _$LocationPointCopyWithImpl<$Res, $Val extends LocationPoint>
+    implements $LocationPointCopyWith<$Res> {
+  _$LocationPointCopyWithImpl(this._value, this._then);
+
+  // ignore: unused_field
+  final $Val _value;
+  // ignore: unused_field
+  final $Res Function($Val) _then;
+
+  @pragma('vm:prefer-inline')
+  @override
+  $Res call({
+    Object? longitude = null,
+    Object? latitude = null,
+  }) {
+    return _then(_value.copyWith(
+      longitude: null == longitude
+          ? _value.longitude
+          : longitude // ignore: cast_nullable_to_non_nullable
+              as double,
+      latitude: null == latitude
+          ? _value.latitude
+          : latitude // ignore: cast_nullable_to_non_nullable
+              as double,
+    ) as $Val);
+  }
+}
+
+/// @nodoc
+abstract class _$$LocationPointImplCopyWith<$Res>
+    implements $LocationPointCopyWith<$Res> {
+  factory _$$LocationPointImplCopyWith(
+          _$LocationPointImpl value, $Res Function(_$LocationPointImpl) then) =
+      __$$LocationPointImplCopyWithImpl<$Res>;
+  @override
+  @useResult
+  $Res call(
+      {@JsonKey(name: 'x') double longitude,
+      @JsonKey(name: 'y') double latitude});
+}
+
+/// @nodoc
+class __$$LocationPointImplCopyWithImpl<$Res>
+    extends _$LocationPointCopyWithImpl<$Res, _$LocationPointImpl>
+    implements _$$LocationPointImplCopyWith<$Res> {
+  __$$LocationPointImplCopyWithImpl(
+      _$LocationPointImpl _value, $Res Function(_$LocationPointImpl) _then)
+      : super(_value, _then);
+
+  @pragma('vm:prefer-inline')
+  @override
+  $Res call({
+    Object? longitude = null,
+    Object? latitude = null,
+  }) {
+    return _then(_$LocationPointImpl(
+      longitude: null == longitude
+          ? _value.longitude
+          : longitude // ignore: cast_nullable_to_non_nullable
+              as double,
+      latitude: null == latitude
+          ? _value.latitude
+          : latitude // ignore: cast_nullable_to_non_nullable
+              as double,
+    ));
+  }
+}
+
+/// @nodoc
+@JsonSerializable()
+class _$LocationPointImpl implements _LocationPoint {
+  const _$LocationPointImpl(
+      {@JsonKey(name: 'x') this.longitude = 0.0,
+      @JsonKey(name: 'y') this.latitude = 0.0});
+
+  factory _$LocationPointImpl.fromJson(Map<String, dynamic> json) =>
+      _$$LocationPointImplFromJson(json);
+
+  @override
+  @JsonKey(name: 'x')
+  final double longitude;
+// Kinh độ
+  @override
+  @JsonKey(name: 'y')
+  final double latitude;
+
+  @override
+  String toString() {
+    return 'LocationPoint(longitude: $longitude, latitude: $latitude)';
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType &&
+            other is _$LocationPointImpl &&
+            (identical(other.longitude, longitude) ||
+                other.longitude == longitude) &&
+            (identical(other.latitude, latitude) ||
+                other.latitude == latitude));
+  }
+
+  @JsonKey(ignore: true)
+  @override
+  int get hashCode => Object.hash(runtimeType, longitude, latitude);
+
+  @JsonKey(ignore: true)
+  @override
+  @pragma('vm:prefer-inline')
+  _$$LocationPointImplCopyWith<_$LocationPointImpl> get copyWith =>
+      __$$LocationPointImplCopyWithImpl<_$LocationPointImpl>(this, _$identity);
+
+  @override
+  Map<String, dynamic> toJson() {
+    return _$$LocationPointImplToJson(
+      this,
+    );
+  }
+}
+
+abstract class _LocationPoint implements LocationPoint {
+  const factory _LocationPoint(
+      {@JsonKey(name: 'x') final double longitude,
+      @JsonKey(name: 'y') final double latitude}) = _$LocationPointImpl;
+
+  factory _LocationPoint.fromJson(Map<String, dynamic> json) =
+      _$LocationPointImpl.fromJson;
+
+  @override
+  @JsonKey(name: 'x')
+  double get longitude;
+  @override // Kinh độ
+  @JsonKey(name: 'y')
+  double get latitude;
+  @override
+  @JsonKey(ignore: true)
+  _$$LocationPointImplCopyWith<_$LocationPointImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }
 
@@ -1243,174 +1449,5 @@ abstract class _AddressInfo implements AddressInfo {
   @override
   @JsonKey(ignore: true)
   _$$AddressInfoImplCopyWith<_$AddressInfoImpl> get copyWith =>
-      throw _privateConstructorUsedError;
-}
-
-LocationPoint _$LocationPointFromJson(Map<String, dynamic> json) {
-  return _LocationPoint.fromJson(json);
-}
-
-/// @nodoc
-mixin _$LocationPoint {
-  @JsonKey(name: 'x')
-  double get longitude => throw _privateConstructorUsedError;
-  @JsonKey(name: 'y')
-  double get latitude => throw _privateConstructorUsedError;
-
-  Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
-  @JsonKey(ignore: true)
-  $LocationPointCopyWith<LocationPoint> get copyWith =>
-      throw _privateConstructorUsedError;
-}
-
-/// @nodoc
-abstract class $LocationPointCopyWith<$Res> {
-  factory $LocationPointCopyWith(
-          LocationPoint value, $Res Function(LocationPoint) then) =
-      _$LocationPointCopyWithImpl<$Res, LocationPoint>;
-  @useResult
-  $Res call(
-      {@JsonKey(name: 'x') double longitude,
-      @JsonKey(name: 'y') double latitude});
-}
-
-/// @nodoc
-class _$LocationPointCopyWithImpl<$Res, $Val extends LocationPoint>
-    implements $LocationPointCopyWith<$Res> {
-  _$LocationPointCopyWithImpl(this._value, this._then);
-
-  // ignore: unused_field
-  final $Val _value;
-  // ignore: unused_field
-  final $Res Function($Val) _then;
-
-  @pragma('vm:prefer-inline')
-  @override
-  $Res call({
-    Object? longitude = null,
-    Object? latitude = null,
-  }) {
-    return _then(_value.copyWith(
-      longitude: null == longitude
-          ? _value.longitude
-          : longitude // ignore: cast_nullable_to_non_nullable
-              as double,
-      latitude: null == latitude
-          ? _value.latitude
-          : latitude // ignore: cast_nullable_to_non_nullable
-              as double,
-    ) as $Val);
-  }
-}
-
-/// @nodoc
-abstract class _$$LocationPointImplCopyWith<$Res>
-    implements $LocationPointCopyWith<$Res> {
-  factory _$$LocationPointImplCopyWith(
-          _$LocationPointImpl value, $Res Function(_$LocationPointImpl) then) =
-      __$$LocationPointImplCopyWithImpl<$Res>;
-  @override
-  @useResult
-  $Res call(
-      {@JsonKey(name: 'x') double longitude,
-      @JsonKey(name: 'y') double latitude});
-}
-
-/// @nodoc
-class __$$LocationPointImplCopyWithImpl<$Res>
-    extends _$LocationPointCopyWithImpl<$Res, _$LocationPointImpl>
-    implements _$$LocationPointImplCopyWith<$Res> {
-  __$$LocationPointImplCopyWithImpl(
-      _$LocationPointImpl _value, $Res Function(_$LocationPointImpl) _then)
-      : super(_value, _then);
-
-  @pragma('vm:prefer-inline')
-  @override
-  $Res call({
-    Object? longitude = null,
-    Object? latitude = null,
-  }) {
-    return _then(_$LocationPointImpl(
-      longitude: null == longitude
-          ? _value.longitude
-          : longitude // ignore: cast_nullable_to_non_nullable
-              as double,
-      latitude: null == latitude
-          ? _value.latitude
-          : latitude // ignore: cast_nullable_to_non_nullable
-              as double,
-    ));
-  }
-}
-
-/// @nodoc
-@JsonSerializable()
-class _$LocationPointImpl implements _LocationPoint {
-  const _$LocationPointImpl(
-      {@JsonKey(name: 'x') required this.longitude,
-      @JsonKey(name: 'y') required this.latitude});
-
-  factory _$LocationPointImpl.fromJson(Map<String, dynamic> json) =>
-      _$$LocationPointImplFromJson(json);
-
-  @override
-  @JsonKey(name: 'x')
-  final double longitude;
-  @override
-  @JsonKey(name: 'y')
-  final double latitude;
-
-  @override
-  String toString() {
-    return 'LocationPoint(longitude: $longitude, latitude: $latitude)';
-  }
-
-  @override
-  bool operator ==(Object other) {
-    return identical(this, other) ||
-        (other.runtimeType == runtimeType &&
-            other is _$LocationPointImpl &&
-            (identical(other.longitude, longitude) ||
-                other.longitude == longitude) &&
-            (identical(other.latitude, latitude) ||
-                other.latitude == latitude));
-  }
-
-  @JsonKey(ignore: true)
-  @override
-  int get hashCode => Object.hash(runtimeType, longitude, latitude);
-
-  @JsonKey(ignore: true)
-  @override
-  @pragma('vm:prefer-inline')
-  _$$LocationPointImplCopyWith<_$LocationPointImpl> get copyWith =>
-      __$$LocationPointImplCopyWithImpl<_$LocationPointImpl>(this, _$identity);
-
-  @override
-  Map<String, dynamic> toJson() {
-    return _$$LocationPointImplToJson(
-      this,
-    );
-  }
-}
-
-abstract class _LocationPoint implements LocationPoint {
-  const factory _LocationPoint(
-          {@JsonKey(name: 'x') required final double longitude,
-          @JsonKey(name: 'y') required final double latitude}) =
-      _$LocationPointImpl;
-
-  factory _LocationPoint.fromJson(Map<String, dynamic> json) =
-      _$LocationPointImpl.fromJson;
-
-  @override
-  @JsonKey(name: 'x')
-  double get longitude;
-  @override
-  @JsonKey(name: 'y')
-  double get latitude;
-  @override
-  @JsonKey(ignore: true)
-  _$$LocationPointImplCopyWith<_$LocationPointImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }

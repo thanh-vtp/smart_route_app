@@ -7,12 +7,12 @@ import 'package:smart_route_app/features/incident/presentation/widgets/location_
 import 'package:smart_route_app/features/map/presentation/widgets/recent_search_widget.dart';
 import 'package:smart_route_app/features/search/presentation/providers/usecases/use_case_providers.dart';
 
-class LocationSearchPage extends ConsumerStatefulWidget {
+class SearchDirectionsPage extends ConsumerStatefulWidget {
   final LocationFieldType fieldType;
   final AddressResult? currentStart;
   final AddressResult? currentEnd;
 
-  const LocationSearchPage({
+  const SearchDirectionsPage({
     super.key,
     required this.fieldType,
     this.currentStart,
@@ -20,10 +20,11 @@ class LocationSearchPage extends ConsumerStatefulWidget {
   });
 
   @override
-  ConsumerState<LocationSearchPage> createState() => _LocationSearchPageState();
+  ConsumerState<SearchDirectionsPage> createState() =>
+      _SearchDirectionsPageState();
 }
 
-class _LocationSearchPageState extends ConsumerState<LocationSearchPage> {
+class _SearchDirectionsPageState extends ConsumerState<SearchDirectionsPage> {
   final TextEditingController _searchController = TextEditingController();
   final FocusNode _focusNode = FocusNode();
   List<AddressResult> _suggestions = [];
