@@ -8,16 +8,14 @@ part 'repository_providers.g.dart';
 
 /// Provider cho Geocoding Repository
 /// Sử dụng ArcGIS Geocoding Data Source
-/// Được dùng cho các use case liên quan đến geocoding, routing, nearby places
+/// Được dùng cho các use case liên quan đến routing
 @Riverpod(keepAlive: true)
 RoutingRepository routingRepository(RoutingRepositoryRef ref) {
   final routingRemoteDataSource = ref.watch(routingRemoteDataSourceProvider);
-  final placeLocalDataSource = ref.watch(placeLocalDataSourceProvider);
   final routeLocalDataSource = ref.watch(routeLocalDataSourceProvider);
   final networkInfo = ref.watch(networkInfoProvider);
   return RoutingRepositoryImpl(
     routingRemoteDataSource,
-    placeLocalDataSource,
     routeLocalDataSource,
     networkInfo,
   );

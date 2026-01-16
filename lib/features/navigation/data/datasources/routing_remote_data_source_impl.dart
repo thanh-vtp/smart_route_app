@@ -7,7 +7,6 @@ import 'package:smart_route_app/core/utils/app_logger.dart';
 import 'package:smart_route_app/core/utils/constants.dart';
 import 'package:smart_route_app/features/navigation/data/models/routing_models.dart';
 import 'package:http/http.dart' as http;
-import 'package:smart_route_app/features/search/data/models/geocoding_models.dart';
 
 abstract class RoutingRemoteDataSource {
   /// Test connection to ArcGIS services
@@ -18,15 +17,6 @@ abstract class RoutingRemoteDataSource {
     List<Map<String, double>> stops, {
     bool returnDirections = true,
     bool returnRoutes = true,
-  });
-
-  /// Find nearby places around coordinates
-  Future<GeocodeResponse> findNearbyPlaces(
-    double latitude,
-    double longitude, {
-    String category = '',
-    String maxLocations = '10',
-    double searchRadius = 1000,
   });
 }
 
@@ -227,78 +217,5 @@ class RoutingRemoteDataSourceImpl implements RoutingRemoteDataSource {
       }
       throw ArcGISFailure.routingFailed();
     }
-  }
-
-  /// Tìm kiếm địa điểm gần đó
-  @override
-  Future<GeocodeResponse> findNearbyPlaces(
-    double latitude,
-    double longitude, {
-    String category = '',
-    String format = 'json',
-    String attributes = '*',
-    String maxLocations = '10',
-    String forStorage = 'false',
-    double searchRadius = 1000, // meters
-  }) async {
-    final queryParameters = {
-      'location': '$longitude,$latitude',
-      'category': category,
-      'f': format,
-      'token': _apiKey,
-      'outFields': attributes,
-      'maxLocations': maxLocations,
-      'forStorage': forStorage,
-      'searchExtent': _calculateSearchExtent(latitude, longitude, searchRadius),
-    };
-
-    final uri = Uri.parse(
-      '${Constants.arcgisGeocodeBaseUrl}${Constants.findAddressCandidates}',
-    ).replace(queryParameters: queryParameters);
-
-    final response = await _makeRequest(uri);
-    final data = _parseAndValidateResponse(response);
-
-    try {
-      final result = GeocodeResponse.fromJson(data);
-
-      AppLogger.data(
-        'GeocodeResponse: '
-        'total=${result.candidates.length}',
-        source: 'RoutingRemoteDataSource',
-      );
-      for (var i = 0; i < result.candidates.length; i++) {
-        AppLogger.data(
-          '  [$i] ${result.candidates[i].address.split('\n').first} '
-          '(${result.candidates[i].attributes})',
-          source: 'RoutingRemoteDataSource',
-        );
-      }
-
-      return result;
-    } catch (e, st) {
-      AppLogger.error(
-        'Error in findNearbyPlaces: $e',
-        error: e,
-        stackTrace: st,
-        name: 'ArcGISGeocodingDataSource',
-      );
-      if (e is ArcGISFailure) rethrow;
-      throw ArcGISFailure.nearbySearchFailed();
-    }
-  }
-
-  /// Tính toán search extent cho tìm kiếm gần đó
-  String _calculateSearchExtent(double lat, double lon, double radiusMeters) {
-    // Chuyển đổi radius từ meters sang degrees (xấp xỉ)
-    final double radiusDegrees =
-        radiusMeters / 111320.0; // 1 degree ≈ 111.32 km
-
-    final double minLon = lon - radiusDegrees;
-    final double minLat = lat - radiusDegrees;
-    final double maxLon = lon + radiusDegrees;
-    final double maxLat = lat + radiusDegrees;
-
-    return '$minLon,$minLat,$maxLon,$maxLat';
   }
 }
