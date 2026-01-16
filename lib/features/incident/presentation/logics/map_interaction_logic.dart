@@ -11,6 +11,7 @@ import 'package:smart_route_app/features/incident/presentation/models/incident_t
 import 'package:smart_route_app/features/incident/presentation/providers/location_info_provider.dart';
 import 'package:smart_route_app/features/incident/presentation/providers/map_mode_provider.dart';
 import 'package:smart_route_app/features/incident/presentation/providers/states/map_page_notifier.dart';
+import 'package:smart_route_app/features/search/presentation/providers/selected_address.dart';
 
 /// Xử lý các tương tác người dùng (Tap, Zoom) trên bản đồ
 class MapInteractionLogic {
@@ -150,7 +151,12 @@ class MapInteractionLogic {
               _highlightIncident(identifiedGraphic);
 
               // Hiển thị bottom sheet
-              _showIncidentBottomSheet(incident, context: context, ref: ref);
+              _showIncidentBottomSheet(
+                incident,
+                context: context,
+                ref: ref,
+                mounted: mounted,
+              );
             },
           );
         }
@@ -267,9 +273,15 @@ class MapInteractionLogic {
     domain.Incident incident, {
     required BuildContext context,
     required WidgetRef ref,
+    required bool mounted,
   }) {
     // Sử dụng provider thay vì showModalBottomSheet trực tiếp
     ref.read(mapBottomSheetProvider.notifier).showIncidentDetail(incident);
+
+    // // Show bottom sheet
+    // if (mounted) {
+    //   context.go('/map-bottom-sheet');
+    // }
   }
 
   /// Xử lý sự kiện long press end trên bản đồ 2D
@@ -315,6 +327,7 @@ class MapInteractionLogic {
               ref: ref,
               mapViewController: mapViewController,
               sceneViewController: null,
+              mounted: mounted,
             );
           }
         }
@@ -438,14 +451,25 @@ class MapInteractionLogic {
     required WidgetRef ref,
     ArcGISMapViewController? mapViewController,
     ArcGISSceneViewController? sceneViewController,
+    required bool mounted,
   }) {
     // Tìm incident gần vị trí long press (trong bán kính ~100m)
     final nearbyIncident = _findNearbyIncident(latitude, longitude, ref);
+
+    // Update selectedAddressProvider với tọa độ (sẽ reverse geocode sau trong LocationInfoDraggableSheet)
+    ref
+        .read(selectedAddressProvider.notifier)
+        .setAddress(latitude: latitude, longitude: longitude);
 
     // Update provider để hiển thị bottom sheet (kèm incident nếu có)
     ref
         .read(locationInfoProvider.notifier)
         .show(latitude, longitude, nearbyIncident: nearbyIncident);
+
+    // // Show bottom sheet
+    // if (mounted) {
+    //   context.go('/map-bottom-sheet');
+    // }
   }
 
   /// Tìm incident gần vị trí được chọn (trong bán kính ~100m)
@@ -537,7 +561,12 @@ class MapInteractionLogic {
                 (inc) => inc.id == incidentId,
                 orElse: () => incidents.first,
               );
-              _showIncidentBottomSheet(incident, context: context, ref: ref);
+              _showIncidentBottomSheet(
+                incident,
+                context: context,
+                ref: ref,
+                mounted: mounted,
+              );
             },
           );
         }
@@ -571,6 +600,7 @@ class MapInteractionLogic {
               ref: ref,
               mapViewController: null,
               sceneViewController: sceneViewController,
+              mounted: mounted,
             );
           }
         }

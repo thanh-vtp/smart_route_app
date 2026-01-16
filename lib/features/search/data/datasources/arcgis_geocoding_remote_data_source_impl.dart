@@ -166,4 +166,77 @@ class ArcGISGeocodingRemoteDataSourceImpl
       throw ArcGISFailure.reverseGeocodingFailed();
     }
   }
+
+  /// Tìm kiếm địa điểm xung quanh vị trí
+  @override
+  Future<GeocodeResponse> findNearbyPlaces(
+    double latitude,
+    double longitude, {
+    String category = '',
+    String format = 'json',
+    String attributes = '*',
+    int maxLocations = 10,
+    String forStorage = 'false',
+    double searchRadius = 1000, // meters
+  }) async {
+    final queryParameters = {
+      'location': '$longitude,$latitude',
+      'category': category,
+      'f': format,
+      'token': _apiKey,
+      'outFields': attributes,
+      'maxLocations': maxLocations.toString(),
+      'forStorage': forStorage,
+      'searchExtent': _calculateSearchExtent(latitude, longitude, searchRadius),
+    };
+
+    final uri = Uri.parse(
+      '${Constants.arcgisGeocodeBaseUrl}${Constants.findAddressCandidates}',
+    ).replace(queryParameters: queryParameters);
+
+    final response = await _makeRequest(uri);
+    final data = _parseAndValidateResponse(response);
+
+    try {
+      final result = GeocodeResponse.fromJson(data);
+
+      AppLogger.data(
+        'GeocodeResponse: '
+        'total=${result.candidates.length}',
+        source: 'RoutingRemoteDataSource',
+      );
+      for (var i = 0; i < result.candidates.length; i++) {
+        AppLogger.data(
+          '  [$i] ${result.candidates[i].address.split('\n').first} '
+          '(${result.candidates[i].attributes})',
+          source: 'RoutingRemoteDataSource',
+        );
+      }
+
+      return result;
+    } catch (e, st) {
+      AppLogger.error(
+        'Error in findNearbyPlaces: $e',
+        error: e,
+        stackTrace: st,
+        name: 'ArcGISGeocodingDataSource',
+      );
+      if (e is ArcGISFailure) rethrow;
+      throw ArcGISFailure.nearbySearchFailed();
+    }
+  }
+
+  /// Tính toán search extent cho tìm kiếm gần đó
+  String _calculateSearchExtent(double lat, double lon, double radiusMeters) {
+    // Chuyển đổi radius từ meters sang degrees (xấp xỉ)
+    final double radiusDegrees =
+        radiusMeters / 111320.0; // 1 degree ≈ 111.32 km
+
+    final double minLon = lon - radiusDegrees;
+    final double minLat = lat - radiusDegrees;
+    final double maxLon = lon + radiusDegrees;
+    final double maxLat = lat + radiusDegrees;
+
+    return '$minLon,$minLat,$maxLon,$maxLat';
+  }
 }

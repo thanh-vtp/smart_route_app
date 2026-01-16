@@ -22,5 +22,24 @@ final mapCenterProvider = NotifierProvider<MapCenter, ArcGISPoint?>.internal(
 );
 
 typedef _$MapCenter = Notifier<ArcGISPoint?>;
+String _$navigateToPointHash() => r'50fe0a14569712dec95e4fa4ccd03e568fd62b96';
+
+/// Provider để yêu cầu map di chuyển đến vị trí cụ thể
+/// MapPage sẽ listen provider này và thực hiện setViewpointCenter
+///
+/// Copied from [NavigateToPoint].
+@ProviderFor(NavigateToPoint)
+final navigateToPointProvider =
+    NotifierProvider<NavigateToPoint, NavigateToPointRequest?>.internal(
+  NavigateToPoint.new,
+  name: r'navigateToPointProvider',
+  debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
+      ? null
+      : _$navigateToPointHash,
+  dependencies: null,
+  allTransitiveDependencies: null,
+);
+
+typedef _$NavigateToPoint = Notifier<NavigateToPointRequest?>;
 // ignore_for_file: type=lint
 // ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member

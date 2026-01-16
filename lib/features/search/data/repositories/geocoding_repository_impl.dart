@@ -105,13 +105,13 @@ class GeocodingRepositoryImpl implements GeocodingRepository {
     return response.candidates.map((candidate) {
       return AddressResult(
         fullAddress: candidate.address,
-        streetName: candidate.attributes?['Address'] as String?,
-        neighborhood: candidate.attributes?['Neighborhood'] as String?,
-        district: candidate.attributes?['District'] as String?,
-        city: candidate.attributes?['City'] as String?,
-        region: candidate.attributes?['Region'] as String?,
-        countryName: candidate.attributes?['CntryName'] as String?,
-        postalCode: candidate.attributes?['Postal'] as String?,
+        streetName: candidate.attributes['Address'] as String?,
+        neighborhood: candidate.attributes['Neighborhood'] as String?,
+        district: candidate.attributes['District'] as String?,
+        city: candidate.attributes['City'] as String?,
+        region: candidate.attributes['Region'] as String?,
+        countryName: candidate.attributes['CntryName'] as String?,
+        postalCode: candidate.attributes['Postal'] as String?,
         latitude: candidate.location.latitude,
         longitude: candidate.location.longitude,
         score: candidate.score,
@@ -210,5 +210,13 @@ class GeocodingRepositoryImpl implements GeocodingRepository {
       );
       return left(UnexpectedFailure(e, st));
     }
+  }
+
+  @override
+  Future<Map<String, int>> getCacheStats() async {
+    final geocodeCount = await _geocodingLocalDataSource.getCacheCount();
+    final reverseCount = await _reverseGeocodingLocalDataSource.getCacheCount();
+
+    return {'geocode': geocodeCount, 'reverse_geocode': reverseCount};
   }
 }

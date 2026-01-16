@@ -11,4 +11,10 @@ abstract class ImageryRepository {
     int height = 400,
     int zoomLevel = 15,
   });
+
+  /// Lấy số lượng ảnh đã cache
+  Future<int> getCacheCount();
+
+  /// Xóa tất cả ảnh cache
+  Future<void> clearAllCache();
 }

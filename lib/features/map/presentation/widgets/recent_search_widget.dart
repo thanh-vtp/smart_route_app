@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:smart_route_app/features/search/domain/entities/address_result.dart';
-import 'package:smart_route_app/features/navigation/presentation/providers/states/recent_search_notifier.dart';
+import 'package:smart_route_app/features/search/presentation/providers/states/recent_search_notifier.dart';
 
 /// Widget hiển thị danh sách lịch sử tìm kiếm gần đây
 /// Sử dụng RecentSearchNotifier để lấy data từ SQLite cache
