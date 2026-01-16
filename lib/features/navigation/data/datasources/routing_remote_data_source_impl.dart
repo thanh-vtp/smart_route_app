@@ -24,11 +24,6 @@ class RoutingRemoteDataSourceImpl implements RoutingRemoteDataSource {
   final http.Client _client;
   final String _apiKey;
 
-  // static const String _baseUrl =
-  //     'https://geocode-api.arcgis.com/arcgis/rest/services';
-  static const String _routeBaseUrl =
-      'https://route-api.arcgis.com/arcgis/rest/services';
-
   // Timeout configurations
   static const Duration _receiveTimeout = Duration(seconds: 30);
   static const int _maxRetries = 3;
@@ -127,8 +122,14 @@ class RoutingRemoteDataSourceImpl implements RoutingRemoteDataSource {
   @override
   Future<RouteResponse> calculateRoute(
     List<Map<String, double>> stops, {
+    String format = 'json',
     bool returnDirections = true,
     bool returnRoutes = true,
+    String directionsLanguage = 'vi',
+    String directionsLengthUnits = 'esriNAUMeters',
+    String outputLines =
+        'esriNAOutputLineTrueShapeWithMeasure', // default: esriNAOutputLineTrueShape
+    String outSR = '4326',
   }) async {
     try {
       if (stops.length < 2) {
@@ -155,21 +156,21 @@ class RoutingRemoteDataSourceImpl implements RoutingRemoteDataSource {
         source: 'ArcGISGeocodingDataSource',
       );
 
-      final uri =
-          Uri.parse(
-            '$_routeBaseUrl/World/Route/NAServer/Route_World/solve',
-          ).replace(
-            queryParameters: {
-              'stops': stopsString,
-              'f': 'json',
-              'token': _apiKey,
-              'returnDirections': returnDirections.toString(),
-              'returnRoutes': returnRoutes.toString(),
-              'directionsLanguage': 'vi',
-              'outputLines': 'esriNAOutputLineTrueShapeWithMeasure',
-              'outSR': '4326',
-            },
-          );
+      final queryParameters = {
+        'stops': stopsString,
+        'f': 'json',
+        'token': _apiKey,
+        'returnDirections': returnDirections.toString(),
+        'returnRoutes': returnRoutes.toString(), // routes geometry
+        'directionsLanguage': directionsLanguage, // ngôn ngữ hướng dẫn
+        'directionsLengthUnits': directionsLengthUnits, // meters
+        'outputLines': outputLines, // Loại đặc điểm tuyến đường được trả về.
+        'outSR': outSR, // Hệ tọa độ đầu ra
+      };
+
+      final uri = Uri.parse(
+        '${Constants.arcgisRouteBaseUrl}${Constants.routeAndDirections}',
+      ).replace(queryParameters: queryParameters);
 
       AppLogger.data(
         'Route request URI: $uri',

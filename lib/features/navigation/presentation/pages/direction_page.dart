@@ -38,6 +38,8 @@ class _DirectionPageState extends ConsumerState<DirectionPage> {
   bool _showMapView = false;
   bool _isLoadingCurrentLocation = false;
 
+  final sheetController = DraggableScrollableController();
+
   @override
   void initState() {
     super.initState();
@@ -173,6 +175,12 @@ class _DirectionPageState extends ConsumerState<DirectionPage> {
       ref.read(routeStateProvider.notifier).reset();
       await ref.read(routeStateProvider.notifier).calculateRoute(stops);
     }
+  }
+
+  @override
+  void dispose() {
+    sheetController.dispose();
+    super.dispose();
   }
 
   @override
@@ -426,6 +434,7 @@ class _DirectionPageState extends ConsumerState<DirectionPage> {
     return Scaffold(
       body: SafeArea(
         child: Stack(
+          fit: StackFit.expand,
           children: [
             // Map
             RouteMapWidget(
@@ -455,12 +464,7 @@ class _DirectionPageState extends ConsumerState<DirectionPage> {
             ),
 
             // Bottom sheet
-            Positioned(
-              bottom: 0,
-              left: 0,
-              right: 0,
-              child: _buildRouteDetailsSheet(),
-            ),
+            Positioned.fill(child: _buildRouteDetailsSheet(sheetController)),
           ],
         ),
       ),
@@ -729,73 +733,78 @@ class _DirectionPageState extends ConsumerState<DirectionPage> {
     );
   }
 
-  Widget _buildRouteDetailsSheet() {
+  Widget _buildRouteDetailsSheet(
+    DraggableScrollableController sheetController,
+  ) {
     final isSmartRoutingEnabled = ref.watch(smartRoutingEnabledProvider);
     final smartRouteState = ref.watch(smartRouteStateProvider);
     final normalRouteState = ref.watch(routeStateProvider);
 
-    return Container(
-      decoration: const BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.vertical(top: Radius.circular(16)),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.black26,
-            blurRadius: 8,
-            offset: Offset(0, -2),
-          ),
-        ],
-      ),
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          Container(
-            margin: const EdgeInsets.symmetric(vertical: 8),
-            width: 40,
-            height: 4,
-            decoration: BoxDecoration(
-              color: Colors.grey.shade300,
-              borderRadius: BorderRadius.circular(2),
+    final widthExtend = 0.5;
+
+    return DraggableScrollableSheet(
+      controller: sheetController,
+      initialChildSize: widthExtend,
+      minChildSize: 0.16,
+      maxChildSize: widthExtend,
+      builder: (context, scrollController) => Container(
+        decoration: const BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.vertical(top: Radius.circular(16)),
+          boxShadow: [
+            BoxShadow(
+              color: Colors.black26,
+              blurRadius: 8,
+              offset: Offset(0, -2),
             ),
+          ],
+        ),
+        child: Padding(
+          padding: const EdgeInsets.only(top: 16),
+          child: ListView(
+            controller: scrollController,
+            // mainAxisSize: MainAxisSize.min,
+            children: [
+              // Smart routing toggle
+              _buildSmartRoutingToggle(),
+              const SizedBox(height: 8),
+              if (isSmartRoutingEnabled)
+                smartRouteState.when(
+                  data: (result) {
+                    if (result == null) {
+                      return const Padding(
+                        padding: EdgeInsets.all(16),
+                        child: Text('Đang tính toán tuyến đường thông minh...'),
+                      );
+                    }
+                    return _buildSmartRouteInfo(result);
+                  },
+                  loading: () => const Padding(
+                    padding: EdgeInsets.all(24),
+                    child: Center(child: CircularProgressIndicator()),
+                  ),
+                  error: (error, _) => _buildErrorWidget(error),
+                )
+              else
+                normalRouteState.when(
+                  data: (route) {
+                    if (route == null) {
+                      return const Padding(
+                        padding: EdgeInsets.all(16),
+                        child: Text('Đang tính toán tuyến đường...'),
+                      );
+                    }
+                    return _buildRouteInfo(route);
+                  },
+                  loading: () => const Padding(
+                    padding: EdgeInsets.all(24),
+                    child: Center(child: CircularProgressIndicator()),
+                  ),
+                  error: (error, _) => _buildErrorWidget(error),
+                ),
+            ],
           ),
-          // Smart routing toggle
-          _buildSmartRoutingToggle(),
-          const SizedBox(height: 8),
-          if (isSmartRoutingEnabled)
-            smartRouteState.when(
-              data: (result) {
-                if (result == null) {
-                  return const Padding(
-                    padding: EdgeInsets.all(16),
-                    child: Text('Đang tính toán tuyến đường thông minh...'),
-                  );
-                }
-                return _buildSmartRouteInfo(result);
-              },
-              loading: () => const Padding(
-                padding: EdgeInsets.all(24),
-                child: Center(child: CircularProgressIndicator()),
-              ),
-              error: (error, _) => _buildErrorWidget(error),
-            )
-          else
-            normalRouteState.when(
-              data: (route) {
-                if (route == null) {
-                  return const Padding(
-                    padding: EdgeInsets.all(16),
-                    child: Text('Đang tính toán tuyến đường...'),
-                  );
-                }
-                return _buildRouteInfo(route);
-              },
-              loading: () => const Padding(
-                padding: EdgeInsets.all(24),
-                child: Center(child: CircularProgressIndicator()),
-              ),
-              error: (error, _) => _buildErrorWidget(error),
-            ),
-        ],
+        ),
       ),
     );
   }
