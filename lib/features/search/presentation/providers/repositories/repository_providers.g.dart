@@ -41,5 +41,21 @@ final imageryRepositoryProvider = Provider<ImageryRepository>.internal(
 );
 
 typedef ImageryRepositoryRef = ProviderRef<ImageryRepository>;
+String _$nearbyPlaceRepositoryHash() =>
+    r'4256212322e9402affe315ccbab1f29dcb4fc5e7';
+
+/// See also [nearbyPlaceRepository].
+@ProviderFor(nearbyPlaceRepository)
+final nearbyPlaceRepositoryProvider = Provider<NearbyPlaceRepository>.internal(
+  nearbyPlaceRepository,
+  name: r'nearbyPlaceRepositoryProvider',
+  debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
+      ? null
+      : _$nearbyPlaceRepositoryHash,
+  dependencies: null,
+  allTransitiveDependencies: null,
+);
+
+typedef NearbyPlaceRepositoryRef = ProviderRef<NearbyPlaceRepository>;
 // ignore_for_file: type=lint
 // ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member

@@ -14,11 +14,12 @@ abstract class GeocodingRepository {
     double longitude,
   );
 
-  // ============ Cache Management ============
-
   /// Lấy danh sách lịch sử tìm kiếm gần đây
   Future<Either<Failure, List<AddressResult>>> getRecentSearchHistory();
 
   /// Xóa toàn bộ lịch sử tìm kiếm
   Future<Either<Failure, void>> clearHistory();
+
+  /// Lấy thống kê cache (geocode, reverse_geocode)
+  Future<Map<String, int>> getCacheStats();
 }

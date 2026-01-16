@@ -112,4 +112,14 @@ class ImageryRepositoryImpl implements ImageryRepository {
       return left(failure);
     }
   }
+
+  @override
+  Future<int> getCacheCount() async {
+    return await _imageryLocalSource.getCacheCount();
+  }
+
+  @override
+  Future<void> clearAllCache() async {
+    await _imageryLocalSource.clearAll();
+  }
 }

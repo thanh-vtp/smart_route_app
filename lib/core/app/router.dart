@@ -4,8 +4,10 @@ import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:smart_route_app/features/auth/presentation/pages/login_page.dart';
 import 'package:smart_route_app/features/auth/presentation/providers/states/auth.dart';
 import 'package:smart_route_app/features/home/presentation/pages/home_page.dart';
+import 'package:smart_route_app/features/incident/presentation/widgets/map_bottom_sheet_container.dart';
 import 'package:smart_route_app/features/map/presentation/pages/arcgis_demo_page.dart';
 import 'package:smart_route_app/features/navigation/presentation/pages/direction_page.dart';
+import 'package:smart_route_app/features/search/presentation/pages/search_map_page.dart';
 
 part 'router.g.dart';
 
@@ -77,26 +79,41 @@ GoRouter router(RouterRef ref) {
         name: HomePage.route,
         builder: (context, state) => const HomePage(),
         routes: [
-          // ArcGIS Demo Page - nested route
-          GoRoute(
-            path: 'arcgis-demo',
-            name: 'arcgis-demo',
-            builder: (context, state) => const ArcGISDemoPage(),
-          ),
-          // Direction Page - nested route
-          GoRoute(
-            path: 'direction',
-            name: 'direction',
-            builder: (context, state) => const DirectionPage(),
-          ),
+          // //  Search Page - nested route (nằm dưới HomePage)
+          // GoRoute(
+          //   path: 'search',
+          //   name: 'search',
+          //   builder: (context, state) => const SearchMapPage(),
+          // ),
+
+          // // Direction Page - nested route (nằm dưới HomePage)
+          // GoRoute(
+          //   path: 'direction',
+          //   name: 'direction',
+          //   builder: (context, state) => const DirectionPage(),
+          // ),
         ],
       ),
 
-      // ArcGIS Demo Page - standalone route for easy testing
+      // ArcGIS Demo Page - standalone route for easy testing (độc lập, không nằm dưới HomePage)
       GoRoute(
         path: '/arcgis-demo',
         name: 'arcgis-demo-standalone',
         builder: (context, state) => const ArcGISDemoPage(),
+      ),
+
+      // MapBottomSheetContainer - standalone route
+      GoRoute(
+        path: '/map-bottom-sheet',
+        name: 'map-bottom-sheet-standalone',
+        builder: (context, state) => const MapBottomSheetContainer(),
+      ),
+
+      //  Search Page - standalone route
+      GoRoute(
+        path: '/search',
+        name: 'search-standalone',
+        builder: (context, state) => const SearchMapPage(),
       ),
 
       // Direction Page - standalone route

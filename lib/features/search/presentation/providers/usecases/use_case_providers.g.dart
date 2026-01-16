@@ -60,5 +60,23 @@ final getLocationImageryUseCaseProvider =
 
 typedef GetLocationImageryUseCaseRef
     = AutoDisposeProviderRef<GetLocationImageryUseCase>;
+String _$findNearbyPlacesUseCaseHash() =>
+    r'9674daf5b7ff3905db89b677ec912269f714c3d5';
+
+/// See also [findNearbyPlacesUseCase].
+@ProviderFor(findNearbyPlacesUseCase)
+final findNearbyPlacesUseCaseProvider =
+    AutoDisposeProvider<FindNearbyPlacesUseCase>.internal(
+  findNearbyPlacesUseCase,
+  name: r'findNearbyPlacesUseCaseProvider',
+  debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
+      ? null
+      : _$findNearbyPlacesUseCaseHash,
+  dependencies: null,
+  allTransitiveDependencies: null,
+);
+
+typedef FindNearbyPlacesUseCaseRef
+    = AutoDisposeProviderRef<FindNearbyPlacesUseCase>;
 // ignore_for_file: type=lint
 // ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member

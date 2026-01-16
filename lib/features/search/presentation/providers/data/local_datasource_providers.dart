@@ -3,6 +3,7 @@ import 'package:smart_route_app/core/database/providers/map_database_providers.d
 import 'package:smart_route_app/features/search/data/local_datasource/geocoding_local_data_source_impl.dart';
 import 'package:smart_route_app/features/search/data/local_datasource/imagery_local_data_source.dart';
 import 'package:smart_route_app/features/search/data/local_datasource/imagery_local_data_source_impl.dart';
+import 'package:smart_route_app/features/search/data/local_datasource/place_local_data_source_impl.dart';
 
 part 'local_datasource_providers.g.dart';
 
@@ -30,4 +31,11 @@ ReverseGeocodingLocalDataSource reverseGeocodingLocalDataSource(
 @Riverpod(keepAlive: true)
 ImageryLocalDataSource imageryLocalDataSource(ImageryLocalDataSourceRef ref) {
   return ImageryLocalDataSourceImpl();
+}
+
+/// Provider cho Place Local Data Source
+@Riverpod(keepAlive: true)
+PlaceLocalDataSource placeLocalDataSource(PlaceLocalDataSourceRef ref) {
+  final db = ref.watch(mapDatabaseProvider);
+  return PlaceLocalDataSourceImpl(db);
 }

@@ -235,6 +235,22 @@ class _MapPageState extends ConsumerState<MapPage> {
         );
       }
     });
+
+    // Lắng nghe yêu cầu di chuyển map đến vị trí cụ thể (từ SearchMapPage)
+    ref.listenManual(navigateToPointProvider, (previous, next) {
+      if (mounted && next != null && _mapViewReady) {
+        final mapMode = ref.read(mapModeProviderProvider);
+        if (mapMode == MapMode.map2D) {
+          _mapViewController.setViewpointCenter(next.point, scale: next.scale);
+        } else {
+          // TODO: Xử lý cho Scene 3D
+        }
+        // Cập nhật mapCenterProvider
+        ref.read(mapCenterProvider.notifier).update(next.point);
+        // Clear request sau khi đã xử lý
+        ref.read(navigateToPointProvider.notifier).clear();
+      }
+    });
   }
 
   /// Callback khi map view 2D đã sẵn sàng
