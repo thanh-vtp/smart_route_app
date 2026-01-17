@@ -2,6 +2,7 @@ import 'package:fpdart/fpdart.dart';
 import 'package:smart_route_app/core/network/network_info.dart';
 import 'package:smart_route_app/core/utils/app_logger.dart';
 import 'package:smart_route_app/core/errors/failures.dart';
+import 'package:smart_route_app/features/incident/domain/entities/incident.dart';
 import 'package:smart_route_app/features/navigation/data/datasources/routing_remote_data_source_impl.dart';
 import 'package:smart_route_app/features/navigation/data/local_datasource/route_local_data_source_impl.dart';
 import 'package:smart_route_app/features/navigation/data/models/routing_models.dart';
@@ -28,9 +29,10 @@ class RoutingRepositoryImpl implements RoutingRepository {
       '${prefix}_${input.toString().hashCode}';
 
   @override
-  Future<Either<Failure, RouteResult>> calculateRoute(
-    List<Map<String, double>> stops,
-  ) async {
+  Future<Either<Failure, RouteResult>> calculateRoute({
+    required List<Map<String, double>> stops,
+    List<Incident>? incidentsToAvoid,
+  }) async {
     final key = _makeKey('route', stops);
 
     final bool isConnected = await _networkInfo.isConnected;
@@ -43,8 +45,25 @@ class RoutingRepositoryImpl implements RoutingRepository {
 
     if (!isConnected) return left(NetworkFailure.noInternet());
 
+    List<Map<String, double>>? barriers;
+
+    if (incidentsToAvoid != null && incidentsToAvoid.isNotEmpty) {
+      barriers = incidentsToAvoid
+          .map((incident) {
+            return {
+              'longitude': double.tryParse(incident.longitude) ?? 0.0,
+              'latitude': double.tryParse(incident.latitude) ?? 0.0,
+            };
+          })
+          .where((b) => b['longitude'] != 0 && b['latitude'] != 0)
+          .toList();
+    }
+
     try {
-      final response = await _routingRemoteDataSource.calculateRoute(stops);
+      final response = await _routingRemoteDataSource.solve(
+        stops: stops,
+        barriers: barriers,
+      );
 
       // Cache
       await _routeCache.save(key, response.toJson());

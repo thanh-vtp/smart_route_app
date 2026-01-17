@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:smart_route_app/features/navigation/presentation/providers/states/route_state.dart';
 import 'package:smart_route_app/features/navigation/domain/entities/route_result.dart';
 import 'package:smart_route_app/features/search/presentation/providers/usecases/use_case_providers.dart';
 
@@ -18,7 +17,7 @@ class RoutePlanningBottomSheet extends HookConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final routeState = ref.watch(routeStateProvider);
+    // final routeState = ref.watch(routeStateProvider);
     final waypointControllers = useState<List<TextEditingController>>([]);
     final currentWaypoints = useState<List<Map<String, double>>>(waypoints);
 
@@ -114,7 +113,7 @@ class RoutePlanningBottomSheet extends HookConsumerWidget {
                   const SizedBox(height: 16),
 
                   // Route result
-                  _buildRouteResult(context, routeState),
+                  // _buildRouteResult(context, routeState),
                 ],
               ),
             ),
@@ -221,9 +220,10 @@ class RoutePlanningBottomSheet extends HookConsumerWidget {
     return SizedBox(
       width: double.infinity,
       child: ElevatedButton.icon(
-        onPressed: waypoints.length >= 2
-            ? () => _calculateRoute(ref, waypoints)
-            : null,
+        // onPressed: waypoints.length >= 2
+        //     ? () => _calculateRoute(ref, waypoints)
+        //     : null,
+        onPressed: () {},
         icon: const Icon(Icons.navigation),
         label: const Text('Tính toán đường đi'),
         style: ElevatedButton.styleFrom(
@@ -362,9 +362,9 @@ class RoutePlanningBottomSheet extends HookConsumerWidget {
       ..insert(waypoints.value.length - 1, newWaypoint);
   }
 
-  void _calculateRoute(WidgetRef ref, List<Map<String, double>> waypoints) {
-    ref.read(routeStateProvider.notifier).calculateRoute(waypoints);
-  }
+  // void _calculateRoute(WidgetRef ref, List<Map<String, double>> waypoints) {
+  //   ref.read(routeStateProvider.notifier).calculateRoute(waypoints);
+  // }
 
   String _formatDuration(double minutes) {
     final hours = minutes ~/ 60;

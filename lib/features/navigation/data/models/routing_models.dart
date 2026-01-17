@@ -1,81 +1,24 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
+import 'package:smart_route_app/features/navigation/data/models/route_direction_model.dart';
 
 part 'routing_models.freezed.dart';
 part 'routing_models.g.dart';
 
+// Thông tin Tuyến đường
 @freezed
 class RouteResponse with _$RouteResponse {
   const factory RouteResponse({
     @JsonKey(name: 'routes') required RouteFeaturesResult routes,
-    @JsonKey(name: 'directions')
     @Default([])
+    @JsonKey(name: 'directions')
     List<RouteDirectionSet> directions,
+    @JsonKey(name: 'messages')
+    @Default([])
+    List<dynamic> messages, // Check cảnh báo
   }) = _RouteResponse;
 
   factory RouteResponse.fromJson(Map<String, dynamic> json) =>
       _$RouteResponseFromJson(json);
-}
-
-@freezed
-class RouteDirectionSet with _$RouteDirectionSet {
-  const factory RouteDirectionSet({
-    @JsonKey(name: 'routeId') int? routeId,
-    @JsonKey(name: 'routeName') String? routeName,
-    @JsonKey(name: 'summary') RouteDirectionSummary? summary,
-    @JsonKey(name: 'features')
-    @Default([])
-    List<RouteDirectionFeature> features,
-  }) = _RouteDirectionSet;
-
-  factory RouteDirectionSet.fromJson(Map<String, dynamic> json) =>
-      _$RouteDirectionSetFromJson(json);
-}
-
-@freezed
-class RouteDirectionSummary with _$RouteDirectionSummary {
-  const factory RouteDirectionSummary({
-    @JsonKey(name: 'totalLength') double? totalLength,
-    @JsonKey(name: 'totalTime') double? totalTime,
-    @JsonKey(name: 'totalDriveTime') double? totalDriveTime,
-  }) = _RouteDirectionSummary;
-
-  factory RouteDirectionSummary.fromJson(Map<String, dynamic> json) =>
-      _$RouteDirectionSummaryFromJson(json);
-}
-
-@freezed
-class RouteDirectionFeature with _$RouteDirectionFeature {
-  const factory RouteDirectionFeature({
-    @JsonKey(name: 'attributes') required RouteDirectionAttributes attributes,
-    @JsonKey(name: 'strings') @Default([]) List<RouteDirectionString> strings,
-  }) = _RouteDirectionFeature;
-
-  factory RouteDirectionFeature.fromJson(Map<String, dynamic> json) =>
-      _$RouteDirectionFeatureFromJson(json);
-}
-
-@freezed
-class RouteDirectionAttributes with _$RouteDirectionAttributes {
-  const factory RouteDirectionAttributes({
-    @JsonKey(name: 'length') @Default(0) double length,
-    @JsonKey(name: 'time') @Default(0) double time,
-    @JsonKey(name: 'text') String? text,
-    @JsonKey(name: 'maneuverType') String? maneuverType,
-  }) = _RouteDirectionAttributes;
-
-  factory RouteDirectionAttributes.fromJson(Map<String, dynamic> json) =>
-      _$RouteDirectionAttributesFromJson(json);
-}
-
-@freezed
-class RouteDirectionString with _$RouteDirectionString {
-  const factory RouteDirectionString({
-    @JsonKey(name: 'string') String? string,
-    @JsonKey(name: 'stringType') String? stringType,
-  }) = _RouteDirectionString;
-
-  factory RouteDirectionString.fromJson(Map<String, dynamic> json) =>
-      _$RouteDirectionStringFromJson(json);
 }
 
 @freezed

@@ -4,14 +4,14 @@ import 'package:smart_route_app/core/core.dart';
 import 'package:smart_route_app/core/errors/failures.dart';
 import 'package:smart_route_app/features/search/domain/entities/address_result.dart';
 import 'package:smart_route_app/features/search/presentation/pages/search_directions_page.dart';
-import 'package:smart_route_app/features/navigation/presentation/providers/states/route_state.dart';
 import 'package:smart_route_app/features/search/presentation/providers/usecases/use_case_providers.dart';
 import '../../../incident/domain/entities/incident.dart';
 import '../../domain/entities/route_direction.dart';
 import '../helpers/direction_formatter.dart';
+import '../models/smart_route_result.dart';
 import '../providers/geocoding_helper.dart';
 import '../../../incident/presentation/providers/location_display_providers.dart';
-import '../providers/smart_routing_provider.dart';
+import '../providers/route_comparison_notifier.dart';
 import '../../../incident/presentation/providers/states/map_page_notifier.dart';
 import '../../../incident/presentation/providers/user_location_provider.dart';
 import '../../../map/presentation/widgets/recent_search_widget.dart';
@@ -37,6 +37,8 @@ class _DirectionPageState extends ConsumerState<DirectionPage> {
   TransportMode _selectedMode = TransportMode.car;
   bool _showMapView = false;
   bool _isLoadingCurrentLocation = false;
+
+  final sheetController = DraggableScrollableController();
 
   @override
   void initState() {
@@ -148,31 +150,32 @@ class _DirectionPageState extends ConsumerState<DirectionPage> {
         'longitude': _endLocation!.longitude,
       },
     ];
+    AppLogger.info(
+      'Tọa độ bắt đầu: ${_startLocation!.latitude}, ${_startLocation!.longitude}'
+      'Tọa độ kết thúc: ${_endLocation!.latitude}, ${_endLocation!.longitude} ',
+      name: 'DirectionPage',
+    );
 
     setState(() => _showMapView = true);
 
-    // Check if smart routing is enabled
-    final isSmartRoutingEnabled = ref.read(smartRoutingEnabledProvider);
+    // Get incidents from map page state
+    final mapState = ref.read(mapPageNotifierProvider);
+    final incidents = mapState.maybeWhen(
+      loaded: (incidents) => incidents,
+      submitted: (incidents) => incidents,
+      orElse: () => <Incident>[],
+    );
 
-    if (isSmartRoutingEnabled) {
-      // Get incidents from map page state
-      final mapState = ref.read(mapPageNotifierProvider);
-      final incidents = mapState.maybeWhen(
-        loaded: (incidents) => incidents,
-        submitted: (incidents) => incidents,
-        orElse: () => <Incident>[],
-      );
+    // Use RouteComparisonNotifier to calculate both routes (normal + smart) in parallel
+    await ref
+        .read(routeComparisonNotifierProvider.notifier)
+        .compareRoutes(stops: stops, incidents: incidents);
+  }
 
-      // Use smart routing with incident avoidance
-      ref.read(smartRouteStateProvider.notifier).reset();
-      await ref
-          .read(smartRouteStateProvider.notifier)
-          .calculateSmartRoute(stops: stops, incidents: incidents);
-    } else {
-      // Use normal routing
-      ref.read(routeStateProvider.notifier).reset();
-      await ref.read(routeStateProvider.notifier).calculateRoute(stops);
-    }
+  @override
+  void dispose() {
+    sheetController.dispose();
+    super.dispose();
   }
 
   @override
@@ -406,9 +409,7 @@ class _DirectionPageState extends ConsumerState<DirectionPage> {
   }
 
   Widget _buildMapView() {
-    final isSmartRoutingEnabled = ref.watch(smartRoutingEnabledProvider);
-    final smartRouteState = ref.watch(smartRouteStateProvider);
-    final normalRouteState = ref.watch(routeStateProvider);
+    final routeComparisonState = ref.watch(routeComparisonNotifierProvider);
 
     final waypoints = [
       if (_startLocation != null) _startLocation!,
@@ -423,24 +424,27 @@ class _DirectionPageState extends ConsumerState<DirectionPage> {
       orElse: () => <Incident>[],
     );
 
+    // Lấy route và isSmartMode từ state
+    final isSmartMode = routeComparisonState.maybeMap(
+      loaded: (s) => s.isSmartMode,
+      orElse: () => false,
+    );
+    final activeRoute = routeComparisonState.maybeMap(
+      loaded: (s) => s.isSmartMode ? s.smartRoute.activeRoute : s.normalRoute,
+      orElse: () => null,
+    );
+
     return Scaffold(
       body: SafeArea(
         child: Stack(
+          fit: StackFit.expand,
           children: [
             // Map
             RouteMapWidget(
               waypoints: waypoints,
-              route: isSmartRoutingEnabled
-                  ? smartRouteState.maybeWhen(
-                      data: (result) => result?.activeRoute,
-                      orElse: () => null,
-                    )
-                  : normalRouteState.maybeWhen(
-                      data: (route) => route,
-                      orElse: () => null,
-                    ),
-              showIncidents: isSmartRoutingEnabled,
-              incidents: isSmartRoutingEnabled ? incidents : [],
+              route: activeRoute,
+              showIncidents: isSmartMode,
+              incidents: isSmartMode ? incidents : [],
             ),
 
             // Top header
@@ -455,12 +459,7 @@ class _DirectionPageState extends ConsumerState<DirectionPage> {
             ),
 
             // Bottom sheet
-            Positioned(
-              bottom: 0,
-              left: 0,
-              right: 0,
-              child: _buildRouteDetailsSheet(),
-            ),
+            Positioned.fill(child: _buildRouteDetailsSheet(sheetController)),
           ],
         ),
       ),
@@ -469,9 +468,14 @@ class _DirectionPageState extends ConsumerState<DirectionPage> {
 
   /// Widget toggle bật/tắt smart routing (compact cho bottom sheet)
   Widget _buildSmartRoutingToggle() {
-    final isSmartRoutingEnabled = ref.watch(smartRoutingEnabledProvider);
+    final routeComparisonState = ref.watch(routeComparisonNotifierProvider);
     final mapState = ref.watch(mapPageNotifierProvider);
-    final smartRouteState = ref.watch(smartRouteStateProvider);
+
+    // Lấy isSmartMode từ state
+    final isSmartRoutingEnabled = routeComparisonState.maybeMap(
+      loaded: (s) => s.isSmartMode,
+      orElse: () => false,
+    );
 
     // Tổng số incidents trong khu vực
     final totalIncidents = mapState.maybeWhen(
@@ -480,9 +484,9 @@ class _DirectionPageState extends ConsumerState<DirectionPage> {
       orElse: () => 0,
     );
 
-    // Số incidents trên tuyến đường
-    final incidentsOnRoute = smartRouteState.maybeWhen(
-      data: (result) => result?.affectedIncidents.length ?? 0,
+    // Số incidents trên tuyến đường (từ smartRoute.avoidedIncidents)
+    final incidentsOnRoute = routeComparisonState.maybeMap(
+      loaded: (s) => s.smartRoute.avoidedIncidentsCount,
       orElse: () => 0,
     );
 
@@ -554,11 +558,11 @@ class _DirectionPageState extends ConsumerState<DirectionPage> {
                   scale: 0.85,
                   child: Switch(
                     value: isSmartRoutingEnabled,
-                    onChanged: (value) async {
-                      ref.read(smartRoutingEnabledProvider.notifier).toggle();
-                      if (_startLocation != null && _endLocation != null) {
-                        await _calculateRouteAndShowMap();
-                      }
+                    onChanged: (value) {
+                      // Toggle mode instantly (no API call)
+                      ref
+                          .read(routeComparisonNotifierProvider.notifier)
+                          .toggleMode();
                     },
 
                     activeThumbColor: Colors.orange,
@@ -729,73 +733,61 @@ class _DirectionPageState extends ConsumerState<DirectionPage> {
     );
   }
 
-  Widget _buildRouteDetailsSheet() {
-    final isSmartRoutingEnabled = ref.watch(smartRoutingEnabledProvider);
-    final smartRouteState = ref.watch(smartRouteStateProvider);
-    final normalRouteState = ref.watch(routeStateProvider);
+  Widget _buildRouteDetailsSheet(
+    DraggableScrollableController sheetController,
+  ) {
+    final routeComparisonState = ref.watch(routeComparisonNotifierProvider);
 
-    return Container(
-      decoration: const BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.vertical(top: Radius.circular(16)),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.black26,
-            blurRadius: 8,
-            offset: Offset(0, -2),
-          ),
-        ],
-      ),
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          Container(
-            margin: const EdgeInsets.symmetric(vertical: 8),
-            width: 40,
-            height: 4,
-            decoration: BoxDecoration(
-              color: Colors.grey.shade300,
-              borderRadius: BorderRadius.circular(2),
+    final widthExtend = 0.5;
+
+    return DraggableScrollableSheet(
+      controller: sheetController,
+      initialChildSize: widthExtend,
+      minChildSize: 0.16,
+      maxChildSize: widthExtend,
+      builder: (context, scrollController) => Container(
+        decoration: const BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.vertical(top: Radius.circular(16)),
+          boxShadow: [
+            BoxShadow(
+              color: Colors.black26,
+              blurRadius: 8,
+              offset: Offset(0, -2),
             ),
+          ],
+        ),
+        child: Padding(
+          padding: const EdgeInsets.only(top: 16),
+          child: ListView(
+            controller: scrollController,
+            // mainAxisSize: MainAxisSize.min,
+            children: [
+              // Smart routing toggle
+              _buildSmartRoutingToggle(),
+              const SizedBox(height: 8),
+              // Route info based on state
+              routeComparisonState.when(
+                initial: () => const Padding(
+                  padding: EdgeInsets.all(16),
+                  child: Text('Chọn điểm đến để tính toán tuyến đường...'),
+                ),
+                loading: () => const Padding(
+                  padding: EdgeInsets.all(24),
+                  child: Center(child: CircularProgressIndicator()),
+                ),
+                loaded: (normalRoute, smartRoute, isSmartMode) {
+                  if (isSmartMode) {
+                    return _buildSmartRouteInfo(smartRoute);
+                  } else {
+                    return _buildRouteInfo(normalRoute);
+                  }
+                },
+                error: (failure) => _buildErrorWidget(failure),
+              ),
+            ],
           ),
-          // Smart routing toggle
-          _buildSmartRoutingToggle(),
-          const SizedBox(height: 8),
-          if (isSmartRoutingEnabled)
-            smartRouteState.when(
-              data: (result) {
-                if (result == null) {
-                  return const Padding(
-                    padding: EdgeInsets.all(16),
-                    child: Text('Đang tính toán tuyến đường thông minh...'),
-                  );
-                }
-                return _buildSmartRouteInfo(result);
-              },
-              loading: () => const Padding(
-                padding: EdgeInsets.all(24),
-                child: Center(child: CircularProgressIndicator()),
-              ),
-              error: (error, _) => _buildErrorWidget(error),
-            )
-          else
-            normalRouteState.when(
-              data: (route) {
-                if (route == null) {
-                  return const Padding(
-                    padding: EdgeInsets.all(16),
-                    child: Text('Đang tính toán tuyến đường...'),
-                  );
-                }
-                return _buildRouteInfo(route);
-              },
-              loading: () => const Padding(
-                padding: EdgeInsets.all(24),
-                child: Center(child: CircularProgressIndicator()),
-              ),
-              error: (error, _) => _buildErrorWidget(error),
-            ),
-        ],
+        ),
       ),
     );
   }
@@ -807,10 +799,7 @@ class _DirectionPageState extends ConsumerState<DirectionPage> {
       startLocation: _startLocation,
       endLocation: _endLocation,
     );
-    final actualSteps = formatter.countActualSteps(
-      route.directions,
-      isSmartRoute: true,
-    );
+    final actualSteps = formatter.countActualSteps(route.directions);
 
     return Padding(
       padding: const EdgeInsets.all(16),
@@ -859,8 +848,7 @@ class _DirectionPageState extends ConsumerState<DirectionPage> {
               Expanded(
                 flex: 2,
                 child: ElevatedButton.icon(
-                  onPressed: () =>
-                      _showDirectionsDetail(route, isSmartRoute: true),
+                  onPressed: () => _showDirectionsDetail(route),
                   icon: const Icon(Icons.navigation),
                   label: const Text('Bắt đầu'),
                   style: ElevatedButton.styleFrom(
@@ -875,8 +863,7 @@ class _DirectionPageState extends ConsumerState<DirectionPage> {
               ),
               const SizedBox(width: 8),
               OutlinedButton.icon(
-                onPressed: () =>
-                    _showDirectionsDetail(route, isSmartRoute: true),
+                onPressed: () => _showDirectionsDetail(route),
                 icon: const Icon(Icons.list_alt),
                 label: Text('$actualSteps bước'),
                 style: OutlinedButton.styleFrom(
@@ -911,7 +898,7 @@ class _DirectionPageState extends ConsumerState<DirectionPage> {
   Widget _buildAvoidedIncidentsBanner(SmartRouteResult result) {
     final isOptimized = result.isOptimized;
     final avoidedCount = result.avoidedIncidentsCount;
-    final affectedIncidents = result.affectedIncidents;
+    final avoidedIncidents = result.avoidedIncidents;
 
     return Container(
       decoration: BoxDecoration(
@@ -946,7 +933,7 @@ class _DirectionPageState extends ConsumerState<DirectionPage> {
           title: Text(
             isOptimized
                 ? 'Đã tránh $avoidedCount sự cố'
-                : '${affectedIncidents.length} sự cố trên đường',
+                : '${avoidedIncidents.length} sự cố trên đường',
             style: TextStyle(
               fontSize: 14,
               fontWeight: FontWeight.w600,
@@ -955,15 +942,10 @@ class _DirectionPageState extends ConsumerState<DirectionPage> {
                   : Colors.orange.shade800,
             ),
           ),
-          subtitle: isOptimized && result.estimatedTimeSaved > 0
-              ? Text(
-                  'Tiết kiệm ~${result.estimatedTimeSaved.toInt()} phút',
-                  style: TextStyle(fontSize: 12, color: Colors.green.shade600),
-                )
-              : Text(
-                  'Nhấn để xem chi tiết',
-                  style: TextStyle(fontSize: 11, color: Colors.grey.shade600),
-                ),
+          subtitle: Text(
+            'Nhấn để xem chi tiết',
+            style: TextStyle(fontSize: 11, color: Colors.grey.shade600),
+          ),
           children: [
             Container(
               decoration: BoxDecoration(
@@ -976,7 +958,7 @@ class _DirectionPageState extends ConsumerState<DirectionPage> {
               child: Column(
                 children: [
                   const Divider(height: 1),
-                  ...affectedIncidents.asMap().entries.map((entry) {
+                  ...avoidedIncidents.asMap().entries.map((entry) {
                     final index = entry.key;
                     final incident = entry.value;
                     final isAvoided = index < avoidedCount;
@@ -1172,10 +1154,7 @@ class _DirectionPageState extends ConsumerState<DirectionPage> {
       startLocation: _startLocation,
       endLocation: _endLocation,
     );
-    final formattedDirections = formatter.formatDirections(
-      route.directions,
-      isSmartRoute: false,
-    );
+    final formattedDirections = formatter.formatDirections(route.directions);
 
     return Padding(
       padding: const EdgeInsets.all(16),
@@ -1219,8 +1198,7 @@ class _DirectionPageState extends ConsumerState<DirectionPage> {
               Expanded(
                 flex: 2,
                 child: ElevatedButton.icon(
-                  onPressed: () =>
-                      _showDirectionsDetail(route, isSmartRoute: false),
+                  onPressed: () => _showDirectionsDetail(route),
                   icon: const Icon(Icons.navigation),
                   label: const Text('Bắt đầu'),
                   style: ElevatedButton.styleFrom(
@@ -1235,8 +1213,7 @@ class _DirectionPageState extends ConsumerState<DirectionPage> {
               ),
               const SizedBox(width: 8),
               OutlinedButton.icon(
-                onPressed: () =>
-                    _showDirectionsDetail(route, isSmartRoute: false),
+                onPressed: () => _showDirectionsDetail(route),
                 icon: const Icon(Icons.list_alt),
                 label: Text('${formattedDirections.length} bước'),
                 style: OutlinedButton.styleFrom(
@@ -1322,7 +1299,14 @@ class _DirectionPageState extends ConsumerState<DirectionPage> {
     );
   }
 
-  void _showDirectionsDetail(RouteResult route, {bool isSmartRoute = false}) {
+  void _showDirectionsDetail(RouteResult route) {
+    // Lấy isSmartRoute từ state
+    final routeComparisonState = ref.read(routeComparisonNotifierProvider);
+    final isSmartRoute = routeComparisonState.maybeMap(
+      loaded: (s) => s.isSmartMode,
+      orElse: () => false,
+    );
+
     // Tạo formatter với thông tin địa điểm
     final formatter = DirectionFormatter(
       startLocation: _startLocation,
@@ -1330,10 +1314,7 @@ class _DirectionPageState extends ConsumerState<DirectionPage> {
     );
 
     // Format directions
-    final formattedDirections = formatter.formatDirections(
-      route.directions,
-      isSmartRoute: isSmartRoute,
-    );
+    final formattedDirections = formatter.formatDirections(route.directions);
 
     showModalBottomSheet(
       context: context,

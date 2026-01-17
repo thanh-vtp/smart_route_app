@@ -1,5 +1,6 @@
 import 'package:fpdart/fpdart.dart';
 import 'package:smart_route_app/core/errors/failures.dart';
+import 'package:smart_route_app/features/incident/domain/entities/incident.dart';
 import 'package:smart_route_app/features/navigation/domain/entities/route_result.dart';
 import 'package:smart_route_app/features/navigation/domain/repositories/routing_repository.dart';
 
@@ -9,9 +10,10 @@ class CalculateRouteUseCase {
 
   CalculateRouteUseCase(this._repository);
 
-  Future<Either<Failure, RouteResult>> call(
-    List<Map<String, double>> stops,
-  ) async {
+  Future<Either<Failure, RouteResult>> call({
+    required List<Map<String, double>> stops,
+    List<Incident>? incidentsToAvoid,
+  }) async {
     if (stops.length < 2) {
       return left(ArcGISFailure.insufficientStops());
     }
@@ -28,6 +30,9 @@ class CalculateRouteUseCase {
       }
     }
 
-    return await _repository.calculateRoute(stops);
+    return await _repository.calculateRoute(
+      stops: stops,
+      incidentsToAvoid: incidentsToAvoid,
+    );
   }
 }

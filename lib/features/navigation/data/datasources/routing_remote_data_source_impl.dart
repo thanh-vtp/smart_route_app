@@ -12,9 +12,12 @@ abstract class RoutingRemoteDataSource {
   /// Test connection to ArcGIS services
   Future<bool> testConnection();
 
-  /// Calculate route between multiple stops
-  Future<RouteResponse> calculateRoute(
-    List<Map<String, double>> stops, {
+  /// Calculate route using ArcGIS Solve endpoint
+  /// [stops]: Danh sách điểm dừng (Bắt buộc)
+  /// [barriers]: Danh sách các điểm sự cố cần tránh (Tùy chọn)
+  Future<RouteResponse> solve({
+    required List<Map<String, double>> stops,
+    List<Map<String, double>>? barriers,
     bool returnDirections = true,
     bool returnRoutes = true,
   });
@@ -23,11 +26,6 @@ abstract class RoutingRemoteDataSource {
 class RoutingRemoteDataSourceImpl implements RoutingRemoteDataSource {
   final http.Client _client;
   final String _apiKey;
-
-  // static const String _baseUrl =
-  //     'https://geocode-api.arcgis.com/arcgis/rest/services';
-  static const String _routeBaseUrl =
-      'https://route-api.arcgis.com/arcgis/rest/services';
 
   // Timeout configurations
   static const Duration _receiveTimeout = Duration(seconds: 30);
@@ -125,10 +123,17 @@ class RoutingRemoteDataSourceImpl implements RoutingRemoteDataSource {
 
   /// Tính toán đường đi giữa các điểm
   @override
-  Future<RouteResponse> calculateRoute(
-    List<Map<String, double>> stops, {
+  Future<RouteResponse> solve({
+    required List<Map<String, double>> stops,
+    List<Map<String, double>>? barriers,
+    String format = 'json',
     bool returnDirections = true,
     bool returnRoutes = true,
+    String directionsLanguage = 'vi',
+    String directionsLengthUnits = 'esriNAUMeters',
+    String outputLines =
+        'esriNAOutputLineTrueShapeWithMeasure', // default: esriNAOutputLineTrueShape
+    String outSR = '4326',
   }) async {
     try {
       if (stops.length < 2) {
@@ -145,31 +150,45 @@ class RoutingRemoteDataSourceImpl implements RoutingRemoteDataSource {
       //   return cachedResult;
       // }
 
-      // Tạo stops string
+      // Tạo stops string (x,y;x,y)
       final stopsString = stops
           .map((stop) => '${stop['longitude']},${stop['latitude']}')
           .join(';');
 
-      AppLogger.data(
-        'Calculating route with stops: $stopsString',
-        source: 'ArcGISGeocodingDataSource',
-      );
+      //           AppLogger.data(
+      //   'Calculating route with stops: $stopsString',
+      //   source: 'ArcGISGeocodingDataSource',
+      // );
 
-      final uri =
-          Uri.parse(
-            '$_routeBaseUrl/World/Route/NAServer/Route_World/solve',
-          ).replace(
-            queryParameters: {
-              'stops': stopsString,
-              'f': 'json',
-              'token': _apiKey,
-              'returnDirections': returnDirections.toString(),
-              'returnRoutes': returnRoutes.toString(),
-              'directionsLanguage': 'vi',
-              'outputLines': 'esriNAOutputLineTrueShapeWithMeasure',
-              'outSR': '4326',
-            },
-          );
+      String? barriersString;
+
+      if (barriers != null && barriers.isNotEmpty) {
+        barriersString = barriers
+            .map((b) => '${b['longitude']},${b['latitude']}')
+            .join(';');
+
+        // AppLogger.data(
+        //   'Calculating route with barriers: $barriersString',
+        //   source: 'ArcGISGeocodingDataSource',
+        // );
+      }
+
+      final queryParameters = {
+        'stops': stopsString,
+        if (barriersString != null) 'barriers': barriersString,
+        'f': 'json',
+        'token': _apiKey,
+        'returnDirections': returnDirections.toString(),
+        'returnRoutes': returnRoutes.toString(), // routes geometry
+        'directionsLanguage': directionsLanguage, // ngôn ngữ hướng dẫn
+        'directionsLengthUnits': directionsLengthUnits, // meters
+        'outputLines': outputLines, // Loại đặc điểm tuyến đường được trả về.
+        'outSR': outSR, // Hệ tọa độ đầu ra
+      };
+
+      final uri = Uri.parse(
+        '${Constants.arcgisRouteBaseUrl}${Constants.routeAndDirections}',
+      ).replace(queryParameters: queryParameters);
 
       AppLogger.data(
         'Route request URI: $uri',
@@ -206,7 +225,7 @@ class RoutingRemoteDataSourceImpl implements RoutingRemoteDataSource {
       return result;
     } catch (e, st) {
       AppLogger.error(
-        'Error in calculateRoute: $e',
+        'Error in solve: $e',
         name: 'ArcGISGeocodingDataSource',
         error: e,
         stackTrace: st,
