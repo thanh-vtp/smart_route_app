@@ -737,8 +737,6 @@ mixin _$RouteDirectionFeature {
   RouteDirectionAttributes get attributes => throw _privateConstructorUsedError;
   @JsonKey(name: 'strings')
   List<RouteDirectionString> get strings => throw _privateConstructorUsedError;
-  @JsonKey(name: 'compressedGeometry')
-  String? get compressedGeometry => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
@@ -754,8 +752,7 @@ abstract class $RouteDirectionFeatureCopyWith<$Res> {
   @useResult
   $Res call(
       {@JsonKey(name: 'attributes') RouteDirectionAttributes attributes,
-      @JsonKey(name: 'strings') List<RouteDirectionString> strings,
-      @JsonKey(name: 'compressedGeometry') String? compressedGeometry});
+      @JsonKey(name: 'strings') List<RouteDirectionString> strings});
 
   $RouteDirectionAttributesCopyWith<$Res> get attributes;
 }
@@ -776,7 +773,6 @@ class _$RouteDirectionFeatureCopyWithImpl<$Res,
   $Res call({
     Object? attributes = null,
     Object? strings = null,
-    Object? compressedGeometry = freezed,
   }) {
     return _then(_value.copyWith(
       attributes: null == attributes
@@ -787,10 +783,6 @@ class _$RouteDirectionFeatureCopyWithImpl<$Res,
           ? _value.strings
           : strings // ignore: cast_nullable_to_non_nullable
               as List<RouteDirectionString>,
-      compressedGeometry: freezed == compressedGeometry
-          ? _value.compressedGeometry
-          : compressedGeometry // ignore: cast_nullable_to_non_nullable
-              as String?,
     ) as $Val);
   }
 
@@ -814,8 +806,7 @@ abstract class _$$RouteDirectionFeatureImplCopyWith<$Res>
   @useResult
   $Res call(
       {@JsonKey(name: 'attributes') RouteDirectionAttributes attributes,
-      @JsonKey(name: 'strings') List<RouteDirectionString> strings,
-      @JsonKey(name: 'compressedGeometry') String? compressedGeometry});
+      @JsonKey(name: 'strings') List<RouteDirectionString> strings});
 
   @override
   $RouteDirectionAttributesCopyWith<$Res> get attributes;
@@ -835,7 +826,6 @@ class __$$RouteDirectionFeatureImplCopyWithImpl<$Res>
   $Res call({
     Object? attributes = null,
     Object? strings = null,
-    Object? compressedGeometry = freezed,
   }) {
     return _then(_$RouteDirectionFeatureImpl(
       attributes: null == attributes
@@ -846,10 +836,6 @@ class __$$RouteDirectionFeatureImplCopyWithImpl<$Res>
           ? _value._strings
           : strings // ignore: cast_nullable_to_non_nullable
               as List<RouteDirectionString>,
-      compressedGeometry: freezed == compressedGeometry
-          ? _value.compressedGeometry
-          : compressedGeometry // ignore: cast_nullable_to_non_nullable
-              as String?,
     ));
   }
 }
@@ -860,8 +846,7 @@ class _$RouteDirectionFeatureImpl implements _RouteDirectionFeature {
   const _$RouteDirectionFeatureImpl(
       {@JsonKey(name: 'attributes') required this.attributes,
       @JsonKey(name: 'strings')
-      final List<RouteDirectionString> strings = const [],
-      @JsonKey(name: 'compressedGeometry') this.compressedGeometry})
+      final List<RouteDirectionString> strings = const []})
       : _strings = strings;
 
   factory _$RouteDirectionFeatureImpl.fromJson(Map<String, dynamic> json) =>
@@ -880,12 +865,8 @@ class _$RouteDirectionFeatureImpl implements _RouteDirectionFeature {
   }
 
   @override
-  @JsonKey(name: 'compressedGeometry')
-  final String? compressedGeometry;
-
-  @override
   String toString() {
-    return 'RouteDirectionFeature(attributes: $attributes, strings: $strings, compressedGeometry: $compressedGeometry)';
+    return 'RouteDirectionFeature(attributes: $attributes, strings: $strings)';
   }
 
   @override
@@ -895,15 +876,13 @@ class _$RouteDirectionFeatureImpl implements _RouteDirectionFeature {
             other is _$RouteDirectionFeatureImpl &&
             (identical(other.attributes, attributes) ||
                 other.attributes == attributes) &&
-            const DeepCollectionEquality().equals(other._strings, _strings) &&
-            (identical(other.compressedGeometry, compressedGeometry) ||
-                other.compressedGeometry == compressedGeometry));
+            const DeepCollectionEquality().equals(other._strings, _strings));
   }
 
   @JsonKey(ignore: true)
   @override
-  int get hashCode => Object.hash(runtimeType, attributes,
-      const DeepCollectionEquality().hash(_strings), compressedGeometry);
+  int get hashCode => Object.hash(
+      runtimeType, attributes, const DeepCollectionEquality().hash(_strings));
 
   @JsonKey(ignore: true)
   @override
@@ -922,11 +901,10 @@ class _$RouteDirectionFeatureImpl implements _RouteDirectionFeature {
 
 abstract class _RouteDirectionFeature implements RouteDirectionFeature {
   const factory _RouteDirectionFeature(
-      {@JsonKey(name: 'attributes')
-      required final RouteDirectionAttributes attributes,
-      @JsonKey(name: 'strings') final List<RouteDirectionString> strings,
-      @JsonKey(name: 'compressedGeometry')
-      final String? compressedGeometry}) = _$RouteDirectionFeatureImpl;
+          {@JsonKey(name: 'attributes')
+          required final RouteDirectionAttributes attributes,
+          @JsonKey(name: 'strings') final List<RouteDirectionString> strings}) =
+      _$RouteDirectionFeatureImpl;
 
   factory _RouteDirectionFeature.fromJson(Map<String, dynamic> json) =
       _$RouteDirectionFeatureImpl.fromJson;
@@ -937,9 +915,6 @@ abstract class _RouteDirectionFeature implements RouteDirectionFeature {
   @override
   @JsonKey(name: 'strings')
   List<RouteDirectionString> get strings;
-  @override
-  @JsonKey(name: 'compressedGeometry')
-  String? get compressedGeometry;
   @override
   @JsonKey(ignore: true)
   _$$RouteDirectionFeatureImplCopyWith<_$RouteDirectionFeatureImpl>

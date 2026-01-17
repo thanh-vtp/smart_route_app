@@ -24,6 +24,8 @@ mixin _$RouteResponse {
   RouteFeaturesResult get routes => throw _privateConstructorUsedError;
   @JsonKey(name: 'directions')
   List<RouteDirectionSet> get directions => throw _privateConstructorUsedError;
+  @JsonKey(name: 'barriers')
+  RouteBarriersResult? get barriers => throw _privateConstructorUsedError;
   @JsonKey(name: 'messages')
   List<dynamic> get messages => throw _privateConstructorUsedError;
 
@@ -42,9 +44,11 @@ abstract class $RouteResponseCopyWith<$Res> {
   $Res call(
       {@JsonKey(name: 'routes') RouteFeaturesResult routes,
       @JsonKey(name: 'directions') List<RouteDirectionSet> directions,
+      @JsonKey(name: 'barriers') RouteBarriersResult? barriers,
       @JsonKey(name: 'messages') List<dynamic> messages});
 
   $RouteFeaturesResultCopyWith<$Res> get routes;
+  $RouteBarriersResultCopyWith<$Res>? get barriers;
 }
 
 /// @nodoc
@@ -62,6 +66,7 @@ class _$RouteResponseCopyWithImpl<$Res, $Val extends RouteResponse>
   $Res call({
     Object? routes = null,
     Object? directions = null,
+    Object? barriers = freezed,
     Object? messages = null,
   }) {
     return _then(_value.copyWith(
@@ -73,6 +78,10 @@ class _$RouteResponseCopyWithImpl<$Res, $Val extends RouteResponse>
           ? _value.directions
           : directions // ignore: cast_nullable_to_non_nullable
               as List<RouteDirectionSet>,
+      barriers: freezed == barriers
+          ? _value.barriers
+          : barriers // ignore: cast_nullable_to_non_nullable
+              as RouteBarriersResult?,
       messages: null == messages
           ? _value.messages
           : messages // ignore: cast_nullable_to_non_nullable
@@ -85,6 +94,18 @@ class _$RouteResponseCopyWithImpl<$Res, $Val extends RouteResponse>
   $RouteFeaturesResultCopyWith<$Res> get routes {
     return $RouteFeaturesResultCopyWith<$Res>(_value.routes, (value) {
       return _then(_value.copyWith(routes: value) as $Val);
+    });
+  }
+
+  @override
+  @pragma('vm:prefer-inline')
+  $RouteBarriersResultCopyWith<$Res>? get barriers {
+    if (_value.barriers == null) {
+      return null;
+    }
+
+    return $RouteBarriersResultCopyWith<$Res>(_value.barriers!, (value) {
+      return _then(_value.copyWith(barriers: value) as $Val);
     });
   }
 }
@@ -100,10 +121,13 @@ abstract class _$$RouteResponseImplCopyWith<$Res>
   $Res call(
       {@JsonKey(name: 'routes') RouteFeaturesResult routes,
       @JsonKey(name: 'directions') List<RouteDirectionSet> directions,
+      @JsonKey(name: 'barriers') RouteBarriersResult? barriers,
       @JsonKey(name: 'messages') List<dynamic> messages});
 
   @override
   $RouteFeaturesResultCopyWith<$Res> get routes;
+  @override
+  $RouteBarriersResultCopyWith<$Res>? get barriers;
 }
 
 /// @nodoc
@@ -119,6 +143,7 @@ class __$$RouteResponseImplCopyWithImpl<$Res>
   $Res call({
     Object? routes = null,
     Object? directions = null,
+    Object? barriers = freezed,
     Object? messages = null,
   }) {
     return _then(_$RouteResponseImpl(
@@ -130,6 +155,10 @@ class __$$RouteResponseImplCopyWithImpl<$Res>
           ? _value._directions
           : directions // ignore: cast_nullable_to_non_nullable
               as List<RouteDirectionSet>,
+      barriers: freezed == barriers
+          ? _value.barriers
+          : barriers // ignore: cast_nullable_to_non_nullable
+              as RouteBarriersResult?,
       messages: null == messages
           ? _value._messages
           : messages // ignore: cast_nullable_to_non_nullable
@@ -145,6 +174,7 @@ class _$RouteResponseImpl implements _RouteResponse {
       {@JsonKey(name: 'routes') required this.routes,
       @JsonKey(name: 'directions')
       final List<RouteDirectionSet> directions = const [],
+      @JsonKey(name: 'barriers') this.barriers,
       @JsonKey(name: 'messages') final List<dynamic> messages = const []})
       : _directions = directions,
         _messages = messages;
@@ -164,6 +194,9 @@ class _$RouteResponseImpl implements _RouteResponse {
     return EqualUnmodifiableListView(_directions);
   }
 
+  @override
+  @JsonKey(name: 'barriers')
+  final RouteBarriersResult? barriers;
   final List<dynamic> _messages;
   @override
   @JsonKey(name: 'messages')
@@ -175,7 +208,7 @@ class _$RouteResponseImpl implements _RouteResponse {
 
   @override
   String toString() {
-    return 'RouteResponse(routes: $routes, directions: $directions, messages: $messages)';
+    return 'RouteResponse(routes: $routes, directions: $directions, barriers: $barriers, messages: $messages)';
   }
 
   @override
@@ -186,6 +219,8 @@ class _$RouteResponseImpl implements _RouteResponse {
             (identical(other.routes, routes) || other.routes == routes) &&
             const DeepCollectionEquality()
                 .equals(other._directions, _directions) &&
+            (identical(other.barriers, barriers) ||
+                other.barriers == barriers) &&
             const DeepCollectionEquality().equals(other._messages, _messages));
   }
 
@@ -195,6 +230,7 @@ class _$RouteResponseImpl implements _RouteResponse {
       runtimeType,
       routes,
       const DeepCollectionEquality().hash(_directions),
+      barriers,
       const DeepCollectionEquality().hash(_messages));
 
   @JsonKey(ignore: true)
@@ -215,6 +251,7 @@ abstract class _RouteResponse implements RouteResponse {
   const factory _RouteResponse(
           {@JsonKey(name: 'routes') required final RouteFeaturesResult routes,
           @JsonKey(name: 'directions') final List<RouteDirectionSet> directions,
+          @JsonKey(name: 'barriers') final RouteBarriersResult? barriers,
           @JsonKey(name: 'messages') final List<dynamic> messages}) =
       _$RouteResponseImpl;
 
@@ -227,6 +264,9 @@ abstract class _RouteResponse implements RouteResponse {
   @override
   @JsonKey(name: 'directions')
   List<RouteDirectionSet> get directions;
+  @override
+  @JsonKey(name: 'barriers')
+  RouteBarriersResult? get barriers;
   @override
   @JsonKey(name: 'messages')
   List<dynamic> get messages;

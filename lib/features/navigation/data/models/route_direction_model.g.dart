@@ -79,7 +79,6 @@ _$RouteDirectionFeatureImpl _$$RouteDirectionFeatureImplFromJson(
                   RouteDirectionString.fromJson(e as Map<String, dynamic>))
               .toList() ??
           const [],
-      compressedGeometry: json['compressedGeometry'] as String?,
     );
 
 Map<String, dynamic> _$$RouteDirectionFeatureImplToJson(
@@ -87,7 +86,6 @@ Map<String, dynamic> _$$RouteDirectionFeatureImplToJson(
     <String, dynamic>{
       'attributes': instance.attributes,
       'strings': instance.strings,
-      'compressedGeometry': instance.compressedGeometry,
     };
 
 _$RouteDirectionAttributesImpl _$$RouteDirectionAttributesImplFromJson(

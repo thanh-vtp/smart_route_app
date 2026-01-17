@@ -15,6 +15,10 @@ _$RouteResponseImpl _$$RouteResponseImplFromJson(Map<String, dynamic> json) =>
                   (e) => RouteDirectionSet.fromJson(e as Map<String, dynamic>))
               .toList() ??
           const [],
+      barriers: json['barriers'] == null
+          ? null
+          : RouteBarriersResult.fromJson(
+              json['barriers'] as Map<String, dynamic>),
       messages: json['messages'] as List<dynamic>? ?? const [],
     );
 
@@ -22,6 +26,7 @@ Map<String, dynamic> _$$RouteResponseImplToJson(_$RouteResponseImpl instance) =>
     <String, dynamic>{
       'routes': instance.routes,
       'directions': instance.directions,
+      'barriers': instance.barriers,
       'messages': instance.messages,
     };
 

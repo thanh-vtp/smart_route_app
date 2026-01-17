@@ -4,11 +4,13 @@ import 'route_direction.dart';
 
 // Entity cho kết quả route
 class RouteResult extends Equatable {
-  final List<RoutePoint> routePoints;
+  final List<RoutePoint> routePoints; // Đường đi (Polyline)
   final double totalDistance; // in meters
   final double totalTime; // in minutes
   final String routeName;
   final List<RouteDirection> directions;
+  final List<RoutePoint>
+  confirmedBarriers; // ác điểm sự cố đã được API trả về 'returnBarriers'
 
   const RouteResult({
     required this.routePoints,
@@ -16,6 +18,7 @@ class RouteResult extends Equatable {
     required this.totalTime,
     required this.routeName,
     this.directions = const [],
+    this.confirmedBarriers = const [],
   });
 
   /// Format tổng khoảng cách

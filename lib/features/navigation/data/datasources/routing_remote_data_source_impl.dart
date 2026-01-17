@@ -126,6 +126,7 @@ class RoutingRemoteDataSourceImpl implements RoutingRemoteDataSource {
   Future<RouteResponse> solve({
     required List<Map<String, double>> stops,
     List<Map<String, double>>? barriers,
+    bool returnBarriers = true,
     String format = 'json',
     bool returnDirections = true,
     bool returnRoutes = true,
@@ -176,6 +177,7 @@ class RoutingRemoteDataSourceImpl implements RoutingRemoteDataSource {
       final queryParameters = {
         'stops': stopsString,
         if (barriersString != null) 'barriers': barriersString,
+        'returnBarriers': returnBarriers.toString(),
         'f': 'json',
         'token': _apiKey,
         'returnDirections': returnDirections.toString(),

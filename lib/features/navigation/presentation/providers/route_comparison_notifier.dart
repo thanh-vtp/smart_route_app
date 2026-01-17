@@ -2,6 +2,7 @@ import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:smart_route_app/core/errors/failures.dart';
 import 'package:smart_route_app/core/utils/utils.dart';
 import 'package:smart_route_app/features/incident/domain/entities/incident.dart';
+import 'package:smart_route_app/features/navigation/domain/entities/route_point.dart';
 import 'package:smart_route_app/features/navigation/domain/entities/route_result.dart';
 import 'package:smart_route_app/features/navigation/presentation/models/smart_route_result.dart';
 import 'package:smart_route_app/features/navigation/presentation/providers/states/route_comparison_state.dart';
@@ -85,12 +86,18 @@ class RouteComparisonNotifier extends _$RouteComparisonNotifier {
         // Xử lý kết quả Smart
         results[1].fold(
           (l) => throw l, // Nếu tính smart lỗi thì coi như lỗi chung
-          (r) => smartRouteData = SmartRouteResult(
-            route: r,
-            avoidedIncidents:
-                incidents, // Logic lọc lại incidents như bài trước
-            isOptimized: true,
-          ),
+          (r) {
+            final avoidedIncidents = _findAvoidedIncidents(
+              r.confirmedBarriers,
+              incidents,
+            );
+
+            return smartRouteData = SmartRouteResult(
+              route: r,
+              avoidedIncidents: avoidedIncidents, // Danh sách sự cố đã được né
+              isOptimized: true,
+            );
+          },
         );
       }
 
@@ -113,5 +120,33 @@ class RouteComparisonNotifier extends _$RouteComparisonNotifier {
         state = s.copyWith(isSmartMode: !s.isSmartMode);
       },
     );
+  }
+
+  List<Incident> _findAvoidedIncidents(
+    List<RoutePoint> confirmedBarriers,
+    List<Incident> allIncidents,
+  ) {
+    if (confirmedBarriers.isEmpty) return [];
+
+    final avoidedList = <Incident>[];
+
+    // Với mỗi barrier API trả về, tìm incident tương ứng trong list gốc
+    // (So sánh tọa độ gần đúng vì API có thể làm tròn số)
+    for (final barrier in confirmedBarriers) {
+      try {
+        // Tìm incident gần nhất với barrier này (khoảng cách < 5m)
+        final match = allIncidents.firstWhere((incident) {
+          final lat = double.tryParse(incident.latitude) ?? 0;
+          final lon = double.tryParse(incident.longitude) ?? 0;
+
+          return (lat - barrier.latitude).abs() < 0.0001 &&
+              (lon - barrier.longitude).abs() < 0.0001;
+        });
+        avoidedList.add(match);
+      } catch (e) {
+        // Không tìm thấy match (hiếm khi xảy ra nếu data chuẩn)
+      }
+    }
+    return avoidedList;
   }
 }
