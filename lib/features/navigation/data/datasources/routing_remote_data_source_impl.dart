@@ -12,9 +12,12 @@ abstract class RoutingRemoteDataSource {
   /// Test connection to ArcGIS services
   Future<bool> testConnection();
 
-  /// Calculate route between multiple stops
-  Future<RouteResponse> calculateRoute(
-    List<Map<String, double>> stops, {
+  /// Calculate route using ArcGIS Solve endpoint
+  /// [stops]: Danh sách điểm dừng (Bắt buộc)
+  /// [barriers]: Danh sách các điểm sự cố cần tránh (Tùy chọn)
+  Future<RouteResponse> solve({
+    required List<Map<String, double>> stops,
+    List<Map<String, double>>? barriers,
     bool returnDirections = true,
     bool returnRoutes = true,
   });
@@ -120,8 +123,9 @@ class RoutingRemoteDataSourceImpl implements RoutingRemoteDataSource {
 
   /// Tính toán đường đi giữa các điểm
   @override
-  Future<RouteResponse> calculateRoute(
-    List<Map<String, double>> stops, {
+  Future<RouteResponse> solve({
+    required List<Map<String, double>> stops,
+    List<Map<String, double>>? barriers,
     String format = 'json',
     bool returnDirections = true,
     bool returnRoutes = true,
@@ -146,18 +150,32 @@ class RoutingRemoteDataSourceImpl implements RoutingRemoteDataSource {
       //   return cachedResult;
       // }
 
-      // Tạo stops string
+      // Tạo stops string (x,y;x,y)
       final stopsString = stops
           .map((stop) => '${stop['longitude']},${stop['latitude']}')
           .join(';');
 
-      AppLogger.data(
-        'Calculating route with stops: $stopsString',
-        source: 'ArcGISGeocodingDataSource',
-      );
+      //           AppLogger.data(
+      //   'Calculating route with stops: $stopsString',
+      //   source: 'ArcGISGeocodingDataSource',
+      // );
+
+      String? barriersString;
+
+      if (barriers != null && barriers.isNotEmpty) {
+        barriersString = barriers
+            .map((b) => '${b['longitude']},${b['latitude']}')
+            .join(';');
+
+        // AppLogger.data(
+        //   'Calculating route with barriers: $barriersString',
+        //   source: 'ArcGISGeocodingDataSource',
+        // );
+      }
 
       final queryParameters = {
         'stops': stopsString,
+        if (barriersString != null) 'barriers': barriersString,
         'f': 'json',
         'token': _apiKey,
         'returnDirections': returnDirections.toString(),
@@ -207,7 +225,7 @@ class RoutingRemoteDataSourceImpl implements RoutingRemoteDataSource {
       return result;
     } catch (e, st) {
       AppLogger.error(
-        'Error in calculateRoute: $e',
+        'Error in solve: $e',
         name: 'ArcGISGeocodingDataSource',
         error: e,
         stackTrace: st,

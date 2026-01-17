@@ -20,7 +20,7 @@ class DirectionFormatter {
   }
 
   /// Format instruction - thay Location X bằng tên địa điểm thực
-  String formatInstruction(String instruction, {bool isSmartRoute = false}) {
+  String formatInstruction(String instruction) {
     String result = instruction;
 
     // Location 1 → tên điểm bắt đầu
@@ -33,27 +33,16 @@ class DirectionFormatter {
     // Location cuối → tên điểm kết thúc
     final endName = _getShortName(endLocation, 'Điểm kết thúc');
 
-    if (isSmartRoute) {
-      result = result.replaceAllMapped(
-        RegExp(r'location\s*3', caseSensitive: false),
-        (match) => endName,
-      );
-      // Location 2 là waypoint - ẩn instruction này
-      if (RegExp(r'location\s*2', caseSensitive: false).hasMatch(result)) {
-        return '';
-      }
-    } else {
-      result = result.replaceAllMapped(
-        RegExp(r'location\s*2', caseSensitive: false),
-        (match) => endName,
-      );
-    }
+    result = result.replaceAllMapped(
+      RegExp(r'location\s*2', caseSensitive: false),
+      (match) => endName,
+    );
 
     return result;
   }
 
   /// Format streetName - thay Location X bằng "Vị trí bắt đầu/kết thúc"
-  String? formatStreetName(String? streetName, {bool isSmartRoute = false}) {
+  String? formatStreetName(String? streetName) {
     if (streetName == null) return null;
 
     String result = streetName;
@@ -64,89 +53,38 @@ class DirectionFormatter {
       (match) => 'Vị trí bắt đầu',
     );
 
-    if (isSmartRoute) {
-      // Location 3 → Vị trí kết thúc
-      result = result.replaceAllMapped(
-        RegExp(r'location\s*3', caseSensitive: false),
-        (match) => 'Vị trí kết thúc',
-      );
-      // Location 2 là waypoint - ẩn streetName
-      if (RegExp(r'location\s*2', caseSensitive: false).hasMatch(result)) {
-        return null;
-      }
-    } else {
-      // Location 2 → Vị trí kết thúc
-      result = result.replaceAllMapped(
-        RegExp(r'location\s*2', caseSensitive: false),
-        (match) => 'Vị trí kết thúc',
-      );
-    }
+    // Location 2 → Vị trí kết thúc
+    result = result.replaceAllMapped(
+      RegExp(r'location\s*2', caseSensitive: false),
+      (match) => 'Vị trí kết thúc',
+    );
 
     return result.isEmpty ? null : result;
   }
 
   /// Lọc và format danh sách directions
-  List<RouteDirection> formatDirections(
-    List<RouteDirection> directions, {
-    bool isSmartRoute = false,
-  }) {
-    final filtered = <RouteDirection>[];
+  List<RouteDirection> formatDirections(List<RouteDirection> directions) {
+    return directions.map((direction) {
+      // 1. Format Instruction
+      final formattedInstruction = formatInstruction(direction.instruction);
 
-    for (final direction in directions) {
-      final instruction = direction.instruction.toLowerCase();
+      // 2. Format Street Name
+      final formattedStreetName = formatStreetName(direction.streetName);
+      final formattedAltStreetName = formatStreetName(direction.altStreetName);
 
-      // Bỏ qua waypoint steps
-      if (isSmartRoute && _isWaypointStep(instruction)) {
-        continue;
-      }
-
-      final formattedInstruction = formatInstruction(
-        direction.instruction,
-        isSmartRoute: isSmartRoute,
+      // 3. Trả về object mới (giữ nguyên các thông số khác)
+      return RouteDirection(
+        instruction: formattedInstruction,
+        distanceMeters: direction.distanceMeters,
+        timeMinutes: direction.timeMinutes,
+        maneuverType: direction.maneuverType,
+        streetName: formattedStreetName,
+        altStreetName: formattedAltStreetName,
       );
-
-      final formattedStreetName = formatStreetName(
-        direction.streetName,
-        isSmartRoute: isSmartRoute,
-      );
-
-      final formattedAltStreetName = formatStreetName(
-        direction.altStreetName,
-        isSmartRoute: isSmartRoute,
-      );
-
-      filtered.add(
-        RouteDirection(
-          instruction: formattedInstruction,
-          distanceMeters: direction.distanceMeters,
-          timeMinutes: direction.timeMinutes,
-          maneuverType: direction.maneuverType,
-          streetName: formattedStreetName,
-          altStreetName: formattedAltStreetName,
-        ),
-      );
-    }
-
-    return filtered;
+    }).toList();
   }
 
-  bool _isWaypointStep(String instruction) {
-    final patterns = [
-      'đến location 2',
-      'khởi hành từ location 2',
-      'arrive at location 2',
-      'depart location 2',
-    ];
-    return patterns.any((p) => instruction.contains(p));
-  }
-
-  int countActualSteps(
-    List<RouteDirection> directions, {
-    bool isSmartRoute = false,
-  }) {
-    if (!isSmartRoute) return directions.length;
-    return directions
-        .where((d) => !_isWaypointStep(d.instruction.toLowerCase()))
-        .length;
+  int countActualSteps(List<RouteDirection> directions) {
+    return directions.length;
   }
 }
