@@ -515,9 +515,7 @@ class _MyIncidentsSection extends StatelessWidget {
         if (incidents.isEmpty)
           _EmptyState()
         else
-          ...incidents
-              .take(5)
-              .map((incident) => _IncidentListItem(incident: incident)),
+          ...incidents.map((incident) => _IncidentListItem(incident: incident)),
       ],
     );
   }
