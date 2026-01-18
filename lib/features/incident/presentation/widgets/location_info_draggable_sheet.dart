@@ -6,15 +6,18 @@ import 'package:intl/intl.dart';
 import 'package:smart_route_app/core/core.dart';
 import 'package:smart_route_app/features/search/domain/entities/address_result.dart';
 import 'package:smart_route_app/features/incident/domain/entities/incident.dart';
-import 'package:smart_route_app/features/navigation/domain/entities/location_imagery.dart';
+import 'package:smart_route_app/features/search/domain/entities/location_imagery.dart';
 import 'package:smart_route_app/features/incident/presentation/models/incident_type_config.dart';
 import 'package:smart_route_app/features/incident/presentation/providers/location_info_provider.dart';
 import 'package:smart_route_app/features/incident/presentation/providers/map_center_providers.dart';
-import 'package:smart_route_app/features/navigation/presentation/providers/states/get_location_imagery_state.dart';
-import 'package:smart_route_app/features/navigation/presentation/providers/states/nearby_places_state.dart';
-// import 'package:smart_route_app/features/map/presentation/providers/states/reverse_geocode_state.dart';
+import 'package:smart_route_app/features/search/presentation/providers/selected_address.dart';
+import 'package:smart_route_app/features/search/presentation/providers/states/get_location_imagery_state.dart';
+import 'package:smart_route_app/features/search/presentation/providers/states/nearby_places_notifier.dart';
+import 'package:smart_route_app/features/search/presentation/providers/states/nearby_places_state.dart';
 import 'package:smart_route_app/features/incident/presentation/widgets/add_incident_bottom_sheet.dart';
 import 'package:smart_route_app/features/search/presentation/providers/states/reverse_geocode_state.dart';
+import 'package:smart_route_app/features/search/presentation/widgets/nearby_place_list.dart';
+import 'package:smart_route_app/features/search/presentation/widgets/shimmer/nearby_places_shimmer.dart';
 
 /// DraggableScrollableSheet hiển thị thông tin vị trí
 /// Dùng CustomScrollView với SliverAppBar để header được giữ cố định khi scroll
@@ -235,6 +238,9 @@ class _LocationInfoContent extends HookConsumerWidget {
                   icon: Icon(Icons.close, size: 20, color: Colors.grey[600]),
                   onPressed: () {
                     ref.read(mapBottomSheetProvider.notifier).hide();
+                    ref
+                        .read(selectedAddressProvider.notifier)
+                        .clear(); // Xóa địa chỉ đã chọn (MapSearchTopBar)
                   },
                   padding: EdgeInsets.zero,
                   constraints: BoxConstraints(minWidth: 32, minHeight: 32),
@@ -646,30 +652,32 @@ class _LocationInfoContent extends HookConsumerWidget {
             ),
             const SizedBox(height: 8),
             state.when(
-              initial: () => const Text('Đang tìm kiếm...'),
-              loading: () => const Center(child: CircularProgressIndicator()),
-              loaded: (places, category, isSearchingMore) {
+              initial: () => const NearbyPlacesShimmer(),
+              loading: () => const NearbyPlacesShimmer(),
+              loaded: (places, _, selected) {
                 if (places.isEmpty) {
-                  return const Text('Không có địa điểm gần đó');
-                }
-                return Column(
-                  children: places.take(5).map((place) {
-                    return ListTile(
-                      contentPadding: EdgeInsets.zero,
-                      leading: const Icon(Icons.place, color: Colors.orange),
-                      title: Text(place.name),
-                      subtitle: Text(
-                        '${place.address}\n${(place.distance / 1000).toStringAsFixed(2)} km',
+                  return const Padding(
+                    padding: EdgeInsets.symmetric(vertical: 16),
+                    child: Center(
+                      child: Text(
+                        'Không tìm thấy địa điểm nào gần đây',
+                        style: TextStyle(color: Colors.grey),
                       ),
-                      isThreeLine: true,
-                    );
-                  }).toList(),
+                    ),
+                  );
+                }
+                return NearbyPlaceList(
+                  places: places,
+                  onPlaceTap: (place) {
+                    /// TODO: Xử lý khi chọn 1 địa điểm gần đó: Di chuyển Map tới vị trí này
+                  },
+                  onDirectionTap: (place) {
+                    // TODO: Chỉ đường tới địa điểm gần đó: Vẽ đường đi từ vị trí hiện tại đến đây
+                  },
                 );
               },
-              error: (error, _) => Text(
-                'Lỗi: $error',
-                style: const TextStyle(color: Colors.red),
-              ),
+              error: (failure) =>
+                  Center(child: Text("Lỗi: ${failure.technicalMessage}")),
             ),
           ],
         ),

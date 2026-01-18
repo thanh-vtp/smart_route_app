@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:smart_route_app/features/incident/presentation/providers/repositories/repository_providers.dart';
+import 'package:smart_route_app/features/search/presentation/providers/repositories/repository_providers.dart';
 import '../../../navigation/presentation/providers/repositories/repository_providers.dart';
 
 class CacheManagementWidget extends HookConsumerWidget {
@@ -16,14 +17,23 @@ class CacheManagementWidget extends HookConsumerWidget {
       isLoading.value = true;
       try {
         final geocodingRepo = ref.read(geocodingRepositoryProvider);
+        final routingRepo = ref.read(routingRepositoryProvider);
+        final imageryRepo = ref.read(imageryRepositoryProvider);
         final incidentRepo = ref.read(incidentRepositoryProvider);
 
-        // Lấy stats từ cả 2 repository
+        // Lấy stats từ tất cả repository
         final geocodingStats = await geocodingRepo.getCacheStats();
+        final routingStats = await routingRepo.getCacheStats();
+        final imageryCount = await imageryRepo.getCacheCount();
         final incidentCount = await incidentRepo.getCachedIncidentCount();
 
-        // Merge stats
-        cacheStats.value = {...geocodingStats, 'incident': incidentCount};
+        // Merge tất cả stats
+        cacheStats.value = {
+          ...geocodingStats,
+          ...routingStats,
+          'image': imageryCount,
+          'incident': incidentCount,
+        };
       } catch (e) {
         if (context.mounted) {
           ScaffoldMessenger.of(context).showSnackBar(
@@ -60,9 +70,13 @@ class CacheManagementWidget extends HookConsumerWidget {
       if (confirmed == true) {
         try {
           final geocodingRepo = ref.read(geocodingRepositoryProvider);
+          final routingRepo = ref.read(routingRepositoryProvider);
+          final imageryRepo = ref.read(imageryRepositoryProvider);
           final incidentRepo = ref.read(incidentRepositoryProvider);
 
-          await geocodingRepo.clearAllCache();
+          await geocodingRepo.clearHistory();
+          await routingRepo.clearAllCache();
+          await imageryRepo.clearAllCache();
           await incidentRepo.clearIncidentCache();
           await loadCacheStats();
           if (context.mounted) {
@@ -82,8 +96,7 @@ class CacheManagementWidget extends HookConsumerWidget {
 
     Future<void> clearExpiredCache() async {
       try {
-        final repository = ref.read(geocodingRepositoryProvider);
-        await repository.clearExpiredCache();
+        // TODO: Implement clearExpiredCache for each repository
         await loadCacheStats();
         if (context.mounted) {
           ScaffoldMessenger.of(

@@ -161,4 +161,46 @@ class MapLocationLogic {
       );
     }
   }
+
+  /// Xử lý Location (LocationPickerMapWidget, RouteMapWidget)
+  Future<void> onMyLocationPressed({
+    required ArcGISMapViewController mapViewController,
+    required ValueNotifier<bool> isFollowingUser,
+  }) async {
+    try {
+      final locationDisplay = mapViewController.locationDisplay;
+
+      // Nếu chưa bật -> Bật lên
+      if (!locationDisplay.started) {
+        locationDisplay.dataSource = locationDataSource;
+        locationDisplay.autoPanMode = LocationDisplayAutoPanMode.recenter;
+        await locationDataSource.start();
+        locationDisplay.start();
+
+        // Nếu bật thành công -> Zoom về vị trí hiện tại
+        if (locationDisplay.location != null) {
+          await mapViewController.setViewpointCenter(
+            locationDisplay.location!.position,
+            scale: 5000,
+          );
+        }
+      }
+      // Nếu đã start -> Chỉ cần Recenter (Khóa camera lại)
+      else {
+        locationDisplay.autoPanMode = LocationDisplayAutoPanMode.recenter;
+        final location = locationDisplay.location;
+        // Nếu đang ở quá xa vị trí hiện tại thì zoom về
+        if (location != null) {
+          await mapViewController.setViewpointCenter(
+            location.position,
+            scale: 5000,
+          );
+        }
+      }
+      // Cập nhật màu nút
+      isFollowingUser.value = true;
+    } catch (e) {
+      AppLogger.ui("Lỗi bật định vị picker: $e");
+    }
+  }
 }

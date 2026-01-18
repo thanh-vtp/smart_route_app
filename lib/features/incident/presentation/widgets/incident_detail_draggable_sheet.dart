@@ -11,6 +11,7 @@ import 'package:smart_route_app/features/incident/presentation/providers/map_cen
 import 'package:smart_route_app/features/incident/presentation/providers/states/map_page_notifier.dart';
 import 'package:smart_route_app/features/incident/presentation/widgets/edit_incident_bottom_sheet.dart';
 import 'package:smart_route_app/features/incident/presentation/widgets/incident_type_widgets.dart';
+import 'package:smart_route_app/features/search/presentation/providers/selected_address.dart';
 
 /// DraggableScrollableSheet hiển thị chi tiết incident
 class IncidentDetailDraggableSheet extends HookConsumerWidget {

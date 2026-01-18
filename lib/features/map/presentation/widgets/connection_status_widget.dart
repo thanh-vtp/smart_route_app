@@ -17,7 +17,7 @@ class ConnectionStatusWidget extends HookConsumerWidget {
     Future<void> testConnection() async {
       isTestingConnection.value = true;
       try {
-        final dataSource = ref.read(arcgisGeocodingRemoteDataSourceProvider);
+        final dataSource = ref.read(routingRemoteDataSourceProvider);
         final isConnected = await dataSource.testConnection();
         connectionStatus.value = isConnected;
       } catch (e) {

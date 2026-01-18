@@ -49,10 +49,17 @@ class IncidentSymbolFactory {
   }
 
   /// Hàm lấy Symbol với Stack (background + border + image)
-  Future<PictureMarkerSymbol> getSymbol(String typeId) async {
+  /// [displaySize] - Kích thước hiển thị trên map (mặc định 32.0)
+  Future<PictureMarkerSymbol> getSymbol(
+    String typeId, {
+    double displaySize = 32.0,
+  }) async {
+    // Cache key bao gồm cả size để hỗ trợ nhiều kích thước
+    final cacheKey = '${typeId}_$displaySize';
+
     // Nếu đã load rồi thì trả về ngay (Tốc độ tức thì)
-    if (_cache.containsKey(typeId)) {
-      return _cache[typeId]!;
+    if (_cache.containsKey(cacheKey)) {
+      return _cache[cacheKey]!;
     }
 
     final config = IncidentTypes.getById(typeId);
@@ -66,11 +73,11 @@ class IncidentSymbolFactory {
       final symbol = PictureMarkerSymbol.withImage(arcGISImage);
 
       // Cấu hình kích thước hiển thị (pointer size)
-      symbol.width = 32.0;
-      symbol.height = 32.0;
+      symbol.width = displaySize;
+      symbol.height = displaySize;
 
       // Lưu vào cache
-      _cache[typeId] = symbol;
+      _cache[cacheKey] = symbol;
       return symbol;
     } catch (e) {
       AppLogger.error(

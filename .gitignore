@@ -72,3 +72,6 @@ release-keystore.jks
 **/api_keys.dart
 **/credentials.dart
 **/secrets.dart
+
+# Ignore all JSON files
+*.json

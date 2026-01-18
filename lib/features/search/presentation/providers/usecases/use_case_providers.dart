@@ -1,5 +1,7 @@
 import 'package:riverpod_annotation/riverpod_annotation.dart';
+import 'package:smart_route_app/features/search/domain/usecases/find_near_by_places_usecase.dart';
 import 'package:smart_route_app/features/search/domain/usecases/geocode_address_usecase.dart';
+import 'package:smart_route_app/features/search/domain/usecases/get_location_imagery_usecase.dart';
 import 'package:smart_route_app/features/search/domain/usecases/reverse_geocode_usecase.dart';
 import 'package:smart_route_app/features/search/presentation/providers/repositories/repository_providers.dart';
 
@@ -15,4 +17,20 @@ GeocodeAddressUseCase geocodeAddressUseCase(GeocodeAddressUseCaseRef ref) {
 ReverseGeocodeUseCase reverseGeocodeUseCase(ReverseGeocodeUseCaseRef ref) {
   final repository = ref.watch(geocodingRepositoryProvider);
   return ReverseGeocodeUseCase(repository);
+}
+
+@riverpod
+GetLocationImageryUseCase getLocationImageryUseCase(
+  GetLocationImageryUseCaseRef ref,
+) {
+  final repository = ref.watch(imageryRepositoryProvider);
+  return GetLocationImageryUseCase(repository);
+}
+
+@riverpod
+FindNearbyPlacesUseCase findNearbyPlacesUseCase(
+  FindNearbyPlacesUseCaseRef ref,
+) {
+  final repository = ref.watch(nearbyPlaceRepositoryProvider);
+  return FindNearbyPlacesUseCase(repository);
 }

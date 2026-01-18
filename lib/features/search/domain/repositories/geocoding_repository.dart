@@ -19,14 +19,7 @@ abstract class GeocodingRepository {
 
   /// Xóa toàn bộ lịch sử tìm kiếm
   Future<Either<Failure, void>> clearHistory();
-  // ============ Cache Management ============
 
-  /// Xóa tất cả cache (geocoding, route, nearby, imagery)
-  Future<void> clearAllCache();
-
-  /// Xóa cache đã hết hạn
-  Future<void> clearExpiredCache();
-
-  /// Lấy thống kê cache theo loại
+  /// Lấy thống kê cache (geocode, reverse_geocode)
   Future<Map<String, int>> getCacheStats();
 }

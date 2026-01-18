@@ -6,25 +6,24 @@ part of 'repository_providers.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$geocodingRepositoryHash() =>
-    r'0272fbbb8d396b40b00717fe444ea4f93bfdc809';
+String _$routingRepositoryHash() => r'b71e7fb4c536412d54fdd51ceee9c6eeac757453';
 
 /// Provider cho Geocoding Repository
 /// Sử dụng ArcGIS Geocoding Data Source
-/// Được dùng cho các use case liên quan đến geocoding, routing, nearby places
+/// Được dùng cho các use case liên quan đến routing
 ///
-/// Copied from [geocodingRepository].
-@ProviderFor(geocodingRepository)
-final geocodingRepositoryProvider = Provider<GeocodingRepository>.internal(
-  geocodingRepository,
-  name: r'geocodingRepositoryProvider',
+/// Copied from [routingRepository].
+@ProviderFor(routingRepository)
+final routingRepositoryProvider = Provider<RoutingRepository>.internal(
+  routingRepository,
+  name: r'routingRepositoryProvider',
   debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
       ? null
-      : _$geocodingRepositoryHash,
+      : _$routingRepositoryHash,
   dependencies: null,
   allTransitiveDependencies: null,
 );
 
-typedef GeocodingRepositoryRef = ProviderRef<GeocodingRepository>;
+typedef RoutingRepositoryRef = ProviderRef<RoutingRepository>;
 // ignore_for_file: type=lint
 // ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member

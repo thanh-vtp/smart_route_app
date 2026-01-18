@@ -11,4 +11,13 @@ abstract class ArcGISGeocodingRemoteDataSource {
     double latitude,
     double longitude,
   );
+
+  /// Tìm kiếm địa điểm xung quanh vị trí
+  Future<GeocodeResponse> findNearbyPlaces(
+    double latitude,
+    double longitude, {
+    String category = '',
+    int maxLocations = 10,
+    double searchRadius = 1000,
+  });
 }
