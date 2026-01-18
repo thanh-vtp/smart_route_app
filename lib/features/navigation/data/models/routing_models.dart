@@ -1,4 +1,5 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
+import 'package:smart_route_app/features/navigation/data/models/route_barriers_result.dart';
 import 'package:smart_route_app/features/navigation/data/models/route_direction_model.dart';
 
 part 'routing_models.freezed.dart';
@@ -12,6 +13,7 @@ class RouteResponse with _$RouteResponse {
     @Default([])
     @JsonKey(name: 'directions')
     List<RouteDirectionSet> directions,
+    @JsonKey(name: 'barriers') RouteBarriersResult? barriers,
     @JsonKey(name: 'messages')
     @Default([])
     List<dynamic> messages, // Check cảnh báo

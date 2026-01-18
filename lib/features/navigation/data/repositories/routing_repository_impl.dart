@@ -102,6 +102,7 @@ class RoutingRepositoryImpl implements RoutingRepository {
     final routePoints = <RoutePoint>[];
 
     // Chuyển đổi geometry paths thành list RoutePoint
+    // Map Geometry (Paths) -> RoutePoints (Để vẽ đường màu xanh)
     for (final path in feature.geometry.paths) {
       for (final point in path) {
         if (point.length >= 2) {
@@ -142,14 +143,30 @@ class RoutingRepositoryImpl implements RoutingRepository {
       AppLogger.repository('Parsed ${directions.length} direction steps');
     }
 
+    // ConfirmedBarriers (Để biết điểm nào đã né)
+    final confirmedBarriers = <RoutePoint>[];
+    if (response.barriers?.features != null) {
+      for (final feature in response.barriers!.features) {
+        if (feature.geometry.x != null && feature.geometry.y != null) {
+          confirmedBarriers.add(
+            RoutePoint(
+              latitude: feature.geometry.y!,
+              longitude: feature.geometry.x!,
+            ),
+          );
+        }
+      }
+    }
+
     final result = RouteResult(
-      routePoints: routePoints,
+      routePoints: routePoints, // Đường đi (Polyline)
       totalDistance:
           (feature.attributes.totalKilometers ?? 0.0) *
           1000, // Convert km to meters
       totalTime: feature.attributes.totalTime ?? 0.0, // Already in minutes
       routeName: feature.attributes.name ?? 'Tuyến đường',
       directions: directions,
+      confirmedBarriers: confirmedBarriers, // Sự cố đã xác nhận
     );
 
     return result;

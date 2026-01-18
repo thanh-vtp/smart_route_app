@@ -89,7 +89,6 @@ class LocationPickerMapWidget extends HookConsumerWidget {
         isFollowingUser.value = true;
       } catch (e) {
         AppLogger.ui("Lỗi bật định vị picker: $e");
-        // TODO: Hiển thị snackbar lỗi nếu cần
       }
     }
 

@@ -4,6 +4,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:smart_route_app/core/utils/app_logger.dart';
+import 'package:smart_route_app/features/incident/data/models/incident_model.dart';
+import 'package:smart_route_app/features/incident/presentation/logics/incident_symbol_factory.dart';
+import 'package:smart_route_app/features/incident/presentation/logics/map_location_logic.dart';
+import 'package:smart_route_app/features/incident/presentation/models/incident_type_config.dart';
 import 'package:smart_route_app/features/incident/presentation/providers/base_map_style_providers.dart';
 import 'package:smart_route_app/features/incident/presentation/providers/location_display_providers.dart';
 import 'package:smart_route_app/features/incident/presentation/widgets/base_map_switcher.dart';
@@ -12,11 +16,13 @@ import '../domain/entities/route_result.dart' as entities;
 import '../../incident/domain/entities/incident.dart' as domain;
 
 class RouteMapWidget extends HookConsumerWidget {
-  final List<AddressResult> waypoints;
-  final entities.RouteResult? route;
+  final List<AddressResult>
+  waypoints; // Danh sách các điểm dừng (Điểm đi và Điểm đến).
+  final entities.RouteResult? route; // Đường đi trả về từ API
   final Function(double, double)? onMapTap;
-  final bool showIncidents;
-  final List<domain.Incident> incidents;
+  final bool showIncidents; // Sự cố trên bản đồ
+  final List<domain.Incident>
+  incidents; // Danh sách sự cố để hiển thị từ API (returnBarriers)
 
   const RouteMapWidget({
     super.key,
@@ -33,7 +39,7 @@ class RouteMapWidget extends HookConsumerWidget {
     final mapViewController = useMemoized(
       () => ArcGISMapView.createController(),
     );
-    final locationDataSource = useMemoized(() => SystemLocationDataSource());
+    final mapLocationLogic = useMemoized(() => MapLocationLogic());
 
     // Graphics overlays for route and markers
     final routeOverlay = useMemoized(() => GraphicsOverlay());
@@ -60,7 +66,7 @@ class RouteMapWidget extends HookConsumerWidget {
       mapViewController.graphicsOverlays.add(incidentsOverlay);
 
       return () {
-        locationDataSource.stop();
+        mapLocationLogic.dispose();
         routeOverlay.graphics.clear();
         markersOverlay.graphics.clear();
         incidentsOverlay.graphics.clear();
@@ -83,46 +89,18 @@ class RouteMapWidget extends HookConsumerWidget {
       if (!isMapReady.value) return;
 
       if (showIncidents && incidents.isNotEmpty) {
-        _drawIncidents(incidentsOverlay, incidents);
+        // Dùng async function để vẽ incidents với ArcGISImage
+        _updateIncidentsOverlay(
+          incidentsOverlay,
+          incidents,
+          displaySize: 24.0, // Kích thước nhỏ hơn map chính
+        );
       } else {
         incidentsOverlay.graphics.clear();
       }
 
       return null;
     }, [showIncidents, incidents, isMapReady.value]);
-
-    // Handle My Location button
-    Future<void> onMyLocationPressed() async {
-      try {
-        final locationDisplay = mapViewController.locationDisplay;
-
-        if (!locationDisplay.started) {
-          locationDisplay.dataSource = locationDataSource;
-          locationDisplay.autoPanMode = LocationDisplayAutoPanMode.recenter;
-          await locationDataSource.start();
-          locationDisplay.start();
-
-          if (locationDisplay.location != null) {
-            await mapViewController.setViewpointCenter(
-              locationDisplay.location!.position,
-              scale: 10000,
-            );
-          }
-        } else {
-          locationDisplay.autoPanMode = LocationDisplayAutoPanMode.recenter;
-          final location = locationDisplay.location;
-          if (location != null) {
-            await mapViewController.setViewpointCenter(
-              location.position,
-              scale: 10000,
-            );
-          }
-        }
-        isFollowingUser.value = true;
-      } catch (e) {
-        AppLogger.ui("Lỗi bật định vị: $e");
-      }
-    }
 
     // Zoom to fit route
     Future<void> onZoomToRoutePressed() async {
@@ -147,8 +125,8 @@ class RouteMapWidget extends HookConsumerWidget {
         try {
           final locationDisplay = mapViewController.locationDisplay;
           if (!locationDisplay.started) {
-            locationDisplay.dataSource = locationDataSource;
-            await locationDataSource.start();
+            locationDisplay.dataSource = mapLocationLogic.locationDataSource;
+            await mapLocationLogic.locationDataSource.start();
             locationDisplay.start();
           }
         } catch (e) {
@@ -204,7 +182,10 @@ class RouteMapWidget extends HookConsumerWidget {
             heroTag: 'route_gps_btn',
             mini: true,
             backgroundColor: Colors.white,
-            onPressed: onMyLocationPressed,
+            onPressed: () => mapLocationLogic.onMyLocationPressed(
+              mapViewController: mapViewController,
+              isFollowingUser: isFollowingUser,
+            ),
             child: Icon(
               isFollowingUser.value
                   ? Icons.my_location
@@ -239,10 +220,6 @@ class RouteMapWidget extends HookConsumerWidget {
       ],
     );
   }
-
-  // ============================================================================
-  // HELPER METHODS
-  // ============================================================================
 
   /// Draw route polyline on map
   void _drawRoute(GraphicsOverlay overlay, entities.RouteResult route) {
@@ -311,7 +288,7 @@ class RouteMapWidget extends HookConsumerWidget {
     }
   }
 
-  /// Create marker symbol based on position
+  /// Create marker symbol based on position (start, end, intermediate)
   ArcGISSymbol _createMarkerSymbol(bool isStart, bool isEnd, int index) {
     if (isStart) {
       // Start marker - Blue circle
@@ -448,93 +425,57 @@ class RouteMapWidget extends HookConsumerWidget {
     }
   }
 
-  /// Draw incidents on map
-  void _drawIncidents(
+  /// Update GraphicsOverlay với danh sách incidents (dùng ArcGISImage)
+  /// [displaySize] - Kích thước hiển thị marker (nhỏ hơn map chính)
+  Future<void> _updateIncidentsOverlay(
     GraphicsOverlay overlay,
-    List<domain.Incident> incidents,
-  ) {
+    List<domain.Incident> incidents, {
+    double displaySize = 24.0, // Nhỏ hơn map chính (32.0)
+  }) async {
     overlay.graphics.clear();
 
+    if (incidents.isEmpty) return;
+
+    // Factory instance - symbols đã được pre-cache nên sẽ rất nhanh
+    final symbolFactory = IncidentSymbolFactory();
+
+    // Tạo list graphics mới
+    final List<Graphic> newGraphics = [];
+
+    // Xử lý tuần tự để không block main thread quá lâu
     for (final incident in incidents) {
-      final lat = double.tryParse(incident.latitude) ?? 0;
-      final lon = double.tryParse(incident.longitude) ?? 0;
+      try {
+        final incidentModel = IncidentModel.fromEntity(incident);
+        final graphic = incidentModel.toGraphic();
 
-      if (lat == 0 || lon == 0) continue;
+        // Lấy config type để tạo symbol
+        final config = IncidentTypes.getById(incident.type);
 
-      final point = ArcGISPoint(
-        x: lon,
-        y: lat,
-        spatialReference: SpatialReference.wgs84,
-      );
+        // Tạo và gán symbol tương ứng với kích thước nhỏ hơn
+        graphic.symbol = await symbolFactory.getSymbol(
+          config.id,
+          displaySize: displaySize,
+        );
 
-      final incidentSymbol = _createIncidentSymbol(incident);
-      overlay.graphics.add(Graphic(geometry: point, symbol: incidentSymbol));
+        // Gán zIndex từ config để kiểm soát thứ tự hiển thị
+        graphic.zIndex = config.zIndex;
+
+        // Lưu thông tin incident vào attributes để dùng khi tap
+        graphic.attributes['incident_id'] = incident.id;
+        newGraphics.add(graphic);
+      } catch (e) {
+        AppLogger.error(
+          'Error creating graphic for incident ${incident.id}: $e',
+          name: 'RouteMapWidget',
+        );
+      }
     }
-  }
 
-  /// Create incident marker symbol based on type and severity
-  ArcGISSymbol _createIncidentSymbol(domain.Incident incident) {
-    final color = _getIncidentColor(incident.type, incident.severity);
+    // Update overlay một lần duy nhất
+    overlay.graphics.addAll(newGraphics);
 
-    return CompositeSymbol(
-      symbols: [
-        // Outer warning circle (glow effect)
-        SimpleMarkerSymbol(
-          style: SimpleMarkerSymbolStyle.circle,
-          color: color.withValues(alpha: 0.3),
-          size: 36,
-        ),
-        // Middle circle
-        SimpleMarkerSymbol(
-          style: SimpleMarkerSymbolStyle.circle,
-          color: color.withValues(alpha: 0.6),
-          size: 28,
-        ),
-        // Inner warning triangle
-        SimpleMarkerSymbol(
-          style: SimpleMarkerSymbolStyle.triangle,
-          color: color,
-          size: 20,
-        ),
-        // Center exclamation (white dot)
-        SimpleMarkerSymbol(
-          style: SimpleMarkerSymbolStyle.circle,
-          color: Colors.white,
-          size: 6,
-        ),
-      ],
+    AppLogger.ui(
+      'Route map: Updated incidents overlay with ${newGraphics.length} incidents',
     );
-  }
-
-  /// Get color based on incident type and severity
-  Color _getIncidentColor(String type, String severity) {
-    // Priority by severity
-    switch (severity.toLowerCase()) {
-      case 'high':
-      case 'severe':
-        return Colors.red;
-      case 'medium':
-      case 'moderate':
-        return Colors.orange;
-      case 'low':
-      case 'minor':
-        return Colors.yellow.shade700;
-    }
-
-    // Fallback by type
-    switch (type.toLowerCase()) {
-      case 'accident':
-        return Colors.red;
-      case 'construction':
-        return Colors.orange;
-      case 'traffic':
-        return Colors.amber;
-      case 'weather':
-        return Colors.blue;
-      case 'road_closure':
-        return Colors.red.shade900;
-      default:
-        return Colors.grey;
-    }
   }
 }
