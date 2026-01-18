@@ -142,20 +142,24 @@ class _HomePageState extends ConsumerState<HomePage> {
                   Icon(Icons.mic),
                   SizedBox(width: 8),
                   // User avatar - tap to open profile drawer
-                  GestureDetector(
-                    onTap: () {
-                      Scaffold.of(context).openDrawer();
+                  Builder(
+                    builder: (context) {
+                      return GestureDetector(
+                        onTap: () {
+                          Scaffold.of(context).openDrawer();
+                        },
+                        child: CachedNetworkImage(
+                          imageUrl: user.avatarUrl ?? '',
+                          imageBuilder: (context, imageProvider) =>
+                              CircleAvatar(backgroundImage: imageProvider),
+                          placeholder: (context, url) => const CircleAvatar(
+                            child: CircularProgressIndicator(),
+                          ),
+                          errorWidget: (context, url, error) =>
+                              CircleAvatar(child: Icon(Icons.person)),
+                        ),
+                      );
                     },
-                    child: CachedNetworkImage(
-                      imageUrl: user.avatarUrl ?? '',
-                      imageBuilder: (context, imageProvider) =>
-                          CircleAvatar(backgroundImage: imageProvider),
-                      placeholder: (context, url) => const CircleAvatar(
-                        child: CircularProgressIndicator(),
-                      ),
-                      errorWidget: (context, url, error) =>
-                          CircleAvatar(child: Icon(Icons.person)),
-                    ),
                   ),
                 ],
               )
