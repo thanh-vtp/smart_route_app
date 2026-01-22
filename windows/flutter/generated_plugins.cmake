@@ -7,6 +7,7 @@ list(APPEND FLUTTER_PLUGIN_LIST
   arcgis_maps
   connectivity_plus
   desktop_webview_window
+  firebase_core
   flutter_secure_storage_windows
   geolocator_windows
   sqlite3_flutter_libs

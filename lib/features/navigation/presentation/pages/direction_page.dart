@@ -435,6 +435,7 @@ class _DirectionPageState extends ConsumerState<DirectionPage> {
     );
 
     return Scaffold(
+      backgroundColor: Colors.white,
       body: SafeArea(
         child: Stack(
           fit: StackFit.expand,

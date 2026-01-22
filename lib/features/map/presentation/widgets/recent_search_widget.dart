@@ -26,87 +26,90 @@ class RecentSearchWidget extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final recentSearchAsync = ref.watch(recentSearchNotifierProvider);
 
-    return recentSearchAsync.when(
-      loading: () => const Center(
-        child: Padding(
-          padding: EdgeInsets.all(16),
-          child: CircularProgressIndicator(),
+    return Scaffold(
+      backgroundColor: Colors.white,
+      body: recentSearchAsync.when(
+        loading: () => const Center(
+          child: Padding(
+            padding: EdgeInsets.all(16),
+            child: CircularProgressIndicator(),
+          ),
         ),
-      ),
-      error: (err, stack) => Padding(
-        padding: const EdgeInsets.all(16),
-        child: Text('Lỗi: $err', style: TextStyle(color: Colors.red)),
-      ),
-      data: (state) {
-        if (state.isLoading) {
-          return const LinearProgressIndicator();
-        }
+        error: (err, stack) => Padding(
+          padding: const EdgeInsets.all(16),
+          child: Text('Lỗi: $err', style: TextStyle(color: Colors.red)),
+        ),
+        data: (state) {
+          if (state.isLoading) {
+            return const LinearProgressIndicator();
+          }
 
-        if (state.history.isEmpty) {
-          return const Padding(
-            padding: EdgeInsets.all(24),
-            child: Center(
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  Icon(Icons.history, size: 48, color: Colors.grey),
-                  SizedBox(height: 8),
-                  Text(
-                    'Chưa có lịch sử tìm kiếm',
-                    style: TextStyle(color: Colors.grey),
-                  ),
-                ],
-              ),
-            ),
-          );
-        }
-
-        final displayItems = state.history.take(maxItems).toList();
-
-        return Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            if (showHeader)
-              Padding(
-                padding: const EdgeInsets.symmetric(
-                  horizontal: 16,
-                  vertical: 8,
-                ),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          if (state.history.isEmpty) {
+            return const Padding(
+              padding: EdgeInsets.all(24),
+              child: Center(
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
                   children: [
-                    const Text(
-                      'Tìm kiếm gần đây',
-                      style: TextStyle(
-                        fontWeight: FontWeight.bold,
-                        fontSize: 16,
-                      ),
-                    ),
-                    TextButton(
-                      onPressed: () => ref
-                          .read(recentSearchNotifierProvider.notifier)
-                          .clearAll(),
-                      child: const Text('Xóa tất cả'),
+                    Icon(Icons.history, size: 48, color: Colors.grey),
+                    SizedBox(height: 8),
+                    Text(
+                      'Chưa có lịch sử tìm kiếm',
+                      style: TextStyle(color: Colors.grey),
                     ),
                   ],
                 ),
               ),
-            Flexible(
-              child: ListView.builder(
-                shrinkWrap: true,
-                itemCount: displayItems.length,
-                itemBuilder: (context, index) {
-                  final item = displayItems[index];
-                  return _RecentSearchItem(
-                    address: item,
-                    onTap: () => onAddressSelected?.call(item),
-                  );
-                },
+            );
+          }
+
+          final displayItems = state.history.take(maxItems).toList();
+
+          return Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              if (showHeader)
+                Padding(
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 16,
+                    vertical: 8,
+                  ),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      const Text(
+                        'Tìm kiếm gần đây',
+                        style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                          fontSize: 16,
+                        ),
+                      ),
+                      TextButton(
+                        onPressed: () => ref
+                            .read(recentSearchNotifierProvider.notifier)
+                            .clearAll(),
+                        child: const Text('Xóa tất cả'),
+                      ),
+                    ],
+                  ),
+                ),
+              Flexible(
+                child: ListView.builder(
+                  shrinkWrap: true,
+                  itemCount: displayItems.length,
+                  itemBuilder: (context, index) {
+                    final item = displayItems[index];
+                    return _RecentSearchItem(
+                      address: item,
+                      onTap: () => onAddressSelected?.call(item),
+                    );
+                  },
+                ),
               ),
-            ),
-          ],
-        );
-      },
+            ],
+          );
+        },
+      ),
     );
   }
 }

@@ -32,6 +32,10 @@ class _DirectionButtonState extends ConsumerState<DirectionButton> {
             // If we have location info, we could pass it to DirectionPage
             // For now, just navigate to DirectionPage
             context.push('/direction');
+
+            // throw Exception(
+            //   'Test Exception cho Crashlytics trong DirectionButton',
+            // );
           },
           backgroundColor: Colors.white,
           child: const Icon(Icons.directions, color: Colors.blue),

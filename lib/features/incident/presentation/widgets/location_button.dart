@@ -103,6 +103,10 @@ class _LocationButtonState extends ConsumerState<LocationButton> {
                     locationDisplay.autoPanMode =
                         LocationDisplayAutoPanMode.recenter;
                   }
+
+                  // throw Exception(
+                  //   'Test Exception cho Crashlytics trong LocationButton',
+                  // );
                 },
 
           backgroundColor: isDisabled
