@@ -1,13 +1,13 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'feature_layer_providers.dart';
+part of 'incident_feature_layer_providers.dart';
 
 // **************************************************************************
 // RiverpodGenerator
 // **************************************************************************
 
 String _$incidentFeatureLayerHash() =>
-    r'ffb848327afc4bb11d7e05f0dc96a997f033a746';
+    r'e070c281798fa976095324ab2cce2ad710aeea06';
 
 /// See also [incidentFeatureLayer].
 @ProviderFor(incidentFeatureLayer)

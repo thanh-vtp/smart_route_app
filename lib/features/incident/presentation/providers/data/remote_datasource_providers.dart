@@ -4,7 +4,7 @@ import 'package:smart_route_app/features/incident/data/datasources/arcgis_remote
 import 'package:smart_route_app/features/incident/data/datasources/arcgis_remote_data_source_impl.dart';
 import 'package:smart_route_app/features/incident/data/datasources/supabase_remote_data_source.dart';
 import 'package:smart_route_app/features/incident/data/datasources/supabase_remote_data_source_impl.dart';
-import 'package:smart_route_app/core/feature_layer/providers/feature_layer_providers.dart';
+import 'package:smart_route_app/core/feature_layer/providers/incident_feature_layer_providers.dart';
 
 part 'remote_datasource_providers.g.dart';
 

@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:smart_route_app/features/incident/presentation/providers/location_info_provider.dart';
 import 'package:smart_route_app/features/incident/presentation/providers/map_center_providers.dart';
-import 'package:smart_route_app/features/map/presentation/widgets/recent_search_widget.dart';
+import 'package:smart_route_app/features/search/presentation/widgets/recent_search_widget.dart';
 import 'package:smart_route_app/features/search/domain/entities/address_result.dart';
 import 'package:smart_route_app/features/search/presentation/providers/selected_address.dart';
 import 'package:smart_route_app/features/search/presentation/providers/usecases/use_case_providers.dart';

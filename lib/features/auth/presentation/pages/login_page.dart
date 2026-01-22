@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:smart_route_app/core/core.dart';
-import 'package:smart_route_app/core/ui/widgets/btn_child.dart';
+import 'package:smart_route_app/shared/widgets/btn_child.dart';
 import 'package:smart_route_app/features/auth/presentation/providers/states/auth.dart';
 
 class LoginPage extends HookConsumerWidget {

@@ -14,7 +14,7 @@ import '../../../incident/presentation/providers/location_display_providers.dart
 import '../providers/route_comparison_notifier.dart';
 import '../../../incident/presentation/providers/states/map_page_notifier.dart';
 import '../../../incident/presentation/providers/user_location_provider.dart';
-import '../../../map/presentation/widgets/recent_search_widget.dart';
+import '../../../search/presentation/widgets/recent_search_widget.dart';
 import '../../widgets/route_map_widget.dart';
 import 'package:smart_route_app/features/navigation/domain/entities/route_result.dart';
 

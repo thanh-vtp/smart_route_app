@@ -7,7 +7,7 @@ import 'package:smart_route_app/features/incident/presentation/models/incident_t
 
 /// Factory để tạo ArcGIS PictureMarkerSymbol cho Incident với Stack (background + border + image)
 class IncidentSymbolFactory {
-  // Singleton instance (Giữ nguyên)
+  // Singleton instance
   static final IncidentSymbolFactory _instance =
       IncidentSymbolFactory._internal();
 

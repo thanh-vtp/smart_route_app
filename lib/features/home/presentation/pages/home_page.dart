@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:smart_route_app/core/core.dart';
-import 'package:smart_route_app/core/network/presentation/widgets/global_connection_wrapper.dart';
+import 'package:smart_route_app/shared/widgets/global_connection_wrapper.dart';
 import 'package:smart_route_app/features/auth/presentation/providers/states/auth.dart';
 import 'package:smart_route_app/features/search/presentation/providers/selected_address.dart';
 import 'package:smart_route_app/features/search/presentation/widgets/map_search_top_bar.dart';

@@ -1,6 +1,4 @@
 import 'dart:async';
-
-import 'package:arcgis_maps/arcgis_maps.dart';
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/widgets.dart';
@@ -56,20 +54,13 @@ Future<void> initApp() async {
 void _initArcGISDeferred() {
   // Use addPostFrameCallback to ensure UI renders first
   WidgetsBinding.instance.addPostFrameCallback((_) {
-    // ArcGISEnvironment.apiKey = Constants.arcgisApiKey;
-    if (kDebugMode) {
-      AppLogger.info('Initialized ArcGIS API Key', name: 'ARCGIS_API_KEY');
-    }
-
     // Chạy trong tác vụ nhỏ để không chặn quá trình hiển thị khung hình
     // microtask để ưu tiên vẽ xong Frame UI đầu tiên
     Future.microtask(() {
       // Pre-cache Symbols (Vẽ icon từ Asset vào RAM)
       // Chúng ta không await ở đây để App có thể vào Home ngay lập tức
       // Việc vẽ này diễn ra trong background
-      IncidentSymbolFactory().preCacheAllSymbols().catchError((e) {
-        AppLogger.error('Symbol Pre-cache failed', error: e);
-      });
+      IncidentSymbolFactory().preCacheAllSymbols();
     });
   });
 }

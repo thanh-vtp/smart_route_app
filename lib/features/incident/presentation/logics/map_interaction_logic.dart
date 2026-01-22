@@ -101,13 +101,6 @@ class MapInteractionLogic {
     AppLogger.ui(
       'Updated graphics overlay with ${newGraphics.length} incidents',
     );
-
-    // Fix lỗi Incident ở Mỹ mà màn hình ở VN thì không thấy gì
-    // NOTE: Không auto zoom đến extent vì:
-    // 1. _onMapViewReady đã set viewpoint đến initialPoint
-    // 2. Nếu có incident ở xa (vd: Mỹ), extent sẽ bao gồm cả điểm đó
-    //    gây ra zoom out quá xa và center sai
-    // _zoomToGraphicsExtent(mapViewController: mapViewController);
   }
 
   /// Xử lý sự kiện tap trên bản đồ 2D

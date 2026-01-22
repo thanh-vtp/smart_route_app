@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:smart_route_app/core/ui/widgets/btn_child.dart';
+import 'package:smart_route_app/shared/widgets/btn_child.dart';
 import 'package:smart_route_app/core/utils/app_logger.dart';
 import 'package:smart_route_app/features/auth/presentation/providers/states/auth.dart';
 import 'package:smart_route_app/features/incident/presentation/models/add_incident_form_data.dart';
