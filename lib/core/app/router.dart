@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
+import 'package:smart_route_app/core/app/message.dart';
 import 'package:smart_route_app/features/auth/presentation/pages/login_page.dart';
 import 'package:smart_route_app/features/auth/presentation/providers/states/auth.dart';
 import 'package:smart_route_app/features/home/presentation/pages/home_page.dart';
@@ -121,6 +122,21 @@ GoRouter router(RouterRef ref) {
         path: '/direction',
         name: 'direction-standalone',
         builder: (context, state) => const DirectionPage(),
+      ),
+
+      // Message Page
+      GoRoute(
+        path: '/message',
+        name: 'message',
+        builder: (context, state) {
+          final args = state.extra as MessageArguments?;
+          if (args == null) {
+            return Scaffold(
+              body: const Center(child: Text('Khong có dữ liệu message')),
+            );
+          }
+          return MessageView(args: args);
+        },
       ),
     ],
   );

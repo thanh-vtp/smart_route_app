@@ -1,3 +1,4 @@
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:smart_route_app/core/utils/app_logger.dart';
 import 'package:smart_route_app/features/profile/data/models/user_profile_model.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';

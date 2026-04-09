@@ -1,7 +1,17 @@
+import 'dart:convert';
+
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:http/http.dart' as http;
+import 'package:smart_route_app/core/app/message.dart';
+import 'package:smart_route_app/core/app/message_list.dart';
+import 'package:smart_route_app/core/app/permissions.dart';
+import 'package:smart_route_app/core/app/set_up_notification.dart';
+import 'package:smart_route_app/core/app/token_monitor.dart';
 import 'package:smart_route_app/core/core.dart';
 import 'package:smart_route_app/shared/widgets/global_connection_wrapper.dart';
 import 'package:smart_route_app/features/auth/presentation/providers/states/auth.dart';
@@ -11,6 +21,25 @@ import 'package:smart_route_app/features/incident/presentation/pages/map_page.da
 import 'package:smart_route_app/features/incident/presentation/pages/report_page.dart';
 import 'package:smart_route_app/features/incident/presentation/widgets/map_bottom_sheet_container.dart';
 import 'package:smart_route_app/features/profile/presentation/widgets/profile_drawers.dart';
+
+// Crude counter to make messages unique
+int _messageCount = 0;
+
+/// The API endpoint here accepts a raw FCM payload for demonstration purposes.
+String constructFCMPayload(String? token) {
+  _messageCount++;
+  return jsonEncode({
+    'token': token,
+    'data': {
+      'via': 'FlutterFire Cloud Messaging!!!',
+      'count': _messageCount.toString(),
+    },
+    'notification': {
+      'title': 'Hello FlutterFire!',
+      'body': 'This notification (#$_messageCount) was created via FCM!',
+    },
+  });
+}
 
 class HomePage extends ConsumerStatefulWidget {
   static const String route = '/';
@@ -22,6 +51,95 @@ class HomePage extends ConsumerStatefulWidget {
 
 class _HomePageState extends ConsumerState<HomePage> {
   int _selectedIndex = 0;
+
+  String? _token;
+  String? initialMessage;
+  bool _resolved = false;
+
+  @override
+  void initState() {
+    super.initState();
+
+    // Delay getInitialMessage call by 3 seconds
+    Future.delayed(const Duration(seconds: 3), () {
+      FirebaseMessaging.instance.getInitialMessage().then(
+        (value) => setState(() {
+          _resolved = true;
+          initialMessage = value?.data.toString();
+        }),
+      );
+    });
+
+    FirebaseMessaging.onMessage.listen(showFlutterNotification);
+
+    FirebaseMessaging.onMessageOpenedApp.listen((RemoteMessage message) {
+      print('A new onMessageOpenedApp event was published!');
+      context.pushNamed('message', extra: MessageArguments(message, true));
+    });
+  }
+
+  Future<void> sendPushMessage() async {
+    if (_token == null) {
+      print('Unable to send FCM message, no token exists.');
+      return;
+    }
+
+    try {
+      await http.post(
+        Uri.parse('https://api.rnfirebase.io/messaging/send'),
+        headers: <String, String>{
+          'Content-Type': 'application/json; charset=UTF-8',
+        },
+        body: constructFCMPayload(_token),
+      );
+      print('FCM request for device sent!');
+    } catch (e) {
+      print(e);
+    }
+  }
+
+  Future<void> onActionSelected(String value) async {
+    switch (value) {
+      case 'subscribe':
+        {
+          print(
+            'FlutterFire Messaging Example: Subscribing to topic "fcm_test".',
+          );
+          await FirebaseMessaging.instance.subscribeToTopic('fcm_test');
+          print(
+            'FlutterFire Messaging Example: Subscribing to topic "fcm_test" successful.',
+          );
+        }
+        break;
+      case 'unsubscribe':
+        {
+          print(
+            'FlutterFire Messaging Example: Unsubscribing from topic "fcm_test".',
+          );
+          await FirebaseMessaging.instance.unsubscribeFromTopic('fcm_test');
+          print(
+            'FlutterFire Messaging Example: Unsubscribing from topic "fcm_test" successful.',
+          );
+        }
+        break;
+      case 'get_apns_token':
+        {
+          if (defaultTargetPlatform == TargetPlatform.iOS ||
+              defaultTargetPlatform == TargetPlatform.macOS) {
+            print('FlutterFire Messaging Example: Getting APNs token...');
+            String? token = await FirebaseMessaging.instance.getAPNSToken();
+            print('FlutterFire Messaging Example: Got APNs token: $token');
+          } else {
+            print(
+              'FlutterFire Messaging Example: Getting an APNs token is only supported on iOS and macOS platforms.',
+            );
+          }
+        }
+        break;
+      default:
+        break;
+    }
+  }
 
   void _onItemTapped(int index) {
     setState(() {
@@ -60,18 +178,97 @@ class _HomePageState extends ConsumerState<HomePage> {
             right: 0,
             child: GlobalConnectionWrapper(),
           ),
+          // Positioned.fill(
+          //   child: SingleChildScrollView(
+          //     child: Column(
+          //       children: [
+          //         MetaCard('Permissions', Permissions()),
+          //         MetaCard(
+          //           'Initial Message',
+          //           Column(
+          //             children: [
+          //               Text(_resolved ? 'Resolved' : 'Resolving'),
+          //               Text(initialMessage ?? 'None'),
+          //             ],
+          //           ),
+          //         ),
+          //         MetaCard(
+          //           'FCM Token',
+          //           TokenMonitor((token) {
+          //             _token = token;
+          //             return token == null
+          //                 ? const CircularProgressIndicator()
+          //                 : SelectableText(
+          //                     token,
+          //                     style: const TextStyle(fontSize: 12),
+          //                   );
+          //           }),
+          //         ),
+          //         ElevatedButton(
+          //           onPressed: () {
+          //             FirebaseMessaging.instance.getInitialMessage().then((
+          //               RemoteMessage? message,
+          //             ) {
+          //               if (message != null) {
+          //                 context.pushNamed(
+          //                   'message',
+          //                   extra: MessageArguments(message, true),
+          //                 );
+          //               }
+          //             });
+          //           },
+          //           child: const Text('getInitialMessage()'),
+          //         ),
+          //         MetaCard('Message Stream', MessageList()),
+          //       ],
+          //     ),
+          //   ),
+          // ),
+          // Positioned(
+          //   top: 50,
+          //   right: 20,
+          //   child: PopupMenuButton(
+          //     onSelected: onActionSelected,
+          //     itemBuilder: (BuildContext context) {
+          //       return [
+          //         const PopupMenuItem(
+          //           value: 'subscribe',
+          //           child: Text('Subscribe to topic'),
+          //         ),
+          //         const PopupMenuItem(
+          //           value: 'unsubscribe',
+          //           child: Text('Unsubscribe to topic'),
+          //         ),
+          //         const PopupMenuItem(
+          //           value: 'get_apns_token',
+          //           child: Text('Get APNs token (Apple only)'),
+          //         ),
+          //       ];
+          //     },
+          //   ),
+          // ),
+          // Positioned(
+          //   bottom: 20,
+          //   right: 20,
+          //   child: Builder(
+          //     builder: (context) => FloatingActionButton(
+          //       onPressed: sendPushMessage,
+          //       backgroundColor: Colors.white,
+          //       child: const Icon(Icons.send),
+          //     ),
+          //   ),
+          // ),
         ],
       ),
 
-      floatingActionButton: FloatingActionButton.extended(
-        onPressed: () => context.push('/arcgis-demo'),
-        backgroundColor: Colors.blue,
-        foregroundColor: Colors.white,
-        icon: const Icon(Icons.map),
-        label: const Text('ArcGIS Demo'),
-      ),
-      floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
-
+      // floatingActionButton: FloatingActionButton.extended(
+      //   onPressed: () => context.push('/arcgis-demo'),
+      //   backgroundColor: Colors.blue,
+      //   foregroundColor: Colors.white,
+      //   icon: const Icon(Icons.map),
+      //   label: const Text('ArcGIS Demo'),
+      // ),
+      // floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
       bottomNavigationBar: Theme(
         data: Theme.of(context).copyWith(
           splashColor: Colors.transparent,
@@ -177,6 +374,37 @@ class _HomePageState extends ConsumerState<HomePage> {
     return context.buildDraggableScrollableSheet(
       builder: (scrollController) =>
           ReportMapPage(scrollController: scrollController),
+    );
+  }
+}
+
+/// UI Widget for displaying metadata.
+class MetaCard extends StatelessWidget {
+  final String _title;
+  final Widget _children;
+
+  // ignore: public_member_api_docs
+  MetaCard(this._title, this._children);
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      width: double.infinity,
+      margin: const EdgeInsets.only(left: 8, right: 8, top: 8),
+      child: Card(
+        child: Padding(
+          padding: const EdgeInsets.all(16),
+          child: Column(
+            children: [
+              Container(
+                margin: const EdgeInsets.only(bottom: 16),
+                child: Text(_title, style: const TextStyle(fontSize: 18)),
+              ),
+              _children,
+            ],
+          ),
+        ),
+      ),
     );
   }
 }
