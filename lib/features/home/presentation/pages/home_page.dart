@@ -60,6 +60,8 @@ class _HomePageState extends ConsumerState<HomePage> {
   void initState() {
     super.initState();
 
+    _requestPermissions();
+
     // Delay getInitialMessage call by 3 seconds
     Future.delayed(const Duration(seconds: 3), () {
       FirebaseMessaging.instance.getInitialMessage().then(
@@ -70,12 +72,31 @@ class _HomePageState extends ConsumerState<HomePage> {
       );
     });
 
+    // Xử lý tin nhắn khi app đang mở (foreground)
     FirebaseMessaging.onMessage.listen(showFlutterNotification);
 
+    // Xử lý khi nhấn vào thông báo (App đang chạy ngầm),
+    // được kích hoạt để bạn điều hướng (Navigate).
     FirebaseMessaging.onMessageOpenedApp.listen((RemoteMessage message) {
       print('A new onMessageOpenedApp event was published!');
       context.pushNamed('message', extra: MessageArguments(message, true));
     });
+  }
+
+  Future<void> _requestPermissions() async {
+    // Xin quyền hiện thông báo
+    NotificationSettings settings = await FirebaseMessaging.instance
+        .requestPermission(
+          announcement: true,
+          carPlay: true,
+          criticalAlert: true,
+        );
+
+    if (settings.authorizationStatus == AuthorizationStatus.authorized ||
+        settings.authorizationStatus == AuthorizationStatus.provisional) {
+      await FirebaseMessaging.instance.setAutoInitEnabled(true);
+      AppLogger.info('On FCM: ${settings.authorizationStatus}');
+    }
   }
 
   Future<void> sendPushMessage() async {
