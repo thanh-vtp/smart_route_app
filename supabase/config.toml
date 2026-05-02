@@ -402,13 +402,35 @@ s3_secret_key = "env(S3_SECRET_KEY)"
 # JSON string passed through to pg-delta SQL formatting.
 # format_options = "{\"keywordCase\":\"upper\",\"indent\":2,\"maxWidth\":80,\"commaStyle\":\"trailing\"}"
 
-[functions.push_fcm]
+[functions.push-fcm]
 enabled = true
 verify_jwt = true
-import_map = "./functions/push_fcm/deno.json"
+import_map = "./functions/push-fcm/deno.json"
 # Uncomment to specify a custom file path to the entrypoint.
 # Supported file extensions are: .ts, .js, .mjs, .jsx, .tsx
-entrypoint = "./functions/push_fcm/index.ts"
+entrypoint = "./functions/push-fcm/index.ts"
 # Specifies static files to be bundled with the function. Supports glob patterns.
 # For example, if you want to serve static HTML pages in your function:
-# static_files = [ "./functions/push_fcm/*.html" ]
+# static_files = [ "./functions/push-fcm/*.html" ]
+
+[functions.push-notify-new-incident-fcm]
+enabled = true
+verify_jwt = true
+import_map = "./functions/push-notify-new-incident-fcm/deno.json"
+# Uncomment to specify a custom file path to the entrypoint.
+# Supported file extensions are: .ts, .js, .mjs, .jsx, .tsx
+entrypoint = "./functions/push-notify-new-incident-fcm/index.ts"
+# Specifies static files to be bundled with the function. Supports glob patterns.
+# For example, if you want to serve static HTML pages in your function:
+# static_files = [ "./functions/push-notify-new-incident-fcm/*.html" ]
+
+[functions.push-notify-cluster-density-fcm]
+enabled = true
+verify_jwt = true
+import_map = "./functions/push-notify-cluster-density-fcm/deno.json"
+# Uncomment to specify a custom file path to the entrypoint.
+# Supported file extensions are: .ts, .js, .mjs, .jsx, .tsx
+entrypoint = "./functions/push-notify-cluster-density-fcm/index.ts"
+# Specifies static files to be bundled with the function. Supports glob patterns.
+# For example, if you want to serve static HTML pages in your function:
+# static_files = [ "./functions/push-notify-cluster-density-fcm/*.html" ]

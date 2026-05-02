@@ -9,8 +9,10 @@ import 'package:fpdart/fpdart.dart' as _i4;
 import 'package:mockito/mockito.dart' as _i1;
 import 'package:mockito/src/dummies.dart' as _i7;
 import 'package:smart_route_app/core/errors/failures.dart' as _i5;
-import 'package:smart_route_app/features/incident/domain/entities/incident.dart'
+import 'package:smart_route_app/features/incident/domain/entities/cluster_item.dart'
     as _i6;
+import 'package:smart_route_app/features/incident/domain/entities/incident.dart'
+    as _i8;
 import 'package:smart_route_app/features/incident/domain/repositories/incident_repository.dart'
     as _i2;
 
@@ -37,26 +39,44 @@ class MockIncidentRepository extends _i1.Mock
   }
 
   @override
-  _i3.Future<_i4.Either<_i5.Failure, List<_i6.Incident>>>
+  _i3.Future<_i4.Either<_i5.Failure, List<_i6.ClusterItem>>> fetchClusters() =>
+      (super.noSuchMethod(
+        Invocation.method(
+          #fetchClusters,
+          [],
+        ),
+        returnValue:
+            _i3.Future<_i4.Either<_i5.Failure, List<_i6.ClusterItem>>>.value(
+                _i7.dummyValue<_i4.Either<_i5.Failure, List<_i6.ClusterItem>>>(
+          this,
+          Invocation.method(
+            #fetchClusters,
+            [],
+          ),
+        )),
+      ) as _i3.Future<_i4.Either<_i5.Failure, List<_i6.ClusterItem>>>);
+
+  @override
+  _i3.Future<_i4.Either<_i5.Failure, List<_i8.Incident>>>
       getIncidentsFormArcGis() => (super.noSuchMethod(
             Invocation.method(
               #getIncidentsFormArcGis,
               [],
             ),
             returnValue:
-                _i3.Future<_i4.Either<_i5.Failure, List<_i6.Incident>>>.value(
-                    _i7.dummyValue<_i4.Either<_i5.Failure, List<_i6.Incident>>>(
+                _i3.Future<_i4.Either<_i5.Failure, List<_i8.Incident>>>.value(
+                    _i7.dummyValue<_i4.Either<_i5.Failure, List<_i8.Incident>>>(
               this,
               Invocation.method(
                 #getIncidentsFormArcGis,
                 [],
               ),
             )),
-          ) as _i3.Future<_i4.Either<_i5.Failure, List<_i6.Incident>>>);
+          ) as _i3.Future<_i4.Either<_i5.Failure, List<_i8.Incident>>>);
 
   @override
   _i3.Future<_i4.Either<_i5.Failure, void>> addIncident(
-          _i6.Incident? incident) =>
+          _i8.Incident? incident) =>
       (super.noSuchMethod(
         Invocation.method(
           #addIncident,
@@ -101,7 +121,7 @@ class MockIncidentRepository extends _i1.Mock
       ) as _i3.Future<_i4.Either<_i5.Failure, void>>);
 
   @override
-  _i3.Future<_i4.Either<_i5.Failure, List<_i6.Incident>>>
+  _i3.Future<_i4.Either<_i5.Failure, List<_i8.Incident>>>
       getIncidentsFromSupabase({required String? userUid}) =>
           (super.noSuchMethod(
             Invocation.method(
@@ -110,8 +130,8 @@ class MockIncidentRepository extends _i1.Mock
               {#userUid: userUid},
             ),
             returnValue:
-                _i3.Future<_i4.Either<_i5.Failure, List<_i6.Incident>>>.value(
-                    _i7.dummyValue<_i4.Either<_i5.Failure, List<_i6.Incident>>>(
+                _i3.Future<_i4.Either<_i5.Failure, List<_i8.Incident>>>.value(
+                    _i7.dummyValue<_i4.Either<_i5.Failure, List<_i8.Incident>>>(
               this,
               Invocation.method(
                 #getIncidentsFromSupabase,
@@ -119,11 +139,11 @@ class MockIncidentRepository extends _i1.Mock
                 {#userUid: userUid},
               ),
             )),
-          ) as _i3.Future<_i4.Either<_i5.Failure, List<_i6.Incident>>>);
+          ) as _i3.Future<_i4.Either<_i5.Failure, List<_i8.Incident>>>);
 
   @override
   _i3.Future<_i4.Either<_i5.Failure, void>> updateIncident(
-    _i6.Incident? incident, {
+    _i8.Incident? incident, {
     required String? userUid,
   }) =>
       (super.noSuchMethod(
