@@ -1,4 +1,5 @@
 import 'package:fpdart/fpdart.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 import 'package:smart_route_app/core/errors/failures.dart';
 import 'package:smart_route_app/features/auth/data/datasources/google_auth_datasource.dart';
 import 'package:smart_route_app/features/auth/data/datasources/supabase_auth_datasource.dart';
@@ -129,6 +130,10 @@ class AuthRepositoryImpl implements AuthRepository {
     try {
       AppLogger.repository('SignOut started');
       await _supabase.auth.signOut();
+      AppLogger.repository('SignOut completed');
+
+      await GoogleSignIn.instance.signOut();
+
       AppLogger.repository('SignOut completed');
 
       return right(null);
