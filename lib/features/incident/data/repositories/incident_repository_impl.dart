@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:fpdart/fpdart.dart';
 import 'package:smart_route_app/core/errors/exceptions.dart';
 import 'package:smart_route_app/core/errors/failures.dart';
@@ -8,6 +10,7 @@ import 'package:smart_route_app/features/incident/data/datasources/supabase_remo
 import 'package:smart_route_app/features/incident/data/local_datasource/incident_local_datasourece.dart';
 import 'package:smart_route_app/features/incident/data/models/incident_model.dart';
 import 'package:smart_route_app/features/incident/domain/entities/incident.dart';
+import 'package:smart_route_app/features/incident/domain/entities/cluster_item.dart';
 import 'package:smart_route_app/features/incident/domain/repositories/incident_repository.dart';
 import 'package:uuid/uuid.dart';
 
@@ -59,6 +62,27 @@ class IncidentRepositoryImpl implements IncidentRepository {
   //   IncidentResult(this.incidents, this.isFromCache);
   // }
   // Repository sẽ trả về: Right(IncidentResult(data, true))
+
+  @override
+  Future<Either<Failure, List<ClusterItem>>> fetchClusters() async {
+    try {
+      final clusters = await _arcGISRemoteDataSource.fetchAndApplyClusters();
+
+      // Map Model -> Entity
+      final clusterEntities = clusters
+          .map((model) => model.toEntity())
+          .toList();
+      return right(clusterEntities);
+    } catch (e, st) {
+      AppLogger.error(
+        'Lỗi khi fetch clustering data',
+        name: 'IncidentRepository',
+        error: e,
+        stackTrace: st,
+      );
+      return left(UnexpectedFailure(e, st));
+    }
+  }
 
   @override
   Future<Either<Failure, List<Incident>>> getIncidentsFormArcGis() async {

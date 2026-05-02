@@ -1,5 +1,6 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:smart_route_app/core/errors/failures.dart';
+import 'package:smart_route_app/features/incident/domain/entities/cluster_item.dart';
 import 'package:smart_route_app/features/incident/domain/entities/incident.dart';
 
 part 'map_page_state.freezed.dart';
@@ -25,4 +26,9 @@ class MapPageState with _$MapPageState {
   }) = _Submitted;
 
   const factory MapPageState.error({required Failure failure}) = _Error;
+
+  // state fetch cluster
+  const factory MapPageState.clusterLoaded({
+    required List<ClusterItem> clusters,
+  }) = _ClusterLoaded;
 }

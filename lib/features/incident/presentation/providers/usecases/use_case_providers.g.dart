@@ -70,5 +70,21 @@ final deleteIncidentUsecaseProvider = Provider<DeleteIncidentUsecase>.internal(
 );
 
 typedef DeleteIncidentUsecaseRef = ProviderRef<DeleteIncidentUsecase>;
+String _$fetchClusterUseCaseHash() =>
+    r'bdccdd63ce80b93ddfac62bc7edaead792e10357';
+
+/// See also [fetchClusterUseCase].
+@ProviderFor(fetchClusterUseCase)
+final fetchClusterUseCaseProvider = Provider<FetchClusterUseCase>.internal(
+  fetchClusterUseCase,
+  name: r'fetchClusterUseCaseProvider',
+  debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
+      ? null
+      : _$fetchClusterUseCaseHash,
+  dependencies: null,
+  allTransitiveDependencies: null,
+);
+
+typedef FetchClusterUseCaseRef = ProviderRef<FetchClusterUseCase>;
 // ignore_for_file: type=lint
 // ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member

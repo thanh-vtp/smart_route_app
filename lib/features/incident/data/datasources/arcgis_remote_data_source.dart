@@ -1,3 +1,4 @@
+import 'package:smart_route_app/features/incident/data/models/cluster_response_model.dart';
 import 'package:smart_route_app/features/incident/data/models/incident_model.dart';
 
 /// ArcGIS Data Source - Quản lý GET, ADD, DELETE trên ArcGIS Feature Layer
@@ -15,4 +16,7 @@ abstract class ArcGISRemoteDataSource {
 
   /// Cập nhật incident khỏi ArcGIS Feature Layer dựa trên ObjectID
   Future<void> updateIncident(IncidentModel incident);
+
+  /// Fetch and apply clustering data từ API
+  Future<List<ClusterItemModel>> fetchAndApplyClusters();
 }

@@ -31,4 +31,8 @@ abstract class Constants {
 
   // --- ArcGIS Routing service ---
   static const String routeAndDirections = '/Route/NAServer/Route_World/solve';
+
+  // --- API KEYS FastAPI for Incident clustering ---
+  static const String clusteringApiUrl =
+      'https://smart-route-api-zod3.onrender.com/api/cluster';
 }

@@ -24,6 +24,7 @@ mixin _$MapPageState {
     required TResult Function(List<Incident> incidents) submitting,
     required TResult Function(List<Incident> incidents) submitted,
     required TResult Function(Failure failure) error,
+    required TResult Function(List<ClusterItem> clusters) clusterLoaded,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
@@ -34,6 +35,7 @@ mixin _$MapPageState {
     TResult? Function(List<Incident> incidents)? submitting,
     TResult? Function(List<Incident> incidents)? submitted,
     TResult? Function(Failure failure)? error,
+    TResult? Function(List<ClusterItem> clusters)? clusterLoaded,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
@@ -44,6 +46,7 @@ mixin _$MapPageState {
     TResult Function(List<Incident> incidents)? submitting,
     TResult Function(List<Incident> incidents)? submitted,
     TResult Function(Failure failure)? error,
+    TResult Function(List<ClusterItem> clusters)? clusterLoaded,
     required TResult orElse(),
   }) =>
       throw _privateConstructorUsedError;
@@ -55,6 +58,7 @@ mixin _$MapPageState {
     required TResult Function(_Submitting value) submitting,
     required TResult Function(_Submitted value) submitted,
     required TResult Function(_Error value) error,
+    required TResult Function(_ClusterLoaded value) clusterLoaded,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
@@ -65,6 +69,7 @@ mixin _$MapPageState {
     TResult? Function(_Submitting value)? submitting,
     TResult? Function(_Submitted value)? submitted,
     TResult? Function(_Error value)? error,
+    TResult? Function(_ClusterLoaded value)? clusterLoaded,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
@@ -75,6 +80,7 @@ mixin _$MapPageState {
     TResult Function(_Submitting value)? submitting,
     TResult Function(_Submitted value)? submitted,
     TResult Function(_Error value)? error,
+    TResult Function(_ClusterLoaded value)? clusterLoaded,
     required TResult orElse(),
   }) =>
       throw _privateConstructorUsedError;
@@ -142,6 +148,7 @@ class _$InitialImpl implements _Initial {
     required TResult Function(List<Incident> incidents) submitting,
     required TResult Function(List<Incident> incidents) submitted,
     required TResult Function(Failure failure) error,
+    required TResult Function(List<ClusterItem> clusters) clusterLoaded,
   }) {
     return initial();
   }
@@ -155,6 +162,7 @@ class _$InitialImpl implements _Initial {
     TResult? Function(List<Incident> incidents)? submitting,
     TResult? Function(List<Incident> incidents)? submitted,
     TResult? Function(Failure failure)? error,
+    TResult? Function(List<ClusterItem> clusters)? clusterLoaded,
   }) {
     return initial?.call();
   }
@@ -168,6 +176,7 @@ class _$InitialImpl implements _Initial {
     TResult Function(List<Incident> incidents)? submitting,
     TResult Function(List<Incident> incidents)? submitted,
     TResult Function(Failure failure)? error,
+    TResult Function(List<ClusterItem> clusters)? clusterLoaded,
     required TResult orElse(),
   }) {
     if (initial != null) {
@@ -185,6 +194,7 @@ class _$InitialImpl implements _Initial {
     required TResult Function(_Submitting value) submitting,
     required TResult Function(_Submitted value) submitted,
     required TResult Function(_Error value) error,
+    required TResult Function(_ClusterLoaded value) clusterLoaded,
   }) {
     return initial(this);
   }
@@ -198,6 +208,7 @@ class _$InitialImpl implements _Initial {
     TResult? Function(_Submitting value)? submitting,
     TResult? Function(_Submitted value)? submitted,
     TResult? Function(_Error value)? error,
+    TResult? Function(_ClusterLoaded value)? clusterLoaded,
   }) {
     return initial?.call(this);
   }
@@ -211,6 +222,7 @@ class _$InitialImpl implements _Initial {
     TResult Function(_Submitting value)? submitting,
     TResult Function(_Submitted value)? submitted,
     TResult Function(_Error value)? error,
+    TResult Function(_ClusterLoaded value)? clusterLoaded,
     required TResult orElse(),
   }) {
     if (initial != null) {
@@ -268,6 +280,7 @@ class _$LoadingImpl implements _Loading {
     required TResult Function(List<Incident> incidents) submitting,
     required TResult Function(List<Incident> incidents) submitted,
     required TResult Function(Failure failure) error,
+    required TResult Function(List<ClusterItem> clusters) clusterLoaded,
   }) {
     return loading();
   }
@@ -281,6 +294,7 @@ class _$LoadingImpl implements _Loading {
     TResult? Function(List<Incident> incidents)? submitting,
     TResult? Function(List<Incident> incidents)? submitted,
     TResult? Function(Failure failure)? error,
+    TResult? Function(List<ClusterItem> clusters)? clusterLoaded,
   }) {
     return loading?.call();
   }
@@ -294,6 +308,7 @@ class _$LoadingImpl implements _Loading {
     TResult Function(List<Incident> incidents)? submitting,
     TResult Function(List<Incident> incidents)? submitted,
     TResult Function(Failure failure)? error,
+    TResult Function(List<ClusterItem> clusters)? clusterLoaded,
     required TResult orElse(),
   }) {
     if (loading != null) {
@@ -311,6 +326,7 @@ class _$LoadingImpl implements _Loading {
     required TResult Function(_Submitting value) submitting,
     required TResult Function(_Submitted value) submitted,
     required TResult Function(_Error value) error,
+    required TResult Function(_ClusterLoaded value) clusterLoaded,
   }) {
     return loading(this);
   }
@@ -324,6 +340,7 @@ class _$LoadingImpl implements _Loading {
     TResult? Function(_Submitting value)? submitting,
     TResult? Function(_Submitted value)? submitted,
     TResult? Function(_Error value)? error,
+    TResult? Function(_ClusterLoaded value)? clusterLoaded,
   }) {
     return loading?.call(this);
   }
@@ -337,6 +354,7 @@ class _$LoadingImpl implements _Loading {
     TResult Function(_Submitting value)? submitting,
     TResult Function(_Submitted value)? submitted,
     TResult Function(_Error value)? error,
+    TResult Function(_ClusterLoaded value)? clusterLoaded,
     required TResult orElse(),
   }) {
     if (loading != null) {
@@ -428,6 +446,7 @@ class _$LoadedImpl implements _Loaded {
     required TResult Function(List<Incident> incidents) submitting,
     required TResult Function(List<Incident> incidents) submitted,
     required TResult Function(Failure failure) error,
+    required TResult Function(List<ClusterItem> clusters) clusterLoaded,
   }) {
     return loaded(incidents);
   }
@@ -441,6 +460,7 @@ class _$LoadedImpl implements _Loaded {
     TResult? Function(List<Incident> incidents)? submitting,
     TResult? Function(List<Incident> incidents)? submitted,
     TResult? Function(Failure failure)? error,
+    TResult? Function(List<ClusterItem> clusters)? clusterLoaded,
   }) {
     return loaded?.call(incidents);
   }
@@ -454,6 +474,7 @@ class _$LoadedImpl implements _Loaded {
     TResult Function(List<Incident> incidents)? submitting,
     TResult Function(List<Incident> incidents)? submitted,
     TResult Function(Failure failure)? error,
+    TResult Function(List<ClusterItem> clusters)? clusterLoaded,
     required TResult orElse(),
   }) {
     if (loaded != null) {
@@ -471,6 +492,7 @@ class _$LoadedImpl implements _Loaded {
     required TResult Function(_Submitting value) submitting,
     required TResult Function(_Submitted value) submitted,
     required TResult Function(_Error value) error,
+    required TResult Function(_ClusterLoaded value) clusterLoaded,
   }) {
     return loaded(this);
   }
@@ -484,6 +506,7 @@ class _$LoadedImpl implements _Loaded {
     TResult? Function(_Submitting value)? submitting,
     TResult? Function(_Submitted value)? submitted,
     TResult? Function(_Error value)? error,
+    TResult? Function(_ClusterLoaded value)? clusterLoaded,
   }) {
     return loaded?.call(this);
   }
@@ -497,6 +520,7 @@ class _$LoadedImpl implements _Loaded {
     TResult Function(_Submitting value)? submitting,
     TResult Function(_Submitted value)? submitted,
     TResult Function(_Error value)? error,
+    TResult Function(_ClusterLoaded value)? clusterLoaded,
     required TResult orElse(),
   }) {
     if (loaded != null) {
@@ -594,6 +618,7 @@ class _$SubmittingImpl implements _Submitting {
     required TResult Function(List<Incident> incidents) submitting,
     required TResult Function(List<Incident> incidents) submitted,
     required TResult Function(Failure failure) error,
+    required TResult Function(List<ClusterItem> clusters) clusterLoaded,
   }) {
     return submitting(incidents);
   }
@@ -607,6 +632,7 @@ class _$SubmittingImpl implements _Submitting {
     TResult? Function(List<Incident> incidents)? submitting,
     TResult? Function(List<Incident> incidents)? submitted,
     TResult? Function(Failure failure)? error,
+    TResult? Function(List<ClusterItem> clusters)? clusterLoaded,
   }) {
     return submitting?.call(incidents);
   }
@@ -620,6 +646,7 @@ class _$SubmittingImpl implements _Submitting {
     TResult Function(List<Incident> incidents)? submitting,
     TResult Function(List<Incident> incidents)? submitted,
     TResult Function(Failure failure)? error,
+    TResult Function(List<ClusterItem> clusters)? clusterLoaded,
     required TResult orElse(),
   }) {
     if (submitting != null) {
@@ -637,6 +664,7 @@ class _$SubmittingImpl implements _Submitting {
     required TResult Function(_Submitting value) submitting,
     required TResult Function(_Submitted value) submitted,
     required TResult Function(_Error value) error,
+    required TResult Function(_ClusterLoaded value) clusterLoaded,
   }) {
     return submitting(this);
   }
@@ -650,6 +678,7 @@ class _$SubmittingImpl implements _Submitting {
     TResult? Function(_Submitting value)? submitting,
     TResult? Function(_Submitted value)? submitted,
     TResult? Function(_Error value)? error,
+    TResult? Function(_ClusterLoaded value)? clusterLoaded,
   }) {
     return submitting?.call(this);
   }
@@ -663,6 +692,7 @@ class _$SubmittingImpl implements _Submitting {
     TResult Function(_Submitting value)? submitting,
     TResult Function(_Submitted value)? submitted,
     TResult Function(_Error value)? error,
+    TResult Function(_ClusterLoaded value)? clusterLoaded,
     required TResult orElse(),
   }) {
     if (submitting != null) {
@@ -760,6 +790,7 @@ class _$SubmittedImpl implements _Submitted {
     required TResult Function(List<Incident> incidents) submitting,
     required TResult Function(List<Incident> incidents) submitted,
     required TResult Function(Failure failure) error,
+    required TResult Function(List<ClusterItem> clusters) clusterLoaded,
   }) {
     return submitted(incidents);
   }
@@ -773,6 +804,7 @@ class _$SubmittedImpl implements _Submitted {
     TResult? Function(List<Incident> incidents)? submitting,
     TResult? Function(List<Incident> incidents)? submitted,
     TResult? Function(Failure failure)? error,
+    TResult? Function(List<ClusterItem> clusters)? clusterLoaded,
   }) {
     return submitted?.call(incidents);
   }
@@ -786,6 +818,7 @@ class _$SubmittedImpl implements _Submitted {
     TResult Function(List<Incident> incidents)? submitting,
     TResult Function(List<Incident> incidents)? submitted,
     TResult Function(Failure failure)? error,
+    TResult Function(List<ClusterItem> clusters)? clusterLoaded,
     required TResult orElse(),
   }) {
     if (submitted != null) {
@@ -803,6 +836,7 @@ class _$SubmittedImpl implements _Submitted {
     required TResult Function(_Submitting value) submitting,
     required TResult Function(_Submitted value) submitted,
     required TResult Function(_Error value) error,
+    required TResult Function(_ClusterLoaded value) clusterLoaded,
   }) {
     return submitted(this);
   }
@@ -816,6 +850,7 @@ class _$SubmittedImpl implements _Submitted {
     TResult? Function(_Submitting value)? submitting,
     TResult? Function(_Submitted value)? submitted,
     TResult? Function(_Error value)? error,
+    TResult? Function(_ClusterLoaded value)? clusterLoaded,
   }) {
     return submitted?.call(this);
   }
@@ -829,6 +864,7 @@ class _$SubmittedImpl implements _Submitted {
     TResult Function(_Submitting value)? submitting,
     TResult Function(_Submitted value)? submitted,
     TResult Function(_Error value)? error,
+    TResult Function(_ClusterLoaded value)? clusterLoaded,
     required TResult orElse(),
   }) {
     if (submitted != null) {
@@ -918,6 +954,7 @@ class _$ErrorImpl implements _Error {
     required TResult Function(List<Incident> incidents) submitting,
     required TResult Function(List<Incident> incidents) submitted,
     required TResult Function(Failure failure) error,
+    required TResult Function(List<ClusterItem> clusters) clusterLoaded,
   }) {
     return error(failure);
   }
@@ -931,6 +968,7 @@ class _$ErrorImpl implements _Error {
     TResult? Function(List<Incident> incidents)? submitting,
     TResult? Function(List<Incident> incidents)? submitted,
     TResult? Function(Failure failure)? error,
+    TResult? Function(List<ClusterItem> clusters)? clusterLoaded,
   }) {
     return error?.call(failure);
   }
@@ -944,6 +982,7 @@ class _$ErrorImpl implements _Error {
     TResult Function(List<Incident> incidents)? submitting,
     TResult Function(List<Incident> incidents)? submitted,
     TResult Function(Failure failure)? error,
+    TResult Function(List<ClusterItem> clusters)? clusterLoaded,
     required TResult orElse(),
   }) {
     if (error != null) {
@@ -961,6 +1000,7 @@ class _$ErrorImpl implements _Error {
     required TResult Function(_Submitting value) submitting,
     required TResult Function(_Submitted value) submitted,
     required TResult Function(_Error value) error,
+    required TResult Function(_ClusterLoaded value) clusterLoaded,
   }) {
     return error(this);
   }
@@ -974,6 +1014,7 @@ class _$ErrorImpl implements _Error {
     TResult? Function(_Submitting value)? submitting,
     TResult? Function(_Submitted value)? submitted,
     TResult? Function(_Error value)? error,
+    TResult? Function(_ClusterLoaded value)? clusterLoaded,
   }) {
     return error?.call(this);
   }
@@ -987,6 +1028,7 @@ class _$ErrorImpl implements _Error {
     TResult Function(_Submitting value)? submitting,
     TResult Function(_Submitted value)? submitted,
     TResult Function(_Error value)? error,
+    TResult Function(_ClusterLoaded value)? clusterLoaded,
     required TResult orElse(),
   }) {
     if (error != null) {
@@ -1002,5 +1044,176 @@ abstract class _Error implements MapPageState {
   Failure get failure;
   @JsonKey(ignore: true)
   _$$ErrorImplCopyWith<_$ErrorImpl> get copyWith =>
+      throw _privateConstructorUsedError;
+}
+
+/// @nodoc
+abstract class _$$ClusterLoadedImplCopyWith<$Res> {
+  factory _$$ClusterLoadedImplCopyWith(
+          _$ClusterLoadedImpl value, $Res Function(_$ClusterLoadedImpl) then) =
+      __$$ClusterLoadedImplCopyWithImpl<$Res>;
+  @useResult
+  $Res call({List<ClusterItem> clusters});
+}
+
+/// @nodoc
+class __$$ClusterLoadedImplCopyWithImpl<$Res>
+    extends _$MapPageStateCopyWithImpl<$Res, _$ClusterLoadedImpl>
+    implements _$$ClusterLoadedImplCopyWith<$Res> {
+  __$$ClusterLoadedImplCopyWithImpl(
+      _$ClusterLoadedImpl _value, $Res Function(_$ClusterLoadedImpl) _then)
+      : super(_value, _then);
+
+  @pragma('vm:prefer-inline')
+  @override
+  $Res call({
+    Object? clusters = null,
+  }) {
+    return _then(_$ClusterLoadedImpl(
+      clusters: null == clusters
+          ? _value._clusters
+          : clusters // ignore: cast_nullable_to_non_nullable
+              as List<ClusterItem>,
+    ));
+  }
+}
+
+/// @nodoc
+
+class _$ClusterLoadedImpl implements _ClusterLoaded {
+  const _$ClusterLoadedImpl({required final List<ClusterItem> clusters})
+      : _clusters = clusters;
+
+  final List<ClusterItem> _clusters;
+  @override
+  List<ClusterItem> get clusters {
+    if (_clusters is EqualUnmodifiableListView) return _clusters;
+    // ignore: implicit_dynamic_type
+    return EqualUnmodifiableListView(_clusters);
+  }
+
+  @override
+  String toString() {
+    return 'MapPageState.clusterLoaded(clusters: $clusters)';
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType &&
+            other is _$ClusterLoadedImpl &&
+            const DeepCollectionEquality().equals(other._clusters, _clusters));
+  }
+
+  @override
+  int get hashCode =>
+      Object.hash(runtimeType, const DeepCollectionEquality().hash(_clusters));
+
+  @JsonKey(ignore: true)
+  @override
+  @pragma('vm:prefer-inline')
+  _$$ClusterLoadedImplCopyWith<_$ClusterLoadedImpl> get copyWith =>
+      __$$ClusterLoadedImplCopyWithImpl<_$ClusterLoadedImpl>(this, _$identity);
+
+  @override
+  @optionalTypeArgs
+  TResult when<TResult extends Object?>({
+    required TResult Function() initial,
+    required TResult Function() loading,
+    required TResult Function(List<Incident> incidents) loaded,
+    required TResult Function(List<Incident> incidents) submitting,
+    required TResult Function(List<Incident> incidents) submitted,
+    required TResult Function(Failure failure) error,
+    required TResult Function(List<ClusterItem> clusters) clusterLoaded,
+  }) {
+    return clusterLoaded(clusters);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? whenOrNull<TResult extends Object?>({
+    TResult? Function()? initial,
+    TResult? Function()? loading,
+    TResult? Function(List<Incident> incidents)? loaded,
+    TResult? Function(List<Incident> incidents)? submitting,
+    TResult? Function(List<Incident> incidents)? submitted,
+    TResult? Function(Failure failure)? error,
+    TResult? Function(List<ClusterItem> clusters)? clusterLoaded,
+  }) {
+    return clusterLoaded?.call(clusters);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeWhen<TResult extends Object?>({
+    TResult Function()? initial,
+    TResult Function()? loading,
+    TResult Function(List<Incident> incidents)? loaded,
+    TResult Function(List<Incident> incidents)? submitting,
+    TResult Function(List<Incident> incidents)? submitted,
+    TResult Function(Failure failure)? error,
+    TResult Function(List<ClusterItem> clusters)? clusterLoaded,
+    required TResult orElse(),
+  }) {
+    if (clusterLoaded != null) {
+      return clusterLoaded(clusters);
+    }
+    return orElse();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult map<TResult extends Object?>({
+    required TResult Function(_Initial value) initial,
+    required TResult Function(_Loading value) loading,
+    required TResult Function(_Loaded value) loaded,
+    required TResult Function(_Submitting value) submitting,
+    required TResult Function(_Submitted value) submitted,
+    required TResult Function(_Error value) error,
+    required TResult Function(_ClusterLoaded value) clusterLoaded,
+  }) {
+    return clusterLoaded(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? mapOrNull<TResult extends Object?>({
+    TResult? Function(_Initial value)? initial,
+    TResult? Function(_Loading value)? loading,
+    TResult? Function(_Loaded value)? loaded,
+    TResult? Function(_Submitting value)? submitting,
+    TResult? Function(_Submitted value)? submitted,
+    TResult? Function(_Error value)? error,
+    TResult? Function(_ClusterLoaded value)? clusterLoaded,
+  }) {
+    return clusterLoaded?.call(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeMap<TResult extends Object?>({
+    TResult Function(_Initial value)? initial,
+    TResult Function(_Loading value)? loading,
+    TResult Function(_Loaded value)? loaded,
+    TResult Function(_Submitting value)? submitting,
+    TResult Function(_Submitted value)? submitted,
+    TResult Function(_Error value)? error,
+    TResult Function(_ClusterLoaded value)? clusterLoaded,
+    required TResult orElse(),
+  }) {
+    if (clusterLoaded != null) {
+      return clusterLoaded(this);
+    }
+    return orElse();
+  }
+}
+
+abstract class _ClusterLoaded implements MapPageState {
+  const factory _ClusterLoaded({required final List<ClusterItem> clusters}) =
+      _$ClusterLoadedImpl;
+
+  List<ClusterItem> get clusters;
+  @JsonKey(ignore: true)
+  _$$ClusterLoadedImplCopyWith<_$ClusterLoadedImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }

@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:ui' as ui;
 import 'package:arcgis_maps/arcgis_maps.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
@@ -8,6 +9,7 @@ import 'package:smart_route_app/features/incident/presentation/logics/map_intera
 import 'package:smart_route_app/features/incident/presentation/logics/map_location_logic.dart';
 import 'package:smart_route_app/features/incident/presentation/providers/base_map_style_providers.dart';
 import 'package:smart_route_app/core/feature_layer/providers/incident_feature_layer_providers.dart';
+import 'package:smart_route_app/features/incident/domain/entities/cluster_item.dart';
 import 'package:smart_route_app/features/incident/presentation/providers/location_display_providers.dart';
 import 'package:smart_route_app/features/incident/presentation/providers/map_center_providers.dart';
 import 'package:smart_route_app/features/incident/presentation/providers/map_controller_provider.dart';
@@ -47,6 +49,13 @@ class _MapPageState extends ConsumerState<MapPage> {
 
   // Flag để tránh gọi updateGraphicsOverlay nhiều lần
   List<String>? _lastIncidentIds;
+  List<String>? _lastClusterKeys;
+
+  // Overlay riêng cho cluster items
+  final GraphicsOverlay _clusterGraphicsOverlay = GraphicsOverlay();
+
+  // Cache symbol để không render lại marker cụm cho cùng một số lượng
+  final Map<String, PictureMarkerSymbol> _clusterSymbolCache = {};
 
   // Stream subscriptions để dispose
   StreamSubscription? _mapViewpointChangedSubscription;
@@ -126,11 +135,17 @@ class _MapPageState extends ConsumerState<MapPage> {
       mapViewController: _mapViewController,
       sceneViewController: _sceneViewController,
     );
+    _moveClusterOverlayToActiveView(
+      mode: initialMode,
+      mapViewController: _mapViewController,
+      sceneViewController: _sceneViewController,
+    );
 
     // Fetch incidents từ MapNotifier
     Future.microtask(() {
       if (mounted) {
         ref.read(mapPageNotifierProvider.notifier).fetchIncidents();
+        ref.read(mapPageNotifierProvider.notifier).fetchClusters();
       }
     });
 
@@ -185,6 +200,11 @@ class _MapPageState extends ConsumerState<MapPage> {
 
         // Di chuyển graphics overlay từ view cũ sang view mới
         _mapInteractionLogic.moveGraphicsOverlayToActiveView(
+          mode: next,
+          mapViewController: _mapViewController,
+          sceneViewController: _sceneViewController,
+        );
+        _moveClusterOverlayToActiveView(
           mode: next,
           mapViewController: _mapViewController,
           sceneViewController: _sceneViewController,
@@ -585,6 +605,11 @@ class _MapPageState extends ConsumerState<MapPage> {
         });
         return const SizedBox.shrink();
       },
+      clusterLoaded: (clusters) {
+        unawaited(_updateClusterGraphicsIfNeeded(clusters));
+        return const SizedBox.shrink();
+      },
+
       error: (_) => const SizedBox.shrink(),
     );
   }
@@ -612,5 +637,189 @@ class _MapPageState extends ConsumerState<MapPage> {
       if (a[i] != b[i]) return false;
     }
     return true;
+  }
+
+  /// Move cluster overlay to the currently active map view.
+  void _moveClusterOverlayToActiveView({
+    required MapMode mode,
+    required ArcGISMapViewController mapViewController,
+    required ArcGISSceneViewController sceneViewController,
+  }) {
+    mapViewController.graphicsOverlays.remove(_clusterGraphicsOverlay);
+    sceneViewController.graphicsOverlays.remove(_clusterGraphicsOverlay);
+
+    if (mode == MapMode.map2D) {
+      mapViewController.graphicsOverlays.add(_clusterGraphicsOverlay);
+    } else {
+      sceneViewController.graphicsOverlays.add(_clusterGraphicsOverlay);
+    }
+  }
+
+  /// Update cluster graphics only when the cluster list changes.
+  Future<void> _updateClusterGraphicsIfNeeded(
+    List<ClusterItem> clusters,
+  ) async {
+    final currentKeys = clusters.map(_clusterKey).toList()..sort();
+
+    if (_lastClusterKeys != null &&
+        _listEquals(_lastClusterKeys!, currentKeys)) {
+      return;
+    }
+
+    _lastClusterKeys = currentKeys;
+    _clusterGraphicsOverlay.graphics.clear();
+
+    final noisePoints = clusters.where((cluster) => cluster.isNoise).toList();
+    final groupedClusters = <int, List<ClusterItem>>{};
+
+    for (final cluster in clusters) {
+      if (cluster.isNoise) continue;
+
+      groupedClusters.putIfAbsent(cluster.clusterId, () => <ClusterItem>[]);
+      groupedClusters[cluster.clusterId]!.add(cluster);
+    }
+
+    for (final noisePoint in noisePoints) {
+      final point = ArcGISPoint(
+        x: noisePoint.longitude,
+        y: noisePoint.latitude,
+        spatialReference: SpatialReference.wgs84,
+      );
+
+      final graphic = Graphic(
+        geometry: point,
+        symbol: _buildNoiseSymbol(),
+        attributes: {
+          'cluster_id': noisePoint.clusterId,
+          'object_id': noisePoint.objectId,
+          'is_noise': true,
+          'cluster_count': 1,
+        },
+      );
+
+      _clusterGraphicsOverlay.graphics.add(graphic);
+    }
+
+    final sortedClusterIds = groupedClusters.keys.toList()..sort();
+    for (final clusterId in sortedClusterIds) {
+      final items = groupedClusters[clusterId]!;
+      final centroid = _calculateCentroid(items);
+      final count = items.length;
+
+      final graphic = Graphic(
+        geometry: centroid,
+        symbol: await _buildClusterSymbol(count),
+        attributes: {
+          'cluster_id': clusterId,
+          'object_id': items.first.objectId,
+          'is_noise': false,
+          'cluster_count': count,
+        },
+      );
+
+      _clusterGraphicsOverlay.graphics.add(graphic);
+    }
+  }
+
+  String _clusterKey(ClusterItem cluster) {
+    return '${cluster.objectId}|${cluster.clusterId}|${cluster.latitude}|${cluster.longitude}';
+  }
+
+  ArcGISPoint _calculateCentroid(List<ClusterItem> items) {
+    final totalLatitude = items.fold<double>(
+      0,
+      (sum, item) => sum + item.latitude,
+    );
+    final totalLongitude = items.fold<double>(
+      0,
+      (sum, item) => sum + item.longitude,
+    );
+
+    return ArcGISPoint(
+      x: totalLongitude / items.length,
+      y: totalLatitude / items.length,
+      spatialReference: SpatialReference.wgs84,
+    );
+  }
+
+  ArcGISSymbol _buildNoiseSymbol() {
+    return SimpleMarkerSymbol(
+        style: SimpleMarkerSymbolStyle.circle,
+        color: Colors.grey.shade500,
+        size: 10.0,
+      )
+      ..outline = SimpleLineSymbol(
+        style: SimpleLineSymbolStyle.solid,
+        color: Colors.white,
+        width: 1.5,
+      );
+  }
+
+  Future<PictureMarkerSymbol> _buildClusterSymbol(int count) async {
+    final displayCount = count > 99 ? '99+' : count.toString();
+    final cacheKey = 'cluster_$displayCount';
+
+    final cached = _clusterSymbolCache[cacheKey];
+    if (cached != null) {
+      return cached;
+    }
+
+    const canvasSize = 128.0;
+    const outerRadius = 56.0;
+    const innerRadius = 42.0;
+
+    final recorder = ui.PictureRecorder();
+    final canvas = Canvas(recorder);
+    final center = const Offset(canvasSize / 2, canvasSize / 2);
+
+    final shadowPaint = Paint()
+      ..color = Colors.black.withValues(alpha: 0.18)
+      ..maskFilter = const ui.MaskFilter.blur(ui.BlurStyle.normal, 10);
+    canvas.drawCircle(center.translate(0, 4), outerRadius, shadowPaint);
+
+    final outerPaint = Paint()..color = Colors.white;
+    canvas.drawCircle(center, outerRadius, outerPaint);
+
+    final innerPaint = Paint()..color = const Color(0xFF1A73E8);
+    canvas.drawCircle(center, innerRadius, innerPaint);
+
+    final textPainter = TextPainter(
+      text: TextSpan(
+        text: displayCount,
+        style: const TextStyle(
+          color: Colors.white,
+          fontSize: 34,
+          fontWeight: FontWeight.w700,
+        ),
+      ),
+      textDirection: TextDirection.ltr,
+      textAlign: TextAlign.center,
+      maxLines: 1,
+    )..layout();
+
+    textPainter.paint(
+      canvas,
+      Offset(
+        center.dx - textPainter.width / 2,
+        center.dy - textPainter.height / 2,
+      ),
+    );
+
+    final picture = recorder.endRecording();
+    final image = await picture.toImage(canvasSize.toInt(), canvasSize.toInt());
+    final byteData = await image.toByteData(format: ui.ImageByteFormat.png);
+
+    picture.dispose();
+    image.dispose();
+
+    final symbol =
+        PictureMarkerSymbol.withImage(
+            ArcGISImage.fromBytes(byteData!.buffer.asUint8List()),
+          )
+          ..width = 34
+          ..height = 34;
+
+    _clusterSymbolCache[cacheKey] = symbol;
+    return symbol;
   }
 }

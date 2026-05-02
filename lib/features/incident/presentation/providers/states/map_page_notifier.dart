@@ -6,6 +6,7 @@ import 'package:smart_route_app/features/auth/domain/entities/app_user.dart';
 import 'package:smart_route_app/features/incident/domain/entities/incident.dart';
 import 'package:smart_route_app/features/incident/domain/usecases/add_incident_usecase.dart';
 import 'package:smart_route_app/features/incident/domain/usecases/delete_incident_usecase.dart';
+import 'package:smart_route_app/features/incident/domain/usecases/fetch_cluster_usecase.dart';
 import 'package:smart_route_app/features/incident/domain/usecases/get_incidents_usecase.dart';
 import 'package:smart_route_app/features/incident/domain/usecases/update_incident_usecase.dart';
 import 'package:smart_route_app/features/incident/presentation/providers/states/map_page_state.dart';
@@ -35,6 +36,21 @@ class MapPageNotifier extends Notifier<MapPageState> {
       ref.read(updateIncidentUsecaseProvider);
   DeleteIncidentUsecase get _deleteIncidentUsecase =>
       ref.read(deleteIncidentUsecaseProvider);
+  FetchClusterUseCase get _fetchClusterUseCase =>
+      ref.read(fetchClusterUseCaseProvider);
+
+  Future<void> fetchClusters() async {
+    final result = await _fetchClusterUseCase.call();
+
+    result.fold(
+      (failure) {
+        state = MapPageState.error(failure: failure);
+      },
+      (clusters) {
+        state = MapPageState.clusterLoaded(clusters: clusters);
+      },
+    );
+  }
 
   Future<void> fetchIncidents({
     IncidentDataSourceType source = IncidentDataSourceType.arcGIS,

@@ -1,9 +1,13 @@
 import 'package:fpdart/fpdart.dart';
 import 'package:smart_route_app/core/errors/failures.dart';
 import 'package:smart_route_app/features/incident/domain/entities/incident.dart';
+import 'package:smart_route_app/features/incident/domain/entities/cluster_item.dart';
 
 /// Domain Repository Interface
 abstract class IncidentRepository {
+  /// Fetch and apply clustering data từ API
+  Future<Either<Failure, List<ClusterItem>>> fetchClusters();
+
   /// Lấy danh sách incidents (từ ArcGIS)
   Future<Either<Failure, List<Incident>>> getIncidentsFormArcGis();
 
