@@ -30,11 +30,11 @@ class GoogleAuthDatasourceImpl implements GoogleAuthDatasource {
         clientId: androidClientId,
       );
 
-      final googleUser = await googleSignIn.attemptLightweightAuthentication();
+      final googleUser = await googleSignIn.authenticate();
       // or await googleSignIn.authenticate(); which will return a GoogleSignInAccount or throw an exception
-      if (googleUser == null) {
-        throw AuthException('Google sign-in failed');
-      }
+      // if (googleUser == null) {
+      //   throw AuthException('Google sign-in failed');
+      // }
 
       return googleUser;
     } catch (e, st) {
