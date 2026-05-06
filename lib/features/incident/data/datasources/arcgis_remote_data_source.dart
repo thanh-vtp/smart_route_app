@@ -1,3 +1,4 @@
+import 'package:arcgis_maps/arcgis_maps.dart';
 import 'package:smart_route_app/features/incident/data/models/cluster_response_model.dart';
 import 'package:smart_route_app/features/incident/data/models/incident_model.dart';
 
@@ -5,7 +6,7 @@ import 'package:smart_route_app/features/incident/data/models/incident_model.dar
 /// Sử dụng cho hiển thị map và visualization
 abstract class ArcGISRemoteDataSource {
   /// Lấy danh sách incidents từ ArcGIS Feature Layer
-  Future<List<IncidentModel>> getIncidents();
+  Future<List<IncidentModel>> getIncidents({Geometry? visibleExtent});
 
   /// Thêm incident mới vào ArcGIS Feature Layer
   /// Trả về ObjectID (String) để lưu tham chiếu

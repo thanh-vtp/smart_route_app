@@ -53,7 +53,7 @@ class ArcGISRemoteDataSourceImpl implements ArcGISRemoteDataSource {
   }
 
   @override
-  Future<List<IncidentModel>> getIncidents() async {
+  Future<List<IncidentModel>> getIncidents({Geometry? visibleExtent}) async {
     try {
       final table = _featureLayer.featureTable;
       if (table == null) {
@@ -62,6 +62,12 @@ class ArcGISRemoteDataSourceImpl implements ArcGISRemoteDataSource {
 
       // Tạo query parameters với where clause "1=1" để lấy tất cả features
       final query = QueryParameters()..whereClause = "1=1";
+
+      // TỐI ƯU 1: Nếu có visibleExtent, chỉ lấy trong màn hình hiện tại
+      if (visibleExtent != null) {
+        query.geometry = visibleExtent;
+        query.spatialRelationship = SpatialRelationship.intersects;
+      }
 
       // Yêu cầu trả về TẤT CẢ CÁC FIELDS từ feature layer
       // Trong ArcGIS SDK, cần load ServiceFeatureTable với outFields trước khi query
@@ -104,10 +110,12 @@ class ArcGISRemoteDataSourceImpl implements ArcGISRemoteDataSource {
             'Populating from service...',
             source: 'ArcGISRemoteDataSourceImpl',
           );
+
+          // TỐI ƯU 2: CHỈ lấy 3 fields cần thiết để vẽ bản đồ
           await table.populateFromService(
             parameters: query,
             clearCache: true, // Đổi thành true để force refresh khi retry
-            outFields: ['*'], // Lấy tất cả fields
+            outFields: ['OBJECTID', 'GlobalID', 'LoaiSuCo'],
           );
 
           AppLogger.data(
