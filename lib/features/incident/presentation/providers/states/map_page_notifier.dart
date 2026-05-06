@@ -60,14 +60,9 @@ class MapPageNotifier extends Notifier<MapPageState> {
     AppLogger.ui('User requested to fetch incidents on the map');
 
     // 1. Lấy danh sách incidents hiện tại (để backup)
-    final previousIncidents = state.maybeWhen(
-      loaded: (incidents) => incidents,
-      submitted: (incidents) => incidents,
-      orElse: () => <Incident>[], // List rỗng nếu chưa có gì
-    );
-
+    final previousIncidents = _getCurrentIncidents();
     // 2. Chỉ hiện Loading xoay vòng tròn nếu chưa có data
-    if (previousIncidents.isEmpty) {
+    if (previousIncidents.isEmpty || isManualRetry) {
       state = const MapPageState.loading();
     }
     // Nếu đã có data (previousIncidents.isNotEmpty), ta giữ nguyên state cũ
@@ -117,12 +112,7 @@ class MapPageNotifier extends Notifier<MapPageState> {
     );
 
     // Lấy danh sách incidents hiện tại
-    final currentIncidents = state.maybeWhen(
-      loaded: (incidents) => incidents,
-      submitted: (incidents) => incidents,
-      orElse: () => <Incident>[],
-    );
-
+    final currentIncidents = _getCurrentIncidents();
     // Set state submitting với danh sách hiện tại
     state = MapPageState.submitting(incidents: currentIncidents);
 
@@ -168,11 +158,7 @@ class MapPageNotifier extends Notifier<MapPageState> {
   ) async {
     AppLogger.ui('User ${currentUser.email} updating incident: ${incident.id}');
 
-    final currentIncidents = state.maybeWhen(
-      loaded: (incidents) => incidents,
-      submitted: (incidents) => incidents,
-      orElse: () => <Incident>[],
-    );
+    final currentIncidents = _getCurrentIncidents();
 
     state = MapPageState.submitting(incidents: currentIncidents);
 
@@ -203,11 +189,7 @@ class MapPageNotifier extends Notifier<MapPageState> {
   ) async {
     AppLogger.ui('User ${currentUser.email} deleting incident: $incidentId');
 
-    final currentIncidents = state.maybeWhen(
-      loaded: (incidents) => incidents,
-      submitted: (incidents) => incidents,
-      orElse: () => <Incident>[],
-    );
+    final currentIncidents = _getCurrentIncidents();
 
     state = MapPageState.submitting(incidents: currentIncidents);
 
@@ -260,6 +242,15 @@ class MapPageNotifier extends Notifier<MapPageState> {
         state = MapPageState.loaded(incidents: incidents);
       },
       orElse: () {},
+    );
+  }
+
+  /// Lấy danh sách Incidents đang hiển thị ở State hiện tại
+  List<Incident> _getCurrentIncidents() {
+    return state.maybeWhen(
+      loaded: (incidents) => incidents,
+      submitted: (incidents) => incidents,
+      orElse: () => <Incident>[],
     );
   }
 }
