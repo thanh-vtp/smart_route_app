@@ -14,6 +14,9 @@ class ClusterItemModel with _$ClusterItemModel {
     required double longitude, // kinh độ
     @JsonKey(name: 'Cluster_ID')
     required int clusterId, // ID của cluster mà incident này thuộc về
+    @JsonKey(name: 'Is_Core_Point')
+    required int
+    isCorePoint, // true nếu đây là core point của cluster, false nếu là border point
   }) = _ClusterItemModel;
 
   factory ClusterItemModel.fromJson(Map<String, dynamic> json) =>
@@ -26,6 +29,7 @@ class ClusterItemModel with _$ClusterItemModel {
       latitude: latitude,
       longitude: longitude,
       clusterId: clusterId,
+      isCorePoint: isCorePoint,
     );
   }
 }

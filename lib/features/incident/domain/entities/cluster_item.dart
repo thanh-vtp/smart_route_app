@@ -11,6 +11,7 @@ class ClusterItem with _$ClusterItem {
     required double latitude,
     required double longitude,
     required int clusterId,
+    required int isCorePoint,
   }) = _ClusterItem;
 
   // helper method để xác định nếu clusterId == '-1' thì đây là noise point (điểm nhiễu, không thuộc cluster nào)

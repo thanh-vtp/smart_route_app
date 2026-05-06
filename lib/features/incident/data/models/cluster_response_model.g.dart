@@ -13,6 +13,7 @@ _$ClusterItemModelImpl _$$ClusterItemModelImplFromJson(
       latitude: (json['latitude'] as num).toDouble(),
       longitude: (json['longitude'] as num).toDouble(),
       clusterId: (json['Cluster_ID'] as num).toInt(),
+      isCorePoint: (json['Is_Core_Point'] as num).toInt(),
     );
 
 Map<String, dynamic> _$$ClusterItemModelImplToJson(
@@ -22,6 +23,7 @@ Map<String, dynamic> _$$ClusterItemModelImplToJson(
       'latitude': instance.latitude,
       'longitude': instance.longitude,
       'Cluster_ID': instance.clusterId,
+      'Is_Core_Point': instance.isCorePoint,
     };
 
 _$ClusterResponseModelImpl _$$ClusterResponseModelImplFromJson(

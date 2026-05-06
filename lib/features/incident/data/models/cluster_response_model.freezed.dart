@@ -25,7 +25,10 @@ mixin _$ClusterItemModel {
   double get latitude => throw _privateConstructorUsedError; // vĩ độ
   double get longitude => throw _privateConstructorUsedError; // kinh độ
   @JsonKey(name: 'Cluster_ID')
-  int get clusterId => throw _privateConstructorUsedError;
+  int get clusterId =>
+      throw _privateConstructorUsedError; // ID của cluster mà incident này thuộc về
+  @JsonKey(name: 'Is_Core_Point')
+  int get isCorePoint => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
@@ -43,7 +46,8 @@ abstract class $ClusterItemModelCopyWith<$Res> {
       {@JsonKey(name: 'OBJECTID') int objectId,
       double latitude,
       double longitude,
-      @JsonKey(name: 'Cluster_ID') int clusterId});
+      @JsonKey(name: 'Cluster_ID') int clusterId,
+      @JsonKey(name: 'Is_Core_Point') int isCorePoint});
 }
 
 /// @nodoc
@@ -63,6 +67,7 @@ class _$ClusterItemModelCopyWithImpl<$Res, $Val extends ClusterItemModel>
     Object? latitude = null,
     Object? longitude = null,
     Object? clusterId = null,
+    Object? isCorePoint = null,
   }) {
     return _then(_value.copyWith(
       objectId: null == objectId
@@ -81,6 +86,10 @@ class _$ClusterItemModelCopyWithImpl<$Res, $Val extends ClusterItemModel>
           ? _value.clusterId
           : clusterId // ignore: cast_nullable_to_non_nullable
               as int,
+      isCorePoint: null == isCorePoint
+          ? _value.isCorePoint
+          : isCorePoint // ignore: cast_nullable_to_non_nullable
+              as int,
     ) as $Val);
   }
 }
@@ -97,7 +106,8 @@ abstract class _$$ClusterItemModelImplCopyWith<$Res>
       {@JsonKey(name: 'OBJECTID') int objectId,
       double latitude,
       double longitude,
-      @JsonKey(name: 'Cluster_ID') int clusterId});
+      @JsonKey(name: 'Cluster_ID') int clusterId,
+      @JsonKey(name: 'Is_Core_Point') int isCorePoint});
 }
 
 /// @nodoc
@@ -115,6 +125,7 @@ class __$$ClusterItemModelImplCopyWithImpl<$Res>
     Object? latitude = null,
     Object? longitude = null,
     Object? clusterId = null,
+    Object? isCorePoint = null,
   }) {
     return _then(_$ClusterItemModelImpl(
       objectId: null == objectId
@@ -133,6 +144,10 @@ class __$$ClusterItemModelImplCopyWithImpl<$Res>
           ? _value.clusterId
           : clusterId // ignore: cast_nullable_to_non_nullable
               as int,
+      isCorePoint: null == isCorePoint
+          ? _value.isCorePoint
+          : isCorePoint // ignore: cast_nullable_to_non_nullable
+              as int,
     ));
   }
 }
@@ -144,7 +159,8 @@ class _$ClusterItemModelImpl extends _ClusterItemModel {
       {@JsonKey(name: 'OBJECTID') required this.objectId,
       required this.latitude,
       required this.longitude,
-      @JsonKey(name: 'Cluster_ID') required this.clusterId})
+      @JsonKey(name: 'Cluster_ID') required this.clusterId,
+      @JsonKey(name: 'Is_Core_Point') required this.isCorePoint})
       : super._();
 
   factory _$ClusterItemModelImpl.fromJson(Map<String, dynamic> json) =>
@@ -162,10 +178,14 @@ class _$ClusterItemModelImpl extends _ClusterItemModel {
   @override
   @JsonKey(name: 'Cluster_ID')
   final int clusterId;
+// ID của cluster mà incident này thuộc về
+  @override
+  @JsonKey(name: 'Is_Core_Point')
+  final int isCorePoint;
 
   @override
   String toString() {
-    return 'ClusterItemModel(objectId: $objectId, latitude: $latitude, longitude: $longitude, clusterId: $clusterId)';
+    return 'ClusterItemModel(objectId: $objectId, latitude: $latitude, longitude: $longitude, clusterId: $clusterId, isCorePoint: $isCorePoint)';
   }
 
   @override
@@ -180,13 +200,15 @@ class _$ClusterItemModelImpl extends _ClusterItemModel {
             (identical(other.longitude, longitude) ||
                 other.longitude == longitude) &&
             (identical(other.clusterId, clusterId) ||
-                other.clusterId == clusterId));
+                other.clusterId == clusterId) &&
+            (identical(other.isCorePoint, isCorePoint) ||
+                other.isCorePoint == isCorePoint));
   }
 
   @JsonKey(ignore: true)
   @override
-  int get hashCode =>
-      Object.hash(runtimeType, objectId, latitude, longitude, clusterId);
+  int get hashCode => Object.hash(
+      runtimeType, objectId, latitude, longitude, clusterId, isCorePoint);
 
   @JsonKey(ignore: true)
   @override
@@ -208,7 +230,8 @@ abstract class _ClusterItemModel extends ClusterItemModel {
           {@JsonKey(name: 'OBJECTID') required final int objectId,
           required final double latitude,
           required final double longitude,
-          @JsonKey(name: 'Cluster_ID') required final int clusterId}) =
+          @JsonKey(name: 'Cluster_ID') required final int clusterId,
+          @JsonKey(name: 'Is_Core_Point') required final int isCorePoint}) =
       _$ClusterItemModelImpl;
   const _ClusterItemModel._() : super._();
 
@@ -225,6 +248,9 @@ abstract class _ClusterItemModel extends ClusterItemModel {
   @override // kinh độ
   @JsonKey(name: 'Cluster_ID')
   int get clusterId;
+  @override // ID của cluster mà incident này thuộc về
+  @JsonKey(name: 'Is_Core_Point')
+  int get isCorePoint;
   @override
   @JsonKey(ignore: true)
   _$$ClusterItemModelImplCopyWith<_$ClusterItemModelImpl> get copyWith =>

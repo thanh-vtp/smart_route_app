@@ -20,6 +20,7 @@ mixin _$ClusterItem {
   double get latitude => throw _privateConstructorUsedError;
   double get longitude => throw _privateConstructorUsedError;
   int get clusterId => throw _privateConstructorUsedError;
+  int get isCorePoint => throw _privateConstructorUsedError;
 
   @JsonKey(ignore: true)
   $ClusterItemCopyWith<ClusterItem> get copyWith =>
@@ -32,7 +33,12 @@ abstract class $ClusterItemCopyWith<$Res> {
           ClusterItem value, $Res Function(ClusterItem) then) =
       _$ClusterItemCopyWithImpl<$Res, ClusterItem>;
   @useResult
-  $Res call({int objectId, double latitude, double longitude, int clusterId});
+  $Res call(
+      {int objectId,
+      double latitude,
+      double longitude,
+      int clusterId,
+      int isCorePoint});
 }
 
 /// @nodoc
@@ -52,6 +58,7 @@ class _$ClusterItemCopyWithImpl<$Res, $Val extends ClusterItem>
     Object? latitude = null,
     Object? longitude = null,
     Object? clusterId = null,
+    Object? isCorePoint = null,
   }) {
     return _then(_value.copyWith(
       objectId: null == objectId
@@ -70,6 +77,10 @@ class _$ClusterItemCopyWithImpl<$Res, $Val extends ClusterItem>
           ? _value.clusterId
           : clusterId // ignore: cast_nullable_to_non_nullable
               as int,
+      isCorePoint: null == isCorePoint
+          ? _value.isCorePoint
+          : isCorePoint // ignore: cast_nullable_to_non_nullable
+              as int,
     ) as $Val);
   }
 }
@@ -82,7 +93,12 @@ abstract class _$$ClusterItemImplCopyWith<$Res>
       __$$ClusterItemImplCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call({int objectId, double latitude, double longitude, int clusterId});
+  $Res call(
+      {int objectId,
+      double latitude,
+      double longitude,
+      int clusterId,
+      int isCorePoint});
 }
 
 /// @nodoc
@@ -100,6 +116,7 @@ class __$$ClusterItemImplCopyWithImpl<$Res>
     Object? latitude = null,
     Object? longitude = null,
     Object? clusterId = null,
+    Object? isCorePoint = null,
   }) {
     return _then(_$ClusterItemImpl(
       objectId: null == objectId
@@ -118,6 +135,10 @@ class __$$ClusterItemImplCopyWithImpl<$Res>
           ? _value.clusterId
           : clusterId // ignore: cast_nullable_to_non_nullable
               as int,
+      isCorePoint: null == isCorePoint
+          ? _value.isCorePoint
+          : isCorePoint // ignore: cast_nullable_to_non_nullable
+              as int,
     ));
   }
 }
@@ -129,7 +150,8 @@ class _$ClusterItemImpl extends _ClusterItem {
       {required this.objectId,
       required this.latitude,
       required this.longitude,
-      required this.clusterId})
+      required this.clusterId,
+      required this.isCorePoint})
       : super._();
 
   @override
@@ -140,10 +162,12 @@ class _$ClusterItemImpl extends _ClusterItem {
   final double longitude;
   @override
   final int clusterId;
+  @override
+  final int isCorePoint;
 
   @override
   String toString() {
-    return 'ClusterItem(objectId: $objectId, latitude: $latitude, longitude: $longitude, clusterId: $clusterId)';
+    return 'ClusterItem(objectId: $objectId, latitude: $latitude, longitude: $longitude, clusterId: $clusterId, isCorePoint: $isCorePoint)';
   }
 
   @override
@@ -158,12 +182,14 @@ class _$ClusterItemImpl extends _ClusterItem {
             (identical(other.longitude, longitude) ||
                 other.longitude == longitude) &&
             (identical(other.clusterId, clusterId) ||
-                other.clusterId == clusterId));
+                other.clusterId == clusterId) &&
+            (identical(other.isCorePoint, isCorePoint) ||
+                other.isCorePoint == isCorePoint));
   }
 
   @override
-  int get hashCode =>
-      Object.hash(runtimeType, objectId, latitude, longitude, clusterId);
+  int get hashCode => Object.hash(
+      runtimeType, objectId, latitude, longitude, clusterId, isCorePoint);
 
   @JsonKey(ignore: true)
   @override
@@ -177,7 +203,8 @@ abstract class _ClusterItem extends ClusterItem {
       {required final int objectId,
       required final double latitude,
       required final double longitude,
-      required final int clusterId}) = _$ClusterItemImpl;
+      required final int clusterId,
+      required final int isCorePoint}) = _$ClusterItemImpl;
   _ClusterItem._() : super._();
 
   @override
@@ -188,6 +215,8 @@ abstract class _ClusterItem extends ClusterItem {
   double get longitude;
   @override
   int get clusterId;
+  @override
+  int get isCorePoint;
   @override
   @JsonKey(ignore: true)
   _$$ClusterItemImplCopyWith<_$ClusterItemImpl> get copyWith =>
