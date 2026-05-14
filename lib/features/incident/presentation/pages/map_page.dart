@@ -14,12 +14,14 @@ import 'package:smart_route_app/features/incident/domain/entities/cluster_item.d
 import 'package:smart_route_app/features/incident/presentation/providers/location_display_providers.dart';
 import 'package:smart_route_app/features/incident/presentation/providers/map_center_providers.dart';
 import 'package:smart_route_app/features/incident/presentation/providers/map_controller_provider.dart';
+import 'package:smart_route_app/features/incident/presentation/providers/map_facade_provider.dart';
 import 'package:smart_route_app/features/incident/presentation/providers/map_mode_provider.dart';
 import 'package:smart_route_app/features/incident/presentation/providers/scene_controller_provider.dart';
 import 'package:smart_route_app/features/incident/presentation/providers/states/map_page_notifier.dart';
 import 'package:smart_route_app/features/incident/presentation/providers/states/map_page_state.dart';
 import 'package:smart_route_app/features/incident/domain/entities/incident.dart'
     as domain;
+import 'package:smart_route_app/features/incident/presentation/providers/user_location_provider.dart';
 
 import 'package:smart_route_app/features/incident/presentation/widgets/map_controls_overlay.dart';
 import 'package:smart_route_app/features/incident/presentation/widgets/map_floating_actions.dart';
@@ -60,10 +62,7 @@ class _MapPageState extends ConsumerState<MapPage> {
     super.initState();
 
     // Khởi tạo Facade với Controllers lấy từ Riverpod
-    _mapFacade = ArcGISMapFacade(
-      ref.read(mapControllerProvider),
-      ref.read(sceneControllerProvider),
-    );
+    _mapFacade = ref.read(mapFacadeProvider);
 
     // Khởi tạo Bản đồ 2D ngay lập tức (Default view) với Style từ Provider
     final initialStyle = ref.read(baseMapStyleProviderProvider);
@@ -164,40 +163,21 @@ class _MapPageState extends ConsumerState<MapPage> {
       spatialReference: SpatialReference.wgs84,
     );
 
-    // Cập nhật tọa độ center map vào provider
-    ref.read(mapCenterProvider.notifier).update(initialPoint);
+    try {
+      // Cập nhật tọa độ center map vào provider
+      ref.read(mapCenterProvider.notifier).update(initialPoint);
 
-    // Kiểm tra trạng thái LocationDisplay từ provider
-    // final isLocationEnabled = ref.read(locationDisplayProviderProvider);
-
-    // if (isLocationEnabled) {
-    //   // nếu location bật
-    //   // Set the system location data source (best practice theo ArcGIS docs)
-    //   // _mapViewController.locationDisplay.dataSource = _locationDataSource;
-    //   _mapViewController.locationDisplay.dataSource =
-    //       _mapLocationLogic.locationDataSource;
-
-    //   // _updateLocationDisplay(MapMode.map2D, true);
-    //   _mapLocationLogic.updateLocationDisplay(
-    //     context: context,
-    //     ref: ref,
-    //     mode: MapMode.map2D,
-    //     enabled: true,
-    //     mapViewController: _mapViewController,
-    //     mapViewReady: true,
-    //     mounted: mounted,
-    //   );
-    // } else {
-    //   // location tắt lấy center map qua initialPoint
-    //   // zoom về initial point
-    //   await _mapViewController.setViewpointCenter(initialPoint, scale: 5000);
-    // }
-    await _mapFacade.mapController.setViewpointCenter(
-      initialPoint,
-      scale: 5000,
-    );
-
-    AppLogger.ui('Map view is ready');
+      // Di chuyển camera đến vị trí ban đầu
+      await _mapFacade.mapController.setViewpointCenter(
+        initialPoint,
+        scale: 5000,
+      );
+    } catch (e) {
+      AppLogger.ui(
+        "LỖI: Không thể di chuyển camera đến vị trí ban đầu: $e",
+        error: e,
+      );
+    }
 
     // Lắng nghe map 2D di chuyển - LƯU SUBSCRIPTION ĐỂ DISPOSE
     _mapViewpointChangedSubscription?.cancel(); // Cancel subscription cũ nếu có
@@ -368,7 +348,8 @@ class _MapPageState extends ConsumerState<MapPage> {
           ),
         ],
       ),
-      floatingActionButton: const MapFloatingActions(),
+      // Button để bật GPS và Recenter về vị trí hiện tại
+      floatingActionButton: MapFloatingActions(mapFacade: _mapFacade),
     );
   }
 

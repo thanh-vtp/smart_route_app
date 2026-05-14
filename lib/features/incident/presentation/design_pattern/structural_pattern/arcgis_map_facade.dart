@@ -3,13 +3,18 @@
 
 import 'package:arcgis_maps/arcgis_maps.dart';
 import 'package:smart_route_app/features/incident/presentation/design_pattern/creational_pattern/arcgis_map_factory.dart';
+import 'package:smart_route_app/features/incident/presentation/logics/device_location_manager.dart';
 
 /// [Facade Pattern] Quản lý vòng đời và che giấu sự phức tạp của ArcGIS Controllers
 class ArcGISMapFacade {
   final ArcGISMapViewController _mapController;
   final ArcGISSceneViewController _sceneController;
 
-  ArcGISMapFacade(this._mapController, this._sceneController);
+  // variable để quản lý GPS
+  final DeviceLocationManager locationManager;
+
+  ArcGISMapFacade(this._mapController, this._sceneController)
+    : locationManager = DeviceLocationManager();
 
   /// Cung cấp Getter (Read-only) cho tầng UI để gắn vào Widget View
   ArcGISMapViewController get mapController => _mapController;
@@ -77,5 +82,36 @@ class ArcGISMapFacade {
     if (vp != null) {
       _mapController.setViewpoint(vp);
     }
+  }
+
+  /// Bắt đầu theo dõi vị trí thiết bị
+  Future<void> startLocation({
+    required Function(ArcGISLocation location) onLocationChanged,
+    required Function(String error) onError,
+  }) async {
+    await locationManager.startLocationDisplay(
+      display: _mapController.locationDisplay,
+      onLocationChanged: onLocationChanged,
+      onError: onError,
+    );
+  }
+
+  /// Dừng theo dõi vị trí thiết bị
+  Future<void> stopLocation() async {
+    await locationManager.stopLocationDisplay(_mapController.locationDisplay);
+  }
+
+  /// Recenter về vị trí hiện tại
+  void recenterLocation() {
+    locationManager.recenter(_mapController.locationDisplay);
+  }
+
+  /// Stream để theo dõi trạng thái Follow (tự động xoay theo vị trí)
+  Stream<bool> followLocationState() {
+    return locationManager.followState(_mapController.locationDisplay);
+  }
+
+  void dispose() {
+    locationManager.dispose(); // 3. Đừng quên dọn dẹp
   }
 }

@@ -3,9 +3,12 @@ import 'dart:async';
 import 'package:arcgis_maps/arcgis_maps.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:smart_route_app/features/incident/presentation/design_pattern/structural_pattern/arcgis_map_facade.dart';
+import 'package:smart_route_app/features/incident/presentation/providers/is_following_user_provider.dart';
 import 'package:smart_route_app/features/incident/presentation/providers/location_display_providers.dart';
 import 'package:smart_route_app/features/incident/presentation/providers/map_controller_provider.dart';
 import 'package:smart_route_app/features/incident/presentation/providers/map_mode_provider.dart';
+import 'package:smart_route_app/features/incident/presentation/providers/user_location_provider.dart';
 
 // Nút Vị trí (FAB) không dùng để TẮT GPS.
 // Hành vi:
@@ -17,111 +20,44 @@ import 'package:smart_route_app/features/incident/presentation/providers/map_mod
 // Màu Xám/Trống: Khi người dùng di chuyển bản đồ đi chỗ khác (GPS vẫn chạy ngầm, chấm xanh vẫn còn, nhưng camera không đi theo nữa).
 
 /// Widget button để bật/tắt LocationDisplay (GPS)
-class LocationButton extends ConsumerStatefulWidget {
-  const LocationButton({super.key});
+class LocationButton extends ConsumerWidget {
+  final ArcGISMapFacade mapFacade;
+
+  const LocationButton({super.key, required this.mapFacade});
 
   @override
-  ConsumerState<ConsumerStatefulWidget> createState() => _LocationButtonState();
-}
+  Widget build(BuildContext context, WidgetRef ref) {
+    final followState = ref.watch(isFollowingUserProvider);
 
-class _LocationButtonState extends ConsumerState<LocationButton> {
-  // Trạng thái nội bộ: Có đang follow người dùng không?
-  bool _isFollowingUser = false;
-  StreamSubscription? _autoPanSubscription;
+    final isFollowing = followState.value ?? false;
 
-  @override
-  void initState() {
-    super.initState();
-    _subscribeToAutoPanMode();
-  }
+    return FloatingActionButton(
+      heroTag: 'gps_button',
+      backgroundColor: isFollowing ? Colors.blue : Colors.white,
+      onPressed: () async {
+        final status = mapFacade.locationManager.dataSource.status;
 
-  void _subscribeToAutoPanMode() {
-    // 1. Lấy controller từ Provider (đã khởi tạo bên MapPage hoặc Provider chung)
-    final mapController = ref.read(mapControllerProvider);
+        if (status != LocationDataSourceStatus.started) {
+          await mapFacade.startLocation(
+            onLocationChanged: (location) {
+              ref
+                  .read(userLocationProvider.notifier)
+                  .updateFromLocation(location);
+            },
+            onError: (error) {
+              if (!context.mounted) return;
 
-    // 2. Lắng nghe stream
-    _autoPanSubscription = mapController.locationDisplay.onAutoPanModeChanged
-        .listen((mode) {
-          if (mounted) {
-            setState(() {
-              // Nếu mode là recenter hoặc compass -> Đang follow (Icon Xanh)
-              _isFollowingUser =
-                  (mode == LocationDisplayAutoPanMode.recenter ||
-                  mode == LocationDisplayAutoPanMode.compassNavigation);
-            });
-          }
-        });
-  }
+              ScaffoldMessenger.of(
+                context,
+              ).showSnackBar(SnackBar(content: Text(error)));
+            },
+          );
+        } else {
+          mapFacade.recenterLocation();
+        }
+      },
 
-  @override
-  void dispose() {
-    super.dispose();
-    _autoPanSubscription?.cancel();
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    final isGlobalLocationEnabled = ref.watch(locationDisplayProviderProvider);
-    final mapMode = ref.watch(mapModeProviderProvider);
-    final isDisabled = mapMode == MapMode.scene3D;
-
-    final isBlueState = isGlobalLocationEnabled && _isFollowingUser; // change
-
-    return Tooltip(
-      message: isDisabled
-          ? 'GPS chỉ khả dụng ở chế độ 2D'
-          : (isBlueState ? 'Vị trí của bạn' : 'Cập nhật vị trí'),
-      child: Opacity(
-        opacity: isDisabled ? 0.5 : 1.0,
-        child: FloatingActionButton(
-          heroTag: 'main_gps_button',
-          onPressed: isDisabled
-              ? null
-              : () async {
-                  if (!isGlobalLocationEnabled) {
-                    ref.read(locationDisplayProviderProvider.notifier).toggle();
-                    // MapLocationLogic sẽ tự động bắt sự kiện này và start GPS + Recenter
-                  } else {
-                    // Trường hợp 2: GPS đang BẬT -> Chỉ Re-center (Khóa camera lại)
-                    final mapController = ref.read(mapControllerProvider);
-                    final locationDisplay = mapController.locationDisplay;
-
-                    // Nếu chưa start, trigger lại flow qua provider
-                    // để MapLocationLogic thiết lập dataSource đúng cách
-                    if (!locationDisplay.started) {
-                      // Tắt rồi bật lại để MapLocationLogic xử lý
-                      await ref
-                          .read(locationDisplayProviderProvider.notifier)
-                          .disable();
-                      await ref
-                          .read(locationDisplayProviderProvider.notifier)
-                          .enable();
-                      return;
-                    }
-
-                    // Kéo camera về người dùng
-                    locationDisplay.autoPanMode =
-                        LocationDisplayAutoPanMode.recenter;
-                  }
-
-                  // throw Exception(
-                  //   'Test Exception cho Crashlytics trong LocationButton',
-                  // );
-                },
-
-          backgroundColor: isDisabled
-              ? Colors.grey[300]
-              : (isBlueState ? Colors.blue : Colors.white),
-
-          child: Icon(
-            isBlueState ? Icons.my_location : Icons.location_searching,
-            color: isDisabled
-                ? Colors.grey[400]
-                : (isBlueState ? Colors.white : Colors.grey[700]),
-            size: 24,
-          ),
-        ),
-      ),
+      child: Icon(isFollowing ? Icons.my_location : Icons.location_searching),
     );
   }
 }

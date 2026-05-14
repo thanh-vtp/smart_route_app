@@ -7,8 +7,6 @@ part 'incident_feature_layer_providers.g.dart';
 
 @Riverpod(keepAlive: true)
 FeatureLayer incidentFeatureLayer(IncidentFeatureLayerRef ref) {
-  ArcGISEnvironment.apiKey = Constants.arcgisApiKey;
-
   if (kDebugMode) {
     AppLogger.info('Initialized ArcGIS API Key', name: 'ARCGIS_API_KEY');
   }

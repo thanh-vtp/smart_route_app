@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'package:arcgis_maps/arcgis_maps.dart';
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/foundation.dart';
@@ -17,19 +18,22 @@ Future<void> initApp() async {
   // Load env file first (required for other initializations)
   await dotenv.load(fileName: ".env");
 
+  /// Initialize API KEY for ArcGIS SDK
+  ArcGISEnvironment.apiKey = Constants.arcgisApiKey;
+
   // Initialize SQLite database
-  try {
-    await MapDatabase.instance.database;
-    if (kDebugMode) {
-      AppLogger.info('SQLite Database initialized', name: 'DATABASE');
-    }
-  } catch (e) {
-    AppLogger.error('Failed to init SQLite', name: 'DATABASE', error: e);
-  }
+  // try {
+  //   await MapDatabase.instance.database;
+  //   if (kDebugMode) {
+  //     AppLogger.info('SQLite Database initialized', name: 'DATABASE');
+  //   }
+  // } catch (e) {
+  //   AppLogger.error('Failed to init SQLite', name: 'DATABASE', error: e);
+  // }
 
   // Defer ArcGIS initialization to avoid blocking UI thread
   // ArcGIS native libraries are heavy, init after first frame
-  _initArcGISDeferred();
+  // _initArcGISDeferred();
 
   // Initialize Supabase (Auth)
   await Supabase.initialize(

@@ -60,16 +60,17 @@ class _HomePageState extends ConsumerState<HomePage> {
   void initState() {
     super.initState();
 
-    _requestPermissions();
+    _requestFCMPermissions();
 
     // Delay getInitialMessage call by 3 seconds
     Future.delayed(const Duration(seconds: 3), () {
-      FirebaseMessaging.instance.getInitialMessage().then(
-        (value) => setState(() {
+      FirebaseMessaging.instance.getInitialMessage().then((value) {
+        if (!mounted) return;
+        setState(() {
           _resolved = true;
           initialMessage = value?.data.toString();
-        }),
-      );
+        });
+      });
     });
 
     // Xử lý tin nhắn khi app đang mở (foreground)
@@ -83,7 +84,7 @@ class _HomePageState extends ConsumerState<HomePage> {
     });
   }
 
-  Future<void> _requestPermissions() async {
+  Future<void> _requestFCMPermissions() async {
     // Xin quyền hiện thông báo
     NotificationSettings settings = await FirebaseMessaging.instance
         .requestPermission(
