@@ -10,58 +10,89 @@ class IncidentLayerManager {
   final GraphicsOverlay _overlay = GraphicsOverlay();
   final IncidentSymbolFactory _symbolFactory;
 
+  // Cache graphic theo incident id
+  final Map<String, Graphic> _graphicsById = {};
+
   IncidentLayerManager(this._symbolFactory);
 
   GraphicsOverlay get overlay => _overlay;
 
   /// Nhận data và Render lên Map
   Future<void> renderIncidents(List<Incident> incidents) async {
+    final incomingIds = incidents.map((e) => e.id).toSet();
+
+    // Remove deleted graphics
+    final removedIds = _graphicsById.keys
+        .where((id) => !incomingIds.contains(id))
+        .toList();
+
+    for (final id in removedIds) {
+      final graphic = _graphicsById.remove(id);
+
+      if (graphic != null) {
+        _overlay.graphics.remove(graphic);
+      }
+    }
+
+    // Add or update graphics
+    // Xử lý từng sự cố
+    for (final incident in incidents) {
+      await _upsertIncident(incident);
+    }
+
     if (incidents.isEmpty) {
       _overlay.graphics.clear();
       return;
     }
 
-    final List<Graphic> newGraphics = [];
-
-    // Xử lý từng sự cố
-    for (final incident in incidents) {
-      try {
-        // 1. Toạ độ (Geometry)
-        final point = ArcGISPoint(
-          x: double.parse(incident.longitude),
-          y: double.parse(incident.latitude),
-          spatialReference: SpatialReference.wgs84,
-        );
-
-        // 2. Ký hiệu (Symbol)
-        final symbol = await _symbolFactory.getSymbol(incident.type);
-
-        // 3. Đóng gói thành Graphic
-        final graphic = Graphic(
-          geometry: point,
-          symbol: symbol,
-          attributes: {
-            'incident_id': incident.id, // RẤT QUAN TRỌNG ĐỂ CLICK VÀO LẤY ID
-          },
-        );
-
-        // Z-Index để icon to nằm trên icon nhỏ
-        graphic.zIndex = incident.typeConfig.zIndex;
-
-        newGraphics.add(graphic);
-      } catch (e) {
-        AppLogger.ui('Error creating graphic for ${incident.id}: $e');
-      }
-    }
-
-    // 4. Update UI một lần duy nhất để không bị giật lag
-    _overlay.graphics.clear();
-    _overlay.graphics.addAll(newGraphics);
-
-    AppLogger.ui('Rendered ${newGraphics.length} incidents on map');
+    AppLogger.ui('Rendered ${_graphicsById.length} incidents on map');
   }
 
+  Future<void> _upsertIncident(Incident incident) async {
+    final existing = _graphicsById[incident.id];
+
+    // 1. Toạ độ (Geometry)
+    final point = ArcGISPoint(
+      x: double.parse(incident.longitude),
+      y: double.parse(incident.latitude),
+      spatialReference: SpatialReference.wgs84,
+    );
+
+    // Update
+    if (existing != null) {
+      existing.geometry = point;
+      return;
+    }
+
+    // Create
+    // 2. Ký hiệu (Symbol)
+    final symbol = await _symbolFactory.getSymbol(incident.type);
+
+    // 3. Đóng gói thành Graphic
+    final graphic = Graphic(
+      geometry: point,
+      symbol: symbol,
+      attributes: {
+        GraphicAttributes.incidentId:
+            incident.id, // RẤT QUAN TRỌNG ĐỂ CLICK VÀO LẤY ID
+      },
+    );
+
+    // Z-Index để icon to nằm trên icon nhỏ
+    graphic.zIndex = incident.typeConfig.zIndex;
+
+    _graphicsById[incident.id] = graphic;
+
+    _overlay.graphics.add(graphic);
+  }
+
+  // Xóa toàn bộ sự cố khỏi map
   void clear() {
+    _graphicsById.clear();
     _overlay.graphics.clear();
+  }
+
+  void dispose() {
+    clear();
   }
 }

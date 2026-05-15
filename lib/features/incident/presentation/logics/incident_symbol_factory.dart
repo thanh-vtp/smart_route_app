@@ -5,21 +5,21 @@ import 'package:flutter/services.dart';
 import 'package:smart_route_app/core/utils/utils.dart';
 import 'package:smart_route_app/features/incident/presentation/models/incident_type_config.dart';
 
+/// Constants dùng cho attributes của Graphic
+class GraphicAttributes {
+  static const incidentId = 'incident_id';
+}
+
+/// Shared cache cho toàn app
+/// Chỉ cache resource nặng, KHÔNG cache manager/service
+class IncidentSymbolCache {
+  static final symbols = <String, PictureMarkerSymbol>{};
+
+  static ArcGISSymbol? highlightSymbol;
+}
+
 /// Factory để tạo ArcGIS PictureMarkerSymbol cho Incident với Stack (background + border + image)
 class IncidentSymbolFactory {
-  // // Singleton instance
-  // static final IncidentSymbolFactory _instance =
-  //     IncidentSymbolFactory._internal();
-
-  // factory IncidentSymbolFactory() => _instance;
-  // IncidentSymbolFactory._internal();
-
-  // Cache: Lưu trữ Symbol đã tạo để không phải load lại
-  final Map<String, PictureMarkerSymbol> _cache = {};
-
-  // Cache cho highlight symbol để không tạo mới mỗi lần
-  ArcGISSymbol? _cachedHighlightSymbol;
-
   // Flag để biết đã pre-cache chưa
   bool _isPreCached = false;
 
@@ -31,10 +31,15 @@ class IncidentSymbolFactory {
 
     // Tạo symbol cho tất cả incident types
     try {
-      await Future.wait(
-        IncidentTypes.all.map((config) => getSymbol(config.id)),
-      );
+      await Future.wait([
+        ...IncidentTypes.all.map((config) => getSymbol(config.id)),
+
+        // preload highlight symbol
+        getHighlightSymbol(),
+      ]);
+
       _isPreCached = true;
+
       AppLogger.info(
         'Pre-cached all symbols in RAM',
         name: 'IncidentSymbolFactory',
@@ -59,10 +64,13 @@ class IncidentSymbolFactory {
     // Cache key bao gồm cả size để hỗ trợ nhiều kích thước
     final cacheKey = '${typeId}_$displaySize';
 
+    // Shared cache
+    final cached = IncidentSymbolCache.symbols[cacheKey];
+
     //  Trả về Cache nếu có
     // Nếu đã load rồi thì trả về ngay (Tốc độ tức thì)
-    if (_cache.containsKey(cacheKey)) {
-      return _cache[cacheKey]!;
+    if (cached != null) {
+      return cached;
     }
 
     // Nếu chưa có thì vẽ mới
@@ -81,7 +89,8 @@ class IncidentSymbolFactory {
       symbol.height = displaySize;
 
       // Lưu vào cache
-      _cache[cacheKey] = symbol;
+      IncidentSymbolCache.symbols[cacheKey] = symbol;
+
       return symbol;
     } catch (e) {
       AppLogger.error(
@@ -99,9 +108,11 @@ class IncidentSymbolFactory {
 
   // Lấy Symbol dùng cho Highlight / Location Marker khi User Click vào sự cố
   Future<ArcGISSymbol> getHighlightSymbol() async {
+    final cached = IncidentSymbolCache.highlightSymbol;
+
     // Trả về cache nếu có
-    if (_cachedHighlightSymbol != null) {
-      return _cachedHighlightSymbol!;
+    if (cached != null) {
+      return cached;
     }
 
     try {
@@ -117,14 +128,14 @@ class IncidentSymbolFactory {
         ..offsetY = 25; // Offset để pin trỏ đúng vị trí
 
       // Cache để dùng lại
-      _cachedHighlightSymbol = pictureMarkerSymbol;
+      IncidentSymbolCache.highlightSymbol = pictureMarkerSymbol;
 
-      return _cachedHighlightSymbol!;
+      return pictureMarkerSymbol;
     } catch (e) {
       AppLogger.error('Error creating highlight symbol', error: e);
 
       // Fallback symbol đơn giản nếu load thất bại
-      _cachedHighlightSymbol =
+      final fallback =
           SimpleMarkerSymbol(
               style: SimpleMarkerSymbolStyle.circle,
               color: Colors.yellow,
@@ -136,7 +147,9 @@ class IncidentSymbolFactory {
               width: 3,
             );
 
-      return _cachedHighlightSymbol!;
+      IncidentSymbolCache.highlightSymbol = fallback;
+
+      return fallback;
     }
   }
 

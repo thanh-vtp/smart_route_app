@@ -71,8 +71,11 @@ class _MapPageState extends ConsumerState<MapPage> {
     // Lắng nghe các thay đổi trạng thái (Mode 2D/3D, Basemap, Navigation)
     _setupStateListeners();
 
-    // Fetch incidents từ MapNotifier
-    Future.microtask(() {
+    // Preload resources và Fetch incidents từ MapNotifier
+    Future.microtask(() async {
+      /// Pre-cache symbols trước khi render map để tránh lag khi hiển thị
+      await _mapFacade.initialize();
+
       if (mounted) {
         ref.read(mapPageNotifierProvider.notifier).fetchIncidents();
         ref.read(mapPageNotifierProvider.notifier).fetchClusters();

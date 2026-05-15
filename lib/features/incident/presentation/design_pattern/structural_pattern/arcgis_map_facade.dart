@@ -6,6 +6,7 @@ import 'package:smart_route_app/features/incident/presentation/design_pattern/cr
 import 'package:smart_route_app/features/incident/presentation/logics/device_location_manager.dart';
 import 'package:smart_route_app/features/incident/presentation/logics/incident_layer_manager.dart';
 import 'package:smart_route_app/features/incident/presentation/logics/incident_symbol_factory.dart';
+import 'package:smart_route_app/features/incident/presentation/logics/overlay_registry.dart';
 import '../../../domain/entities/incident.dart';
 
 /// [Facade Pattern] Quản lý vòng đời và che giấu sự phức tạp của ArcGIS Controllers
@@ -17,14 +18,23 @@ class ArcGISMapFacade {
   final DeviceLocationManager locationManager;
 
   /// variable để quản lý lớp hiển thị sự cố (Kẹt xe, Tai nạn)
+  final GraphicsOverlayRegistry overlayRegistry = GraphicsOverlayRegistry();
+
+  /// variable để quản lý lớp hiển thị sự cố (Kẹt xe, Tai nạn)
   late final IncidentLayerManager incidentManager;
   final IncidentSymbolFactory _symbolFactory;
 
   ArcGISMapFacade(this._mapController, this._sceneController)
     : locationManager = DeviceLocationManager(),
       _symbolFactory = IncidentSymbolFactory() {
+    // Tạo sẵn overlay để hiển thị sự cố
+    final incidentOverlay = overlayRegistry.getOrCreate('incidents');
+
     // Khởi tạo Layer Manager
     incidentManager = IncidentLayerManager(_symbolFactory);
+
+    // Gắn overlay dùng chung
+    incidentManager.overlay.graphics.addAll(incidentOverlay.graphics);
   }
 
   /// Cung cấp Getter (Read-only) cho tầng UI để gắn vào Widget View
@@ -131,7 +141,14 @@ class ArcGISMapFacade {
     return locationManager.followState(_mapController.locationDisplay);
   }
 
+  ///
+  Future<void> initialize() async {
+    await _symbolFactory.preCacheAllSymbols();
+  }
+
   void dispose() {
+    incidentManager.dispose(); //  Dọn dẹp lớp hiển thị sự cố
+    overlayRegistry.clear(); //  Dọn dẹp tất cả overlays trong registry
     locationManager.dispose(); // 3. Đừng quên dọn dẹp
   }
 
