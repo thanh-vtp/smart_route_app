@@ -1,20 +1,31 @@
 // Facade pattern
 // Cung cấp một interface đơn giản để tương tác với ArcGISMap hoặc ArcGISScene
 
-import 'package:arcgis_maps/arcgis_maps.dart';
+import 'package:arcgis_maps/arcgis_maps.dart' hide Incident;
 import 'package:smart_route_app/features/incident/presentation/design_pattern/creational_pattern/arcgis_map_factory.dart';
 import 'package:smart_route_app/features/incident/presentation/logics/device_location_manager.dart';
+import 'package:smart_route_app/features/incident/presentation/logics/incident_layer_manager.dart';
+import 'package:smart_route_app/features/incident/presentation/logics/incident_symbol_factory.dart';
+import '../../../domain/entities/incident.dart';
 
 /// [Facade Pattern] Quản lý vòng đời và che giấu sự phức tạp của ArcGIS Controllers
 class ArcGISMapFacade {
   final ArcGISMapViewController _mapController;
   final ArcGISSceneViewController _sceneController;
 
-  // variable để quản lý GPS
+  /// variable để quản lý GPS
   final DeviceLocationManager locationManager;
 
+  /// variable để quản lý lớp hiển thị sự cố (Kẹt xe, Tai nạn)
+  late final IncidentLayerManager incidentManager;
+  final IncidentSymbolFactory _symbolFactory;
+
   ArcGISMapFacade(this._mapController, this._sceneController)
-    : locationManager = DeviceLocationManager();
+    : locationManager = DeviceLocationManager(),
+      _symbolFactory = IncidentSymbolFactory() {
+    // Khởi tạo Layer Manager
+    incidentManager = IncidentLayerManager(_symbolFactory);
+  }
 
   /// Cung cấp Getter (Read-only) cho tầng UI để gắn vào Widget View
   ArcGISMapViewController get mapController => _mapController;
@@ -30,16 +41,25 @@ class ArcGISMapFacade {
 
     _mapController.backgroundGrid =
         ArcGISMapFactory.createDynamicBackgroundGrid(style);
+
+    // Chuyển overlay sang 2D view
+    _moveOverlaysToActiveView(is3D: false);
   }
 
   void switchTo3D(BasemapStyle style) {
     _init3DIfNeeded(style);
     _syncFrom2DTo3D();
+
+    // Chuyển overlay sang 3D view
+    _moveOverlaysToActiveView(is3D: true);
   }
 
   void switchTo2D(BasemapStyle style) {
     initialize2D(style);
     _syncFrom3DTo2D(); // Thêm đồng bộ ngược
+
+    // Chuyển overlay sang 2D view
+    _moveOverlaysToActiveView(is3D: false);
   }
 
   /// Thay đổi Basemap (Đồng bộ cho cả 2 view)
@@ -113,5 +133,22 @@ class ArcGISMapFacade {
 
   void dispose() {
     locationManager.dispose(); // 3. Đừng quên dọn dẹp
+  }
+
+  Future<void> updateIncidentGraphics(List<Incident> incidents) async {
+    await incidentManager.renderIncidents(incidents);
+  }
+
+  void _moveOverlaysToActiveView({required bool is3D}) {
+    // 1. Tháo overlay ra khỏi CẢ 2 view để tránh lỗi "Already owned"
+    _mapController.graphicsOverlays.remove(incidentManager.overlay);
+    _sceneController.graphicsOverlays.remove(incidentManager.overlay);
+
+    // 2. Gắn vào view đang active
+    if (is3D) {
+      _sceneController.graphicsOverlays.add(incidentManager.overlay);
+    } else {
+      _mapController.graphicsOverlays.add(incidentManager.overlay);
+    }
   }
 }

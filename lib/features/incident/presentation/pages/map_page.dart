@@ -142,6 +142,14 @@ class _MapPageState extends ConsumerState<MapPage> {
       // Clear event sau khi xử lý xong
       ref.read(navigateToPointProvider.notifier).clear();
     });
+
+    // D. Lắng nghe Dữ liệu sự cố thay đổi
+    ref.listenManual(mapPageNotifierProvider, (previous, state) {
+      state.whenOrNull(
+        loaded: (incidents) => _mapFacade.updateIncidentGraphics(incidents),
+        submitted: (incidents) => _mapFacade.updateIncidentGraphics(incidents),
+      );
+    });
   }
 
   /// Callback khi map view 2D đã sẵn sàng

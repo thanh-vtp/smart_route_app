@@ -7,12 +7,12 @@ import 'package:smart_route_app/features/incident/presentation/models/incident_t
 
 /// Factory để tạo ArcGIS PictureMarkerSymbol cho Incident với Stack (background + border + image)
 class IncidentSymbolFactory {
-  // Singleton instance
-  static final IncidentSymbolFactory _instance =
-      IncidentSymbolFactory._internal();
+  // // Singleton instance
+  // static final IncidentSymbolFactory _instance =
+  //     IncidentSymbolFactory._internal();
 
-  factory IncidentSymbolFactory() => _instance;
-  IncidentSymbolFactory._internal();
+  // factory IncidentSymbolFactory() => _instance;
+  // IncidentSymbolFactory._internal();
 
   // Cache: Lưu trữ Symbol đã tạo để không phải load lại
   final Map<String, PictureMarkerSymbol> _cache = {};
@@ -25,6 +25,7 @@ class IncidentSymbolFactory {
 
   /// Pre-cache tất cả symbols để tránh lag khi hiển thị map
   /// Gọi hàm này sau khi app khởi động (có thể trong background)
+  /// Gọi khi app khởi động để tạo sẵn ảnh
   Future<void> preCacheAllSymbols() async {
     if (_isPreCached) return;
 
@@ -49,6 +50,7 @@ class IncidentSymbolFactory {
   }
 
   /// Hàm lấy Symbol với Stack (background + border + image)
+  /// Lấy Marker theo loại sự cố
   /// [displaySize] - Kích thước hiển thị trên map (mặc định 32.0)
   Future<PictureMarkerSymbol> getSymbol(
     String typeId, {
@@ -57,11 +59,13 @@ class IncidentSymbolFactory {
     // Cache key bao gồm cả size để hỗ trợ nhiều kích thước
     final cacheKey = '${typeId}_$displaySize';
 
+    //  Trả về Cache nếu có
     // Nếu đã load rồi thì trả về ngay (Tốc độ tức thì)
     if (_cache.containsKey(cacheKey)) {
       return _cache[cacheKey]!;
     }
 
+    // Nếu chưa có thì vẽ mới
     final config = IncidentTypes.getById(typeId);
 
     try {
@@ -93,7 +97,7 @@ class IncidentSymbolFactory {
     }
   }
 
-  // Lấy Symbol dùng cho Highlight / Location Marker
+  // Lấy Symbol dùng cho Highlight / Location Marker khi User Click vào sự cố
   Future<ArcGISSymbol> getHighlightSymbol() async {
     // Trả về cache nếu có
     if (_cachedHighlightSymbol != null) {
