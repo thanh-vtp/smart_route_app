@@ -1,11 +1,14 @@
 // Facade pattern
 // Cung cấp một interface đơn giản để tương tác với ArcGISMap hoặc ArcGISScene
 
+import 'dart:ui';
+
 import 'package:arcgis_maps/arcgis_maps.dart' hide Incident;
 import 'package:smart_route_app/features/incident/presentation/design_pattern/creational_pattern/arcgis_map_factory.dart';
 import 'package:smart_route_app/features/incident/presentation/logics/device_location_manager.dart';
 import 'package:smart_route_app/features/incident/presentation/logics/incident_layer_manager.dart';
 import 'package:smart_route_app/features/incident/presentation/logics/incident_symbol_factory.dart';
+import 'package:smart_route_app/features/incident/presentation/logics/map_interaction_manager.dart';
 import 'package:smart_route_app/features/incident/presentation/logics/overlay_registry.dart';
 import '../../../domain/entities/incident.dart';
 
@@ -24,6 +27,9 @@ class ArcGISMapFacade {
   late final IncidentLayerManager incidentManager;
   final IncidentSymbolFactory _symbolFactory;
 
+  /// variable để quản lý sự kiện tương tác (Click, Long Press) trên bản đồ
+  late final MapInteractionManager interactionManager;
+
   ArcGISMapFacade(this._mapController, this._sceneController)
     : locationManager = DeviceLocationManager(),
       _symbolFactory = IncidentSymbolFactory() {
@@ -33,8 +39,11 @@ class ArcGISMapFacade {
     // Khởi tạo Layer Manager
     incidentManager = IncidentLayerManager(_symbolFactory);
 
-    // Gắn overlay dùng chung
+    // Gắn overlay dùng chung cho cả 2 view (2D & 3D)
     incidentManager.overlay.graphics.addAll(incidentOverlay.graphics);
+
+    // Khởi tạo Interaction Manager với overlay của Incident Manager
+    interactionManager = MapInteractionManager(incidentManager.overlay);
   }
 
   /// Cung cấp Getter (Read-only) cho tầng UI để gắn vào Widget View
@@ -141,15 +150,30 @@ class ArcGISMapFacade {
     return locationManager.followState(_mapController.locationDisplay);
   }
 
-  ///
+  /// Pre-cache tất cả symbol để tăng hiệu suất hiển thị khi render nhiều sự cố cùng lúc
   Future<void> initialize() async {
     await _symbolFactory.preCacheAllSymbols();
+  }
+
+  /// Xử lý sự kiện tap trên bản đồ
+  Future<String?> onMapTap(Offset screenPoint, {required bool is3D}) async {
+    if (is3D) {
+      return await interactionManager.handleMapTap(
+        screenPoint: screenPoint,
+        sceneController: _sceneController,
+      );
+    } else {
+      return await interactionManager.handleMapTap(
+        screenPoint: screenPoint,
+        mapController: _mapController,
+      );
+    }
   }
 
   void dispose() {
     incidentManager.dispose(); //  Dọn dẹp lớp hiển thị sự cố
     overlayRegistry.clear(); //  Dọn dẹp tất cả overlays trong registry
-    locationManager.dispose(); // 3. Đừng quên dọn dẹp
+    locationManager.dispose(); // Dừng theo dõi vị trí và dọn dẹp
   }
 
   Future<void> updateIncidentGraphics(List<Incident> incidents) async {

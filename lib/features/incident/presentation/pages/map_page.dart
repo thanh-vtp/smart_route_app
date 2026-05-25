@@ -12,6 +12,7 @@ import 'package:smart_route_app/features/incident/presentation/providers/base_ma
 import 'package:smart_route_app/core/feature_layer/providers/incident_feature_layer_providers.dart';
 import 'package:smart_route_app/features/incident/domain/entities/cluster_item.dart';
 import 'package:smart_route_app/features/incident/presentation/providers/location_display_providers.dart';
+import 'package:smart_route_app/features/incident/presentation/providers/location_info_provider.dart';
 import 'package:smart_route_app/features/incident/presentation/providers/map_center_providers.dart';
 import 'package:smart_route_app/features/incident/presentation/providers/map_controller_provider.dart';
 import 'package:smart_route_app/features/incident/presentation/providers/map_facade_provider.dart';
@@ -287,7 +288,7 @@ class _MapPageState extends ConsumerState<MapPage> {
         });
   }
 
-  /// Fetch incidents với logic xử lý lỗi nâng caos
+  /// Fetch incidents với logic xử lý lỗi nâng cao
   Future<void> _retryData() async {
     ref
         .read(mapPageNotifierProvider.notifier)
@@ -313,13 +314,7 @@ class _MapPageState extends ConsumerState<MapPage> {
               ArcGISMapView(
                 controllerProvider: () => _mapFacade.mapController,
                 onMapViewReady: _onMapViewReady,
-                // onTap: (screenPoint) => _mapInteractionLogic.onMapTap(
-                //   screenPoint: screenPoint,
-                //   context: context,
-                //   ref: ref,
-                //   mounted: mounted,
-                //   mapViewController: _mapViewController,
-                // ),
+                onTap: (screenPoint) => _handleMapTap(screenPoint, is3D: false),
                 // onLongPressEnd: (screenPoint) =>
                 //     _mapInteractionLogic.onMapLongPressEnd(
                 //       screenPoint: screenPoint,
@@ -333,13 +328,7 @@ class _MapPageState extends ConsumerState<MapPage> {
               ArcGISSceneView(
                 controllerProvider: () => _mapFacade.sceneController,
                 onSceneViewReady: _onSceneViewReady,
-                // onTap: (screenPoint) => _mapInteractionLogic.onSceneTap(
-                //   screenPoint: screenPoint,
-                //   context: context,
-                //   ref: ref,
-                //   mounted: mounted,
-                //   sceneViewController: _sceneViewController,
-                // ),
+                onTap: (screenPoint) => _handleMapTap(screenPoint, is3D: true),
               ),
             ],
           ),
@@ -388,5 +377,43 @@ class _MapPageState extends ConsumerState<MapPage> {
       submitting: (_) => const MapSubmittingOverlay(),
       orElse: () => const SizedBox.shrink(),
     );
+  }
+
+  /// Xử lý sự kiện chạm tay vào bản đồ
+  Future<void> _handleMapTap(Offset screenPoint, {required bool is3D}) async {
+    // 1. Hỏi Facade xem tao vừa chạm trúng cái ID nào không?
+    final incidentId = await _mapFacade.onMapTap(screenPoint, is3D: is3D);
+
+    // 2. Nếu trúng một sự cố -> Mở BottomSheet chi tiết
+    if (incidentId != null && mounted) {
+      AppLogger.ui("User tapped on Incident: $incidentId");
+
+      // Lấy danh sách sự cố hiện tại từ State
+      final List<domain.Incident> incidents = ref
+          .read(mapPageNotifierProvider)
+          .maybeWhen(
+            loaded: (list) => list,
+            submitted: (list) => list,
+            orElse: () => <domain.Incident>[],
+          );
+
+      // Tìm sự cố đó trong mảng
+      final selectedIncident = incidents.firstWhere(
+        (inc) => inc.id == incidentId,
+        orElse: () => incidents.first, // Fallback an toàn
+      );
+
+      // (Tùy chọn) Ra lệnh cho Facade Highlight cái Marker này lên (To ra/Đổi màu)
+      // _mapFacade.highlightIncident(incidentId);
+
+      // Ra lệnh cho Riverpod Provider để mở Bottom Sheet chi tiết lên!
+      ref
+          .read(mapBottomSheetProvider.notifier)
+          .showIncidentDetail(selectedIncident);
+    }
+    // 3. Nếu chạm vào chỗ trống (Đóng Bottom Sheet hoặc Xóa Highlight)
+    else {
+      // _mapFacade.clearHighlight();
+    }
   }
 }
