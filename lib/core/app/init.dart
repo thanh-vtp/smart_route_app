@@ -9,7 +9,7 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:smart_route_app/core/app/fcm_token_service.dart';
 import 'package:smart_route_app/core/app/set_up_notification.dart';
 import 'package:smart_route_app/core/core.dart';
-import 'package:smart_route_app/features/incident/presentation/logics/incident_symbol_factory.dart';
+import 'package:smart_route_app/core/common/incident_symbol_factory.dart';
 import 'package:smart_route_app/firebase_options.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:firebase_core/firebase_core.dart';

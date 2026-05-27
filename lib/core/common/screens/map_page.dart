@@ -3,13 +3,14 @@ import 'dart:ui' as ui;
 import 'package:arcgis_maps/arcgis_maps.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:smart_route_app/core/common/screens/widgets/map_floating_actions.dart';
 import 'package:smart_route_app/core/utils/app_logger.dart';
-import 'package:smart_route_app/features/incident/presentation/design_pattern/structural_pattern/arcgis_map_facade.dart';
+import 'package:smart_route_app/core/common/design_pattern/structural_pattern/arcgis_map_facade.dart';
 import 'package:smart_route_app/features/incident/presentation/helpers/map_configuration_helper.dart';
 import 'package:smart_route_app/features/incident/presentation/logics/map_interaction_logic.dart';
 import 'package:smart_route_app/features/incident/presentation/logics/map_location_logic.dart';
 import 'package:smart_route_app/features/incident/presentation/providers/base_map_style_providers.dart';
-import 'package:smart_route_app/core/feature_layer/providers/incident_feature_layer_providers.dart';
+import 'package:smart_route_app/core/common/provider/incident_feature_layer_providers.dart';
 import 'package:smart_route_app/features/incident/domain/entities/cluster_item.dart';
 import 'package:smart_route_app/features/incident/presentation/providers/location_display_providers.dart';
 import 'package:smart_route_app/features/incident/presentation/providers/location_info_provider.dart';
@@ -18,14 +19,13 @@ import 'package:smart_route_app/features/incident/presentation/providers/map_con
 import 'package:smart_route_app/features/incident/presentation/providers/map_facade_provider.dart';
 import 'package:smart_route_app/features/incident/presentation/providers/map_mode_provider.dart';
 import 'package:smart_route_app/features/incident/presentation/providers/scene_controller_provider.dart';
-import 'package:smart_route_app/features/incident/presentation/providers/states/map_page_notifier.dart';
-import 'package:smart_route_app/features/incident/presentation/providers/states/map_page_state.dart';
+import 'package:smart_route_app/core/common/screens/map_page_notifier.dart';
+import 'package:smart_route_app/core/common/screens/map_page_state.dart';
 import 'package:smart_route_app/features/incident/domain/entities/incident.dart'
     as domain;
 import 'package:smart_route_app/features/incident/presentation/providers/user_location_provider.dart';
 
 import 'package:smart_route_app/features/incident/presentation/widgets/map_controls_overlay.dart';
-import 'package:smart_route_app/features/incident/presentation/widgets/map_floating_actions.dart';
 import 'package:smart_route_app/features/incident/presentation/widgets/simmer/loading/base_map_loading_overlay.dart';
 import 'package:smart_route_app/features/incident/presentation/widgets/simmer/loading/map_loading_overlay.dart';
 import 'package:smart_route_app/features/incident/presentation/widgets/simmer/error/map_state_overlays.dart';

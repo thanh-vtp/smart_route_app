@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:smart_route_app/features/incident/presentation/design_pattern/structural_pattern/arcgis_map_facade.dart';
+import 'package:smart_route_app/core/common/design_pattern/structural_pattern/arcgis_map_facade.dart';
 import 'package:smart_route_app/features/navigation/widgets/direction_button.dart';
-import 'package:smart_route_app/features/incident/presentation/widgets/location_button.dart';
+import 'package:smart_route_app/core/common/screens/widgets/location_button.dart';
 
 /// Widget hiển thị các Floating Action Buttons (Location, Directions)
 class MapFloatingActions extends StatelessWidget {

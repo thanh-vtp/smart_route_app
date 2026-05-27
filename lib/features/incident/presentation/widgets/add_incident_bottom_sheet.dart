@@ -6,7 +6,7 @@ import 'package:smart_route_app/features/auth/presentation/auth_session_provider
 import 'package:smart_route_app/shared/widgets/btn_child.dart';
 import 'package:smart_route_app/core/utils/app_logger.dart';
 import 'package:smart_route_app/features/incident/presentation/models/add_incident_form_data.dart';
-import 'package:smart_route_app/features/incident/presentation/providers/states/map_page_notifier.dart';
+import 'package:smart_route_app/core/common/screens/map_page_notifier.dart';
 import 'package:smart_route_app/features/incident/presentation/widgets/incident_type_widgets.dart';
 import 'package:smart_route_app/features/incident/presentation/widgets/location_picker_map_widget.dart';
 

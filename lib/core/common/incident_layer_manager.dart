@@ -1,8 +1,8 @@
 import 'package:arcgis_maps/arcgis_maps.dart' hide Incident;
 import 'package:smart_route_app/core/utils/app_logger.dart';
 import 'package:smart_route_app/features/incident/presentation/extensions/incident_display_extensions.dart';
-import 'package:smart_route_app/features/incident/presentation/logics/incident_symbol_factory.dart';
-import '../../domain/entities/incident.dart';
+import 'package:smart_route_app/core/common/incident_symbol_factory.dart';
+import '../../features/incident/domain/entities/incident.dart';
 
 /// Quản lý lớp hiển thị sự cố (Kẹt xe, Tai nạn)
 class IncidentLayerManager {

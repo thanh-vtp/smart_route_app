@@ -17,7 +17,7 @@ import 'package:smart_route_app/features/auth/presentation/auth_session_provider
 import 'package:smart_route_app/shared/widgets/global_connection_wrapper.dart';
 import 'package:smart_route_app/features/search/presentation/providers/selected_address.dart';
 import 'package:smart_route_app/features/search/presentation/widgets/map_search_top_bar.dart';
-import 'package:smart_route_app/features/incident/presentation/pages/map_page.dart';
+import 'package:smart_route_app/core/common/screens/map_page.dart';
 import 'package:smart_route_app/features/incident/presentation/pages/report_page.dart';
 import 'package:smart_route_app/features/incident/presentation/widgets/map_bottom_sheet_container.dart';
 import 'package:smart_route_app/features/profile/presentation/widgets/profile_drawers.dart';

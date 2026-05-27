@@ -5,7 +5,7 @@ import 'package:smart_route_app/features/incident/domain/entities/incident.dart'
     as domain;
 import 'package:smart_route_app/features/incident/presentation/extensions/incident_display_extensions.dart';
 import 'package:smart_route_app/features/incident/presentation/providers/map_mode_provider.dart';
-import 'package:smart_route_app/features/incident/presentation/providers/states/map_page_notifier.dart';
+import 'package:smart_route_app/core/common/screens/map_page_notifier.dart';
 import 'package:smart_route_app/features/incident/presentation/widgets/incident_type_widgets.dart';
 
 class NavigatorIncidentsBottomSheet extends ConsumerStatefulWidget {

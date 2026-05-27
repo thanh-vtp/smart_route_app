@@ -5,7 +5,7 @@ import 'package:smart_route_app/features/auth/domain/entities/app_user.dart';
 import 'package:smart_route_app/features/auth/presentation/auth_session_provider.dart';
 import 'package:smart_route_app/shared/widgets/btn_child.dart';
 import 'package:smart_route_app/features/incident/domain/entities/incident.dart';
-import 'package:smart_route_app/features/incident/presentation/providers/states/map_page_notifier.dart';
+import 'package:smart_route_app/core/common/screens/map_page_notifier.dart';
 import 'package:smart_route_app/features/incident/presentation/widgets/incident_type_widgets.dart';
 
 /// Bottom sheet để chỉnh sửa incident

@@ -9,7 +9,7 @@ import 'package:smart_route_app/features/incident/domain/entities/incident.dart'
 import 'package:smart_route_app/features/incident/presentation/extensions/incident_display_extensions.dart';
 import 'package:smart_route_app/features/incident/presentation/providers/location_info_provider.dart';
 import 'package:smart_route_app/features/incident/presentation/providers/map_center_providers.dart';
-import 'package:smart_route_app/features/incident/presentation/providers/states/map_page_notifier.dart';
+import 'package:smart_route_app/core/common/screens/map_page_notifier.dart';
 import 'package:smart_route_app/features/incident/presentation/widgets/edit_incident_bottom_sheet.dart';
 import 'package:smart_route_app/features/incident/presentation/widgets/incident_type_widgets.dart';
 import 'package:smart_route_app/features/search/presentation/providers/selected_address.dart';

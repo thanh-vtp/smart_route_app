@@ -9,7 +9,7 @@ import 'package:smart_route_app/features/incident/domain/usecases/delete_inciden
 import 'package:smart_route_app/features/incident/domain/usecases/fetch_cluster_usecase.dart';
 import 'package:smart_route_app/features/incident/domain/usecases/get_incidents_usecase.dart';
 import 'package:smart_route_app/features/incident/domain/usecases/update_incident_usecase.dart';
-import 'package:smart_route_app/features/incident/presentation/providers/states/map_page_state.dart';
+import 'package:smart_route_app/core/common/screens/map_page_state.dart';
 import 'package:smart_route_app/features/incident/presentation/providers/usecases/use_case_providers.dart';
 
 class MapPageNotifier extends Notifier<MapPageState> {

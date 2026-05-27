@@ -1,5 +1,6 @@
 import 'package:arcgis_maps/arcgis_maps.dart';
 
+/// Registry để quản lý các GraphicsOverlay theo key ('incidents', 'locationMarker')
 class GraphicsOverlayRegistry {
   final Map<String, GraphicsOverlay> _overlays = {};
 
