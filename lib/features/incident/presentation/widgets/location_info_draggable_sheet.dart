@@ -7,7 +7,7 @@ import 'package:smart_route_app/core/core.dart';
 import 'package:smart_route_app/features/search/domain/entities/address_result.dart';
 import 'package:smart_route_app/features/incident/domain/entities/incident.dart';
 import 'package:smart_route_app/features/search/domain/entities/location_imagery.dart';
-import 'package:smart_route_app/features/incident/presentation/models/incident_type_config.dart';
+import 'package:smart_route_app/core/common/incident_type_config.dart';
 import 'package:smart_route_app/features/incident/presentation/providers/location_info_provider.dart';
 import 'package:smart_route_app/features/incident/presentation/providers/map_center_providers.dart';
 import 'package:smart_route_app/features/search/presentation/providers/selected_address.dart';
@@ -306,10 +306,10 @@ class _LocationInfoContent extends HookConsumerWidget {
     final dateFormat = DateFormat('dd/MM/yyyy - HH:mm');
 
     return Card(
-      color: config.color.withValues(alpha: 0.1),
+      // color: config.color.withValues(alpha: 0.1),
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(12),
-        side: BorderSide(color: config.color, width: 1.5),
+        // side: BorderSide(color: config.color, width: 1.5),
       ),
       child: Padding(
         padding: const EdgeInsets.all(16),
@@ -322,12 +322,12 @@ class _LocationInfoContent extends HookConsumerWidget {
                 Container(
                   padding: const EdgeInsets.all(8),
                   decoration: BoxDecoration(
-                    color: config.color.withValues(alpha: 0.2),
+                    // color: config.color.withValues(alpha: 0.2),
                     borderRadius: BorderRadius.circular(8),
                   ),
                   child: Icon(
                     _getIncidentIcon(incident.type),
-                    color: config.color,
+                    // color: config.color,
                     size: 24,
                   ),
                 ),
@@ -343,7 +343,7 @@ class _LocationInfoContent extends HookConsumerWidget {
                             style: TextStyle(
                               fontSize: 16,
                               fontWeight: FontWeight.bold,
-                              color: config.color,
+                              // color: config.color,
                             ),
                           ),
                           const SizedBox(width: 8),

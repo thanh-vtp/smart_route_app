@@ -227,7 +227,8 @@ class _IncidentDetailContent extends HookConsumerWidget {
     return Container(
       decoration: BoxDecoration(
         gradient: LinearGradient(
-          colors: [incident.color.withValues(alpha: 0.1), Colors.white],
+          // colors: [incident.color.withValues(alpha: 0.1), Colors.white],
+          colors: [Colors.white],
           begin: Alignment.topCenter,
           end: Alignment.bottomCenter,
         ),
@@ -256,10 +257,10 @@ class _IncidentDetailContent extends HookConsumerWidget {
                 Container(
                   padding: const EdgeInsets.all(12),
                   decoration: BoxDecoration(
-                    color: incident.backgroundColor,
+                    // color: incident.backgroundColor,
                     borderRadius: BorderRadius.circular(12),
                     border: Border.all(
-                      color: incident.color.withValues(alpha: 0.3),
+                      // color: incident.color.withValues(alpha: 0.3),
                     ),
                   ),
                   child: IncidentTypeIcon(

@@ -7,7 +7,7 @@ import 'package:smart_route_app/core/utils/app_logger.dart';
 import 'package:smart_route_app/features/incident/data/models/incident_model.dart';
 import 'package:smart_route_app/core/common/incident_symbol_factory.dart';
 import 'package:smart_route_app/features/incident/presentation/logics/map_location_logic.dart';
-import 'package:smart_route_app/features/incident/presentation/models/incident_type_config.dart';
+import 'package:smart_route_app/core/common/incident_type_config.dart';
 import 'package:smart_route_app/features/incident/presentation/providers/base_map_style_providers.dart';
 import 'package:smart_route_app/features/incident/presentation/providers/location_display_providers.dart';
 import 'package:smart_route_app/features/incident/presentation/widgets/base_map_switcher.dart';

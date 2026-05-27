@@ -572,7 +572,7 @@ class _IncidentListItem extends StatelessWidget {
           Container(
             padding: const EdgeInsets.all(10),
             decoration: BoxDecoration(
-              color: incident.backgroundColor,
+              // color: incident.backgroundColor,
               borderRadius: BorderRadius.circular(12),
             ),
             child: IncidentTypeIcon(

@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+/// Enum các loại sự cố
+/// crash: tai nạn, traffic: kẹt xe, police: cảnh sát, hazard: nguy hiểm, closure: đường cấm, camera: camera giao thông
 enum IncidentType { crash, traffic, police, hazard, closure, camera }
 
 class IncidentTypeData {

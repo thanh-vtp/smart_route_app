@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:smart_route_app/features/incident/domain/entities/incident.dart';
-import 'package:smart_route_app/features/incident/presentation/models/incident_type_config.dart';
+import 'package:smart_route_app/core/common/incident_type_config.dart';
 
 /// Extension để thêm display properties cho Incident entity
 extension IncidentDisplay on Incident {
@@ -8,8 +8,6 @@ extension IncidentDisplay on Incident {
   IncidentTypeConfig get typeConfig => IncidentTypes.getById(type);
 
   String get typeDisplayName => typeConfig.displayName;
-  Color get color => typeConfig.color;
-  Color get backgroundColor => typeConfig.backgroundColor;
 
   /// Display name cho mức độ (low -> "Thấp")
   String get severityDisplayName {

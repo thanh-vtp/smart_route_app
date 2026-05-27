@@ -321,7 +321,7 @@ class _IncidentCard extends StatelessWidget {
               Container(
                 padding: const EdgeInsets.all(12),
                 decoration: BoxDecoration(
-                  color: incident.backgroundColor,
+                  // color: incident.backgroundColor,
                   borderRadius: BorderRadius.circular(12),
                 ),
                 child: IncidentTypeIcon(

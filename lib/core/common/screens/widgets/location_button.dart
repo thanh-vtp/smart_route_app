@@ -1,13 +1,8 @@
-import 'dart:async';
-
 import 'package:arcgis_maps/arcgis_maps.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:smart_route_app/core/common/design_pattern/structural_pattern/arcgis_map_facade.dart';
 import 'package:smart_route_app/core/common/provider/is_following_user_provider.dart';
-import 'package:smart_route_app/features/incident/presentation/providers/location_display_providers.dart';
-import 'package:smart_route_app/features/incident/presentation/providers/map_controller_provider.dart';
-import 'package:smart_route_app/features/incident/presentation/providers/map_mode_provider.dart';
 import 'package:smart_route_app/features/incident/presentation/providers/user_location_provider.dart';
 
 // Nút Vị trí (FAB) không dùng để TẮT GPS.

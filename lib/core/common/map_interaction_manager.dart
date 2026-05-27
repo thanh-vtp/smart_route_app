@@ -49,7 +49,10 @@ class MapInteractionManager {
 
       return null; // Chạm vào chỗ trống
     } catch (e) {
-      AppLogger.error('LỖI: identifying graphic khi TAP trên map $e', error: e);
+      AppLogger.error(
+        '[LỖI]: identifying graphic khi TAP trên map $e',
+        error: e,
+      );
       return null;
     }
   }

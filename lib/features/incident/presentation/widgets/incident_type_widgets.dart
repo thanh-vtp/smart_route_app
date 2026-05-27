@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:smart_route_app/features/incident/presentation/models/incident_type_config.dart';
+import 'package:smart_route_app/core/common/incident_type_config.dart';
 
 /// Widget hiển thị icon của incident type
 /// Nhận typeId (String) vì widget này dùng cho cả form (chưa có entity) và display
@@ -26,10 +26,10 @@ class IncidentTypeIcon extends StatelessWidget {
             width: size,
             height: size,
             decoration: BoxDecoration(
-              color: config.backgroundColor,
+              // color: config.backgroundColor,
               borderRadius: BorderRadius.circular(12),
               border: Border.all(
-                color: config.color.withValues(alpha: 0.3),
+                // color: config.color.withValues(alpha: 0.3),
                 width: 1,
               ),
             ),
@@ -75,9 +75,9 @@ class IncidentTypeChip extends StatelessWidget {
       child: Container(
         padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
         decoration: BoxDecoration(
-          color: isSelected ? config.color : config.backgroundColor,
+          // color: isSelected ? config.color : config.backgroundColor,
           borderRadius: BorderRadius.circular(12),
-          border: Border.all(color: config.color, width: isSelected ? 2 : 1),
+          // border: Border.all(color: config.color, width: isSelected ? 2 : 1),
         ),
         child: Row(
           mainAxisSize: MainAxisSize.min,
@@ -87,7 +87,7 @@ class IncidentTypeChip extends StatelessWidget {
             Text(
               config.displayName,
               style: TextStyle(
-                color: isSelected ? Colors.white : config.color,
+                // color: isSelected ? Colors.white : config.color,
                 fontWeight: isSelected ? FontWeight.bold : FontWeight.w500,
                 fontSize: 14,
               ),

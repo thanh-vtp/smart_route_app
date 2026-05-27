@@ -3,7 +3,7 @@ import 'package:arcgis_maps/arcgis_maps.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:smart_route_app/core/utils/utils.dart';
-import 'package:smart_route_app/features/incident/presentation/models/incident_type_config.dart';
+import 'package:smart_route_app/core/common/incident_type_config.dart';
 
 /// Constants dùng cho attributes của Graphic
 class GraphicAttributes {
@@ -77,16 +77,17 @@ class IncidentSymbolFactory {
     final config = IncidentTypes.getById(typeId);
 
     try {
-      // Tạo marker với Stack (background + border + image)
-      final markerImage = await _createMarkerWithStack(config);
-
       // Tạo Symbol từ image đã composite
-      final arcGISImage = ArcGISImage.fromBytes(markerImage);
-      final symbol = PictureMarkerSymbol.withImage(arcGISImage);
+      final image = await ArcGISImage.fromAsset(config.assetPath);
+      final symbol = PictureMarkerSymbol.withImage(image);
 
       // Cấu hình kích thước hiển thị (pointer size)
       symbol.width = displaySize;
       symbol.height = displaySize;
+
+      // Dịch ảnh lên trên một nửa chiều cao
+      // Để cái đuôi nhọn của icon chạm đúng vào toạ độ bản đồ
+      symbol.offsetY = displaySize / 2;
 
       // Lưu vào cache
       IncidentSymbolCache.symbols[cacheKey] = symbol;
@@ -151,74 +152,5 @@ class IncidentSymbolFactory {
 
       return fallback;
     }
-  }
-
-  /// Tạo marker image với Stack (background + border + image overlay)
-  Future<Uint8List> _createMarkerWithStack(IncidentTypeConfig config) async {
-    const double size = 120.0; // Kích thước canvas (3x để có quality tốt)
-    const double padding = 4.0;
-
-    // Load asset image
-    final ByteData data = await rootBundle.load(config.assetPath);
-    final codec = await ui.instantiateImageCodec(
-      data.buffer.asUint8List(),
-      targetWidth: (size - padding * 2).toInt(),
-      targetHeight: (size - padding * 2).toInt(),
-    );
-    final frame = await codec.getNextFrame();
-    final assetImage = frame.image;
-
-    // Tạo canvas để vẽ
-    final recorder = ui.PictureRecorder();
-    final canvas = Canvas(recorder);
-    final paint = Paint();
-
-    // 1. Vẽ background với border radius
-    final backgroundRect = RRect.fromRectAndRadius(
-      Rect.fromLTWH(0, 0, size, size),
-      const Radius.circular(16),
-    );
-
-    // Vẽ background color
-    paint.color = config.backgroundColor;
-    canvas.drawRRect(backgroundRect, paint);
-
-    // Vẽ border
-    paint.style = PaintingStyle.stroke;
-    paint.strokeWidth = 3.0;
-    paint.color = config.color.withValues(alpha: 0.3);
-    canvas.drawRRect(backgroundRect, paint);
-
-    // 2. Vẽ image overlay lên trên với padding
-    paint.style = PaintingStyle.fill;
-    final imageRect = Rect.fromLTWH(
-      padding,
-      padding,
-      size - padding * 2,
-      size - padding * 2,
-    );
-    canvas.drawImageRect(
-      assetImage,
-      Rect.fromLTWH(
-        0,
-        0,
-        assetImage.width.toDouble(),
-        assetImage.height.toDouble(),
-      ),
-      imageRect,
-      paint,
-    );
-
-    // Convert canvas thành image
-    final picture = recorder.endRecording();
-    final img = await picture.toImage(size.toInt(), size.toInt());
-    final byteData = await img.toByteData(format: ui.ImageByteFormat.png);
-
-    // TỐI ƯU: Giải phóng bộ nhớ native sau khi đã lấy được byteData
-    assetImage.dispose(); // Giải phóng ảnh gốc load từ asset
-    img.dispose(); // Giải phóng ảnh vừa vẽ xong
-    picture.dispose(); // Giải phóng bộ thu hình
-
-    return byteData!.buffer.asUint8List();
   }
 }
