@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:smart_route_app/features/auth/domain/entities/app_user.dart';
+import 'package:smart_route_app/features/auth/presentation/auth_session_provider.dart';
 import 'package:smart_route_app/shared/widgets/btn_child.dart';
-import 'package:smart_route_app/features/auth/presentation/providers/states/auth.dart';
 import 'package:smart_route_app/features/incident/domain/entities/incident.dart';
 import 'package:smart_route_app/features/incident/presentation/providers/states/map_page_notifier.dart';
 import 'package:smart_route_app/features/incident/presentation/widgets/incident_type_widgets.dart';
@@ -271,7 +272,8 @@ class EditIncidentBottomSheet extends HookConsumerWidget {
     String severity,
     String description,
   ) async {
-    final currentUser = ref.read(authProvider);
+    final currentUser =
+        ref.read(authSessionProvider).asData?.value ?? AppUser.empty();
     if (currentUser.isEmpty) {
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(

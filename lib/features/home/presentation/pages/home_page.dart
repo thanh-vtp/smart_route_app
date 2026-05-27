@@ -13,8 +13,8 @@ import 'package:smart_route_app/core/app/permissions.dart';
 import 'package:smart_route_app/core/app/set_up_notification.dart';
 import 'package:smart_route_app/core/app/token_monitor.dart';
 import 'package:smart_route_app/core/core.dart';
+import 'package:smart_route_app/features/auth/presentation/auth_session_provider.dart';
 import 'package:smart_route_app/shared/widgets/global_connection_wrapper.dart';
-import 'package:smart_route_app/features/auth/presentation/providers/states/auth.dart';
 import 'package:smart_route_app/features/search/presentation/providers/selected_address.dart';
 import 'package:smart_route_app/features/search/presentation/widgets/map_search_top_bar.dart';
 import 'package:smart_route_app/features/incident/presentation/pages/map_page.dart';
@@ -330,7 +330,7 @@ class _HomePageState extends ConsumerState<HomePage> {
   }
 
   Widget _buildSearchWithProfileBar() {
-    final user = ref.watch(authProvider);
+    final user = ref.watch(authSessionProvider);
     final selectedAddress = ref.watch(selectedAddressProvider);
 
     final titleText =
@@ -368,7 +368,7 @@ class _HomePageState extends ConsumerState<HomePage> {
                           Scaffold.of(context).openDrawer();
                         },
                         child: CachedNetworkImage(
-                          imageUrl: user.avatarUrl ?? '',
+                          imageUrl: user.value!.avatarUrl ?? '',
                           imageBuilder: (context, imageProvider) =>
                               CircleAvatar(backgroundImage: imageProvider),
                           placeholder: (context, url) => const CircleAvatar(

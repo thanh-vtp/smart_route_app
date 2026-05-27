@@ -22,7 +22,10 @@ class SignInWithGoogleUsecase {
         return left(failure);
       },
       (result) {
-        AppLogger.domain('SignInWithGoogle succeeded', useCase: 'SignInWithGoogle');
+        AppLogger.domain(
+          'SignInWithGoogle succeeded',
+          useCase: 'SignInWithGoogle',
+        );
         return right(result);
       },
     );

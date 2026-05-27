@@ -1,3 +1,4 @@
+
 import 'package:smart_route_app/core/utils/app_logger.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
@@ -26,12 +27,12 @@ class SupabaseAuthDatasourceImpl implements SupabaseAuthDatasource {
       );
     } catch (e, st) {
       AppLogger.error(
-        'Supabase sign-in error: $e',
+        '[LOI] Supabase sign in with Google Token: $e',
         error: e,
         stackTrace: st,
         name: 'SupabaseAuthDatasourceImpl',
       );
-      rethrow;
+      throw Exception('[Exception] Supabase sign in with Google Token $e');
     }
   }
 }

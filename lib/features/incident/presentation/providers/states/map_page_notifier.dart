@@ -137,7 +137,7 @@ class MapPageNotifier extends Notifier<MapPageState> {
 
         // THÀNH CÔNG:
         // Refresh lại list
-        await fetchIncidents(userUid: currentUser.uid);
+        await fetchIncidents(userUid: currentUser.id);
 
         // Chuyển sang submitted để UI biết đóng form/bottom sheet
         final newIncidents = state.maybeWhen(
@@ -223,7 +223,7 @@ class MapPageNotifier extends Notifier<MapPageState> {
     List<Incident> fallbackIncidents,
   ) async {
     final refreshResult = await _getIncidentsUsecase.call(
-      GetIncidentsParams(userUid: currentUser.uid),
+      GetIncidentsParams(userUid: currentUser.id),
     );
     refreshResult.fold(
       (failure) {

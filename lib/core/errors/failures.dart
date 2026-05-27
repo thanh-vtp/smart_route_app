@@ -8,11 +8,11 @@ import 'package:equatable/equatable.dart';
 // → Failure là lỗi business hoặc lỗi đã convert từ kỹ thuật sang domain-safe
 
 abstract class Failure extends Equatable {
-  final String? technicalMessage;
+  final String technicalMessage;
   final String? code;
   final StackTrace? stackTrace;
 
-  const Failure({this.technicalMessage, this.code, this.stackTrace});
+  const Failure({required this.technicalMessage, this.code, this.stackTrace});
 
   @override
   List<Object?> get props => [technicalMessage, code, stackTrace];
@@ -20,7 +20,11 @@ abstract class Failure extends Equatable {
 
 /// Lỗi liên quan đến network/API
 final class NetworkFailure extends Failure {
-  const NetworkFailure({super.technicalMessage, super.code, super.stackTrace});
+  const NetworkFailure({
+    required super.technicalMessage,
+    super.code,
+    super.stackTrace,
+  });
 
   factory NetworkFailure.noInternet() => const NetworkFailure(
     code: 'NO_INTERNET',
@@ -35,7 +39,7 @@ final class NetworkFailure extends Failure {
 
 /// Lỗi liên quan đến validation dữ liệu
 final class ValidationFailure extends Failure {
-  const ValidationFailure({super.technicalMessage, super.code});
+  const ValidationFailure({required super.technicalMessage, super.code});
 
   factory ValidationFailure.invalidInput(String field) => ValidationFailure(
     code: 'INVALID_INPUT',
@@ -56,7 +60,7 @@ final class ValidationFailure extends Failure {
 /// Lỗi liên quan đến permissions
 final class PermissionFailure extends Failure {
   const PermissionFailure({
-    super.technicalMessage,
+    required super.technicalMessage,
     super.code,
     super.stackTrace,
   });
@@ -69,7 +73,11 @@ final class PermissionFailure extends Failure {
 }
 
 final class SupabaseFailure extends Failure {
-  const SupabaseFailure({super.technicalMessage, super.code, super.stackTrace});
+  const SupabaseFailure({
+    required super.technicalMessage,
+    super.code,
+    super.stackTrace,
+  });
 
   factory SupabaseFailure.apiError(String message, String code) =>
       SupabaseFailure(code: code, technicalMessage: message);
@@ -81,7 +89,11 @@ final class SupabaseFailure extends Failure {
 
 /// Lỗi liên quan đến ArcGIS services
 final class ArcGISFailure extends Failure {
-  const ArcGISFailure({super.technicalMessage, super.code, super.stackTrace});
+  const ArcGISFailure({
+    required super.technicalMessage,
+    super.code,
+    super.stackTrace,
+  });
 
   factory ArcGISFailure.connectionFailed() => const ArcGISFailure(
     code: 'CONNECTION_FAILED',
@@ -185,7 +197,11 @@ final class ArcGISFailure extends Failure {
 }
 
 final class CacheFailure extends Failure {
-  const CacheFailure({super.technicalMessage, super.code, super.stackTrace});
+  const CacheFailure({
+    required super.technicalMessage,
+    super.code,
+    super.stackTrace,
+  });
 
   factory CacheFailure.noData() => const CacheFailure(
     code: 'NO_CACHE_DATA',
@@ -194,9 +210,8 @@ final class CacheFailure extends Failure {
 }
 
 final class AuthFailure extends Failure {
-  const AuthFailure(
-    String s, {
-    super.technicalMessage,
+  const AuthFailure({
+    required super.technicalMessage,
     super.code,
     super.stackTrace,
   });

@@ -18,8 +18,8 @@ class UpdateIncidentUsecase {
     required AppUser currentUser,
   }) async {
     // 1. Validation: Kiểm tra User đã đăng nhập chưa
-    // Nếu user rỗng hoặc uid rỗng -> Chặn ngay lập tức
-    if (currentUser.isEmpty || currentUser.uid.isEmpty) {
+    // Nếu user rỗng hoặc id rỗng -> Chặn ngay lập tức
+    if (currentUser.isEmpty || currentUser.id.isEmpty) {
       AppLogger.warning(
         'Unauthenticated user tried to update incident $incident.id',
         name: 'UpdateIncidentUsecase',
@@ -28,18 +28,18 @@ class UpdateIncidentUsecase {
     }
 
     AppLogger.domain(
-      'User ${currentUser.uid} requesting update for incident: $incident.id',
+      'User ${currentUser.id} requesting update for incident: $incident.id',
       useCase: 'UpdateIncident',
     );
 
     // 2. Gọi Repository để thực hiện cập nhật
-    // So sánh uid của người tạo ra sự cố (trong data) với uid người đang login
-    if (incident.reportedByUid != currentUser.uid) {
+    // So sánh id của người tạo ra sự cố (trong data) với id người đang login
+    if (incident.reportedByUid != currentUser.id) {
       return left(
         ValidationFailure(
           code: 'UPDATE_DENIED_NOT_OWNER',
           technicalMessage:
-              'User ${currentUser.uid} is not the owner of incident ${incident.id}',
+              'User ${currentUser.id} is not the owner of incident ${incident.id}',
         ),
       );
     }
@@ -50,7 +50,7 @@ class UpdateIncidentUsecase {
     }
     final repositoryResult = await repository.updateIncident(
       incident,
-      userUid: currentUser.uid,
+      userUid: currentUser.id,
     );
 
     return repositoryResult.fold(

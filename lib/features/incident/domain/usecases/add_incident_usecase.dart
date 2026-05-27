@@ -23,7 +23,7 @@ class AddIncidentUsecase {
     }
 
     // Business Validation: Kiểm tra user có uid và email hợp lệ
-    if (currentUser.uid.isEmpty || currentUser.email.isEmpty) {
+    if (currentUser.id.isEmpty || currentUser.email.isEmpty) {
       return left(ValidationFailure.invalidUserData());
     }
 
@@ -42,7 +42,7 @@ class AddIncidentUsecase {
       description: incident.description,
       reportedTime: incident.reportedTime,
       reportedBy: currentUser.displayName ?? currentUser.email,
-      reportedByUid: currentUser.uid,
+      reportedByUid: currentUser.id,
     );
 
     final repositoryResult = await repository.addIncident(enrichedIncident);

@@ -7,11 +7,15 @@ import 'package:smart_route_app/core/app/init.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  await initApp();
+  final container = ProviderContainer();
+  await initApp(container);
   runApp(
-    DevicePreview(
-      enabled: !kReleaseMode,
-      builder: (context) => const ProviderScope(child: SmartRouteApp()),
+    UncontrolledProviderScope(
+      container: container,
+      child: DevicePreview(
+        enabled: !kReleaseMode,
+        builder: (context) => SmartRouteApp(),
+      ),
     ),
   );
 }

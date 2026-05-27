@@ -45,5 +45,23 @@ final supabaseAuthDatasourceProvider =
 );
 
 typedef SupabaseAuthDatasourceRef = ProviderRef<SupabaseAuthDatasource>;
+String _$userDeviceDatasourceHash() =>
+    r'1b952a408ddd8a1bb09e7ad45b6604d0b9bcb70d';
+
+/// Provider cho User Device Data Source
+///
+/// Copied from [userDeviceDatasource].
+@ProviderFor(userDeviceDatasource)
+final userDeviceDatasourceProvider = Provider<UserDeviceDatasource>.internal(
+  userDeviceDatasource,
+  name: r'userDeviceDatasourceProvider',
+  debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
+      ? null
+      : _$userDeviceDatasourceHash,
+  dependencies: null,
+  allTransitiveDependencies: null,
+);
+
+typedef UserDeviceDatasourceRef = ProviderRef<UserDeviceDatasource>;
 // ignore_for_file: type=lint
 // ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member

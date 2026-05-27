@@ -3,7 +3,8 @@ import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:smart_route_app/core/resources/extensions/build_context.dart';
 import 'package:smart_route_app/core/utils/app_logger.dart';
-import 'package:smart_route_app/features/auth/presentation/providers/states/auth.dart';
+import 'package:smart_route_app/features/auth/domain/entities/app_user.dart';
+import 'package:smart_route_app/features/auth/presentation/auth_session_provider.dart';
 import 'package:smart_route_app/features/incident/domain/entities/incident.dart';
 import 'package:smart_route_app/features/incident/presentation/extensions/incident_display_extensions.dart';
 import 'package:smart_route_app/features/incident/presentation/providers/location_info_provider.dart';
@@ -122,11 +123,12 @@ class _IncidentDetailContent extends HookConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final currentUser = ref.watch(authProvider);
+    final currentUser =
+        ref.watch(authSessionProvider).asData?.value ?? AppUser.empty();
     final isOwner =
         currentUser.isNotEmpty &&
         incident.reportedByUid != null &&
-        currentUser.uid == incident.reportedByUid;
+        currentUser.id == incident.reportedByUid;
 
     return ClipRRect(
       borderRadius: const BorderRadius.vertical(top: Radius.circular(20)),
@@ -459,7 +461,9 @@ class _IncidentDetailContent extends HookConsumerWidget {
               Navigator.pop(dialogContext);
               ref.read(mapBottomSheetProvider.notifier).hide();
 
-              final currentUser = ref.read(authProvider);
+              final currentUser =
+                  ref.read(authSessionProvider).asData?.value ??
+                  AppUser.empty();
               final failure = await ref
                   .read(mapPageNotifierProvider.notifier)
                   .deleteIncident(incident.id, currentUser);

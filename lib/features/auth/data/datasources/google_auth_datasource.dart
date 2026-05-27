@@ -1,7 +1,7 @@
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:smart_route_app/core/utils/app_logger.dart';
 import 'package:smart_route_app/core/utils/constants.dart';
-import 'package:supabase_flutter/supabase_flutter.dart';
+
 
 abstract class GoogleAuthDatasource {
   Future<GoogleSignInAccount> signIn();

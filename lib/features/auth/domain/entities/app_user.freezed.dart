@@ -14,18 +14,13 @@ T _$identity<T>(T value) => value;
 final _privateConstructorUsedError = UnsupportedError(
     'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#adding-getters-and-methods-to-our-models');
 
-AppUser _$AppUserFromJson(Map<String, dynamic> json) {
-  return _AppUser.fromJson(json);
-}
-
 /// @nodoc
 mixin _$AppUser {
-  String get uid => throw _privateConstructorUsedError;
+  String get id => throw _privateConstructorUsedError;
   String get email => throw _privateConstructorUsedError;
   String? get displayName => throw _privateConstructorUsedError;
   String? get avatarUrl => throw _privateConstructorUsedError;
 
-  Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
   $AppUserCopyWith<AppUser> get copyWith => throw _privateConstructorUsedError;
 }
@@ -35,7 +30,7 @@ abstract class $AppUserCopyWith<$Res> {
   factory $AppUserCopyWith(AppUser value, $Res Function(AppUser) then) =
       _$AppUserCopyWithImpl<$Res, AppUser>;
   @useResult
-  $Res call({String uid, String email, String? displayName, String? avatarUrl});
+  $Res call({String id, String email, String? displayName, String? avatarUrl});
 }
 
 /// @nodoc
@@ -51,15 +46,15 @@ class _$AppUserCopyWithImpl<$Res, $Val extends AppUser>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? uid = null,
+    Object? id = null,
     Object? email = null,
     Object? displayName = freezed,
     Object? avatarUrl = freezed,
   }) {
     return _then(_value.copyWith(
-      uid: null == uid
-          ? _value.uid
-          : uid // ignore: cast_nullable_to_non_nullable
+      id: null == id
+          ? _value.id
+          : id // ignore: cast_nullable_to_non_nullable
               as String,
       email: null == email
           ? _value.email
@@ -84,7 +79,7 @@ abstract class _$$AppUserImplCopyWith<$Res> implements $AppUserCopyWith<$Res> {
       __$$AppUserImplCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call({String uid, String email, String? displayName, String? avatarUrl});
+  $Res call({String id, String email, String? displayName, String? avatarUrl});
 }
 
 /// @nodoc
@@ -98,15 +93,15 @@ class __$$AppUserImplCopyWithImpl<$Res>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? uid = null,
+    Object? id = null,
     Object? email = null,
     Object? displayName = freezed,
     Object? avatarUrl = freezed,
   }) {
     return _then(_$AppUserImpl(
-      uid: null == uid
-          ? _value.uid
-          : uid // ignore: cast_nullable_to_non_nullable
+      id: null == id
+          ? _value.id
+          : id // ignore: cast_nullable_to_non_nullable
               as String,
       email: null == email
           ? _value.email
@@ -125,20 +120,14 @@ class __$$AppUserImplCopyWithImpl<$Res>
 }
 
 /// @nodoc
-@JsonSerializable()
+
 class _$AppUserImpl extends _AppUser {
   const _$AppUserImpl(
-      {required this.uid,
-      required this.email,
-      this.displayName,
-      this.avatarUrl})
+      {required this.id, required this.email, this.displayName, this.avatarUrl})
       : super._();
 
-  factory _$AppUserImpl.fromJson(Map<String, dynamic> json) =>
-      _$$AppUserImplFromJson(json);
-
   @override
-  final String uid;
+  final String id;
   @override
   final String email;
   @override
@@ -148,7 +137,7 @@ class _$AppUserImpl extends _AppUser {
 
   @override
   String toString() {
-    return 'AppUser(uid: $uid, email: $email, displayName: $displayName, avatarUrl: $avatarUrl)';
+    return 'AppUser(id: $id, email: $email, displayName: $displayName, avatarUrl: $avatarUrl)';
   }
 
   @override
@@ -156,7 +145,7 @@ class _$AppUserImpl extends _AppUser {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _$AppUserImpl &&
-            (identical(other.uid, uid) || other.uid == uid) &&
+            (identical(other.id, id) || other.id == id) &&
             (identical(other.email, email) || other.email == email) &&
             (identical(other.displayName, displayName) ||
                 other.displayName == displayName) &&
@@ -164,37 +153,27 @@ class _$AppUserImpl extends _AppUser {
                 other.avatarUrl == avatarUrl));
   }
 
-  @JsonKey(ignore: true)
   @override
   int get hashCode =>
-      Object.hash(runtimeType, uid, email, displayName, avatarUrl);
+      Object.hash(runtimeType, id, email, displayName, avatarUrl);
 
   @JsonKey(ignore: true)
   @override
   @pragma('vm:prefer-inline')
   _$$AppUserImplCopyWith<_$AppUserImpl> get copyWith =>
       __$$AppUserImplCopyWithImpl<_$AppUserImpl>(this, _$identity);
-
-  @override
-  Map<String, dynamic> toJson() {
-    return _$$AppUserImplToJson(
-      this,
-    );
-  }
 }
 
 abstract class _AppUser extends AppUser {
   const factory _AppUser(
-      {required final String uid,
+      {required final String id,
       required final String email,
       final String? displayName,
       final String? avatarUrl}) = _$AppUserImpl;
   const _AppUser._() : super._();
 
-  factory _AppUser.fromJson(Map<String, dynamic> json) = _$AppUserImpl.fromJson;
-
   @override
-  String get uid;
+  String get id;
   @override
   String get email;
   @override

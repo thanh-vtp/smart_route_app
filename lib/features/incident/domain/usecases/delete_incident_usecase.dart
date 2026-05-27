@@ -13,8 +13,8 @@ class DeleteIncidentUsecase {
     required AppUser currentUser,
   }) async {
     // 1. Validation: Kiểm tra User đã đăng nhập chưa
-    // Nếu user rỗng hoặc uid rỗng -> Chặn ngay lập tức
-    if (currentUser.isEmpty || currentUser.uid.isEmpty) {
+    // Nếu user rỗng hoặc id rỗng -> Chặn ngay lập tức
+    if (currentUser.isEmpty || currentUser.id.isEmpty) {
       AppLogger.warning(
         'Unauthenticated user tried to delete incident $incidentId',
         name: 'DeleteIncidentUsecase',
@@ -23,7 +23,7 @@ class DeleteIncidentUsecase {
     }
 
     AppLogger.domain(
-      'User ${currentUser.uid} requesting delete for incident: $incidentId',
+      'User ${currentUser.id} requesting delete for incident: $incidentId',
       useCase: 'DeleteIncident',
     );
 
@@ -31,7 +31,7 @@ class DeleteIncidentUsecase {
     // Repository sẽ chịu trách nhiệm kiểm tra xem incidentId này có thuộc về userUid này không (Ownership Check)
     final repositoryResult = await repository.deleteIncident(
       incidentId: incidentId,
-      userUid: currentUser.uid,
+      userUid: currentUser.id,
     );
 
     return repositoryResult.fold(

@@ -1,7 +1,8 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:smart_route_app/features/auth/presentation/providers/states/auth.dart';
+import 'package:smart_route_app/features/auth/presentation/auth_controller_provider.dart';
+import 'package:smart_route_app/features/auth/presentation/auth_session_provider.dart';
 import 'package:smart_route_app/features/profile/domain/entities/user_profile.dart';
 import 'package:smart_route_app/features/profile/presentation/providers/state/profile_providers.dart';
 
@@ -285,7 +286,7 @@ class ProfileDrawer extends ConsumerWidget {
             title: const Text('Đăng xuất', style: TextStyle(color: Colors.red)),
             onTap: () async {
               Navigator.pop(context); // Close drawer
-              await ref.read(authProvider.notifier).signOut();
+              await ref.read(authControllerProvider.notifier).signOut();
             },
           ),
         ],

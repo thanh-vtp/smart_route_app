@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:smart_route_app/core/utils/app_logger.dart';
 import 'package:smart_route_app/features/auth/domain/entities/app_user.dart';
-import 'package:smart_route_app/features/auth/presentation/providers/states/auth.dart';
+import 'package:smart_route_app/features/auth/presentation/auth_session_provider.dart';
 import 'package:smart_route_app/features/incident/domain/entities/incident.dart';
 import 'package:smart_route_app/features/incident/presentation/extensions/incident_display_extensions.dart';
 import 'package:smart_route_app/features/incident/presentation/providers/map_center_providers.dart';
@@ -27,16 +27,19 @@ class _ReportMapPageState extends ConsumerState<ReportMapPage> {
   void initState() {
     super.initState();
     Future.microtask(() {
-      final currentUser = ref.read(authProvider);
+      final currentUser = ref.read(authSessionProvider);
       ref
           .read(reportPageNotifierProvider.notifier)
-          .fetchIncidents(currentUser: currentUser);
+          .fetchIncidents(
+            currentUser: currentUser.asData?.value ?? AppUser.empty(),
+          );
     });
   }
 
   @override
   Widget build(BuildContext context) {
-    final user = ref.watch(authProvider);
+    final user =
+        ref.watch(authSessionProvider).asData?.value ?? AppUser.empty();
     final reportState = ref.watch(reportPageNotifierProvider);
 
     return reportState.when(
@@ -54,7 +57,7 @@ class _ReportMapPageState extends ConsumerState<ReportMapPage> {
         children: [
           if (incidents != null) _buildContent(context, user, incidents),
           MapErrorOverlay(
-            message: failure.technicalMessage!,
+            message: failure.technicalMessage,
             onRetry: () => ref
                 .read(reportPageNotifierProvider.notifier)
                 .fetchIncidents(currentUser: user),

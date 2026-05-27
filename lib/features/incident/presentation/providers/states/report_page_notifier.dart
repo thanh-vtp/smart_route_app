@@ -34,7 +34,7 @@ class ReportPageNotifier extends Notifier<ReportPageState> {
     }
 
     final result = await _getIncidentsUsecase.call(
-      GetIncidentsParams(source: source, userUid: currentUser.uid),
+      GetIncidentsParams(source: source, userUid: currentUser.id),
     );
 
     result.fold(
@@ -93,7 +93,7 @@ class ReportPageNotifier extends Notifier<ReportPageState> {
         final refreshResult = await _getIncidentsUsecase.call(
           GetIncidentsParams(
             source: IncidentDataSourceType.supabase,
-            userUid: currentUser.uid,
+            userUid: currentUser.id,
           ),
         );
 
