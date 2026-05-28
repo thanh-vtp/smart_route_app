@@ -9,7 +9,7 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:smart_route_app/core/app/fcm_token_service.dart';
 import 'package:smart_route_app/core/app/set_up_notification.dart';
 import 'package:smart_route_app/core/core.dart';
-import 'package:smart_route_app/core/common/incident_symbol_factory.dart';
+import 'package:smart_route_app/core/common/map/symbols/incident_symbol_factory.dart';
 import 'package:smart_route_app/firebase_options.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -73,19 +73,19 @@ Future<void> initApp(ProviderContainer container) async {
 }
 
 /// Initialize ArcGIS after UI is ready to avoid blocking main thread
-void _initArcGISDeferred() {
-  // Use addPostFrameCallback to ensure UI renders first
-  WidgetsBinding.instance.addPostFrameCallback((_) {
-    // Chạy trong tác vụ nhỏ để không chặn quá trình hiển thị khung hình
-    // microtask để ưu tiên vẽ xong Frame UI đầu tiên
-    Future.microtask(() {
-      // Pre-cache Symbols (Vẽ icon từ Asset vào RAM)
-      // Chúng ta không await ở đây để App có thể vào Home ngay lập tức
-      // Việc vẽ này diễn ra trong background
-      IncidentSymbolFactory().preCacheAllSymbols();
-    });
-  });
-}
+// void _initArcGISDeferred() {
+//   // Use addPostFrameCallback to ensure UI renders first
+//   WidgetsBinding.instance.addPostFrameCallback((_) {
+//     // Chạy trong tác vụ nhỏ để không chặn quá trình hiển thị khung hình
+//     // microtask để ưu tiên vẽ xong Frame UI đầu tiên
+//     Future.microtask(() {
+//       // Pre-cache Symbols (Vẽ icon từ Asset vào RAM)
+//       // Chúng ta không await ở đây để App có thể vào Home ngay lập tức
+//       // Việc vẽ này diễn ra trong background
+//       IncidentSymbolFactory().preCacheAllSymbols();
+//     });
+//   });
+// }
 
 void catchUnhandledExceptions(Object error, StackTrace? stack) {
   FirebaseCrashlytics.instance.recordError(error, stack, fatal: true);

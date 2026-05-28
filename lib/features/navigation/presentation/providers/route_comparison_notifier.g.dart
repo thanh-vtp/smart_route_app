@@ -7,7 +7,7 @@ part of 'route_comparison_notifier.dart';
 // **************************************************************************
 
 String _$routeComparisonNotifierHash() =>
-    r'dca0f1cddefa76adbf6aa42f7a03e1c8f3400444';
+    r'53fb6149e83586178e1475cce2593da2788fa298';
 
 /// See also [RouteComparisonNotifier].
 @ProviderFor(RouteComparisonNotifier)

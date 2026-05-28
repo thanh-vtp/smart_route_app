@@ -136,8 +136,8 @@ class RouteComparisonNotifier extends _$RouteComparisonNotifier {
       try {
         // Tìm incident gần nhất với barrier này (khoảng cách < 5m)
         final match = allIncidents.firstWhere((incident) {
-          final lat = double.tryParse(incident.latitude) ?? 0;
-          final lon = double.tryParse(incident.longitude) ?? 0;
+          final lat = incident.latitude;
+          final lon = incident.longitude;
 
           return (lat - barrier.latitude).abs() < 0.0001 &&
               (lon - barrier.longitude).abs() < 0.0001;

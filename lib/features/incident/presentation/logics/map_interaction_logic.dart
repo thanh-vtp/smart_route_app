@@ -6,7 +6,7 @@ import 'package:smart_route_app/core/utils/app_logger.dart';
 import 'package:smart_route_app/features/incident/data/models/incident_model.dart';
 import 'package:smart_route_app/features/incident/domain/entities/incident.dart'
     as domain;
-import 'package:smart_route_app/core/common/incident_symbol_factory.dart';
+import 'package:smart_route_app/core/common/map/symbols/incident_symbol_factory.dart';
 import 'package:smart_route_app/core/common/incident_type_config.dart';
 import 'package:smart_route_app/features/incident/presentation/providers/location_info_provider.dart';
 import 'package:smart_route_app/features/incident/presentation/providers/map_mode_provider.dart';
@@ -482,8 +482,8 @@ class MapInteractionLogic {
       loaded: (incidents) {
         for (final incident in incidents) {
           try {
-            final incLat = double.parse(incident.latitude);
-            final incLon = double.parse(incident.longitude);
+            final incLat = incident.latitude;
+            final incLon = incident.longitude;
 
             // Tính khoảng cách đơn giản (Euclidean approximation)
             final dLat = (latitude - incLat) * metersPerDegree;

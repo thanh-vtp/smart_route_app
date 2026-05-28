@@ -51,8 +51,8 @@ class AddIncidentFormData {
   Incident toIncident() {
     return Incident(
       id: DateTime.now().millisecondsSinceEpoch.toString(),
-      latitude: latitude.toString(),
-      longitude: longitude.toString(),
+      latitude: latitude,
+      longitude: longitude,
       type: typeId,
       severity: severityId,
       description: finalDescription,

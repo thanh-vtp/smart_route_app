@@ -10,8 +10,8 @@ part 'incident.freezed.dart';
 class Incident with _$Incident {
   const factory Incident({
     required String id,
-    required String latitude, // vĩ độ
-    required String longitude, // kinh độ
+    required double latitude, // vĩ độ
+    required double longitude, // kinh độ
     required String type, // loại sự cố traffic, accident, construction, etc.
     required String severity, // mức độ sự cố
     required String description, // mô tả sự cố

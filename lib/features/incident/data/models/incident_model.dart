@@ -29,8 +29,8 @@ class IncidentModel with _$IncidentModel {
 
   const factory IncidentModel({
     required String id,
-    required String latitude, // vĩ độ
-    required String longitude, // kinh độ
+    required double latitude, // vĩ độ
+    required double longitude, // kinh độ
     required String type, // loại sự cố traffic, accident, construction, etc.
     required String severity, // mức độ sự cố
     required String description, // mô tả sự cố
@@ -60,8 +60,8 @@ class IncidentModel with _$IncidentModel {
     try {
       // Parse các field với error handling
       final id = json['id'] as String;
-      final latitude = json['latitude'] as String;
-      final longitude = json['longitude'] as String;
+      final latitude = double.parse(json['latitude'] as String);
+      final longitude = double.parse(json['longitude'] as String);
       final type = json['type'] as String;
       final severity = json['severity'] as String;
       final description = json['description'] as String;
@@ -160,8 +160,8 @@ class IncidentModel with _$IncidentModel {
     final attributes = feature.attributes;
     var geometry = feature.geometry; // dùng var để có thể gán lại
 
-    String latitude = '0.0';
-    String longitude = '0.0';
+    double latitude = 0.0;
+    double longitude = 0.0;
 
     if (geometry is arcgis.ArcGISPoint) {
       // Phát hiện và sửa lỗi spatial reference không đúng
@@ -204,8 +204,8 @@ class IncidentModel with _$IncidentModel {
         }
       }
 
-      latitude = geometry.y.toString();
-      longitude = geometry.x.toString();
+      latitude = geometry.y;
+      longitude = geometry.x;
     }
 
     DateTime? parseArcGISDate(dynamic value) {
@@ -259,8 +259,8 @@ extension IncidentModelExtension on IncidentModel {
   /// this: IncidentModel
   /// return: Graphic
   arcgis.Graphic toGraphic() {
-    final double lng = double.tryParse(longitude) ?? 0.0;
-    final double lat = double.tryParse(latitude) ?? 0.0;
+    final double lng = longitude;
+    final double lat = latitude;
 
     // Validation: Đảm bảo tọa độ nằm trong phạm vi WGS84 hợp lệ
     if (lng.abs() > 180 || lat.abs() > 90) {

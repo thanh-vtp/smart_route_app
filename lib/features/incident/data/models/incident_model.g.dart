@@ -9,8 +9,8 @@ part of 'incident_model.dart';
 _$IncidentModelImpl _$$IncidentModelImplFromJson(Map<String, dynamic> json) =>
     _$IncidentModelImpl(
       id: json['id'] as String,
-      latitude: json['latitude'] as String,
-      longitude: json['longitude'] as String,
+      latitude: (json['latitude'] as num).toDouble(),
+      longitude: (json['longitude'] as num).toDouble(),
       type: json['type'] as String,
       severity: json['severity'] as String,
       description: json['description'] as String,

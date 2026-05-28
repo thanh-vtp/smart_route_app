@@ -21,8 +21,8 @@ IncidentModel _$IncidentModelFromJson(Map<String, dynamic> json) {
 /// @nodoc
 mixin _$IncidentModel {
   String get id => throw _privateConstructorUsedError;
-  String get latitude => throw _privateConstructorUsedError; // vĩ độ
-  String get longitude => throw _privateConstructorUsedError; // kinh độ
+  double get latitude => throw _privateConstructorUsedError; // vĩ độ
+  double get longitude => throw _privateConstructorUsedError; // kinh độ
   String get type =>
       throw _privateConstructorUsedError; // loại sự cố traffic, accident, construction, etc.
   String get severity => throw _privateConstructorUsedError; // mức độ sự cố
@@ -56,8 +56,8 @@ abstract class $IncidentModelCopyWith<$Res> {
   @useResult
   $Res call(
       {String id,
-      String latitude,
-      String longitude,
+      double latitude,
+      double longitude,
       String type,
       String severity,
       String description,
@@ -103,11 +103,11 @@ class _$IncidentModelCopyWithImpl<$Res, $Val extends IncidentModel>
       latitude: null == latitude
           ? _value.latitude
           : latitude // ignore: cast_nullable_to_non_nullable
-              as String,
+              as double,
       longitude: null == longitude
           ? _value.longitude
           : longitude // ignore: cast_nullable_to_non_nullable
-              as String,
+              as double,
       type: null == type
           ? _value.type
           : type // ignore: cast_nullable_to_non_nullable
@@ -158,8 +158,8 @@ abstract class _$$IncidentModelImplCopyWith<$Res>
   @useResult
   $Res call(
       {String id,
-      String latitude,
-      String longitude,
+      double latitude,
+      double longitude,
       String type,
       String severity,
       String description,
@@ -203,11 +203,11 @@ class __$$IncidentModelImplCopyWithImpl<$Res>
       latitude: null == latitude
           ? _value.latitude
           : latitude // ignore: cast_nullable_to_non_nullable
-              as String,
+              as double,
       longitude: null == longitude
           ? _value.longitude
           : longitude // ignore: cast_nullable_to_non_nullable
-              as String,
+              as double,
       type: null == type
           ? _value.type
           : type // ignore: cast_nullable_to_non_nullable
@@ -272,10 +272,10 @@ class _$IncidentModelImpl extends _IncidentModel {
   @override
   final String id;
   @override
-  final String latitude;
+  final double latitude;
 // vĩ độ
   @override
-  final String longitude;
+  final double longitude;
 // kinh độ
   @override
   final String type;
@@ -375,8 +375,8 @@ class _$IncidentModelImpl extends _IncidentModel {
 abstract class _IncidentModel extends IncidentModel {
   const factory _IncidentModel(
       {required final String id,
-      required final String latitude,
-      required final String longitude,
+      required final double latitude,
+      required final double longitude,
       required final String type,
       required final String severity,
       required final String description,
@@ -394,9 +394,9 @@ abstract class _IncidentModel extends IncidentModel {
   @override
   String get id;
   @override
-  String get latitude;
+  double get latitude;
   @override // vĩ độ
-  String get longitude;
+  double get longitude;
   @override // kinh độ
   String get type;
   @override // loại sự cố traffic, accident, construction, etc.

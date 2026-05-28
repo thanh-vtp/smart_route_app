@@ -214,13 +214,13 @@ class ArcGISRemoteDataSourceImpl implements ArcGISRemoteDataSource {
 
       // 2. SET GEOMETRY
       // Parse tọa độ từ String sang double
-      final double lng = double.parse(incident.longitude);
-      final double lat = double.parse(incident.latitude);
+      // final double lng = double.parse(incident.longitude);
+      // final double lat = double.parse(incident.latitude);
 
       // Tạo Point với WGS84 (Kinh/Vĩ độ). SDK sẽ tự project sang hệ tọa độ của Server (Mét/UTM)
       final point = ArcGISPoint(
-        x: lng,
-        y: lat,
+        x: incident.longitude,
+        y: incident.latitude,
         spatialReference: SpatialReference.wgs84,
       );
       feature.geometry = point;
@@ -369,13 +369,13 @@ class ArcGISRemoteDataSourceImpl implements ArcGISRemoteDataSource {
       // Không cập nhật ThoiGianBaoCao, NguoiBaoCao (giữ nguyên gốc)
 
       // 4. Cập nhật Geometry
-      final double lng = double.parse(incident.longitude);
-      final double lat = double.parse(incident.latitude);
+      // final double lng = double.parse(incident.longitude);
+      // final double lat = double.parse(incident.latitude);
 
       // Tạo Point với WGS84 (Kinh/Vĩ độ). SDK sẽ tự project sang hệ tọa độ của Server (Mét/UTM)
       final point = ArcGISPoint(
-        x: lng,
-        y: lat,
+        x: incident.longitude,
+        y: incident.latitude,
         spatialReference: SpatialReference.wgs84,
       );
       feature.geometry = point;

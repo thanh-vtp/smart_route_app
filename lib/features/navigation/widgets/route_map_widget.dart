@@ -5,7 +5,7 @@ import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:smart_route_app/core/utils/app_logger.dart';
 import 'package:smart_route_app/features/incident/data/models/incident_model.dart';
-import 'package:smart_route_app/core/common/incident_symbol_factory.dart';
+import 'package:smart_route_app/core/common/map/symbols/incident_symbol_factory.dart';
 import 'package:smart_route_app/features/incident/presentation/logics/map_location_logic.dart';
 import 'package:smart_route_app/core/common/incident_type_config.dart';
 import 'package:smart_route_app/features/incident/presentation/providers/base_map_style_providers.dart';
@@ -454,7 +454,7 @@ class RouteMapWidget extends HookConsumerWidget {
         // Tạo và gán symbol tương ứng với kích thước nhỏ hơn
         graphic.symbol = await symbolFactory.getSymbol(
           config.id,
-          displaySize: displaySize,
+          // displaySize: displaySize,
         );
 
         // Gán zIndex từ config để kiểm soát thứ tự hiển thị

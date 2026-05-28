@@ -1,18 +1,37 @@
+import 'package:arcgis_maps/arcgis_maps.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:smart_route_app/core/app/router.dart';
-import 'package:smart_route_app/core/utils/app_logger.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:smart_route_app/core/common/map/providers/map_controller_bundle_provider.dart';
+import 'package:smart_route_app/core/common/screens/provider/map_facade_provider.dart';
+import 'package:smart_route_app/core/common/screens/state/incidents_provider.dart';
+import 'package:smart_route_app/core/common/screens/state/map_ui_notifier.dart';
 import 'reporting_bottom_sheet.dart';
 import 'incident_detail_bottom_sheet.dart';
 
-class MainMapView extends StatefulWidget {
+class MainMapView extends ConsumerStatefulWidget {
   const MainMapView({super.key});
 
   @override
-  State<MainMapView> createState() => _MainMapViewState();
+  ConsumerState<ConsumerStatefulWidget> createState() => _MainMapViewState();
 }
 
-class _MainMapViewState extends State<MainMapView> {
+class _MainMapViewState extends ConsumerState<MainMapView> {
+  bool _isMapInitialized = false;
+
+  @override
+  void initState() {
+    super.initState();
+
+    Future.microtask(() async {
+      await ref.read(incidentsProvider.notifier).fetchIncidents();
+    });
+
+    ref.listenManual<IncidentsState>(incidentsProvider, (previous, next) async {
+      await ref.read(mapUiProvider.notifier).renderIncidents(next.incidents);
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
@@ -34,29 +53,76 @@ class _MainMapViewState extends State<MainMapView> {
     ColorScheme cs,
     TextTheme textTheme,
   ) {
+    final mapUiState = ref.watch(mapUiProvider);
+
+    final facade = ref.read(mapFacadeProvider);
+
     return Stack(
       children: [
         // 1. Map Layer (Placeholder filling the screen)
         Positioned.fill(
-          child: Container(
-            color: cs.surfaceContainerLow,
-            child: CustomPaint(
-              painter: _MapGridPainter(
-                color: cs.outlineVariant.withOpacity(0.3),
-              ),
-            ),
+          child: ArcGISMapView(
+            controllerProvider: () {
+              return ref.read(mapControllerBundleProvider).map2D;
+            },
+            onMapViewReady: () async {
+              if (_isMapInitialized) return;
+
+              _isMapInitialized = true;
+
+              await ref.read(mapUiProvider.notifier).initialize();
+            },
           ),
         ),
 
         // Central Map Makers (Placeholder for visual context)
-        Center(
-          child: GestureDetector(
-            onTap: () {
-              _showIncidentDetail(context);
-            },
-            child: Icon(Icons.shield, size: 48, color: cs.primary),
+        // Center(
+        //   child: GestureDetector(
+        //     onTap: () {
+        //       _showIncidentDetail(context);
+        //     },
+        //     child: Icon(Icons.shield, size: 48, color: cs.primary),
+        //   ),
+        // ),
+
+        /// LOADING
+        if (mapUiState.isLoading)
+          Positioned.fill(
+            child: Container(
+              color: cs.surface,
+              child: const Center(child: CircularProgressIndicator()),
+            ),
           ),
-        ),
+
+        /// ERROR FALLBACK
+        if (mapUiState.error == true)
+          Positioned.fill(
+            child: Container(
+              color: cs.surfaceContainerLow,
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Icon(Icons.map_outlined, size: 64, color: cs.outline),
+
+                  const SizedBox(height: 16),
+
+                  Text(
+                    mapUiState.error ?? 'Không thể tải bản đồ',
+                    style: textTheme.bodyLarge,
+                  ),
+
+                  const SizedBox(height: 24),
+
+                  FilledButton(
+                    onPressed: () {
+                      // ref.read(mapViewProvider.notifier).retry();
+                    },
+                    child: const Text('Thử lại'),
+                  ),
+                ],
+              ),
+            ),
+          ),
 
         // 2. Top Search Bar (Floating Card)
         Positioned(

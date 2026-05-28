@@ -27,8 +27,8 @@ class _State extends ConsumerState<NavigatorIncidentsBottomSheet> {
 
   void _navigateToIncident(domain.Incident incident) async {
     final mapMode = ref.read(mapModeProviderProvider);
-    final lat = double.parse(incident.latitude);
-    final lon = double.parse(incident.longitude);
+    final lat = incident.latitude;
+    final lon = incident.longitude;
 
     final viewpoint = Viewpoint.withLatLongScale(
       latitude: lat,

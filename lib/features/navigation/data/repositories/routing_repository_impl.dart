@@ -51,8 +51,8 @@ class RoutingRepositoryImpl implements RoutingRepository {
       barriers = incidentsToAvoid
           .map((incident) {
             return {
-              'longitude': double.tryParse(incident.longitude) ?? 0.0,
-              'latitude': double.tryParse(incident.latitude) ?? 0.0,
+              'longitude': incident.longitude,
+              'latitude': incident.latitude,
             };
           })
           .where((b) => b['longitude'] != 0 && b['latitude'] != 0)

@@ -1,7 +1,7 @@
 import 'package:arcgis_maps/arcgis_maps.dart';
 import 'package:flutter/material.dart';
 import 'package:smart_route_app/core/utils/app_logger.dart';
-import 'package:smart_route_app/core/common/incident_symbol_factory.dart';
+import 'package:smart_route_app/core/common/map/symbols/incident_symbol_factory.dart';
 
 /// Helper class để quản lý location marker trên bản đồ
 class LocationMarkerHelper {
