@@ -1,4 +1,4 @@
-import 'package:smart_route_app/features/search/domain/entities/address_result.dart'
+import 'package:smart_route_app/core/common/domain/entities/address_result.dart'
     as entities;
 import '../../domain/entities/route_direction.dart';
 

@@ -5,8 +5,8 @@ import serviceAccount from '../service-account.json' with { type: 'json' }
 // ================= TYPES =================
 interface PythonClusterData {
   OBJECTID: number
-  longitude: number
-  latitude: number
+  lng: number
+  lat: number
   Cluster_ID: number
 }
 

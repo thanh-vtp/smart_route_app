@@ -50,12 +50,9 @@ class RoutingRepositoryImpl implements RoutingRepository {
     if (incidentsToAvoid != null && incidentsToAvoid.isNotEmpty) {
       barriers = incidentsToAvoid
           .map((incident) {
-            return {
-              'longitude': incident.longitude,
-              'latitude': incident.latitude,
-            };
+            return {'lng': incident.lng, 'lat': incident.lat};
           })
-          .where((b) => b['longitude'] != 0 && b['latitude'] != 0)
+          .where((b) => b['lng'] != 0 && b['lat'] != 0)
           .toList();
     }
 
@@ -106,7 +103,7 @@ class RoutingRepositoryImpl implements RoutingRepository {
     for (final path in feature.geometry.paths) {
       for (final point in path) {
         if (point.length >= 2) {
-          routePoints.add(RoutePoint(latitude: point[1], longitude: point[0]));
+          routePoints.add(RoutePoint(lat: point[1], lng: point[0]));
         }
       }
     }
@@ -149,10 +146,7 @@ class RoutingRepositoryImpl implements RoutingRepository {
       for (final feature in response.barriers!.features) {
         if (feature.geometry.x != null && feature.geometry.y != null) {
           confirmedBarriers.add(
-            RoutePoint(
-              latitude: feature.geometry.y!,
-              longitude: feature.geometry.x!,
-            ),
+            RoutePoint(lat: feature.geometry.y!, lng: feature.geometry.x!),
           );
         }
       }

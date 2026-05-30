@@ -3,16 +3,11 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
 class DirectionButton extends ConsumerStatefulWidget {
-  final double? latitude;
-  final double? longitude;
+  final double? lat;
+  final double? lng;
   final String? locationName;
 
-  const DirectionButton({
-    super.key,
-    this.latitude,
-    this.longitude,
-    this.locationName,
-  });
+  const DirectionButton({super.key, this.lat, this.lng, this.locationName});
 
   @override
   ConsumerState<ConsumerStatefulWidget> createState() =>

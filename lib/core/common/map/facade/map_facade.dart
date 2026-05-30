@@ -1,6 +1,7 @@
 import 'dart:ui';
 
 import 'package:arcgis_maps/arcgis_maps.dart' hide Incident;
+import 'package:smart_route_app/core/common/map/location/location_state.dart';
 
 import '../../../../features/incident/domain/entities/incident.dart';
 
@@ -19,11 +20,17 @@ abstract interface class MapFacade {
 
   Future<InteractionResult> onTap(Offset screenPoint);
 
-  Future<void> startLocation();
+  LocationDisplay get locationDisplay;
 
-  Future<void> stopLocation();
+  Future<LocationState> startLocation({
+    required void Function(ArcGISLocation location) onLocationChanged,
+  });
+
+  Future<LocationState> stopLocation();
 
   void recenterLocation();
+
+  bool isFollowingLocation();
 
   void dispose();
 }

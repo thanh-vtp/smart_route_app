@@ -140,8 +140,8 @@
 //     final affected = <Incident>[];
 
 //     for (final incident in incidents) {
-//       final incidentLat = double.tryParse(incident.latitude) ?? 0;
-//       final incidentLon = double.tryParse(incident.longitude) ?? 0;
+//       final incidentLat = double.tryParse(incident.lat) ?? 0;
+//       final incidentLon = double.tryParse(incident.lng) ?? 0;
 
 //       if (incidentLat == 0 || incidentLon == 0) continue;
 
@@ -187,10 +187,10 @@
 //       final distance = _pointToSegmentDistance(
 //         pointLat: incidentLat,
 //         pointLon: incidentLon,
-//         segStartLat: p1.latitude,
-//         segStartLon: p1.longitude,
-//         segEndLat: p2.latitude,
-//         segEndLon: p2.longitude,
+//         segStartLat: p1.lat,
+//         segStartLon: p1.lng,
+//         segEndLat: p2.lat,
+//         segEndLon: p2.lng,
 //       );
 
 //       if (distance <= radiusMeters) {
@@ -297,10 +297,10 @@
 //     final alternatives = <RouteResult>[];
 //     final routeUseCase = ref.read(calculateRouteUseCaseProvider);
 
-//     final startLat = stops.first['latitude']!;
-//     final startLon = stops.first['longitude']!;
-//     final endLat = stops.last['latitude']!;
-//     final endLon = stops.last['longitude']!;
+//     final startLat = stops.first['lat']!;
+//     final startLon = stops.first['lng']!;
+//     final endLat = stops.last['lat']!;
+//     final endLon = stops.last['lng']!;
 
 //     // Tính midpoint của route
 //     final midLat = (startLat + endLat) / 2;
@@ -331,8 +331,8 @@
 //         // Kiểm tra waypoint có xa incidents không
 //         bool waypointNearIncident = false;
 //         for (final incident in incidentsToAvoid) {
-//           final incLat = double.tryParse(incident.latitude) ?? 0;
-//           final incLon = double.tryParse(incident.longitude) ?? 0;
+//           final incLat = double.tryParse(incident.lat) ?? 0;
+//           final incLon = double.tryParse(incident.lng) ?? 0;
 //           final dist = _haversineDistance(
 //             waypointLat,
 //             waypointLon,
@@ -351,7 +351,7 @@
 //         // Tạo stops mới với waypoint
 //         final modifiedStops = [
 //           stops.first,
-//           {'latitude': waypointLat, 'longitude': waypointLon},
+//           {'lat': waypointLat, 'lng': waypointLon},
 //           stops.last,
 //         ];
 

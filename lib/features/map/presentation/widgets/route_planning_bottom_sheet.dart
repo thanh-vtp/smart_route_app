@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:smart_route_app/features/navigation/domain/entities/route_result.dart';
-import 'package:smart_route_app/features/search/presentation/providers/usecases/use_case_providers.dart';
+import 'package:smart_route_app/core/common/presentation/providers/usecases/use_case_providers.dart';
 
 // Widget hiển thị bottom sheet để lập kế hoạch đường đi với nhiều điểm đi qua
 class RoutePlanningBottomSheet extends HookConsumerWidget {
@@ -320,8 +320,8 @@ class RoutePlanningBottomSheet extends HookConsumerWidget {
     Map<String, double> waypoint,
     TextEditingController controller,
   ) async {
-    final lat = waypoint['latitude']!;
-    final lon = waypoint['longitude']!;
+    final lat = waypoint['lat']!;
+    final lon = waypoint['lng']!;
 
     final useCase = ref.read(reverseGeocodeUseCaseProvider);
     final result = await useCase(lat, lon);
@@ -353,7 +353,7 @@ class RoutePlanningBottomSheet extends HookConsumerWidget {
   ) {
     // TODO: Implement dialog to add waypoint by coordinates or address search
     // For now, we'll add a placeholder waypoint
-    final newWaypoint = {'latitude': 10.762622, 'longitude': 106.660172};
+    final newWaypoint = {'lat': 10.762622, 'lng': 106.660172};
 
     final newController = TextEditingController(text: 'Điểm dừng mới');
     controllers.value = List.from(controllers.value)

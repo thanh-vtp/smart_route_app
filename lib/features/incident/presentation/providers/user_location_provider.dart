@@ -31,9 +31,9 @@ class UserLocation extends _$UserLocation {
   /// Kiểm tra có vị trí không
   bool get hasLocation => state != null;
 
-  /// Lấy latitude
-  double? get latitude => state?.y;
+  /// Lấy lat
+  double? get lat => state?.y;
 
-  /// Lấy longitude
-  double? get longitude => state?.x;
+  /// Lấy lng
+  double? get lng => state?.x;
 }

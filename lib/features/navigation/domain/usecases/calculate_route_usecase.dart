@@ -20,8 +20,8 @@ class CalculateRouteUseCase {
 
     // Validate coordinates
     for (final stop in stops) {
-      final lat = stop['latitude'];
-      final lon = stop['longitude'];
+      final lat = stop['lat'];
+      final lon = stop['lng'];
       if (lat == null || lon == null) {
         return left(ArcGISFailure.invalidCoordinates());
       }

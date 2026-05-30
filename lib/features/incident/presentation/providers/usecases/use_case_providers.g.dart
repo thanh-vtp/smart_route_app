@@ -6,22 +6,56 @@ part of 'use_case_providers.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$getIncidentsUsecaseHash() =>
-    r'643d4c228a24d446d32a1222ee06bd9740223491';
+String _$getIncidentsForMapUsecaseHash() =>
+    r'e4d9efcec6cb9b40544474e85eaa364223e98410';
 
-/// See also [getIncidentsUsecase].
-@ProviderFor(getIncidentsUsecase)
-final getIncidentsUsecaseProvider = Provider<GetIncidentsUsecase>.internal(
-  getIncidentsUsecase,
-  name: r'getIncidentsUsecaseProvider',
+/// See also [getIncidentsForMapUsecase].
+@ProviderFor(getIncidentsForMapUsecase)
+final getIncidentsForMapUsecaseProvider =
+    Provider<GetIncidentsForMapUsecase>.internal(
+  getIncidentsForMapUsecase,
+  name: r'getIncidentsForMapUsecaseProvider',
   debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
       ? null
-      : _$getIncidentsUsecaseHash,
+      : _$getIncidentsForMapUsecaseHash,
   dependencies: null,
   allTransitiveDependencies: null,
 );
 
-typedef GetIncidentsUsecaseRef = ProviderRef<GetIncidentsUsecase>;
+typedef GetIncidentsForMapUsecaseRef = ProviderRef<GetIncidentsForMapUsecase>;
+String _$getIncidentDetailUsecaseHash() =>
+    r'29f273a050f95b6b5bea1ce4cb5f7035ecafe5fd';
+
+/// See also [getIncidentDetailUsecase].
+@ProviderFor(getIncidentDetailUsecase)
+final getIncidentDetailUsecaseProvider =
+    Provider<GetIncidentDetailUsecase>.internal(
+  getIncidentDetailUsecase,
+  name: r'getIncidentDetailUsecaseProvider',
+  debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
+      ? null
+      : _$getIncidentDetailUsecaseHash,
+  dependencies: null,
+  allTransitiveDependencies: null,
+);
+
+typedef GetIncidentDetailUsecaseRef = ProviderRef<GetIncidentDetailUsecase>;
+String _$getMyIncidentsUsecaseHash() =>
+    r'9e16580c94e681a1df78ded265f097357e409146';
+
+/// See also [getMyIncidentsUsecase].
+@ProviderFor(getMyIncidentsUsecase)
+final getMyIncidentsUsecaseProvider = Provider<GetMyIncidentsUsecase>.internal(
+  getMyIncidentsUsecase,
+  name: r'getMyIncidentsUsecaseProvider',
+  debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
+      ? null
+      : _$getMyIncidentsUsecaseHash,
+  dependencies: null,
+  allTransitiveDependencies: null,
+);
+
+typedef GetMyIncidentsUsecaseRef = ProviderRef<GetMyIncidentsUsecase>;
 String _$addIncidentUsecaseHash() =>
     r'1222278106e21203159a0f7ab4d3e3d1554370f2';
 

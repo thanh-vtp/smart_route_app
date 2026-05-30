@@ -153,7 +153,7 @@ class RoutingRemoteDataSourceImpl implements RoutingRemoteDataSource {
 
       // Tạo stops string (x,y;x,y)
       final stopsString = stops
-          .map((stop) => '${stop['longitude']},${stop['latitude']}')
+          .map((stop) => '${stop['lng']},${stop['lat']}')
           .join(';');
 
       //           AppLogger.data(
@@ -165,7 +165,7 @@ class RoutingRemoteDataSourceImpl implements RoutingRemoteDataSource {
 
       if (barriers != null && barriers.isNotEmpty) {
         barriersString = barriers
-            .map((b) => '${b['longitude']},${b['latitude']}')
+            .map((b) => '${b['lng']},${b['lat']}')
             .join(';');
 
         // AppLogger.data(

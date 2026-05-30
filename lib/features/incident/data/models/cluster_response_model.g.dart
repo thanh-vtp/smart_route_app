@@ -10,8 +10,8 @@ _$ClusterItemModelImpl _$$ClusterItemModelImplFromJson(
         Map<String, dynamic> json) =>
     _$ClusterItemModelImpl(
       objectId: (json['OBJECTID'] as num).toInt(),
-      latitude: (json['latitude'] as num).toDouble(),
-      longitude: (json['longitude'] as num).toDouble(),
+      lat: (json['lat'] as num).toDouble(),
+      lng: (json['lng'] as num).toDouble(),
       clusterId: (json['Cluster_ID'] as num).toInt(),
       isCorePoint: (json['Is_Core_Point'] as num).toInt(),
     );
@@ -20,8 +20,8 @@ Map<String, dynamic> _$$ClusterItemModelImplToJson(
         _$ClusterItemModelImpl instance) =>
     <String, dynamic>{
       'OBJECTID': instance.objectId,
-      'latitude': instance.latitude,
-      'longitude': instance.longitude,
+      'lat': instance.lat,
+      'lng': instance.lng,
       'Cluster_ID': instance.clusterId,
       'Is_Core_Point': instance.isCorePoint,
     };

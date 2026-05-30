@@ -1,6 +1,6 @@
 import 'package:arcgis_maps/arcgis_maps.dart' hide Incident;
+import 'package:smart_route_app/core/common/incident_type_config.dart';
 import 'package:smart_route_app/core/utils/app_logger.dart';
-import 'package:smart_route_app/features/incident/presentation/extensions/incident_display_extensions.dart';
 import 'package:smart_route_app/core/common/map/symbols/incident_symbol_factory.dart';
 import '../../../../features/incident/domain/entities/incident.dart';
 
@@ -35,18 +35,34 @@ class IncidentOverlayController {
     // Add or update graphics
     // Xử lý từng sự cố
     for (final incident in incidents) {
-      await _upsertIncident(incident);
+      try {
+        await _upsertIncident(incident);
+      } catch (e, st) {
+        AppLogger.error(
+          '[LỖI] Failed to render incident ${incident.id}',
+          error: e,
+          stackTrace: st,
+        );
+      }
     }
 
     AppLogger.ui('Rendered ${_graphicsById.length} incidents on map');
   }
 
   Future<void> _upsertIncident(Incident incident) async {
+    // AppLogger.debug(
+    //   '[DEBUG] Render incident: '
+    //   'id=${incident.id}, '
+    //   'type=${incident.type}, '
+    //   'lat=${incident.lat}, '
+    //   'lng=${incident.lng}',
+    // );
+
     final existing = _graphicsById[incident.id];
 
     final point = ArcGISPoint(
-      x: incident.longitude,
-      y: incident.latitude,
+      x: incident.lng,
+      y: incident.lat,
       spatialReference: SpatialReference.wgs84,
     );
 
@@ -58,7 +74,12 @@ class IncidentOverlayController {
 
     // Create
     // 2. Ký hiệu (Symbol)
+    // AppLogger.debug('Step 1');
+
     final symbol = await symbolFactory.getSymbol(incident.type);
+
+    // AppLogger.debug('Symbol loaded');
+    // AppLogger.debug('Step 2');
 
     // 3. Đóng gói thành Graphic
     final graphic = Graphic(
@@ -67,12 +88,18 @@ class IncidentOverlayController {
       attributes: {'incident_id': incident.id},
     );
 
+    // AppLogger.debug('Step 3');
+
     // Z-Index để icon to nằm trên icon nhỏ
-    graphic.zIndex = incident.typeConfig.zIndex;
+    graphic.zIndex = IncidentTypes.getById(incident.type).zIndex;
+
+    // AppLogger.debug('Step 4');
 
     _graphicsById[incident.id] = graphic;
 
     overlay.graphics.add(graphic);
+
+    // AppLogger.debug('Step 5');
   }
 
   // Xóa toàn bộ sự cố khỏi map

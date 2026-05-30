@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:smart_route_app/core/utils/app_logger.dart';
-import 'package:smart_route_app/features/search/presentation/providers/states/get_location_imagery_state.dart';
+import 'package:smart_route_app/core/common/presentation/providers/states/get_location_imagery_state.dart';
 
 class DebugImageryTest extends ConsumerWidget {
   const DebugImageryTest({super.key});

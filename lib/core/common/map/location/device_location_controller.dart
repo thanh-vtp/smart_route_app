@@ -1,11 +1,11 @@
 import 'dart:async';
 
 import 'package:arcgis_maps/arcgis_maps.dart';
+import 'package:smart_route_app/core/common/map/location/device_location_status.dart';
 
 import 'location_constants.dart';
 import 'location_error.dart';
 import 'location_state.dart';
-import 'location_status.dart' as loc_status;
 
 class DeviceLocationController {
   final SystemLocationDataSource dataSource = SystemLocationDataSource();
@@ -19,6 +19,8 @@ class DeviceLocationController {
     try {
       display.dataSource = dataSource;
 
+      enableFollow(display);
+
       display.autoPanMode = LocationConstants.defaultAutoPanMode;
 
       _locationSubscription?.cancel();
@@ -30,18 +32,18 @@ class DeviceLocationController {
       await dataSource.start();
 
       return LocationState(
-        status: loc_status.LocationStatus.running,
+        status: DeviceLocationStatus.running,
         isFollowing: true,
       );
     } on ArcGISException catch (e) {
       return LocationState(
-        status: loc_status.LocationStatus.error,
+        status: DeviceLocationStatus.error,
         isFollowing: false,
         error: LocationError(e.message),
       );
     } catch (e) {
       return LocationState(
-        status: loc_status.LocationStatus.error,
+        status: DeviceLocationStatus.error,
         isFollowing: false,
         error: LocationError(e.toString()),
       );
@@ -49,14 +51,24 @@ class DeviceLocationController {
   }
 
   Future<LocationState> stop({required LocationDisplay display}) async {
+    disableFollow(display);
+
     display.autoPanMode = LocationDisplayAutoPanMode.off;
 
     await dataSource.stop();
 
-    return const LocationState(
-      status: loc_status.LocationStatus.stopped,
+    return LocationState(
+      status: DeviceLocationStatus.stopped,
       isFollowing: false,
     );
+  }
+
+  void enableFollow(LocationDisplay display) {
+    display.autoPanMode = LocationDisplayAutoPanMode.recenter;
+  }
+
+  void disableFollow(LocationDisplay display) {
+    display.autoPanMode = LocationDisplayAutoPanMode.off;
   }
 
   void recenter(LocationDisplay display) {
@@ -64,7 +76,11 @@ class DeviceLocationController {
       return;
     }
 
-    display.autoPanMode = LocationDisplayAutoPanMode.recenter;
+    enableFollow(display);
+  }
+
+  bool isFollowing(LocationDisplay display) {
+    return display.autoPanMode != LocationDisplayAutoPanMode.off;
   }
 
   void dispose() {

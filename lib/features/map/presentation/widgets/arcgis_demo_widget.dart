@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:smart_route_app/features/search/domain/entities/address_result.dart';
+import 'package:smart_route_app/core/common/domain/entities/address_result.dart';
 import 'package:smart_route_app/features/navigation/domain/entities/route_result.dart';
-import 'package:smart_route_app/features/search/presentation/widgets/address_search_widget.dart';
+import 'package:smart_route_app/core/common/presentation/widgets/address_search_widget.dart';
 // import 'location_info_bottom_sheet.dart';
 import 'route_planning_bottom_sheet.dart';
 import 'connection_status_widget.dart';
@@ -229,8 +229,8 @@ class ArcGISDemoWidget extends HookConsumerWidget {
                     style: const TextStyle(fontWeight: FontWeight.bold),
                   ),
                   subtitle: Text(
-                    'Lat: ${location['latitude']!.toStringAsFixed(4)}\n'
-                    'Lon: ${location['longitude']!.toStringAsFixed(4)}',
+                    'Lat: ${location['lat']!.toStringAsFixed(4)}\n'
+                    'Lon: ${location['lng']!.toStringAsFixed(4)}',
                   ),
                   trailing: PopupMenuButton<String>(
                     onSelected: (value) {
@@ -290,10 +290,7 @@ class ArcGISDemoWidget extends HookConsumerWidget {
     ValueNotifier<List<Map<String, double>>> selectedLocations,
     AddressResult address,
   ) {
-    final newLocation = {
-      'latitude': address.latitude,
-      'longitude': address.longitude,
-    };
+    final newLocation = {'lat': address.lat, 'lng': address.lng};
 
     selectedLocations.value = [...selectedLocations.value, newLocation];
   }
@@ -325,8 +322,8 @@ class ArcGISDemoWidget extends HookConsumerWidget {
     //   isScrollControlled: true,
     //   backgroundColor: Colors.transparent,
     //   builder: (context) => LocationInfoBottomSheet(
-    //     latitude: location['latitude']!,
-    //     longitude: location['longitude']!,
+    //     lat: location['lat']!,
+    //     lng: location['lng']!,
     //   ),
     // );
   }

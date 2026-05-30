@@ -10,8 +10,8 @@ class ClusterItemModel with _$ClusterItemModel {
 
   const factory ClusterItemModel({
     @JsonKey(name: 'OBJECTID') required int objectId,
-    required double latitude, // vĩ độ
-    required double longitude, // kinh độ
+    required double lat, // vĩ độ
+    required double lng, // kinh độ
     @JsonKey(name: 'Cluster_ID')
     required int clusterId, // ID của cluster mà incident này thuộc về
     @JsonKey(name: 'Is_Core_Point')
@@ -26,8 +26,8 @@ class ClusterItemModel with _$ClusterItemModel {
   ClusterItem toEntity() {
     return ClusterItem(
       objectId: objectId,
-      latitude: latitude,
-      longitude: longitude,
+      lat: lat,
+      lng: lng,
       clusterId: clusterId,
       isCorePoint: isCorePoint,
     );

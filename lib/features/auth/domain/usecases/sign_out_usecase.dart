@@ -15,7 +15,7 @@ class SignOutUsecase {
     return repositoryResult.fold(
       (failure) {
         AppLogger.domain(
-          'SignOut failed: ${failure.technicalMessage}',
+          'SignOut failed: ${failure.message}',
           useCase: 'SignOut',
         );
         return left(failure);

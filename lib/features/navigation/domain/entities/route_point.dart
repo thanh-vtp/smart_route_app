@@ -2,11 +2,11 @@ import 'package:equatable/equatable.dart';
 
 // Entity cho điểm trên route
 class RoutePoint extends Equatable {
-  final double latitude;
-  final double longitude;
+  final double lat;
+  final double lng;
 
-  const RoutePoint({required this.latitude, required this.longitude});
+  const RoutePoint({required this.lat, required this.lng});
 
   @override
-  List<Object?> get props => [latitude, longitude];
+  List<Object?> get props => [lat, lng];
 }

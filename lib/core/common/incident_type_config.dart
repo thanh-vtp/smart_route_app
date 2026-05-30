@@ -28,32 +28,32 @@ class IncidentTypes {
     id: 'traffic',
     displayName: 'Kẹt xe',
     assetPath: '$_basePath/marker_traffic.png',
-    zIndex: 1,
+    zIndex: 0,
   );
 
   static const police = IncidentTypeConfig(
     id: 'police',
     displayName: 'Cảnh sát giao thông',
     assetPath: '$_basePath/marker_police.png',
-    zIndex: 2,
+    zIndex: 0,
   );
   static const hazard = IncidentTypeConfig(
     id: 'hazard',
     displayName: 'Nguy hiểm',
     assetPath: '$_basePath/marker_hazard.png',
-    zIndex: 3,
+    zIndex: 0,
   );
   static const closure = IncidentTypeConfig(
     id: 'closure',
     displayName: 'Đường cấm',
     assetPath: '$_basePath/marker_closure.png',
-    zIndex: 4,
+    zIndex: 0,
   );
   static const camera = IncidentTypeConfig(
     id: 'camera',
     displayName: 'Camera',
     assetPath: '$_basePath/marker_camera.png',
-    zIndex: 5,
+    zIndex: 0,
   );
 
   static const List<IncidentTypeConfig> all = [

@@ -10,14 +10,6 @@ class FetchClusterUseCase {
 
   Future<Either<Failure, List<ClusterItem>>> call() async {
     final repositoryResult = await repository.fetchClusters();
-
-    return repositoryResult.fold(
-      (failure) {
-        return left(failure);
-      },
-      (result) {
-        return right(result);
-      },
-    );
+    return repositoryResult;
   }
 }

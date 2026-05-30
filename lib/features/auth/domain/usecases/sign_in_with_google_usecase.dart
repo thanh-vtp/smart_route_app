@@ -16,7 +16,7 @@ class SignInWithGoogleUsecase {
     return repositoryResult.fold(
       (failure) {
         AppLogger.domain(
-          'SignInWithGoogle failed: ${failure.technicalMessage}',
+          'SignInWithGoogle failed: ${failure.message}',
           useCase: 'SignInWithGoogle',
         );
         return left(failure);

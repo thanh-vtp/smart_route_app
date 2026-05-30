@@ -57,8 +57,8 @@
 
 //     // 1. Toạ độ (Geometry)
 //     final point = ArcGISPoint(
-//       x: incident.longitude,
-//       y: incident.latitude,
+//       x: incident.lng,
+//       y: incident.lat,
 //       spatialReference: SpatialReference.wgs84,
 //     );
 

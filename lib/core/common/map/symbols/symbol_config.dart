@@ -6,10 +6,10 @@ class SymbolConfig {
   const SymbolConfig({required this.size, required this.offsetY});
 
   factory SymbolConfig.defaultMarker() {
-    return const SymbolConfig(size: 32, offsetY: 16);
+    return const SymbolConfig(size: 50, offsetY: 16); // 32/16
   }
 
   factory SymbolConfig.highlight() {
-    return const SymbolConfig(size: 50, offsetY: 25);
+    return const SymbolConfig(size: 50, offsetY: 25); // 50/25
   }
 }

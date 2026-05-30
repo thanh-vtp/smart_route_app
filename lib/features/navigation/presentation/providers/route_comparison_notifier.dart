@@ -59,14 +59,14 @@ class RouteComparisonNotifier extends _$RouteComparisonNotifier {
         // for (var i = 0; i < incidents.length; i++) {
         //   AppLogger.info(
         //     '[$i] Loại sự cố: ${incidents[i].type}'
-        //     ' Tọa độ: ${incidents[i].longitude}, ${incidents[i].latitude} ',
+        //     ' Tọa độ: ${incidents[i].lng}, ${incidents[i].lat} ',
         //     name: 'RouteComparisonNotifier',
         //   );
         // }
         AppLogger.info(
           incidents
               .map((incident) {
-                return '${incident.longitude},${incident.latitude}';
+                return '${incident.lng},${incident.lat}';
               })
               .join(';'),
           name: 'RouteComparisonNotifier',
@@ -136,11 +136,11 @@ class RouteComparisonNotifier extends _$RouteComparisonNotifier {
       try {
         // Tìm incident gần nhất với barrier này (khoảng cách < 5m)
         final match = allIncidents.firstWhere((incident) {
-          final lat = incident.latitude;
-          final lon = incident.longitude;
+          final lat = incident.lat;
+          final lon = incident.lng;
 
-          return (lat - barrier.latitude).abs() < 0.0001 &&
-              (lon - barrier.longitude).abs() < 0.0001;
+          return (lat - barrier.lat).abs() < 0.0001 &&
+              (lon - barrier.lng).abs() < 0.0001;
         });
         avoidedList.add(match);
       } catch (e) {

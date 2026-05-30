@@ -2,12 +2,16 @@ import 'package:arcgis_maps/arcgis_maps.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:smart_route_app/core/common/map/interactions/interaction_result.dart';
 import 'package:smart_route_app/core/common/map/providers/map_controller_bundle_provider.dart';
 import 'package:smart_route_app/core/common/screens/provider/map_facade_provider.dart';
 import 'package:smart_route_app/core/common/screens/state/incidents_provider.dart';
+import 'package:smart_route_app/core/common/screens/state/location_ui_notifier.dart';
 import 'package:smart_route_app/core/common/screens/state/map_ui_notifier.dart';
+import 'package:smart_route_app/core/utils/app_logger.dart';
 import 'reporting_bottom_sheet.dart';
 import 'incident_detail_bottom_sheet.dart';
+import 'package:smart_route_app/core/common/map/location/device_location_status.dart';
 
 class MainMapView extends ConsumerStatefulWidget {
   const MainMapView({super.key});
@@ -24,11 +28,15 @@ class _MainMapViewState extends ConsumerState<MainMapView> {
     super.initState();
 
     Future.microtask(() async {
-      await ref.read(incidentsProvider.notifier).fetchIncidents();
+      final notifier = ref.read(incidentsProvider.notifier);
+
+      await notifier.fetchIncidents(); // fetch
+      notifier.listenToRealtimeUpdates(); // update
     });
 
     ref.listenManual<IncidentsState>(incidentsProvider, (previous, next) async {
       await ref.read(mapUiProvider.notifier).renderIncidents(next.incidents);
+      AppLogger.debug('renderIncidents: ${next.incidents.length}');
     });
   }
 
@@ -54,8 +62,7 @@ class _MainMapViewState extends ConsumerState<MainMapView> {
     TextTheme textTheme,
   ) {
     final mapUiState = ref.watch(mapUiProvider);
-
-    final facade = ref.read(mapFacadeProvider);
+    final locationState = ref.watch(locationUiProvider);
 
     return Stack(
       children: [
@@ -71,6 +78,38 @@ class _MainMapViewState extends ConsumerState<MainMapView> {
               _isMapInitialized = true;
 
               await ref.read(mapUiProvider.notifier).initialize();
+            },
+
+            onTap: (screenPoint) async {
+              final result = await ref
+                  .read(mapFacadeProvider)
+                  .onTap(screenPoint);
+
+              if (!mounted) return;
+
+              switch (result.type) {
+                case InteractionType.incident:
+                  if (result.objectId == null) {
+                    ScaffoldMessenger.of(this.context).showSnackBar(
+                      const SnackBar(
+                        content: Text(
+                          'Không thể xác định báo cáo. Thử lại sau.',
+                        ),
+                      ),
+                    );
+                    return;
+                  }
+
+                  _showIncidentDetail(this.context, result.objectId!);
+                  AppLogger.ui("Mở Báo Cáo: ${result.objectId!}");
+                  break;
+
+                case InteractionType.none:
+                  break;
+
+                default:
+                  break;
+              }
             },
           ),
         ),
@@ -95,7 +134,7 @@ class _MainMapViewState extends ConsumerState<MainMapView> {
           ),
 
         /// ERROR FALLBACK
-        if (mapUiState.error == true)
+        if (mapUiState.error != null)
           Positioned.fill(
             child: Container(
               color: cs.surfaceContainerLow,
@@ -143,11 +182,24 @@ class _MainMapViewState extends ConsumerState<MainMapView> {
               // My Location Button
               FloatingActionButton.small(
                 heroTag: 'my_location',
-                onPressed: () {},
+                onPressed: () async {
+                  final notifier = ref.read(locationUiProvider.notifier);
+
+                  if (locationState.status != DeviceLocationStatus.running) {
+                    await notifier.startLocation();
+                    return;
+                  }
+
+                  notifier.recenter();
+                },
                 backgroundColor: cs.surfaceContainerLowest,
                 foregroundColor: cs.onSurfaceVariant,
                 elevation: 2,
-                child: const Icon(Icons.my_location),
+                child: Icon(
+                  locationState.isFollowing
+                      ? Icons.my_location
+                      : Icons.location_searching,
+                ),
               ),
               const SizedBox(height: 16),
               // Massive BÁO CÁO FAB
@@ -213,12 +265,12 @@ class _MainMapViewState extends ConsumerState<MainMapView> {
     );
   }
 
-  Future<dynamic> _showIncidentDetail(BuildContext context) {
+  Future<dynamic> _showIncidentDetail(BuildContext context, String incidentId) {
     return showModalBottomSheet(
       context: context,
       isScrollControlled: true,
       backgroundColor: Colors.transparent,
-      builder: (context) => const IncidentDetailBottomSheet(isOwner: true),
+      builder: (context) => IncidentDetailBottomSheet(incidentId: incidentId),
     );
   }
 

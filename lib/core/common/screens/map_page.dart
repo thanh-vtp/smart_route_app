@@ -130,8 +130,8 @@
 //         // Tương tự cho Scene 3D
 //         _mapFacade.sceneController.setViewpointCamera(
 //           Camera.withLatLong(
-//             latitude: next.point.y,
-//             longitude: next.point.x,
+//             lat: next.point.y,
+//             lng: next.point.x,
 //             altitude: 5000, // Đặt độ cao mặc định cho Scene 3D
 //             heading: 0, // Hướng nhìn về phía bắc
 //             pitch: 45, // Góc nhìn nghiêng để thấy hiệu ứng 3D rõ hơn

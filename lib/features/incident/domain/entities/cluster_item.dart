@@ -8,8 +8,8 @@ class ClusterItem with _$ClusterItem {
 
   factory ClusterItem({
     required int objectId,
-    required double latitude,
-    required double longitude,
+    required double lat,
+    required double lng,
     required int clusterId,
     required int isCorePoint,
   }) = _ClusterItem;

@@ -2,9 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:smart_route_app/core/core.dart';
 import 'package:smart_route_app/core/errors/failures.dart';
-import 'package:smart_route_app/features/search/domain/entities/address_result.dart';
-import 'package:smart_route_app/features/search/presentation/pages/search_directions_page.dart';
-import 'package:smart_route_app/features/search/presentation/providers/usecases/use_case_providers.dart';
+import 'package:smart_route_app/core/common/domain/entities/address_result.dart';
+import 'package:smart_route_app/core/common/presentation/pages/search_directions_page.dart';
+import 'package:smart_route_app/core/common/presentation/providers/usecases/use_case_providers.dart';
 import '../../../incident/domain/entities/incident.dart';
 import '../../domain/entities/route_direction.dart';
 import '../helpers/direction_formatter.dart';
@@ -14,7 +14,7 @@ import '../../../incident/presentation/providers/location_display_providers.dart
 import '../providers/route_comparison_notifier.dart';
 import '../../../../core/common/screens/map_page_notifier.dart';
 import '../../../incident/presentation/providers/user_location_provider.dart';
-import '../../../search/presentation/widgets/recent_search_widget.dart';
+import '../../../../core/common/presentation/widgets/recent_search_widget.dart';
 import '../../widgets/route_map_widget.dart';
 import 'package:smart_route_app/features/navigation/domain/entities/route_result.dart';
 
@@ -61,8 +61,8 @@ class _DirectionPageState extends ConsumerState<DirectionPage> {
       // Reverse geocode để lấy địa chỉ từ tọa độ
       final reverseGeocodeUseCase = ref.read(reverseGeocodeUseCaseProvider);
       final result = await reverseGeocodeUseCase(
-        userLocation.y, // latitude
-        userLocation.x, // longitude
+        userLocation.y, // lat
+        userLocation.x, // lng
       );
 
       result.fold(
@@ -72,8 +72,8 @@ class _DirectionPageState extends ConsumerState<DirectionPage> {
             setState(() {
               _startLocation = AddressResult(
                 fullAddress: 'Vị trí hiện tại',
-                latitude: userLocation.y,
-                longitude: userLocation.x,
+                lat: userLocation.y,
+                lng: userLocation.x,
                 score: 100,
               );
               _isLoadingCurrentLocation = false;
@@ -141,18 +141,12 @@ class _DirectionPageState extends ConsumerState<DirectionPage> {
     if (_startLocation == null || _endLocation == null) return;
 
     final stops = [
-      {
-        'latitude': _startLocation!.latitude,
-        'longitude': _startLocation!.longitude,
-      },
-      {
-        'latitude': _endLocation!.latitude,
-        'longitude': _endLocation!.longitude,
-      },
+      {'lat': _startLocation!.lat, 'lng': _startLocation!.lng},
+      {'lat': _endLocation!.lat, 'lng': _endLocation!.lng},
     ];
     AppLogger.info(
-      'Tọa độ bắt đầu: ${_startLocation!.latitude}, ${_startLocation!.longitude}'
-      'Tọa độ kết thúc: ${_endLocation!.latitude}, ${_endLocation!.longitude} ',
+      'Tọa độ bắt đầu: ${_startLocation!.lat}, ${_startLocation!.lng}'
+      'Tọa độ kết thúc: ${_endLocation!.lat}, ${_endLocation!.lng} ',
       name: 'DirectionPage',
     );
 

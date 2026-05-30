@@ -7,7 +7,7 @@ part of 'repository_providers.dart';
 // **************************************************************************
 
 String _$incidentRepositoryHash() =>
-    r'e6d714b0073f1b6ee50d2b1d8741d88d8f0d9fc1';
+    r'bafd91317f7515dc061e90fac2105ebeb4989b44';
 
 /// Provider cho Incident Repository
 /// Điều phối giữa ArcGIS (GET) và Supabase (ADD/DELETE)

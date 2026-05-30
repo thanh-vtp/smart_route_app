@@ -1,21 +1,11 @@
-import 'package:smart_route_app/features/incident/data/models/incident_model.dart';
+import 'package:smart_route_app/features/incident/data/models/incident_supabase_model.dart';
 
 abstract class SupabaseRemoteDataSource {
-  /// Lưu incident vào Supabase database
-  Future<void> saveIncident(IncidentModel incident);
-
-  /// Lấy incident theo ID (UUID trong Supabase)
-  Future<IncidentModel?> getIncidentById(String incidentId);
-
-  /// Lấy incident theo ArcGIS ObjectID
-  Future<IncidentModel?> getIncidentByArcgisObjectId(String arcgisObjectId);
-
-  /// Xóa incident khỏi Supabase database
-  Future<void> deleteIncident(String incidentId, String userUid);
-
-  /// Lấy danh sách incidents từ Supabase (user report)
-  Future<List<IncidentModel>> getIncidents({String? userUid});
-
-  /// Cập nhật incident
-  Future<void> updateIncident(IncidentModel incident, String userUid);
+  Future<IncidentSupabaseModel> createIncident(IncidentSupabaseModel incident);
+  Future<IncidentSupabaseModel?> getIncidentById(String id);
+  Future<IncidentSupabaseModel> updateIncident(IncidentSupabaseModel incident);
+  Future<void> deleteIncident(String id, String userId);
+  Future<List<IncidentSupabaseModel>> getMyIncidents(
+    String userId,
+  ); // danh sách sự cố do user này tạo
 }

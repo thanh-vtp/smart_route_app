@@ -739,8 +739,8 @@ Incident (Independent) → Affects Routes via distance check
 **Key Entities:**
 - **User**: id, email, name, profileImage, preferences
 - **Route**: id, userId, startPoint, endPoint, distance, duration, path(JSON), createdAt
-- **Waypoint**: id, routeId, latitude, longitude, sequence, address
-- **Incident**: id, type, latitude, longitude, description, severity, timestamp
+- **Waypoint**: id, routeId, lat, lng, sequence, address
+- **Incident**: id, type, lat, lng, description, severity, timestamp
 - **FavoriteRoute**: id, userId, routeId, name, savedAt
 
 ---

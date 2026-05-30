@@ -10,12 +10,12 @@ import 'package:smart_route_app/features/incident/presentation/providers/locatio
 class LocationPickerMapWidget extends HookConsumerWidget {
   const LocationPickerMapWidget({
     super.key,
-    required this.initialLatitude,
-    required this.initialLongitude,
+    required this.initiallat,
+    required this.initiallng,
   });
 
-  final double initialLatitude;
-  final double initialLongitude;
+  final double initiallat;
+  final double initiallng;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -29,8 +29,8 @@ class LocationPickerMapWidget extends HookConsumerWidget {
 
     // 2. States
     // Tọa độ tâm bản đồ (WGS84) để hiển thị và trả về
-    final centerLatitude = useState<double>(initialLatitude);
-    final centerLongitude = useState<double>(initialLongitude);
+    final centerlat = useState<double>(initiallat);
+    final centerlng = useState<double>(initiallng);
     // Trạng thái đang kéo map (để làm hiệu ứng UI)
     final isMoving = useState(false);
 
@@ -96,8 +96,8 @@ class LocationPickerMapWidget extends HookConsumerWidget {
     void onMapViewReady() async {
       // Di chuyển camera đến vị trí ban đầu (Incident cũ hoặc Default)
       final initialPoint = ArcGISPoint(
-        x: initialLongitude,
-        y: initialLatitude,
+        x: initiallng,
+        y: initiallat,
         spatialReference: SpatialReference.wgs84,
       );
       // zoom về initial point
@@ -156,8 +156,8 @@ class LocationPickerMapWidget extends HookConsumerWidget {
                     as ArcGISPoint?;
 
             if (wgs84Point != null) {
-              centerLatitude.value = wgs84Point.y;
-              centerLongitude.value = wgs84Point.x;
+              centerlat.value = wgs84Point.y;
+              centerlng.value = wgs84Point.x;
             }
           }
         } catch (_) {}
@@ -178,8 +178,8 @@ class LocationPickerMapWidget extends HookConsumerWidget {
             onPressed: () {
               // Trả về kết quả cho màn hình trước
               Navigator.pop(context, {
-                'latitude': centerLatitude.value,
-                'longitude': centerLongitude.value,
+                'lat': centerlat.value,
+                'lng': centerlng.value,
               });
             },
             child: const Text(
@@ -292,12 +292,12 @@ class LocationPickerMapWidget extends HookConsumerWidget {
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         _CoordinateItem(
-                          label: "Latitude",
-                          value: centerLatitude.value.toStringAsFixed(6),
+                          label: "lat",
+                          value: centerlat.value.toStringAsFixed(6),
                         ),
                         _CoordinateItem(
-                          label: "Longitude",
-                          value: centerLongitude.value.toStringAsFixed(6),
+                          label: "lng",
+                          value: centerlng.value.toStringAsFixed(6),
                         ),
                       ],
                     ),
@@ -307,8 +307,8 @@ class LocationPickerMapWidget extends HookConsumerWidget {
                       child: ElevatedButton(
                         onPressed: () {
                           Navigator.pop(context, {
-                            'latitude': centerLatitude.value,
-                            'longitude': centerLongitude.value,
+                            'lat': centerlat.value,
+                            'lng': centerlng.value,
                           });
                         },
                         style: ElevatedButton.styleFrom(

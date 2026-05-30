@@ -17,8 +17,8 @@ final _privateConstructorUsedError = UnsupportedError(
 /// @nodoc
 mixin _$ClusterItem {
   int get objectId => throw _privateConstructorUsedError;
-  double get latitude => throw _privateConstructorUsedError;
-  double get longitude => throw _privateConstructorUsedError;
+  double get lat => throw _privateConstructorUsedError;
+  double get lng => throw _privateConstructorUsedError;
   int get clusterId => throw _privateConstructorUsedError;
   int get isCorePoint => throw _privateConstructorUsedError;
 
@@ -34,11 +34,7 @@ abstract class $ClusterItemCopyWith<$Res> {
       _$ClusterItemCopyWithImpl<$Res, ClusterItem>;
   @useResult
   $Res call(
-      {int objectId,
-      double latitude,
-      double longitude,
-      int clusterId,
-      int isCorePoint});
+      {int objectId, double lat, double lng, int clusterId, int isCorePoint});
 }
 
 /// @nodoc
@@ -55,8 +51,8 @@ class _$ClusterItemCopyWithImpl<$Res, $Val extends ClusterItem>
   @override
   $Res call({
     Object? objectId = null,
-    Object? latitude = null,
-    Object? longitude = null,
+    Object? lat = null,
+    Object? lng = null,
     Object? clusterId = null,
     Object? isCorePoint = null,
   }) {
@@ -65,13 +61,13 @@ class _$ClusterItemCopyWithImpl<$Res, $Val extends ClusterItem>
           ? _value.objectId
           : objectId // ignore: cast_nullable_to_non_nullable
               as int,
-      latitude: null == latitude
-          ? _value.latitude
-          : latitude // ignore: cast_nullable_to_non_nullable
+      lat: null == lat
+          ? _value.lat
+          : lat // ignore: cast_nullable_to_non_nullable
               as double,
-      longitude: null == longitude
-          ? _value.longitude
-          : longitude // ignore: cast_nullable_to_non_nullable
+      lng: null == lng
+          ? _value.lng
+          : lng // ignore: cast_nullable_to_non_nullable
               as double,
       clusterId: null == clusterId
           ? _value.clusterId
@@ -94,11 +90,7 @@ abstract class _$$ClusterItemImplCopyWith<$Res>
   @override
   @useResult
   $Res call(
-      {int objectId,
-      double latitude,
-      double longitude,
-      int clusterId,
-      int isCorePoint});
+      {int objectId, double lat, double lng, int clusterId, int isCorePoint});
 }
 
 /// @nodoc
@@ -113,8 +105,8 @@ class __$$ClusterItemImplCopyWithImpl<$Res>
   @override
   $Res call({
     Object? objectId = null,
-    Object? latitude = null,
-    Object? longitude = null,
+    Object? lat = null,
+    Object? lng = null,
     Object? clusterId = null,
     Object? isCorePoint = null,
   }) {
@@ -123,13 +115,13 @@ class __$$ClusterItemImplCopyWithImpl<$Res>
           ? _value.objectId
           : objectId // ignore: cast_nullable_to_non_nullable
               as int,
-      latitude: null == latitude
-          ? _value.latitude
-          : latitude // ignore: cast_nullable_to_non_nullable
+      lat: null == lat
+          ? _value.lat
+          : lat // ignore: cast_nullable_to_non_nullable
               as double,
-      longitude: null == longitude
-          ? _value.longitude
-          : longitude // ignore: cast_nullable_to_non_nullable
+      lng: null == lng
+          ? _value.lng
+          : lng // ignore: cast_nullable_to_non_nullable
               as double,
       clusterId: null == clusterId
           ? _value.clusterId
@@ -148,8 +140,8 @@ class __$$ClusterItemImplCopyWithImpl<$Res>
 class _$ClusterItemImpl extends _ClusterItem {
   _$ClusterItemImpl(
       {required this.objectId,
-      required this.latitude,
-      required this.longitude,
+      required this.lat,
+      required this.lng,
       required this.clusterId,
       required this.isCorePoint})
       : super._();
@@ -157,9 +149,9 @@ class _$ClusterItemImpl extends _ClusterItem {
   @override
   final int objectId;
   @override
-  final double latitude;
+  final double lat;
   @override
-  final double longitude;
+  final double lng;
   @override
   final int clusterId;
   @override
@@ -167,7 +159,7 @@ class _$ClusterItemImpl extends _ClusterItem {
 
   @override
   String toString() {
-    return 'ClusterItem(objectId: $objectId, latitude: $latitude, longitude: $longitude, clusterId: $clusterId, isCorePoint: $isCorePoint)';
+    return 'ClusterItem(objectId: $objectId, lat: $lat, lng: $lng, clusterId: $clusterId, isCorePoint: $isCorePoint)';
   }
 
   @override
@@ -177,10 +169,8 @@ class _$ClusterItemImpl extends _ClusterItem {
             other is _$ClusterItemImpl &&
             (identical(other.objectId, objectId) ||
                 other.objectId == objectId) &&
-            (identical(other.latitude, latitude) ||
-                other.latitude == latitude) &&
-            (identical(other.longitude, longitude) ||
-                other.longitude == longitude) &&
+            (identical(other.lat, lat) || other.lat == lat) &&
+            (identical(other.lng, lng) || other.lng == lng) &&
             (identical(other.clusterId, clusterId) ||
                 other.clusterId == clusterId) &&
             (identical(other.isCorePoint, isCorePoint) ||
@@ -188,8 +178,8 @@ class _$ClusterItemImpl extends _ClusterItem {
   }
 
   @override
-  int get hashCode => Object.hash(
-      runtimeType, objectId, latitude, longitude, clusterId, isCorePoint);
+  int get hashCode =>
+      Object.hash(runtimeType, objectId, lat, lng, clusterId, isCorePoint);
 
   @JsonKey(ignore: true)
   @override
@@ -201,8 +191,8 @@ class _$ClusterItemImpl extends _ClusterItem {
 abstract class _ClusterItem extends ClusterItem {
   factory _ClusterItem(
       {required final int objectId,
-      required final double latitude,
-      required final double longitude,
+      required final double lat,
+      required final double lng,
       required final int clusterId,
       required final int isCorePoint}) = _$ClusterItemImpl;
   _ClusterItem._() : super._();
@@ -210,9 +200,9 @@ abstract class _ClusterItem extends ClusterItem {
   @override
   int get objectId;
   @override
-  double get latitude;
+  double get lat;
   @override
-  double get longitude;
+  double get lng;
   @override
   int get clusterId;
   @override

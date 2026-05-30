@@ -6,7 +6,7 @@ part of 'user_location_provider.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$userLocationHash() => r'86710741168413ac8c476676ae8ccc91d38d1399';
+String _$userLocationHash() => r'7d4435243cf0aa6b4ff6f619161c066222f9dffe';
 
 /// Provider lưu trữ vị trí GPS hiện tại của user
 /// Được cập nhật từ LocationDisplay khi GPS bật

@@ -1,22 +1,99 @@
 import 'package:flutter/material.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:smart_route_app/features/incident/presentation/providers/states/report_incident_notifier.dart';
 import 'horizontal_incident_selector.dart';
 import 'incident_type_chips.dart';
 
-class ReportingBottomSheet extends StatefulWidget {
+class ReportingBottomSheet extends ConsumerStatefulWidget {
   const ReportingBottomSheet({super.key});
 
   @override
-  State<ReportingBottomSheet> createState() => _ReportingBottomSheetState();
+  ConsumerState<ConsumerStatefulWidget> createState() =>
+      _ReportingBottomSheetState();
 }
 
-class _ReportingBottomSheetState extends State<ReportingBottomSheet> {
+class _ReportingBottomSheetState extends ConsumerState<ReportingBottomSheet> {
   int _selectedSeverity = 0; // 0: Nhẹ, 1: Trung bình, 2: Nghiêm trọng
+  String _selectedType = 'crash'; // Mặc định map với Enum
+  final TextEditingController _descController = TextEditingController();
+  DateTime? _selectedExpiresAt;
+
+  @override
+  void dispose() {
+    _descController.dispose();
+    super.dispose();
+  }
+
+  Future<void> _selectDateTime(BuildContext context) async {
+    final DateTime? pickedDate = await showDatePicker(
+      context: context,
+      initialDate: _selectedExpiresAt ?? DateTime.now(),
+      firstDate: DateTime.now(), // Không cho chọn ngày quá khứ
+      lastDate: DateTime.now().add(const Duration(days: 30)),
+    );
+
+    if (pickedDate != null) {
+      if (!context.mounted) return;
+      final TimeOfDay? pickedTime = await showTimePicker(
+        context: context,
+        initialTime: TimeOfDay.fromDateTime(
+          _selectedExpiresAt ?? DateTime.now().add(const Duration(hours: 1)),
+        ),
+      );
+
+      if (pickedTime != null) {
+        setState(() {
+          _selectedExpiresAt = DateTime(
+            pickedDate.year,
+            pickedDate.month,
+            pickedDate.day,
+            pickedTime.hour,
+            pickedTime.minute,
+          );
+        });
+      }
+    }
+  }
+
+  // Helper hiển thị chuỗi thời gian đẹp mắt
+  String _formatDateTime(DateTime date) {
+    final String hour = date.hour.toString().padLeft(2, '0');
+    final String minute = date.minute.toString().padLeft(2, '0');
+    final String day = date.day.toString().padLeft(2, '0');
+    final String month = date.month.toString().padLeft(2, '0');
+    return '$hour:$minute - $day/$month/${date.year}';
+  }
 
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     final cs = theme.colorScheme;
     final textTheme = theme.textTheme;
+
+    final state = ref.watch(reportIncidentNotifierProvider);
+
+    ref.listen(reportIncidentNotifierProvider, (previous, next) {
+      if (next.isSuccess) {
+        Navigator.pop(context); // Đóng BottomSheet
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Text('Báo cáo của bạn đã được ghi nhận. Cảm ơn bạn!'),
+          ),
+        );
+        // Refresh bản đồ (tuỳ setup)
+        // ref.read(incidentsProvider.notifier).fetchIncidents();
+      }
+
+      if (next.errorMessage != null &&
+          next.errorMessage != previous?.errorMessage) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text(next.errorMessage!),
+            backgroundColor: cs.error,
+          ),
+        );
+      }
+    });
 
     return Container(
       decoration: BoxDecoration(
@@ -31,8 +108,8 @@ class _ReportingBottomSheetState extends State<ReportingBottomSheet> {
         ],
       ),
       child: SafeArea(
-        top: false,
-        child: Padding(
+        bottom: false,
+        child: SingleChildScrollView(
           padding: const EdgeInsets.fromLTRB(0, 8, 0, 24),
           child: Column(
             mainAxisSize: MainAxisSize.min,
@@ -97,12 +174,34 @@ class _ReportingBottomSheetState extends State<ReportingBottomSheet> {
                       Icon(Icons.location_on, color: cs.primary),
                       const SizedBox(width: 8),
                       Expanded(
-                        child: Text(
-                          'Đang báo cáo tại: Vị trí hiện tại của bạn',
-                          style: textTheme.labelLarge?.copyWith(
-                            color: cs.primary,
-                          ),
-                        ),
+                        child: state.isLoadingAddress
+                            ? Row(
+                                children: [
+                                  SizedBox(
+                                    width: 14,
+                                    height: 14,
+                                    child: CircularProgressIndicator(
+                                      strokeWidth: 2,
+                                      color: cs.primary,
+                                    ),
+                                  ),
+                                  const SizedBox(width: 8),
+                                  Text(
+                                    'Đang xác định vị trí...',
+                                    style: textTheme.labelLarge?.copyWith(
+                                      color: cs.primary,
+                                    ),
+                                  ),
+                                ],
+                              )
+                            : Text(
+                                'Đang báo cáo tại: ${state.address ?? "Vị trí hiện tại của bạn"}',
+                                style: textTheme.labelLarge?.copyWith(
+                                  color: cs.primary,
+                                ),
+                                maxLines: 2,
+                                overflow: TextOverflow.ellipsis,
+                              ),
                       ),
                     ],
                   ),
@@ -125,7 +224,9 @@ class _ReportingBottomSheetState extends State<ReportingBottomSheet> {
               const SizedBox(height: 8),
               HorizontalIncidentSelector(
                 initialSelection: IncidentType.crash,
-                onTypeSelected: (type) {},
+                onTypeSelected: (type) {
+                  _selectedType = type.name;
+                },
               ),
 
               const SizedBox(height: 24),
@@ -164,6 +265,111 @@ class _ReportingBottomSheetState extends State<ReportingBottomSheet> {
 
               const SizedBox(height: 24),
 
+              // Expiration Time
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 24.0),
+                child: Row(
+                  children: [
+                    Text(
+                      'Thời gian dự kiến kết thúc',
+                      style: textTheme.titleMedium?.copyWith(
+                        fontWeight: FontWeight.w500,
+                        color: cs.onSurface,
+                      ),
+                    ),
+                    const SizedBox(width: 4),
+                    // Tooltip giải thích
+                    Tooltip(
+                      triggerMode: TooltipTriggerMode.tap,
+                      showDuration: const Duration(seconds: 4),
+                      padding: const EdgeInsets.all(12),
+                      margin: const EdgeInsets.symmetric(horizontal: 16),
+                      decoration: BoxDecoration(
+                        color: cs.inverseSurface,
+                        borderRadius: BorderRadius.circular(8),
+                      ),
+                      textStyle: textTheme.bodySmall?.copyWith(
+                        color: cs.onInverseSurface,
+                      ),
+                      message:
+                          'Thời gian dự kiến sự cố sẽ được khắc phục (như sửa đường xong, hết kẹt xe). Nếu không chắc chắn, bạn có thể để trống.',
+                      child: Icon(
+                        Icons.info_outline,
+                        size: 18,
+                        color: cs.outline,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+
+              const SizedBox(height: 8),
+
+              // Button set time
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 24.0),
+                child: InkWell(
+                  onTap: () => _selectDateTime(context),
+                  borderRadius: BorderRadius.circular(8),
+                  child: Container(
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 16,
+                      vertical: 12,
+                    ),
+                    decoration: BoxDecoration(
+                      color: cs.surfaceContainer,
+                      borderRadius: BorderRadius.circular(8),
+                      border: Border.all(
+                        color: _selectedExpiresAt != null
+                            ? cs.primary
+                            : cs.outlineVariant,
+                      ),
+                    ),
+                    child: Row(
+                      children: [
+                        Icon(
+                          Icons.access_time,
+                          color: _selectedExpiresAt != null
+                              ? cs.primary
+                              : cs.onSurfaceVariant,
+                        ),
+                        const SizedBox(width: 12),
+                        Expanded(
+                          child: Text(
+                            _selectedExpiresAt != null
+                                ? _formatDateTime(_selectedExpiresAt!)
+                                : 'Không xác định',
+                            style: textTheme.bodyLarge?.copyWith(
+                              color: _selectedExpiresAt != null
+                                  ? cs.primary
+                                  : cs.onSurfaceVariant,
+                              fontWeight: _selectedExpiresAt != null
+                                  ? FontWeight.w600
+                                  : FontWeight.normal,
+                            ),
+                          ),
+                        ),
+                        if (_selectedExpiresAt != null)
+                          GestureDetector(
+                            onTap: () => setState(
+                              () => _selectedExpiresAt = null,
+                            ), // Nút xóa thời gian
+                            child: Icon(
+                              Icons.cancel,
+                              size: 20,
+                              color: cs.outline,
+                            ),
+                          )
+                        else
+                          Icon(Icons.chevron_right, color: cs.outline),
+                      ],
+                    ),
+                  ),
+                ),
+              ),
+
+              const SizedBox(height: 24),
+
               // Description
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 24.0),
@@ -189,6 +395,7 @@ class _ReportingBottomSheetState extends State<ReportingBottomSheet> {
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 24.0),
                 child: TextField(
+                  controller: _descController,
                   maxLines: 3,
                   style: textTheme.bodyMedium?.copyWith(color: cs.onSurface),
                   decoration: InputDecoration(
@@ -200,7 +407,7 @@ class _ReportingBottomSheetState extends State<ReportingBottomSheet> {
                     fillColor: cs.surfaceContainer,
                     border: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(8.0),
-                      borderSide: BorderSide.none,
+                      borderSide: BorderSide(color: cs.outlineVariant),
                     ),
                     contentPadding: const EdgeInsets.all(12),
                   ),
@@ -213,9 +420,19 @@ class _ReportingBottomSheetState extends State<ReportingBottomSheet> {
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 24.0),
                 child: FilledButton(
-                  onPressed: () {
-                    Navigator.pop(context);
-                  },
+                  // Vô hiệu hóa nút nếu đang lấy tọa độ hoặc đang gửi API
+                  onPressed: (state.isLoadingAddress || state.isSubmitting)
+                      ? null
+                      : () {
+                          ref
+                              .read(reportIncidentNotifierProvider.notifier)
+                              .submitReport(
+                                type: _selectedType,
+                                severityIndex: _selectedSeverity,
+                                description: _descController.text,
+                                expiresAt: _selectedExpiresAt,
+                              );
+                        },
                   style: FilledButton.styleFrom(
                     backgroundColor: const Color(
                       0xFF00488D,

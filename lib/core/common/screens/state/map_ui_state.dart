@@ -13,6 +13,12 @@ class MapUiState {
     return const MapUiState(isLoading: true, mode: MapViewMode.map2D);
   }
 
+  bool get hasError => error != null;
+
+  bool get is2D => mode == MapViewMode.map2D;
+
+  bool get is3D => mode == MapViewMode.scene3D;
+
   MapUiState copyWith({bool? isLoading, MapViewMode? mode, String? error}) {
     return MapUiState(
       isLoading: isLoading ?? this.isLoading,

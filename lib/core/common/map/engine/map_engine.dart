@@ -27,7 +27,4 @@ abstract interface class MapEngine {
   bool get is3DMode;
 
   BasemapStyle get currentBasemapStyle;
-
-  /// Cleanup
-  void dispose();
 }

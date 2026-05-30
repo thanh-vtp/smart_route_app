@@ -11,7 +11,7 @@ import 'package:smart_route_app/core/common/incident_type_config.dart';
 import 'package:smart_route_app/features/incident/presentation/providers/base_map_style_providers.dart';
 import 'package:smart_route_app/features/incident/presentation/providers/location_display_providers.dart';
 import 'package:smart_route_app/features/incident/presentation/widgets/base_map_switcher.dart';
-import 'package:smart_route_app/features/search/domain/entities/address_result.dart';
+import 'package:smart_route_app/core/common/domain/entities/address_result.dart';
 import '../domain/entities/route_result.dart' as entities;
 import '../../incident/domain/entities/incident.dart' as domain;
 
@@ -142,8 +142,8 @@ class RouteMapWidget extends HookConsumerWidget {
       } else if (waypoints.isNotEmpty) {
         // Zoom to first waypoint if no route yet
         final firstPoint = ArcGISPoint(
-          x: waypoints.first.longitude,
-          y: waypoints.first.latitude,
+          x: waypoints.first.lng,
+          y: waypoints.first.lat,
           spatialReference: SpatialReference.wgs84,
         );
         await mapViewController.setViewpointCenter(firstPoint, scale: 50000);
@@ -231,8 +231,8 @@ class RouteMapWidget extends HookConsumerWidget {
     final points = route.routePoints
         .map(
           (p) => ArcGISPoint(
-            x: p.longitude,
-            y: p.latitude,
+            x: p.lng,
+            y: p.lat,
             spatialReference: SpatialReference.wgs84,
           ),
         )
@@ -277,8 +277,8 @@ class RouteMapWidget extends HookConsumerWidget {
       final isEnd = i == waypoints.length - 1;
 
       final point = ArcGISPoint(
-        x: waypoint.longitude,
-        y: waypoint.latitude,
+        x: waypoint.lng,
+        y: waypoint.lat,
         spatialReference: SpatialReference.wgs84,
       );
 
@@ -373,8 +373,8 @@ class RouteMapWidget extends HookConsumerWidget {
       for (final p in route.routePoints) {
         allPoints.add(
           ArcGISPoint(
-            x: p.longitude,
-            y: p.latitude,
+            x: p.lng,
+            y: p.lat,
             spatialReference: SpatialReference.wgs84,
           ),
         );
@@ -384,8 +384,8 @@ class RouteMapWidget extends HookConsumerWidget {
       for (final w in waypoints) {
         allPoints.add(
           ArcGISPoint(
-            x: w.longitude,
-            y: w.latitude,
+            x: w.lng,
+            y: w.lat,
             spatialReference: SpatialReference.wgs84,
           ),
         );

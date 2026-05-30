@@ -12,6 +12,7 @@ class InteractionResult {
     return const InteractionResult(type: InteractionType.none);
   }
 
+  // tiện ích tạo InteractionResult cho incident
   factory InteractionResult.incident(String incidentId) {
     return InteractionResult(
       type: InteractionType.incident,

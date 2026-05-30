@@ -20,7 +20,7 @@ class AuthController extends _$AuthController {
 
     result.fold(
       (failure) {
-        state = AuthState.error(failure.technicalMessage);
+        state = AuthState.error(failure.message);
       },
       (_) {
         state = const AuthState.initial();
@@ -37,7 +37,7 @@ class AuthController extends _$AuthController {
 
     result.fold(
       (failure) {
-        state = AuthState.error(failure.technicalMessage);
+        state = AuthState.error(failure.message);
       },
       (_) {
         state = const AuthState.initial();

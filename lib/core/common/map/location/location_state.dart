@@ -1,10 +1,10 @@
 import 'package:arcgis_maps/arcgis_maps.dart';
+import 'package:smart_route_app/core/common/map/location/device_location_status.dart';
 
 import 'location_error.dart';
-import 'location_status.dart' as loc_status;
 
 class LocationState {
-  final loc_status.LocationStatus status;
+  final DeviceLocationStatus status;
 
   final ArcGISLocation? location;
 
@@ -21,13 +21,13 @@ class LocationState {
 
   factory LocationState.initial() {
     return const LocationState(
-      status: loc_status.LocationStatus.idle,
+      status: DeviceLocationStatus.idle,
       isFollowing: false,
     );
   }
 
   LocationState copyWith({
-    loc_status.LocationStatus? status,
+    DeviceLocationStatus? status,
     ArcGISLocation? location,
     bool? isFollowing,
     LocationError? error,

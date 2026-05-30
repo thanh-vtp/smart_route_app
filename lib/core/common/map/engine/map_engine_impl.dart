@@ -104,7 +104,4 @@ class MapEngineImpl implements MapEngine {
   Future<void> setInitialViewpoint(Viewpoint viewpoint) async {
     controllers.map2D.setViewpoint(viewpoint);
   }
-
-  @override
-  void dispose() {}
 }

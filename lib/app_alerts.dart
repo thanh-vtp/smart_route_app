@@ -1,7 +1,13 @@
 import 'package:flutter/material.dart';
 
+//TODO: Wdget hiện thị các loại thông báo (success, error, validation, info)
 class AppAlerts {
-  static void _showSnackbar(BuildContext context, Widget content, Color backgroundColor, {double elevation = 6.0}) {
+  static void _showSnackbar(
+    BuildContext context,
+    Widget content,
+    Color backgroundColor, {
+    double elevation = 6.0,
+  }) {
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
         content: content,
@@ -15,10 +21,14 @@ class AppAlerts {
   }
 
   // 1. Incoming Notification
-  static void showIncoming(BuildContext context, String message, {VoidCallback? onAction}) {
+  static void showIncoming(
+    BuildContext context,
+    String message, {
+    VoidCallback? onAction,
+  }) {
     final theme = Theme.of(context);
     final cs = theme.colorScheme;
-    
+
     final snackBar = SnackBar(
       backgroundColor: Colors.transparent,
       elevation: 0,
@@ -54,12 +64,17 @@ class AppAlerts {
                   padding: const EdgeInsets.fromLTRB(12, 12, 16, 12),
                   child: Row(
                     children: [
-                      Icon(Icons.notifications_none, color: cs.primaryContainer),
+                      Icon(
+                        Icons.notifications_none,
+                        color: cs.primaryContainer,
+                      ),
                       const SizedBox(width: 12),
                       Expanded(
                         child: Text(
                           message,
-                          style: theme.textTheme.labelLarge?.copyWith(color: cs.onSurface),
+                          style: theme.textTheme.labelLarge?.copyWith(
+                            color: cs.onSurface,
+                          ),
                         ),
                       ),
                       if (onAction != null) ...[
@@ -74,9 +89,14 @@ class AppAlerts {
                             ScaffoldMessenger.of(context).hideCurrentSnackBar();
                             onAction();
                           },
-                          child: Text('XEM', style: theme.textTheme.labelLarge?.copyWith(color: cs.primaryContainer)),
-                        )
-                      ]
+                          child: Text(
+                            'XEM',
+                            style: theme.textTheme.labelLarge?.copyWith(
+                              color: cs.primaryContainer,
+                            ),
+                          ),
+                        ),
+                      ],
                     ],
                   ),
                 ),
@@ -94,103 +114,132 @@ class AppAlerts {
     final theme = Theme.of(context);
     const bgColor = Color(0xFF005151); // custom-success-bg
     const textColor = Colors.white; // on-tertiary
-    
-    _showSnackbar(context, Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
-      child: Row(
-        children: [
-          const Icon(Icons.check_circle_outline, color: textColor),
-          const SizedBox(width: 12),
-          Expanded(
-            child: Text(
-              message,
-              style: theme.textTheme.labelLarge?.copyWith(color: textColor),
+
+    _showSnackbar(
+      context,
+      Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+        child: Row(
+          children: [
+            const Icon(Icons.check_circle_outline, color: textColor),
+            const SizedBox(width: 12),
+            Expanded(
+              child: Text(
+                message,
+                style: theme.textTheme.labelLarge?.copyWith(color: textColor),
+              ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
-    ), bgColor);
+      bgColor,
+    );
   }
 
   // 3. Validation
   static void showValidation(BuildContext context, String message) {
     final theme = Theme.of(context);
     final cs = theme.colorScheme;
-    
-    _showSnackbar(context, Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
-      child: Row(
-        children: [
-          Icon(Icons.warning_amber_rounded, color: cs.onErrorContainer),
-          const SizedBox(width: 12),
-          Expanded(
-            child: Text(
-              message,
-              style: theme.textTheme.bodyMedium?.copyWith(color: cs.onErrorContainer),
+
+    _showSnackbar(
+      context,
+      Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+        child: Row(
+          children: [
+            Icon(Icons.warning_amber_rounded, color: cs.onErrorContainer),
+            const SizedBox(width: 12),
+            Expanded(
+              child: Text(
+                message,
+                style: theme.textTheme.bodyMedium?.copyWith(
+                  color: cs.onErrorContainer,
+                ),
+              ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
-    ), cs.errorContainer);
+      cs.errorContainer,
+    );
   }
 
   // 4. Hard Failure / Error
-  static void showError(BuildContext context, String message, {VoidCallback? onRetry}) {
+  static void showError(
+    BuildContext context,
+    String message, {
+    VoidCallback? onRetry,
+  }) {
     final theme = Theme.of(context);
     final cs = theme.colorScheme;
-    
-    _showSnackbar(context, Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
-      child: Row(
-        children: [
-          Icon(Icons.close, color: cs.onError),
-          const SizedBox(width: 12),
-          Expanded(
-            child: Text(
-              message,
-              style: theme.textTheme.labelLarge?.copyWith(color: cs.onError),
-            ),
-          ),
-          if (onRetry != null) ...[
-            const SizedBox(width: 8),
-            TextButton(
-              style: TextButton.styleFrom(
-                padding: EdgeInsets.zero,
-                minimumSize: const Size(0, 0),
-                tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+
+    _showSnackbar(
+      context,
+      Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+        child: Row(
+          children: [
+            Icon(Icons.close, color: cs.onError),
+            const SizedBox(width: 12),
+            Expanded(
+              child: Text(
+                message,
+                style: theme.textTheme.labelLarge?.copyWith(color: cs.onError),
               ),
-              onPressed: () {
-                ScaffoldMessenger.of(context).hideCurrentSnackBar();
-                onRetry();
-              },
-              child: Text('THỬ LẠI', style: theme.textTheme.labelLarge?.copyWith(color: cs.onError)),
-            )
-          ]
-        ],
+            ),
+            if (onRetry != null) ...[
+              const SizedBox(width: 8),
+              TextButton(
+                style: TextButton.styleFrom(
+                  padding: EdgeInsets.zero,
+                  minimumSize: const Size(0, 0),
+                  tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                ),
+                onPressed: () {
+                  ScaffoldMessenger.of(context).hideCurrentSnackBar();
+                  onRetry();
+                },
+                child: Text(
+                  'THỬ LẠI',
+                  style: theme.textTheme.labelLarge?.copyWith(
+                    color: cs.onError,
+                  ),
+                ),
+              ),
+            ],
+          ],
+        ),
       ),
-    ), cs.error);
+      cs.error,
+    );
   }
 
   // 5. Offline
   static void showOffline(BuildContext context, String message) {
     final theme = Theme.of(context);
     final cs = theme.colorScheme;
-    
-    _showSnackbar(context, Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
-      child: Row(
-        children: [
-          Icon(Icons.wifi_off, color: cs.onSecondary),
-          const SizedBox(width: 12),
-          Expanded(
-            child: Text(
-              message,
-              style: theme.textTheme.bodyMedium?.copyWith(color: cs.onSecondary),
+
+    _showSnackbar(
+      context,
+      Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+        child: Row(
+          children: [
+            Icon(Icons.wifi_off, color: cs.onSecondary),
+            const SizedBox(width: 12),
+            Expanded(
+              child: Text(
+                message,
+                style: theme.textTheme.bodyMedium?.copyWith(
+                  color: cs.onSecondary,
+                ),
+              ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
-    ), cs.secondary);
+      cs.secondary,
+    );
   }
 
   // 6. Info
@@ -198,21 +247,25 @@ class AppAlerts {
     final theme = Theme.of(context);
     const bgColor = Color(0xFFFFF0C2);
     const textColor = Color(0xFF7A4D00);
-    
-    _showSnackbar(context, Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
-      child: Row(
-        children: [
-          const Icon(Icons.info_outline, color: textColor),
-          const SizedBox(width: 12),
-          Expanded(
-            child: Text(
-              message,
-              style: theme.textTheme.bodyMedium?.copyWith(color: textColor),
+
+    _showSnackbar(
+      context,
+      Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+        child: Row(
+          children: [
+            const Icon(Icons.info_outline, color: textColor),
+            const SizedBox(width: 12),
+            Expanded(
+              child: Text(
+                message,
+                style: theme.textTheme.bodyMedium?.copyWith(color: textColor),
+              ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
-    ), bgColor);
+      bgColor,
+    );
   }
 }

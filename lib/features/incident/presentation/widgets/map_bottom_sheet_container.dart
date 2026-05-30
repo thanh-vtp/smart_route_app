@@ -41,7 +41,7 @@ class MapBottomSheetContainer extends ConsumerWidget {
     // Key unique để AnimatedSwitcher nhận biết widget thay đổi
     return switch (state.type) {
       BottomSheetType.locationInfo => LocationInfoDraggableSheet(
-        key: ValueKey('location_${state.latitude}_${state.longitude}'),
+        key: ValueKey('location_${state.lat}_${state.lng}'),
       ),
       BottomSheetType.incidentDetail => IncidentDetailDraggableSheet(
         key: ValueKey('incident_${state.selectedIncident!.id}'),

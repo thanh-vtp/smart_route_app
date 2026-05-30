@@ -4,20 +4,20 @@ import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:intl/intl.dart';
 import 'package:smart_route_app/core/core.dart';
-import 'package:smart_route_app/features/search/domain/entities/address_result.dart';
+import 'package:smart_route_app/core/common/domain/entities/address_result.dart';
 import 'package:smart_route_app/features/incident/domain/entities/incident.dart';
-import 'package:smart_route_app/features/search/domain/entities/location_imagery.dart';
+import 'package:smart_route_app/core/common/domain/entities/location_imagery.dart';
 import 'package:smart_route_app/core/common/incident_type_config.dart';
 import 'package:smart_route_app/features/incident/presentation/providers/location_info_provider.dart';
 import 'package:smart_route_app/features/incident/presentation/providers/map_center_providers.dart';
-import 'package:smart_route_app/features/search/presentation/providers/selected_address.dart';
-import 'package:smart_route_app/features/search/presentation/providers/states/get_location_imagery_state.dart';
-import 'package:smart_route_app/features/search/presentation/providers/states/nearby_places_notifier.dart';
-import 'package:smart_route_app/features/search/presentation/providers/states/nearby_places_state.dart';
+import 'package:smart_route_app/core/common/presentation/providers/selected_address.dart';
+import 'package:smart_route_app/core/common/presentation/providers/states/get_location_imagery_state.dart';
+import 'package:smart_route_app/core/common/presentation/providers/states/nearby_places_notifier.dart';
+import 'package:smart_route_app/core/common/presentation/providers/states/nearby_places_state.dart';
 import 'package:smart_route_app/features/incident/presentation/widgets/add_incident_bottom_sheet.dart';
-import 'package:smart_route_app/features/search/presentation/providers/states/reverse_geocode_state.dart';
-import 'package:smart_route_app/features/search/presentation/widgets/nearby_place_list.dart';
-import 'package:smart_route_app/features/search/presentation/widgets/shimmer/nearby_places_shimmer.dart';
+import 'package:smart_route_app/core/common/presentation/providers/states/reverse_geocode_state.dart';
+import 'package:smart_route_app/core/common/presentation/widgets/nearby_place_list.dart';
+import 'package:smart_route_app/core/common/presentation/widgets/shimmer/nearby_places_shimmer.dart';
 
 /// DraggableScrollableSheet hiển thị thông tin vị trí
 /// Dùng CustomScrollView với SliverAppBar để header được giữ cố định khi scroll
@@ -56,8 +56,8 @@ class LocationInfoDraggableSheet extends HookConsumerWidget {
         minChildSize: 0.12,
         maxChildSize: maxSize,
         builder: (context, scrollController) => _LocationInfoContent(
-          latitude: bottomSheetState.latitude!,
-          longitude: bottomSheetState.longitude!,
+          lat: bottomSheetState.lat!,
+          lng: bottomSheetState.lng!,
           nearbyIncident: bottomSheetState.nearbyIncident,
           scrollController: scrollController,
           sheetController: sheetController,
@@ -68,15 +68,15 @@ class LocationInfoDraggableSheet extends HookConsumerWidget {
 }
 
 class _LocationInfoContent extends HookConsumerWidget {
-  final double latitude;
-  final double longitude;
+  final double lat;
+  final double lng;
   final Incident? nearbyIncident;
   final ScrollController scrollController;
   final DraggableScrollableController sheetController;
 
   const _LocationInfoContent({
-    required this.latitude,
-    required this.longitude,
+    required this.lat,
+    required this.lng,
     this.nearbyIncident,
     required this.scrollController,
     required this.sheetController,
@@ -94,18 +94,18 @@ class _LocationInfoContent extends HookConsumerWidget {
 
     useEffect(() {
       AppLogger.ui(
-        'LocationInfoContent useEffect called with lat: $latitude, lon: $longitude',
+        'LocationInfoContent useEffect called with lat: $lat, lon: $lng',
       );
       WidgetsBinding.instance.addPostFrameCallback((_) {
         ref
             .read(reverseGeocodingStateProvider.notifier)
-            .reverseGeocode(latitude, longitude);
+            .reverseGeocode(lat, lng);
         ref
             .read(locationImageryStateProvider.notifier)
-            .getLocationImagery(latitude, longitude);
+            .getLocationImagery(lat, lng);
         ref
             .read(nearbyPlacesNotifierProvider.notifier)
-            .findNearbyPlaces(latitude: latitude, longitude: longitude);
+            .findNearbyPlaces(lat: lat, lng: lng);
       });
 
       // Reset flag khi location thay đổi (long press mới)
@@ -121,7 +121,7 @@ class _LocationInfoContent extends HookConsumerWidget {
       });
 
       return null;
-    }, [latitude, longitude]);
+    }, [lat, lng]);
 
     // Listen mapCenterProvider để thu nhỏ sheet khi map center thay đổi
     // Chỉ listen khi đã ready (sau khi zoom/recenter hoàn tất)
@@ -482,7 +482,7 @@ class _LocationInfoContent extends HookConsumerWidget {
               children: [
                 const Icon(Icons.my_location, size: 16, color: Colors.grey),
                 const SizedBox(width: 8),
-                Text('Vĩ độ: ${latitude.toStringAsFixed(6)}'),
+                Text('Vĩ độ: ${lat.toStringAsFixed(6)}'),
               ],
             ),
             const SizedBox(height: 4),
@@ -490,7 +490,7 @@ class _LocationInfoContent extends HookConsumerWidget {
               children: [
                 const Icon(Icons.my_location, size: 16, color: Colors.grey),
                 const SizedBox(width: 8),
-                Text('Kinh độ: ${longitude.toStringAsFixed(6)}'),
+                Text('Kinh độ: ${lng.toStringAsFixed(6)}'),
               ],
             ),
           ],
@@ -695,10 +695,7 @@ class _LocationInfoContent extends HookConsumerWidget {
             context: context,
             isScrollControlled: true,
             backgroundColor: Colors.transparent,
-            builder: (context) => AddIncidentBottomSheet(
-              latitude: latitude,
-              longitude: longitude,
-            ),
+            builder: (context) => AddIncidentBottomSheet(lat: lat, lng: lng),
           );
         },
         icon: const Icon(Icons.report),

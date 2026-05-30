@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:smart_route_app/features/incident/presentation/providers/repositories/repository_providers.dart';
-import 'package:smart_route_app/features/search/presentation/providers/repositories/repository_providers.dart';
+import 'package:smart_route_app/core/common/presentation/providers/repositories/repository_providers.dart';
 import '../../../navigation/presentation/providers/repositories/repository_providers.dart';
 
 class CacheManagementWidget extends HookConsumerWidget {

@@ -63,9 +63,7 @@ class AuthRepositoryImpl implements AuthRepository {
 
       final idToken = googleUser.authentication.idToken;
       if (idToken == null) {
-        return left(
-          AuthFailure(technicalMessage: 'Không tìm thấy Google ID Token'),
-        );
+        return left(ServerFailure('Không tìm thấy Google ID Token'));
       }
 
       await _supabaseAuthDatasource.signInWithGoogleToken(
@@ -84,7 +82,7 @@ class AuthRepositoryImpl implements AuthRepository {
         stackTrace: st,
       );
       return left(
-        UnexpectedFailure(e, st),
+        ServerFailure('Lỗi khi đăng nhập với Google: ${e.toString()}'),
       ); // return UnexpectedFailure (lỗi chưa xác định)
     }
   }
@@ -111,7 +109,7 @@ class AuthRepositoryImpl implements AuthRepository {
       );
 
       return left(
-        UnexpectedFailure(e, st),
+        ServerFailure('Lỗi khi đăng xuất: ${e.toString()}'),
       ); // return UnexpectedFailure (lỗi chưa xác định)
     }
   }

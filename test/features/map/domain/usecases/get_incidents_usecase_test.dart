@@ -28,8 +28,8 @@
 
 //   final tIncidentArGIS = entity.Incident(
 //     id: 'incident_1',
-//     latitude: (10.762622).toString(),
-//     longitude: (106.660172).toString(),
+//     lat: (10.762622).toString(),
+//     lng: (106.660172).toString(),
 //     type: 'accident',
 //     severity: 'high',
 //     description: 'A major accident on the highway.',

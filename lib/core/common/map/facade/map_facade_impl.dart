@@ -4,6 +4,7 @@ import 'package:arcgis_maps/arcgis_maps.dart';
 import 'package:smart_route_app/core/common/map/facade/map_facade.dart';
 import 'package:smart_route_app/core/common/map/facade/map_facade_dependencies.dart';
 import 'package:smart_route_app/core/common/map/interactions/interaction_result.dart';
+import 'package:smart_route_app/core/common/map/location/location_state.dart';
 import '../../../../../../features/incident/domain/entities/incident.dart'
     as domain_incident;
 
@@ -61,16 +62,21 @@ class MapFacadeImpl implements MapFacade {
   }
 
   @override
-  Future<void> startLocation() async {
-    await deps.locationController.start(
+  LocationDisplay get locationDisplay => deps.controllers.map2D.locationDisplay;
+
+  @override
+  Future<LocationState> startLocation({
+    required void Function(ArcGISLocation location) onLocationChanged,
+  }) {
+    return deps.locationController.start(
       display: deps.controllers.map2D.locationDisplay,
-      onLocationChanged: (_) {},
+      onLocationChanged: onLocationChanged,
     );
   }
 
   @override
-  Future<void> stopLocation() async {
-    await deps.locationController.stop(
+  Future<LocationState> stopLocation() async {
+    return await deps.locationController.stop(
       display: deps.controllers.map2D.locationDisplay,
     );
   }
@@ -78,6 +84,13 @@ class MapFacadeImpl implements MapFacade {
   @override
   void recenterLocation() {
     deps.locationController.recenter(deps.controllers.map2D.locationDisplay);
+  }
+
+  @override
+  bool isFollowingLocation() {
+    return deps.locationController.isFollowing(
+      deps.controllers.map2D.locationDisplay,
+    );
   }
 
   @override

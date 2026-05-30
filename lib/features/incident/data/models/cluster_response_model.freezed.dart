@@ -22,8 +22,8 @@ ClusterItemModel _$ClusterItemModelFromJson(Map<String, dynamic> json) {
 mixin _$ClusterItemModel {
   @JsonKey(name: 'OBJECTID')
   int get objectId => throw _privateConstructorUsedError;
-  double get latitude => throw _privateConstructorUsedError; // vĩ độ
-  double get longitude => throw _privateConstructorUsedError; // kinh độ
+  double get lat => throw _privateConstructorUsedError; // vĩ độ
+  double get lng => throw _privateConstructorUsedError; // kinh độ
   @JsonKey(name: 'Cluster_ID')
   int get clusterId =>
       throw _privateConstructorUsedError; // ID của cluster mà incident này thuộc về
@@ -44,8 +44,8 @@ abstract class $ClusterItemModelCopyWith<$Res> {
   @useResult
   $Res call(
       {@JsonKey(name: 'OBJECTID') int objectId,
-      double latitude,
-      double longitude,
+      double lat,
+      double lng,
       @JsonKey(name: 'Cluster_ID') int clusterId,
       @JsonKey(name: 'Is_Core_Point') int isCorePoint});
 }
@@ -64,8 +64,8 @@ class _$ClusterItemModelCopyWithImpl<$Res, $Val extends ClusterItemModel>
   @override
   $Res call({
     Object? objectId = null,
-    Object? latitude = null,
-    Object? longitude = null,
+    Object? lat = null,
+    Object? lng = null,
     Object? clusterId = null,
     Object? isCorePoint = null,
   }) {
@@ -74,13 +74,13 @@ class _$ClusterItemModelCopyWithImpl<$Res, $Val extends ClusterItemModel>
           ? _value.objectId
           : objectId // ignore: cast_nullable_to_non_nullable
               as int,
-      latitude: null == latitude
-          ? _value.latitude
-          : latitude // ignore: cast_nullable_to_non_nullable
+      lat: null == lat
+          ? _value.lat
+          : lat // ignore: cast_nullable_to_non_nullable
               as double,
-      longitude: null == longitude
-          ? _value.longitude
-          : longitude // ignore: cast_nullable_to_non_nullable
+      lng: null == lng
+          ? _value.lng
+          : lng // ignore: cast_nullable_to_non_nullable
               as double,
       clusterId: null == clusterId
           ? _value.clusterId
@@ -104,8 +104,8 @@ abstract class _$$ClusterItemModelImplCopyWith<$Res>
   @useResult
   $Res call(
       {@JsonKey(name: 'OBJECTID') int objectId,
-      double latitude,
-      double longitude,
+      double lat,
+      double lng,
       @JsonKey(name: 'Cluster_ID') int clusterId,
       @JsonKey(name: 'Is_Core_Point') int isCorePoint});
 }
@@ -122,8 +122,8 @@ class __$$ClusterItemModelImplCopyWithImpl<$Res>
   @override
   $Res call({
     Object? objectId = null,
-    Object? latitude = null,
-    Object? longitude = null,
+    Object? lat = null,
+    Object? lng = null,
     Object? clusterId = null,
     Object? isCorePoint = null,
   }) {
@@ -132,13 +132,13 @@ class __$$ClusterItemModelImplCopyWithImpl<$Res>
           ? _value.objectId
           : objectId // ignore: cast_nullable_to_non_nullable
               as int,
-      latitude: null == latitude
-          ? _value.latitude
-          : latitude // ignore: cast_nullable_to_non_nullable
+      lat: null == lat
+          ? _value.lat
+          : lat // ignore: cast_nullable_to_non_nullable
               as double,
-      longitude: null == longitude
-          ? _value.longitude
-          : longitude // ignore: cast_nullable_to_non_nullable
+      lng: null == lng
+          ? _value.lng
+          : lng // ignore: cast_nullable_to_non_nullable
               as double,
       clusterId: null == clusterId
           ? _value.clusterId
@@ -157,8 +157,8 @@ class __$$ClusterItemModelImplCopyWithImpl<$Res>
 class _$ClusterItemModelImpl extends _ClusterItemModel {
   const _$ClusterItemModelImpl(
       {@JsonKey(name: 'OBJECTID') required this.objectId,
-      required this.latitude,
-      required this.longitude,
+      required this.lat,
+      required this.lng,
       @JsonKey(name: 'Cluster_ID') required this.clusterId,
       @JsonKey(name: 'Is_Core_Point') required this.isCorePoint})
       : super._();
@@ -170,10 +170,10 @@ class _$ClusterItemModelImpl extends _ClusterItemModel {
   @JsonKey(name: 'OBJECTID')
   final int objectId;
   @override
-  final double latitude;
+  final double lat;
 // vĩ độ
   @override
-  final double longitude;
+  final double lng;
 // kinh độ
   @override
   @JsonKey(name: 'Cluster_ID')
@@ -185,7 +185,7 @@ class _$ClusterItemModelImpl extends _ClusterItemModel {
 
   @override
   String toString() {
-    return 'ClusterItemModel(objectId: $objectId, latitude: $latitude, longitude: $longitude, clusterId: $clusterId, isCorePoint: $isCorePoint)';
+    return 'ClusterItemModel(objectId: $objectId, lat: $lat, lng: $lng, clusterId: $clusterId, isCorePoint: $isCorePoint)';
   }
 
   @override
@@ -195,10 +195,8 @@ class _$ClusterItemModelImpl extends _ClusterItemModel {
             other is _$ClusterItemModelImpl &&
             (identical(other.objectId, objectId) ||
                 other.objectId == objectId) &&
-            (identical(other.latitude, latitude) ||
-                other.latitude == latitude) &&
-            (identical(other.longitude, longitude) ||
-                other.longitude == longitude) &&
+            (identical(other.lat, lat) || other.lat == lat) &&
+            (identical(other.lng, lng) || other.lng == lng) &&
             (identical(other.clusterId, clusterId) ||
                 other.clusterId == clusterId) &&
             (identical(other.isCorePoint, isCorePoint) ||
@@ -207,8 +205,8 @@ class _$ClusterItemModelImpl extends _ClusterItemModel {
 
   @JsonKey(ignore: true)
   @override
-  int get hashCode => Object.hash(
-      runtimeType, objectId, latitude, longitude, clusterId, isCorePoint);
+  int get hashCode =>
+      Object.hash(runtimeType, objectId, lat, lng, clusterId, isCorePoint);
 
   @JsonKey(ignore: true)
   @override
@@ -228,8 +226,8 @@ class _$ClusterItemModelImpl extends _ClusterItemModel {
 abstract class _ClusterItemModel extends ClusterItemModel {
   const factory _ClusterItemModel(
           {@JsonKey(name: 'OBJECTID') required final int objectId,
-          required final double latitude,
-          required final double longitude,
+          required final double lat,
+          required final double lng,
           @JsonKey(name: 'Cluster_ID') required final int clusterId,
           @JsonKey(name: 'Is_Core_Point') required final int isCorePoint}) =
       _$ClusterItemModelImpl;
@@ -242,9 +240,9 @@ abstract class _ClusterItemModel extends ClusterItemModel {
   @JsonKey(name: 'OBJECTID')
   int get objectId;
   @override
-  double get latitude;
+  double get lat;
   @override // vĩ độ
-  double get longitude;
+  double get lng;
   @override // kinh độ
   @JsonKey(name: 'Cluster_ID')
   int get clusterId;
