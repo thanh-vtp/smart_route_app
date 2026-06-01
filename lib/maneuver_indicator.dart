@@ -1,20 +1,10 @@
 import 'package:flutter/material.dart';
-
-enum ManeuverType {
-  straight, // Đi thẳng
-  turnLeft, // Rẽ trái
-  turnRight, // Rẽ phải
-  uTurn, // Quay đầu
-  roundabout, // Vòng xuyến/Bùng binh
-  start, // Bắt đầu
-  arrive, // Đã đến nơi
-}
+import 'package:smart_route_app/features/navigation/domain/entities/route_entity.dart';
 
 enum ManeuverSize { small, large }
 
-// TODO: Widget Flutter dùng chung cho chức năng điều hướng
 class ManeuverIndicator extends StatelessWidget {
-  final ManeuverType type;
+  final ManeuverType type; // Lấy từ route_entity.dart
   final String distance;
   final String? instruction;
   final ManeuverSize size;
@@ -27,25 +17,6 @@ class ManeuverIndicator extends StatelessWidget {
     this.size = ManeuverSize.small,
   });
 
-  IconData _getIconForType(ManeuverType type) {
-    switch (type) {
-      case ManeuverType.start:
-        return Icons.straight_rounded; // Hoặc Icons.trip_origin
-      case ManeuverType.straight:
-        return Icons.arrow_upward_rounded;
-      case ManeuverType.turnLeft:
-        return Icons.turn_left_rounded;
-      case ManeuverType.turnRight:
-        return Icons.turn_right_rounded;
-      case ManeuverType.uTurn:
-        return Icons.u_turn_left_rounded;
-      case ManeuverType.roundabout:
-        return Icons.roundabout_right_rounded; // Hỗ trợ vòng xuyến
-      case ManeuverType.arrive:
-        return Icons.location_on_rounded;
-    }
-  }
-
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
@@ -56,62 +27,76 @@ class ManeuverIndicator extends StatelessWidget {
     return Container(
       padding: EdgeInsets.all(isLarge ? 24.0 : 16.0),
       decoration: BoxDecoration(
-        color: cs.primaryContainer,
-        borderRadius: BorderRadius.circular(isLarge ? 24.0 : 8.0),
+        // Dùng màu Primary (Xanh đậm) để giống bảng chỉ dẫn giao thông thật
+        color: cs.primary,
+        borderRadius: BorderRadius.circular(isLarge ? 24.0 : 16.0),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withOpacity(0.1),
-            offset: Offset(0, isLarge ? 4 : 1),
-            blurRadius: isLarge ? 12 : 2,
+            color: cs.primary.withOpacity(0.3),
+            offset: Offset(0, isLarge ? 8 : 4),
+            blurRadius: isLarge ? 24 : 8,
           ),
         ],
       ),
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
+          // 1. ICON RẼ (Sử dụng thẳng getter .icon đã viết trong Enum)
           Icon(
-            _getIconForType(type),
-            color: cs.onPrimary,
-            size: isLarge ? 64.0 : 32.0,
+            type.icon,
+            color: cs.onPrimary, // Chữ/Icon màu trắng
+            size: isLarge ? 56.0 : 32.0,
           ),
+
           SizedBox(width: isLarge ? 16.0 : 12.0),
+
+          // 2. NỘI DUNG CHỈ DẪN
           Expanded(
             child: Column(
               mainAxisSize: MainAxisSize.min,
               crossAxisAlignment: CrossAxisAlignment.start,
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
+                // Khoảng cách (Ví dụ: 200m)
                 Text(
                   distance,
                   style: isLarge
                       ? theme.textTheme.headlineMedium?.copyWith(
                           color: cs.onPrimary,
-                          fontWeight: FontWeight.bold,
-                          fontSize: 28, // Matches headline-lg-mobile
-                          height: 1.2,
+                          fontWeight:
+                              FontWeight.w900, // Cực đậm cho dễ nhìn khi lái xe
+                          fontSize: 32,
+                          height: 1.1,
+                          letterSpacing: -0.5,
                         )
                       : theme.textTheme.titleLarge?.copyWith(
                           color: cs.onPrimary,
-                          fontWeight: FontWeight.bold,
+                          fontWeight: FontWeight.w900,
                           height: 1.1,
                         ),
                 ),
 
-                const SizedBox(height: 2.0),
-
-                if (instruction != null)
+                // Tên đường rẽ (Ví dụ: Rẽ phải vào Lê Lợi)
+                if (instruction != null && instruction!.isNotEmpty) ...[
+                  const SizedBox(height: 4.0),
                   Text(
                     instruction!,
                     style: isLarge
                         ? theme.textTheme.titleMedium?.copyWith(
-                            color: cs.onPrimaryContainer,
+                            color: cs.onPrimary.withOpacity(
+                              0.9,
+                            ), // Trắng hơi mờ
+                            fontWeight: FontWeight.w500,
+                            height: 1.3,
                           )
                         : theme.textTheme.bodyMedium?.copyWith(
-                            color: cs.onPrimaryContainer,
+                            color: cs.onPrimary.withOpacity(0.9),
+                            fontWeight: FontWeight.w500,
                           ),
-                    maxLines: 1,
+                    maxLines: 2, // Cho phép rớt 2 dòng nếu tên đường dài
                     overflow: TextOverflow.ellipsis,
                   ),
+                ],
               ],
             ),
           ),

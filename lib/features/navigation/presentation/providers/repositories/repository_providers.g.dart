@@ -6,13 +6,9 @@ part of 'repository_providers.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$routingRepositoryHash() => r'b71e7fb4c536412d54fdd51ceee9c6eeac757453';
+String _$routingRepositoryHash() => r'1451f66b27511905210b960eb47650f11a6952b4';
 
-/// Provider cho Geocoding Repository
-/// Sử dụng ArcGIS Geocoding Data Source
-/// Được dùng cho các use case liên quan đến routing
-///
-/// Copied from [routingRepository].
+/// See also [routingRepository].
 @ProviderFor(routingRepository)
 final routingRepositoryProvider = Provider<RoutingRepository>.internal(
   routingRepository,

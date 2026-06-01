@@ -3,6 +3,7 @@ import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:smart_route_app/active_navigation_screen.dart';
+import 'package:smart_route_app/core/common/domain/entities/address_result.dart';
 import 'package:smart_route_app/features/analytics/presentation/screens/analytics_screen.dart';
 import 'package:smart_route_app/features/auth/presentation/screens/auth_screen.dart';
 import 'package:smart_route_app/core/app/message.dart';
@@ -109,7 +110,8 @@ GoRouter router(Ref ref) {
               ),
               const SizedBox(height: 8),
               Text(
-                state.error?.toString() ?? 'Unknown error occurred',
+                state.error?.toString() ??
+                    '[LỖI] Không xác định trong điều hướng',
                 style: const TextStyle(color: Colors.white70, fontSize: 14),
                 textAlign: TextAlign.center,
               ),
@@ -171,9 +173,12 @@ GoRouter router(Ref ref) {
           StatefulShellBranch(
             routes: [
               GoRoute(
-                path: AppRoutes.go,
+                path: AppRoutes.go, // '/go',
                 name: 'go',
-                builder: (context, state) => const RouteSetupScreen(),
+                builder: (context, state) {
+                  final destination = state.extra as AddressResult?;
+                  return RouteSetupScreen(initialDestination: destination);
+                },
                 routes: [
                   GoRoute(
                     path: 'active-navigation',

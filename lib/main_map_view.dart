@@ -2,6 +2,7 @@ import 'package:arcgis_maps/arcgis_maps.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:smart_route_app/core/common/domain/entities/address_result.dart';
 import 'package:smart_route_app/core/common/map/interactions/interaction_result.dart';
 import 'package:smart_route_app/core/common/map/providers/map_controller_bundle_provider.dart';
 import 'package:smart_route_app/core/common/map/providers/map_facade_provider.dart';
@@ -294,9 +295,20 @@ class _MainMapViewState extends ConsumerState<MainMapView> {
     TextTheme textTheme,
   ) {
     return GestureDetector(
-      onTap: () {
+      onTap: () async {
         // TODO '/explore/search' is the route for SearchScreen
-        context.push('/explore/search');
+        // context.push('/explore/search');
+
+        // 1. Mở màn hình Search đè lên trên (dùng push)
+        final selectedLocation = await context.push<AddressResult>(
+          '/explore/search',
+        );
+
+        // 2. Nhận kết quả về. Nếu có kết quả thì ĐỔI TAB sang màn GO (dùng go)
+        if (selectedLocation != null && mounted) {
+          // Dùng context.go để đổi Tab Bottom Navigation, kèm theo cục data
+          this.context.go('/go', extra: selectedLocation);
+        }
       },
       child: Container(
         padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),

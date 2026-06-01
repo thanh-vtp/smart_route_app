@@ -1,18 +1,30 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'route_setup_screen.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:smart_route_app/core/common/domain/entities/address_result.dart';
+import 'package:smart_route_app/core/common/presentation/state/search_notifier.dart';
+import 'package:smart_route_app/core/common/presentation/state/search_state.dart';
 
-class SearchScreen extends StatefulWidget {
+class SearchScreen extends ConsumerStatefulWidget {
   const SearchScreen({super.key});
 
   @override
-  State<SearchScreen> createState() => _SearchScreenState();
+  ConsumerState<ConsumerStatefulWidget> createState() => _SearchScreenState();
 }
 
-class _SearchScreenState extends State<SearchScreen> {
-  final TextEditingController _searchController = TextEditingController(
-    text: 'Sân bay',
-  );
+class _SearchScreenState extends ConsumerState<SearchScreen> {
+  final TextEditingController _searchController = TextEditingController();
+
+  @override
+  void initState() {
+    super.initState();
+    // Bắt sự kiện gõ phím
+    _searchController.addListener(() {
+      ref
+          .read(searchNotifierProvider.notifier)
+          .onSearchQueryChanged(_searchController.text);
+    });
+  }
 
   @override
   void dispose() {
@@ -25,6 +37,14 @@ class _SearchScreenState extends State<SearchScreen> {
     final theme = Theme.of(context);
     final cs = theme.colorScheme;
     final textTheme = theme.textTheme;
+
+    final searchState = ref.watch(searchNotifierProvider);
+
+    // Quyết định danh sách nào được hiển thị (Đang search hay Lịch sử)
+    final bool isSearching = searchState.query.trim().isNotEmpty;
+    final List<AddressResult> currentList = isSearching
+        ? searchState.results
+        : searchState.historyResults;
 
     return Scaffold(
       backgroundColor: cs.surfaceContainerLowest,
@@ -69,12 +89,21 @@ class _SearchScreenState extends State<SearchScreen> {
                               ),
                             ),
                           ),
-                          IconButton(
-                            icon: Icon(Icons.close, color: cs.onSurfaceVariant),
-                            onPressed: () {
-                              _searchController.clear();
-                            },
-                          ),
+
+                          if (_searchController.text.isNotEmpty)
+                            IconButton(
+                              icon: Icon(
+                                Icons.close,
+                                color: cs.onSurfaceVariant,
+                              ),
+                              onPressed: () {
+                                _searchController.clear();
+
+                                ref
+                                    .read(searchNotifierProvider.notifier)
+                                    .clearSearch();
+                              },
+                            ),
                         ],
                       ),
                     ),
@@ -85,159 +114,251 @@ class _SearchScreenState extends State<SearchScreen> {
 
             Divider(height: 1, color: cs.outlineVariant.withOpacity(0.5)),
 
-            // 2. Quick Filters (Horizontal Scrollable)
-            Padding(
-              padding: const EdgeInsets.symmetric(vertical: 16.0),
-              child: SingleChildScrollView(
-                scrollDirection: Axis.horizontal,
-                padding: const EdgeInsets.symmetric(horizontal: 16.0),
-                child: Row(
-                  children: [
-                    _buildQuickFilter(
-                      context,
-                      icon: Icons.local_gas_station,
-                      label: 'Trạm xăng',
-                      cs: cs,
-                      textTheme: textTheme,
-                    ),
-                    const SizedBox(width: 12),
-                    _buildQuickFilter(
-                      context,
-                      icon: Icons.local_parking,
-                      label: 'Bãi đỗ xe',
-                      cs: cs,
-                      textTheme: textTheme,
-                    ),
-                    const SizedBox(width: 12),
-                    _buildQuickFilter(
-                      context,
-                      icon: Icons.restaurant,
-                      label: 'Quán ăn',
-                      cs: cs,
-                      textTheme: textTheme,
-                    ),
-                  ],
-                ),
-              ),
-            ),
+            // // 2. Quick Filters (Horizontal Scrollable)
+            // Padding(
+            //   padding: const EdgeInsets.symmetric(vertical: 16.0),
+            //   child: SingleChildScrollView(
+            //     scrollDirection: Axis.horizontal,
+            //     padding: const EdgeInsets.symmetric(horizontal: 16.0),
+            //     child: Row(
+            //       children: [
+            //         _buildQuickFilter(
+            //           context,
+            //           icon: Icons.local_gas_station,
+            //           label: 'Trạm xăng',
+            //           cs: cs,
+            //           textTheme: textTheme,
+            //         ),
+            //         const SizedBox(width: 12),
+            //         _buildQuickFilter(
+            //           context,
+            //           icon: Icons.local_parking,
+            //           label: 'Bãi đỗ xe',
+            //           cs: cs,
+            //           textTheme: textTheme,
+            //         ),
+            //         const SizedBox(width: 12),
+            //         _buildQuickFilter(
+            //           context,
+            //           icon: Icons.restaurant,
+            //           label: 'Quán ăn',
+            //           cs: cs,
+            //           textTheme: textTheme,
+            //         ),
+            //       ],
+            //     ),
+            //   ),
+            // ),
 
-            Divider(height: 1, color: cs.outlineVariant.withOpacity(0.5)),
+            // Divider(height: 1, color: cs.outlineVariant.withOpacity(0.5)),
 
-            // 3. Results List
+            // // 3. Results List
+            // Expanded(
+            //   child: ListView(
+            //     children: [
+            //       _buildResultItem(
+            //         context,
+            //         icon: Icons.location_on,
+            //         iconColor: cs.primary,
+            //         iconBgColor: cs.primaryFixed,
+            //         title: 'Sân bay Quốc tế Tân Sơn Nhất',
+            //         subtitle: 'Đường Trường Sơn, Phường 2, Tân Bình, TP....',
+            //         distance: '5.2 km',
+            //       ),
+            //       Divider(height: 1, indent: 72, color: cs.surfaceVariant),
+            //       _buildResultItem(
+            //         context,
+            //         icon: Icons.schedule,
+            //         iconColor: cs.onSurfaceVariant,
+            //         iconBgColor: cs.surfaceContainerHigh,
+            //         title: 'Công ty (SmartRoute Office)',
+            //         subtitle: '123 Đường Điện Biên Phủ, Phường 15, Bình T...',
+            //         distance: '1.1 km',
+            //       ),
+            //       Divider(height: 1, indent: 72, color: cs.surfaceVariant),
+            //       _buildResultItem(
+            //         context,
+            //         icon: Icons.home,
+            //         iconColor: cs.onSurfaceVariant,
+            //         iconBgColor: cs.surfaceContainerHigh,
+            //         title: 'Nhà riêng',
+            //         subtitle: 'Đã lưu • 456 Lê Lợi, Quận 1, TP. HCM',
+            //         distance: '8.5 km',
+            //       ),
+            //       Divider(height: 1, indent: 72, color: cs.surfaceVariant),
+
+            //       // Decorative "Live Traffic" Map Card (Optional aesthetic from design)
+            //       Padding(
+            //         padding: const EdgeInsets.all(16.0),
+            //         child: Container(
+            //           height: 180,
+            //           decoration: BoxDecoration(
+            //             color: cs.surfaceContainerHigh,
+            //             borderRadius: BorderRadius.circular(16.0),
+            //             // Fallback background color if image isn't loaded
+            //           ),
+            //           child: Stack(
+            //             children: [
+            //               Positioned.fill(
+            //                 child: ClipRRect(
+            //                   borderRadius: BorderRadius.circular(16.0),
+            //                   child: Image.network(
+            //                     'https://lh3.googleusercontent.com/aida-public/AB6AXuCMkKtygbjWarW6nj1KkbpMjxxTBL9UlK9-_x6_vmmajIjy8xCtmiUmfYXSFlB01UHqVVhMKXbS7Cv3uosZAQb4Vz4MRwn1kJt2JUalqt8STw8swPhTx0IEXSQrE1ps8sfkduhSfjUGoXb5jrb-SRZQpdZy_k7ZnGTuIgaZlekYhsSA0ZH4h7C8XEDrriw4lWH8pD5rNXCRQup2-YQqVM99mwzHH8JeWTTiHtq471RiLPA6aXpc-oiodPv6eph7dKprF03YVG2BKfLM',
+            //                     fit: BoxFit.cover,
+            //                     color: Colors.black.withOpacity(0.5),
+            //                     colorBlendMode: BlendMode.darken,
+            //                   ),
+            //                 ),
+            //               ),
+            //               Positioned(
+            //                 bottom: 16,
+            //                 left: 16,
+            //                 child: Column(
+            //                   crossAxisAlignment: CrossAxisAlignment.start,
+            //                   children: [
+            //                     Container(
+            //                       padding: const EdgeInsets.symmetric(
+            //                         horizontal: 8,
+            //                         vertical: 4,
+            //                       ),
+            //                       decoration: BoxDecoration(
+            //                         color: cs.primaryContainer,
+            //                         borderRadius: BorderRadius.circular(4.0),
+            //                       ),
+            //                       child: Text(
+            //                         'TRỰC TIẾP',
+            //                         style: textTheme.labelSmall?.copyWith(
+            //                           color: cs.onPrimaryContainer,
+            //                           fontWeight: FontWeight.bold,
+            //                           letterSpacing: 0.5,
+            //                         ),
+            //                       ),
+            //                     ),
+            //                     const SizedBox(height: 8),
+            //                     Text(
+            //                       'Giao thông thông thoáng',
+            //                       style: textTheme.titleMedium?.copyWith(
+            //                         color: Colors.white,
+            //                         fontWeight: FontWeight.bold,
+            //                       ),
+            //                     ),
+            //                   ],
+            //                 ),
+            //               ),
+            //               Positioned(
+            //                 bottom: 16,
+            //                 right: 16,
+            //                 child: CircleAvatar(
+            //                   backgroundColor: cs.primary,
+            //                   child: const Icon(
+            //                     Icons.navigation,
+            //                     color: Colors.white,
+            //                     size: 20,
+            //                   ),
+            //                 ),
+            //               ),
+            //             ],
+            //           ),
+            //         ),
+            //       ),
+            //     ],
+            //   ),
+            // ),
+
+            // 2. Trạng thái Loading / Lỗi / Kết quả
             Expanded(
-              child: ListView(
-                children: [
-                  _buildResultItem(
-                    context,
-                    icon: Icons.location_on,
-                    iconColor: cs.primary,
-                    iconBgColor: cs.primaryFixed,
-                    title: 'Sân bay Quốc tế Tân Sơn Nhất',
-                    subtitle: 'Đường Trường Sơn, Phường 2, Tân Bình, TP....',
-                    distance: '5.2 km',
-                  ),
-                  Divider(height: 1, indent: 72, color: cs.surfaceVariant),
-                  _buildResultItem(
-                    context,
-                    icon: Icons.schedule,
-                    iconColor: cs.onSurfaceVariant,
-                    iconBgColor: cs.surfaceContainerHigh,
-                    title: 'Công ty (SmartRoute Office)',
-                    subtitle: '123 Đường Điện Biên Phủ, Phường 15, Bình T...',
-                    distance: '1.1 km',
-                  ),
-                  Divider(height: 1, indent: 72, color: cs.surfaceVariant),
-                  _buildResultItem(
-                    context,
-                    icon: Icons.home,
-                    iconColor: cs.onSurfaceVariant,
-                    iconBgColor: cs.surfaceContainerHigh,
-                    title: 'Nhà riêng',
-                    subtitle: 'Đã lưu • 456 Lê Lợi, Quận 1, TP. HCM',
-                    distance: '8.5 km',
-                  ),
-                  Divider(height: 1, indent: 72, color: cs.surfaceVariant),
-
-                  // Decorative "Live Traffic" Map Card (Optional aesthetic from design)
-                  Padding(
-                    padding: const EdgeInsets.all(16.0),
-                    child: Container(
-                      height: 180,
-                      decoration: BoxDecoration(
-                        color: cs.surfaceContainerHigh,
-                        borderRadius: BorderRadius.circular(16.0),
-                        // Fallback background color if image isn't loaded
-                      ),
-                      child: Stack(
-                        children: [
-                          Positioned.fill(
-                            child: ClipRRect(
-                              borderRadius: BorderRadius.circular(16.0),
-                              child: Image.network(
-                                'https://lh3.googleusercontent.com/aida-public/AB6AXuCMkKtygbjWarW6nj1KkbpMjxxTBL9UlK9-_x6_vmmajIjy8xCtmiUmfYXSFlB01UHqVVhMKXbS7Cv3uosZAQb4Vz4MRwn1kJt2JUalqt8STw8swPhTx0IEXSQrE1ps8sfkduhSfjUGoXb5jrb-SRZQpdZy_k7ZnGTuIgaZlekYhsSA0ZH4h7C8XEDrriw4lWH8pD5rNXCRQup2-YQqVM99mwzHH8JeWTTiHtq471RiLPA6aXpc-oiodPv6eph7dKprF03YVG2BKfLM',
-                                fit: BoxFit.cover,
-                                color: Colors.black.withOpacity(0.5),
-                                colorBlendMode: BlendMode.darken,
-                              ),
-                            ),
-                          ),
-                          Positioned(
-                            bottom: 16,
-                            left: 16,
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Container(
-                                  padding: const EdgeInsets.symmetric(
-                                    horizontal: 8,
-                                    vertical: 4,
-                                  ),
-                                  decoration: BoxDecoration(
-                                    color: cs.primaryContainer,
-                                    borderRadius: BorderRadius.circular(4.0),
-                                  ),
-                                  child: Text(
-                                    'TRỰC TIẾP',
-                                    style: textTheme.labelSmall?.copyWith(
-                                      color: cs.onPrimaryContainer,
-                                      fontWeight: FontWeight.bold,
-                                      letterSpacing: 0.5,
-                                    ),
-                                  ),
-                                ),
-                                const SizedBox(height: 8),
-                                Text(
-                                  'Giao thông thông thoáng',
-                                  style: textTheme.titleMedium?.copyWith(
-                                    color: Colors.white,
-                                    fontWeight: FontWeight.bold,
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
-                          Positioned(
-                            bottom: 16,
-                            right: 16,
-                            child: CircleAvatar(
-                              backgroundColor: cs.primary,
-                              child: const Icon(
-                                Icons.navigation,
-                                color: Colors.white,
-                                size: 20,
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ),
-                ],
+              child: _buildBodyContent(
+                currentList,
+                textTheme,
+                cs,
+                isSearching,
+                searchState,
               ),
             ),
           ],
         ),
       ),
+    );
+  }
+
+  Widget _buildBodyContent(
+    List<AddressResult> currentList,
+    TextTheme textTheme,
+    ColorScheme cs,
+    bool isSearching,
+    SearchState searchState,
+  ) {
+    // 1. Nếu đang gõ và đang chờ API
+    if (isSearching && searchState.isLoading) {
+      return const Center(child: CircularProgressIndicator());
+    }
+
+    // 2. Nếu có lỗi từ API
+    if (isSearching && searchState.errorMessage != null) {
+      return Center(
+        child: Text(
+          searchState.errorMessage!,
+          style: textTheme.bodyLarge?.copyWith(color: cs.error),
+        ),
+      );
+    }
+
+    // 3. Nếu danh sách rỗng
+    if (currentList.isEmpty) {
+      if (isSearching) {
+        // Đang search nhưng không ra
+        return Center(
+          child: Text(
+            'Không tìm thấy địa điểm phù hợp.',
+            style: textTheme.bodyLarge?.copyWith(color: cs.onSurfaceVariant),
+          ),
+        );
+      } else {
+        // Mới vào nhưng chưa có lịch sử
+        return Center(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Icon(
+                Icons.history_toggle_off,
+                size: 48,
+                color: cs.surfaceVariant,
+              ),
+              const SizedBox(height: 16),
+              Text(
+                'Chưa có lịch sử tìm kiếm',
+                style: textTheme.bodyLarge?.copyWith(
+                  color: cs.onSurfaceVariant,
+                ),
+              ),
+            ],
+          ),
+        );
+      }
+    }
+
+    return ListView.separated(
+      itemCount: currentList.length,
+      separatorBuilder: (context, index) =>
+          Divider(height: 1, indent: 72, color: cs.surfaceVariant),
+      itemBuilder: (context, index) {
+        final item = currentList[index];
+
+        // Cấu hình Icon: Lịch sử hiện đồng hồ, kết quả mới hiện cái ghim
+        final IconData icon = isSearching ? Icons.location_on : Icons.schedule;
+        final Color iconColor = isSearching ? cs.primary : cs.onSurfaceVariant;
+        final Color iconBgColor = isSearching
+            ? cs.primaryFixed
+            : cs.surfaceContainerHigh;
+
+        return _buildResultItem(
+          context,
+          item: item,
+          icon: icon,
+          iconColor: iconColor,
+          iconBgColor: iconBgColor,
+        );
+      },
     );
   }
 
@@ -267,12 +388,10 @@ class _SearchScreenState extends State<SearchScreen> {
 
   Widget _buildResultItem(
     BuildContext context, {
+    required AddressResult item,
     required IconData icon,
     required Color iconColor,
     required Color iconBgColor,
-    required String title,
-    required String subtitle,
-    required String distance,
   }) {
     final cs = Theme.of(context).colorScheme;
     final textTheme = Theme.of(context).textTheme;
@@ -280,7 +399,10 @@ class _SearchScreenState extends State<SearchScreen> {
     return InkWell(
       onTap: () {
         /// TODO: Chuyển tới StatefulShellBranch (RouteSetupScreen)
-        context.goNamed('go');
+        // context.goNamed('go');
+
+        // Đóng màn hình Search và truyền kết quả (AddressResult) về cho màn Map
+        context.pop(item);
       },
       child: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 16.0),
@@ -302,7 +424,8 @@ class _SearchScreenState extends State<SearchScreen> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    title,
+                    // Ưu tiên hiển thị tên đường ngắn gọn, nếu không có lấy fullAddress
+                    item.streetName ?? item.fullAddress.split(',').first,
                     style: textTheme.titleMedium?.copyWith(
                       fontWeight: FontWeight.bold,
                       color: cs.onSurface,
@@ -310,7 +433,7 @@ class _SearchScreenState extends State<SearchScreen> {
                   ),
                   const SizedBox(height: 4),
                   Text(
-                    subtitle,
+                    item.fullAddress,
                     style: textTheme.bodyMedium?.copyWith(
                       color: cs.onSurfaceVariant,
                     ),
@@ -322,7 +445,9 @@ class _SearchScreenState extends State<SearchScreen> {
             ),
             const SizedBox(width: 12),
             Text(
-              distance,
+              // distance,
+              // Tạm thời chưa có GPS nên chưa tính distance. Có thể update sau
+              '--- km',
               style: textTheme.labelMedium?.copyWith(
                 color: cs.onSurfaceVariant,
               ),

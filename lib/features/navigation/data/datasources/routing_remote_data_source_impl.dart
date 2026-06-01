@@ -5,23 +5,10 @@ import 'dart:io';
 import 'package:smart_route_app/core/errors/failures.dart';
 import 'package:smart_route_app/core/utils/app_logger.dart';
 import 'package:smart_route_app/core/utils/constants.dart';
+import 'package:smart_route_app/features/navigation/data/datasources/routing_remote_data_source.dart';
+import 'package:smart_route_app/features/navigation/data/models/routing_model.dart';
 import 'package:smart_route_app/features/navigation/data/models/routing_models.dart';
 import 'package:http/http.dart' as http;
-
-abstract class RoutingRemoteDataSource {
-  /// Test connection to ArcGIS services
-  Future<bool> testConnection();
-
-  /// Calculate route using ArcGIS Solve endpoint
-  /// [stops]: Danh sách điểm dừng (Bắt buộc)
-  /// [barriers]: Danh sách các điểm sự cố cần tránh (Tùy chọn)
-  Future<RouteResponse> solve({
-    required List<Map<String, double>> stops,
-    List<Map<String, double>>? barriers,
-    bool returnDirections = true,
-    bool returnRoutes = true,
-  });
-}
 
 class RoutingRemoteDataSourceImpl implements RoutingRemoteDataSource {
   final http.Client _client;
@@ -34,209 +21,101 @@ class RoutingRemoteDataSourceImpl implements RoutingRemoteDataSource {
   RoutingRemoteDataSourceImpl({http.Client? client, String? apiKey})
     : _client = client ?? http.Client(),
       _apiKey = apiKey ?? Constants.arcgisApiKey {
-    // Validate key ngay khi khởi tạo
     if (_apiKey.isEmpty) {
-      throw ArcGISFailure.missingApiKey();
+      throw const ServerFailure('API KEY của ArcGIS bị thiếu');
     }
   }
 
-  /// Helper method to parse and validate JSON response
-  Map<String, dynamic> _parseAndValidateResponse(http.Response response) {
-    if (response.statusCode != 200) {
-      throw ArcGISFailure.httpError(response.statusCode, response.reasonPhrase);
+  @override
+  Future<RouteResponseModel> solveRoute({
+    required List<Map<String, double>> stops,
+    bool avoidIncidents = true,
+  }) async {
+    if (stops.length < 2) {
+      throw const ServerFailure('Cần ít nhất 2 điểm để chỉ đường');
     }
 
-    try {
-      final data = json.decode(response.body) as Map<String, dynamic>;
+    // 1. Chuẩn bị định dạng chuỗi các điểm dừng: "lng,lat;lng,lat"
+    final stopsString = stops
+        .map((stop) => '${stop['lng']},${stop['lat']}')
+        .join(';');
 
-      // Check for API errors in response
-      if (data['error'] != null) {
-        final errorData = data['error'] as Map<String, dynamic>;
-        final errorCode = errorData['code'];
-        final errorMessage = errorData['message'] ?? 'Unknown error';
-        final errorDetails = errorData['details'];
+    // 2. Tham số cơ bản
+    final queryParameters = <String, dynamic>{
+      'stops': stopsString,
+      'f': 'json',
+      'token': _apiKey,
+      'returnDirections': 'true',
+      'returnRoutes': 'true',
+      'directionsLanguage': 'vi', // Chỉ dẫn rẽ bằng Tiếng Việt
+      'directionsLengthUnits': 'esriNAUMeters', // Trả về khoảng cách bằng Mét
+      'outSR': '4326', // Tọa độ WGS84
+    };
 
-        AppLogger.error(
-          'ArcGIS API Error - Code: $errorCode, Message: $errorMessage, Details: $errorDetails',
-          name: 'ArcGISGeocodingDataSource',
-        );
+    // 3. VŨ KHÍ BÍ MẬT: NÉ SỰ CỐ TỰ ĐỘNG
+    if (avoidIncidents) {
+      // Truyền URL của Layer sự cố vào.
+      // Câu lệnh where: Chỉ né những sự cố đang 'active' và có mức độ 'medium' hoặc 'high'.
+      // (Những sự cố 'low' như ngập nhẹ thì vẫn cho phép xe chạy qua, hoặc bạn có thể bỏ phần severity đi để né toàn bộ).
+      final barriersJson = {
+        "url": Constants.serviceTFeatureTableUrl,
+        "where": "status = 'active' AND severity IN ('high', 'medium')",
+      };
 
-        throw ArcGISFailure.apiError('$errorMessage (Code: $errorCode)');
-      }
-
-      return data;
-    } catch (e) {
-      if (e is ArcGISFailure) rethrow;
-      throw ArcGISFailure.parseError(e.toString());
+      queryParameters['pointBarriers'] = json.encode(barriersJson);
     }
-  }
 
-  /// Helper method to make HTTP requests with retry logic
-  Future<http.Response> _makeRequest(Uri uri) async {
+    final uri = Uri.parse(
+      '${Constants.arcgisRouteBaseUrl}${Constants.routeAndDirections}',
+    ).replace(queryParameters: queryParameters);
+
+    // 4. Gọi API với Retry
     int retryCount = 0;
+
     while (retryCount <= _maxRetries) {
       try {
         final response = await _client.get(uri).timeout(_receiveTimeout);
 
-        // Nếu status code 5xx (Server Error), có thể retry
-        if (response.statusCode >= 500 && response.statusCode < 600) {
-          throw HttpException('Server Error: ${response.statusCode}');
+        if (response.statusCode != 200) {
+          throw ServerFailure('HTTP Error: ${response.statusCode}');
         }
-        return response;
+
+        final data = json.decode(response.body) as Map<String, dynamic>;
+
+        // Bắt lỗi logic từ ArcGIS (VD: Không tìm thấy đường, đường bị chặn kín 2 đầu)
+        if (data['error'] != null) {
+          throw ServerFailure(
+            data['error']['message'] ?? 'Không tìm thấy đường đi',
+          );
+        }
+
+        // Map vào Model
+        return RouteResponseModel.fromJson(data);
       } on SocketException catch (_) {
-        if (retryCount > _maxRetries) {
-          throw ArcGISFailure.connectionFailed(); // Mất mạng hoặc không kết nối được server
+        if (retryCount >= _maxRetries) {
+          throw const NetworkFailure('Lỗi kết nối mạng');
         }
       } on TimeoutException catch (_) {
-        if (retryCount > _maxRetries) {
-          throw ArcGISFailure.timeout(); // Quá thời gian chờ
+        if (retryCount >= _maxRetries) {
+          throw const ServerFailure('Quá thời gian chờ (Timeout)');
         }
-      } on http.ClientException catch (_) {
-        if (retryCount > _maxRetries) {
-          throw ArcGISFailure.connectionFailed(); // Lỗi client bị đóng hoặc lỗi giao thức
-        }
-      } catch (e) {
-        throw ArcGISFailure.apiError(e.toString());
-      }
+      } catch (e, st) {
+        if (e is Failure) rethrow;
 
-      // Logic Backoff: Chờ 2s, 4s, 6s... trước khi thử lại
+        AppLogger.error(
+          'Lỗi khi gọi API Route: $e',
+          name: 'RoutingRemoteDataSourceImpl',
+          error: e,
+          stackTrace: st,
+        );
+
+        throw ServerFailure(
+          'Lỗi không xác định khi tìm đường: ${e.toString()}',
+        );
+      }
+      retryCount++;
       await Future.delayed(Duration(seconds: retryCount * 2));
     }
-
-    throw ArcGISFailure.unknown();
-  }
-
-  /// Test connection to ArcGIS services
-  @override
-  Future<bool> testConnection() async {
-    try {
-      final uri = Uri.parse(
-        Constants.arcgisGeocodeBaseUrl,
-      ).replace(queryParameters: {'f': 'json', 'token': _apiKey});
-
-      final response = await _makeRequest(uri);
-      return response.statusCode == 200;
-    } catch (e) {
-      return false;
-    }
-  }
-
-  /// Tính toán đường đi giữa các điểm
-  @override
-  Future<RouteResponse> solve({
-    required List<Map<String, double>> stops,
-    List<Map<String, double>>? barriers,
-    bool returnBarriers = true,
-    String format = 'json',
-    bool returnDirections = true,
-    bool returnRoutes = true,
-    String directionsLanguage = 'vi',
-    String directionsLengthUnits = 'esriNAUMeters',
-    String outputLines =
-        'esriNAOutputLineTrueShapeWithMeasure', // default: esriNAOutputLineTrueShape
-    String outSR = '4326',
-  }) async {
-    try {
-      if (stops.length < 2) {
-        throw ArcGISFailure.insufficientStops();
-      }
-
-      // Check cache first
-      // final cachedResult = await _cacheService.getCachedRouteResult(stops);
-      // if (cachedResult != null) {
-      //   AppLogger.data(
-      //     'Using cached route result',
-      //     source: 'ArcGISGeocodingDataSource',
-      //   );
-      //   return cachedResult;
-      // }
-
-      // Tạo stops string (x,y;x,y)
-      final stopsString = stops
-          .map((stop) => '${stop['lng']},${stop['lat']}')
-          .join(';');
-
-      //           AppLogger.data(
-      //   'Calculating route with stops: $stopsString',
-      //   source: 'ArcGISGeocodingDataSource',
-      // );
-
-      String? barriersString;
-
-      if (barriers != null && barriers.isNotEmpty) {
-        barriersString = barriers
-            .map((b) => '${b['lng']},${b['lat']}')
-            .join(';');
-
-        // AppLogger.data(
-        //   'Calculating route with barriers: $barriersString',
-        //   source: 'ArcGISGeocodingDataSource',
-        // );
-      }
-
-      final queryParameters = {
-        'stops': stopsString,
-        if (barriersString != null) 'barriers': barriersString,
-        'returnBarriers': returnBarriers.toString(),
-        'f': 'json',
-        'token': _apiKey,
-        'returnDirections': returnDirections.toString(),
-        'returnRoutes': returnRoutes.toString(), // routes geometry
-        'directionsLanguage': directionsLanguage, // ngôn ngữ hướng dẫn
-        'directionsLengthUnits': directionsLengthUnits, // meters
-        'outputLines': outputLines, // Loại đặc điểm tuyến đường được trả về.
-        'outSR': outSR, // Hệ tọa độ đầu ra
-      };
-
-      final uri = Uri.parse(
-        '${Constants.arcgisRouteBaseUrl}${Constants.routeAndDirections}',
-      ).replace(queryParameters: queryParameters);
-
-      AppLogger.data(
-        'Route request URI: $uri',
-        source: 'ArcGISGeocodingDataSource',
-      );
-
-      final response = await _makeRequest(uri);
-
-      AppLogger.data(
-        'Route response status: ${response.statusCode}',
-        source: 'ArcGISGeocodingDataSource',
-      );
-
-      final data = _parseAndValidateResponse(response);
-
-      // Log JSON directions chi tiết
-      AppLogger.data(
-        'Route directions JSON: ${json.encode(data['directions'])}',
-        source: 'ArcGISGeocodingDataSource',
-      );
-
-      final result = RouteResponse.fromJson(data);
-
-      try {
-        // Cache the result
-        // await _cacheService.cacheRouteResult(stops, result);
-      } catch (cacheError) {
-        AppLogger.error(
-          'Failed to cache route result: $cacheError',
-          name: 'ArcGISGeocodingDataSource',
-        );
-        // Continue without caching
-      }
-      return result;
-    } catch (e, st) {
-      AppLogger.error(
-        'Error in solve: $e',
-        name: 'ArcGISGeocodingDataSource',
-        error: e,
-        stackTrace: st,
-      );
-      // Re-throw ArcGIS failures as-is, convert others
-      if (e is ArcGISFailure) {
-        rethrow;
-      }
-      throw ArcGISFailure.routingFailed();
-    }
+    throw const ServerFailure('Lỗi không thể kết nối');
   }
 }

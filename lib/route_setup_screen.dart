@@ -1,24 +1,140 @@
+import 'package:arcgis_maps/arcgis_maps.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:smart_route_app/core/app/router.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:smart_route_app/core/common/domain/entities/address_result.dart';
+import 'package:smart_route_app/core/common/map/providers/map_controller_bundle_provider.dart';
+import 'package:smart_route_app/core/common/screens/state/location_ui_notifier.dart';
+import 'package:smart_route_app/core/utils/app_logger.dart';
+import 'package:smart_route_app/features/navigation/domain/entities/route_entity.dart'
+    as entity;
+import 'package:smart_route_app/features/navigation/presentation/state/route_notifier.dart';
 
-class RouteSetupScreen extends StatefulWidget {
-  const RouteSetupScreen({super.key});
+class RouteSetupScreen extends ConsumerStatefulWidget {
+  final AddressResult?
+  initialDestination; // Nhận điểm đến nếu người dùng chọn từ trang Map chính
+  const RouteSetupScreen({super.key, this.initialDestination});
 
   @override
-  State<RouteSetupScreen> createState() => _RouteSetupScreenState();
+  ConsumerState<ConsumerStatefulWidget> createState() =>
+      _RouteSetupScreenState();
 }
 
-class _RouteSetupScreenState extends State<RouteSetupScreen> {
+class _RouteSetupScreenState extends ConsumerState<RouteSetupScreen> {
   bool _avoidTolls = false;
   bool _avoidHighways = true;
   int _selectedVehicle = 0; // 0: Ô tô, 1: Xe máy, 2: Taxi
+
+  AddressResult? _startLocation;
+  AddressResult? _endLocation;
+
+  @override
+  void initState() {
+    super.initState();
+    _endLocation = widget.initialDestination;
+
+    // Đợi Flutter vẽ xong frame đầu tiên mới lấy GPS và tính đường
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (!mounted) return; // Đảm bảo widget chưa bị đóng
+
+      final gpsLocation = ref.read(locationUiProvider).location?.position;
+      AppLogger.info(
+        'Current GPS Location: ${gpsLocation != null ? '(${gpsLocation.y}, ${gpsLocation.x})' : 'Unavailable'}',
+        name: 'RouteSetupScreen',
+      );
+
+      if (gpsLocation != null) {
+        setState(() {
+          _startLocation = AddressResult(
+            fullAddress: 'Vị trí hiện tại',
+            lat: gpsLocation.y,
+            lng: gpsLocation.x,
+            score: 100,
+          );
+        });
+
+        // Chỉ TỰ ĐỘNG tính đường nếu đã có đủ 2 điểm (truyền isAuto = true)
+        if (_endLocation != null) {
+          _calculateRoute(isAuto: true);
+        }
+      }
+    });
+  }
+
+  // --- HÀM TÍNH TOÁN ĐƯỜNG ĐI ---
+  void _calculateRoute({bool isAuto = false}) {
+    if (_startLocation == null || _endLocation == null) {
+      // CHỈ HIỆN SNACKBAR NẾU NGƯỜI DÙNG CHỦ ĐỘNG BẤM NÚT (isAuto = false)
+      if (!isAuto && mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Text('Vui lòng chọn cả điểm bắt đầu và điểm đến'),
+          ),
+        );
+      }
+      return; // Nếu thiếu điểm thì thoát im lặng
+    }
+
+    // Nếu đã đủ điểm, gọi Notifier tính toán
+    ref
+        .read(routeNotifierProvider.notifier)
+        .calculateRoute(
+          startLat: _startLocation!.lat,
+          startLng: _startLocation!.lng,
+          endLat: _endLocation!.lat,
+          endLng: _endLocation!.lng,
+          avoidIncidents: true,
+        );
+
+    AppLogger.info(
+      'Calculating route with parameters: '
+      'Start(${_startLocation!.lat}, ${_startLocation!.lng}), '
+      'End(${_endLocation!.lat}, ${_endLocation!.lng}), '
+      'Avoid Tolls: $_avoidTolls, Avoid Highways: $_avoidHighways',
+      name: 'RouteSetupScreen',
+    );
+  }
+
+  // --- HÀM MỞ MÀN HÌNH TÌM KIẾM ---
+  Future<void> _openSearchScreen(bool isStartLocation) async {
+    // Gọi màn hình Search và chờ kết quả trả về
+    final result = await context.push<AddressResult>('/explore/search');
+
+    if (result != null) {
+      setState(() {
+        if (isStartLocation) {
+          _startLocation = result;
+        } else {
+          _endLocation = result;
+        }
+      });
+
+      // Tự động tính đường lại mỗi khi đổi điểm
+      if (_startLocation != null && _endLocation != null) {
+        _calculateRoute();
+      }
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     final cs = theme.colorScheme;
     final textTheme = theme.textTheme;
+
+    final routeState = ref.watch(routeNotifierProvider);
+
+    ref.listen(routeNotifierProvider, (previous, next) {
+      if (next.errorMessage != null &&
+          next.errorMessage != previous?.errorMessage) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text(next.errorMessage!),
+            backgroundColor: cs.error,
+          ),
+        );
+      }
+    });
 
     return Scaffold(
       body: Stack(
@@ -32,6 +148,16 @@ class _RouteSetupScreenState extends State<RouteSetupScreen> {
                   color: cs.outlineVariant.withOpacity(0.3),
                 ),
               ),
+
+              // TODO: BẢN ĐỒ ACRGIS (Góc nhìn 2D - Vẽ Polyline và Maneuver)
+              // child: ArcGISMapView(
+              //   controllerProvider: () =>
+              //       ref.read(mapControllerBundleProvider).map2D,
+              //   onMapViewReady: () {
+              //     // Tự động bật chế độ theo dõi (Navigation mode) khi mở màn hình này
+              //     // ref.read(locationUiProvider.notifier).startNavigationMode();
+              //   },
+              // ),
             ),
           ),
           SafeArea(
@@ -68,22 +194,33 @@ class _RouteSetupScreenState extends State<RouteSetupScreen> {
                           ),
                           Column(
                             children: [
+                              // Điểm bắt đầu và điểm đến
                               _buildLocationInput(
                                 context,
                                 icon: Icons.trip_origin,
                                 iconColor: cs.outline,
-                                value: 'Vị trí hiện tại',
+                                value:
+                                    _startLocation?.streetName ??
+                                    _startLocation?.fullAddress ??
+                                    'Chọn điểm xuất phát',
                                 cs: cs,
                                 textTheme: textTheme,
+                                isPlaceholder: _startLocation == null,
+                                onTap: () => _openSearchScreen(true),
                               ),
                               const SizedBox(height: 8),
                               _buildLocationInput(
                                 context,
                                 icon: Icons.location_on,
                                 iconColor: cs.primaryContainer,
-                                value: 'Sân bay Tân Sơn Nhất',
+                                value:
+                                    _endLocation?.streetName ??
+                                    _endLocation?.fullAddress ??
+                                    'Chọn điểm đến',
                                 cs: cs,
                                 textTheme: textTheme,
+                                isPlaceholder: _endLocation == null,
+                                onTap: () => _openSearchScreen(false),
                               ),
                             ],
                           ),
@@ -129,7 +266,13 @@ class _RouteSetupScreenState extends State<RouteSetupScreen> {
                         context,
                         label: 'Tránh trạm thu phí',
                         value: _avoidTolls,
-                        onChanged: (val) => setState(() => _avoidTolls = val),
+                        onChanged: (val) {
+                          setState(() => _avoidTolls = val);
+
+                          if (_startLocation != null && _endLocation != null) {
+                            _calculateRoute(isAuto: true);
+                          }
+                        },
                         cs: cs,
                         textTheme: textTheme,
                       ),
@@ -138,8 +281,13 @@ class _RouteSetupScreenState extends State<RouteSetupScreen> {
                         context,
                         label: 'Tránh đường cao tốc',
                         value: _avoidHighways,
-                        onChanged: (val) =>
-                            setState(() => _avoidHighways = val),
+                        onChanged: (val) {
+                          setState(() => _avoidHighways = val);
+
+                          if (_startLocation != null && _endLocation != null) {
+                            _calculateRoute(isAuto: true);
+                          }
+                        },
                         cs: cs,
                         textTheme: textTheme,
                       ),
@@ -149,91 +297,49 @@ class _RouteSetupScreenState extends State<RouteSetupScreen> {
 
                 const Spacer(),
 
+                // 2.CHỈ HIỆN KHI ĐANG TÍNH HOẶC CÓ KẾT QUẢ
                 // Bottom Summary Card
-                Container(
-                  margin: const EdgeInsets.all(16.0),
-                  padding: const EdgeInsets.all(24.0),
-                  decoration: BoxDecoration(
-                    color: cs.surfaceContainerLowest,
-                    borderRadius: BorderRadius.circular(16.0),
-                    boxShadow: [
-                      BoxShadow(
-                        color: Colors.black.withOpacity(0.1),
-                        blurRadius: 12,
-                        offset: const Offset(0, 4),
+                if (routeState.isCalculating)
+                  Container(
+                    margin: const EdgeInsets.all(16.0),
+                    padding: const EdgeInsets.all(24.0),
+                    decoration: BoxDecoration(
+                      color: cs.surfaceContainerLowest,
+                      borderRadius: BorderRadius.circular(16.0),
+                    ),
+                    child: const Center(child: CircularProgressIndicator()),
+                  )
+                else if (routeState.routeResult != null)
+                  _buildSummaryCard(cs, textTheme, routeState.routeResult!)
+                else
+                  Container(
+                    width: double.infinity,
+                    margin: const EdgeInsets.all(16.0),
+                    child: FilledButton(
+                      onPressed: () => _calculateRoute(isAuto: false),
+                      style: FilledButton.styleFrom(
+                        backgroundColor: cs.primary,
+                        foregroundColor: cs.onPrimary,
+                        padding: const EdgeInsets.symmetric(vertical: 16),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(9999),
+                        ),
                       ),
-                    ],
-                  ),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.stretch,
-                    children: [
-                      Text(
-                        '45 Phút',
-                        style: textTheme.headlineMedium?.copyWith(
+                      child: Text(
+                        'TÌM ĐƯỜNG',
+                        style: textTheme.labelLarge?.copyWith(
                           fontWeight: FontWeight.bold,
-                          color: cs.onSurface,
+                          color: cs.onPrimary,
+                          letterSpacing: 1.2,
                         ),
                       ),
-                      const SizedBox(height: 4),
-                      Row(
-                        children: [
-                          Text(
-                            '12 km • ',
-                            style: textTheme.bodyMedium?.copyWith(
-                              color: cs.onSurfaceVariant,
-                            ),
-                          ),
-                          Expanded(
-                            child: Text(
-                              'Chậm hơn 5p do tai nạn',
-                              style: textTheme.bodyMedium?.copyWith(
-                                color: cs.error,
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
-                      const SizedBox(height: 16),
-                      FilledButton(
-                        onPressed: () {
-                          /// TODO: '/go/active-navigation' is the route for ActiveNavigationScreen
-                          context.push('/go/active-navigation');
-                        },
-                        style: FilledButton.styleFrom(
-                          backgroundColor: cs.primary,
-                          foregroundColor: cs.onPrimary,
-                          padding: const EdgeInsets.symmetric(vertical: 16),
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(9999),
-                          ),
-                        ),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Text(
-                              'BẮT ĐẦU ĐI',
-                              style: textTheme.labelLarge?.copyWith(
-                                fontWeight: FontWeight.bold,
-                                color: cs.onPrimary,
-                              ),
-                            ),
-                            const SizedBox(width: 8),
-                            Icon(
-                              Icons.navigation,
-                              color: cs.onPrimary,
-                              size: 20,
-                            ),
-                          ],
-                        ),
-                      ),
-                    ],
+                    ),
                   ),
-                ),
               ],
             ),
           ),
 
-          /// TODO: Nút back về trang trước
+          /// TODO: Nút back về trang trước (BỎ)
           // SafeArea(
           //   child: Padding(
           //     padding: const EdgeInsets.all(8.0),
@@ -253,6 +359,84 @@ class _RouteSetupScreenState extends State<RouteSetupScreen> {
     );
   }
 
+  Container _buildSummaryCard(
+    ColorScheme cs,
+    TextTheme textTheme,
+    entity.RouteResult routeResult,
+  ) {
+    return Container(
+      margin: const EdgeInsets.all(16.0),
+      padding: const EdgeInsets.all(24.0),
+      decoration: BoxDecoration(
+        color: cs.surfaceContainerLowest,
+        borderRadius: BorderRadius.circular(16.0),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withOpacity(0.1),
+            blurRadius: 12,
+            offset: const Offset(0, 4),
+          ),
+        ],
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: [
+          Text(
+            // NẾU SAU NÀY BẠN CÓ CHỨC NĂNG SO SÁNH (Ví dụ: Né được kẹt xe)
+            'Đã chọn đường né sự cố',
+            style: textTheme.titleSmall?.copyWith(
+              color: cs.primary,
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+
+          const SizedBox(height: 16),
+          Text(
+            routeResult.formattedTime, // Thời gian
+            style: textTheme.headlineMedium?.copyWith(
+              fontWeight: FontWeight.bold,
+              color: cs.onSurface,
+            ),
+          ),
+          const SizedBox(height: 4),
+          Text(
+            '${routeResult.formattedDistance} • Tới lúc ${routeResult.estimatedArrival}',
+            style: textTheme.bodyMedium?.copyWith(color: cs.onSurfaceVariant),
+          ),
+          const SizedBox(height: 16),
+          FilledButton(
+            onPressed: () {
+              /// TODO: '/go/active-navigation' is the route for ActiveNavigationScreen
+              context.push('/go/active-navigation');
+            },
+            style: FilledButton.styleFrom(
+              backgroundColor: cs.primary,
+              foregroundColor: cs.onPrimary,
+              padding: const EdgeInsets.symmetric(vertical: 16),
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(9999),
+              ),
+            ),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Text(
+                  'BẮT ĐẦU ĐI',
+                  style: textTheme.labelLarge?.copyWith(
+                    fontWeight: FontWeight.bold,
+                    color: cs.onPrimary,
+                  ),
+                ),
+                const SizedBox(width: 8),
+                Icon(Icons.navigation, color: cs.onPrimary, size: 20),
+              ],
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
   Widget _buildLocationInput(
     BuildContext context, {
     required IconData icon,
@@ -260,24 +444,37 @@ class _RouteSetupScreenState extends State<RouteSetupScreen> {
     required String value,
     required ColorScheme cs,
     required TextTheme textTheme,
+    required bool isPlaceholder,
+    required VoidCallback onTap, // Nhận sự kiện Tap
   }) {
-    return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
-      decoration: BoxDecoration(
-        color: cs.surfaceContainer,
-        borderRadius: BorderRadius.circular(8),
-      ),
-      child: Row(
-        children: [
-          Icon(icon, color: iconColor, size: 20),
-          const SizedBox(width: 12),
-          Expanded(
-            child: Text(
-              value,
-              style: textTheme.bodyMedium?.copyWith(color: cs.onSurface),
+    return InkWell(
+      onTap: onTap,
+      borderRadius: BorderRadius.circular(8),
+      child: Container(
+        padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 12),
+        decoration: BoxDecoration(
+          color: cs.surfaceContainer,
+          borderRadius: BorderRadius.circular(8),
+        ),
+        child: Row(
+          children: [
+            Icon(icon, color: iconColor, size: 20),
+            const SizedBox(width: 12),
+            Expanded(
+              child: Text(
+                value,
+                style: textTheme.bodyMedium?.copyWith(
+                  color: isPlaceholder ? cs.outline : cs.onSurface,
+                  fontWeight: isPlaceholder
+                      ? FontWeight.normal
+                      : FontWeight.w500,
+                ),
+                maxLines: 1,
+                overflow: TextOverflow.ellipsis,
+              ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }
