@@ -1,7 +1,7 @@
 import 'package:arcgis_maps/arcgis_maps.dart';
 
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:smart_route_app/core/common/screens/provider/map_facade_provider.dart';
+import 'package:smart_route_app/core/common/map/providers/map_facade_provider.dart';
 import 'package:smart_route_app/features/incident/domain/entities/incident.dart'
     as entities;
 

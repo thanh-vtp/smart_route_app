@@ -1,6 +1,6 @@
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:smart_route_app/core/common/map/location/location_state.dart';
-import 'package:smart_route_app/core/common/screens/provider/map_facade_provider.dart';
+import 'package:smart_route_app/core/common/map/providers/map_facade_provider.dart';
 
 import 'dart:async';
 

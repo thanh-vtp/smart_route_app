@@ -1,5 +1,6 @@
 import 'package:arcgis_maps/arcgis_maps.dart';
 
+// Map/Scene/Basemap/Viewpoint
 abstract interface class MapEngine {
   /// Initialize default 2D map
   Future<void> initialize2D({required BasemapStyle basemapStyle});

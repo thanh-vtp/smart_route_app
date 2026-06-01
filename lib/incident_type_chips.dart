@@ -11,6 +11,7 @@ class IncidentTypeData {
   const IncidentTypeData({required this.label, required this.icon});
 }
 
+// TODO:
 class IncidentTypeStyles {
   static IncidentTypeData getData(IncidentType type) {
     switch (type) {

@@ -1,16 +1,18 @@
 import 'package:flutter/material.dart';
 
 enum ManeuverType {
-  straight,
-  turnLeft,
-  turnRight,
-  uTurnLeft,
-  start,
-  arrive,
+  straight, // Đi thẳng
+  turnLeft, // Rẽ trái
+  turnRight, // Rẽ phải
+  uTurn, // Quay đầu
+  roundabout, // Vòng xuyến/Bùng binh
+  start, // Bắt đầu
+  arrive, // Đã đến nơi
 }
 
 enum ManeuverSize { small, large }
 
+// TODO: Widget Flutter dùng chung cho chức năng điều hướng
 class ManeuverIndicator extends StatelessWidget {
   final ManeuverType type;
   final String distance;
@@ -25,20 +27,22 @@ class ManeuverIndicator extends StatelessWidget {
     this.size = ManeuverSize.small,
   });
 
-  IconData get _iconData {
+  IconData _getIconForType(ManeuverType type) {
     switch (type) {
-      case ManeuverType.straight:
-        return Icons.arrow_upward;
-      case ManeuverType.turnLeft:
-        return Icons.turn_left;
-      case ManeuverType.turnRight:
-        return Icons.turn_right;
-      case ManeuverType.uTurnLeft:
-        return Icons.u_turn_left;
       case ManeuverType.start:
-        return Icons.straight;
+        return Icons.straight_rounded; // Hoặc Icons.trip_origin
+      case ManeuverType.straight:
+        return Icons.arrow_upward_rounded;
+      case ManeuverType.turnLeft:
+        return Icons.turn_left_rounded;
+      case ManeuverType.turnRight:
+        return Icons.turn_right_rounded;
+      case ManeuverType.uTurn:
+        return Icons.u_turn_left_rounded;
+      case ManeuverType.roundabout:
+        return Icons.roundabout_right_rounded; // Hỗ trợ vòng xuyến
       case ManeuverType.arrive:
-        return Icons.location_on;
+        return Icons.location_on_rounded;
     }
   }
 
@@ -46,7 +50,7 @@ class ManeuverIndicator extends StatelessWidget {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     final cs = theme.colorScheme;
-    
+
     final isLarge = size == ManeuverSize.large;
 
     return Container(
@@ -66,7 +70,7 @@ class ManeuverIndicator extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           Icon(
-            _iconData,
+            _getIconForType(type),
             color: cs.onPrimary,
             size: isLarge ? 64.0 : 32.0,
           ),
@@ -92,6 +96,9 @@ class ManeuverIndicator extends StatelessWidget {
                           height: 1.1,
                         ),
                 ),
+
+                const SizedBox(height: 2.0),
+
                 if (instruction != null)
                   Text(
                     instruction!,

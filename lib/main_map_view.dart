@@ -4,7 +4,7 @@ import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:smart_route_app/core/common/map/interactions/interaction_result.dart';
 import 'package:smart_route_app/core/common/map/providers/map_controller_bundle_provider.dart';
-import 'package:smart_route_app/core/common/screens/provider/map_facade_provider.dart';
+import 'package:smart_route_app/core/common/map/providers/map_facade_provider.dart';
 import 'package:smart_route_app/core/common/screens/state/incidents_provider.dart';
 import 'package:smart_route_app/core/common/screens/state/location_ui_notifier.dart';
 import 'package:smart_route_app/core/common/screens/state/map_ui_notifier.dart';
@@ -81,6 +81,7 @@ class _MainMapViewState extends ConsumerState<MainMapView> {
             },
 
             onTap: (screenPoint) async {
+              // Tap marker to Identify marker to Highlight marker to Show bottom sheet
               final result = await ref
                   .read(mapFacadeProvider)
                   .onTap(screenPoint);
@@ -100,11 +101,24 @@ class _MainMapViewState extends ConsumerState<MainMapView> {
                     return;
                   }
 
-                  _showIncidentDetail(this.context, result.objectId!);
+                  await ref
+                      .read(mapFacadeProvider)
+                      .selectIncident(result.objectId!);
+
+                  if (!mounted) return;
+
+                  await _showIncidentDetail(this.context, result.objectId!);
+
+                  ref
+                      .read(mapFacadeProvider)
+                      .clearSelection(); // Clear highlight marker
+
                   AppLogger.ui("Mở Báo Cáo: ${result.objectId!}");
+
                   break;
 
                 case InteractionType.none:
+                  ref.read(mapFacadeProvider).clearSelection();
                   break;
 
                 default:

@@ -48,4 +48,16 @@ class OverlayManager {
 
     detachFrom3D(overlay);
   }
+
+  void moveAllTo2D(Iterable<GraphicsOverlay> overlays) {
+    for (final overlay in overlays) {
+      moveTo2D(overlay);
+    }
+  }
+
+  void moveAllTo3D(Iterable<GraphicsOverlay> overlays) {
+    for (final overlay in overlays) {
+      moveTo3D(overlay);
+    }
+  }
 }

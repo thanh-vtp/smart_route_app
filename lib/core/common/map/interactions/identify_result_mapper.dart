@@ -15,7 +15,10 @@ class IdentifyResultMapper {
         graphic.attributes[InteractionConstants.incidentIdAttribute] as String?;
 
     if (incidentId != null) {
-      return InteractionResult.incident(incidentId);
+      return InteractionResult.incident(
+        incidentId: incidentId,
+        graphic: graphic,
+      );
     }
 
     return InteractionResult.none();

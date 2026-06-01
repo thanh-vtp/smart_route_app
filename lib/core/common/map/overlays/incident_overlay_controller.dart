@@ -102,6 +102,10 @@ class IncidentOverlayController {
     // AppLogger.debug('Step 5');
   }
 
+  Graphic? getGraphicByIncidentId(String incidentId) {
+    return _graphicsById[incidentId];
+  }
+
   // Xóa toàn bộ sự cố khỏi map
   void clear() {
     _graphicsById.clear();

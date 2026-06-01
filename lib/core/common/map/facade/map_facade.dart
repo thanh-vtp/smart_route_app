@@ -18,6 +18,10 @@ abstract interface class MapFacade {
 
   Future<void> renderIncidents(List<Incident> incidents);
 
+  Future<void> selectIncident(String incidentId);
+
+  void clearSelection();
+
   Future<InteractionResult> onTap(Offset screenPoint);
 
   LocationDisplay get locationDisplay;
