@@ -7,7 +7,7 @@ part of 'incident_detail_notifier.dart';
 // **************************************************************************
 
 String _$incidentDetailNotifierHash() =>
-    r'c646c3f6635f1b7cbbe517e6a89e935bbc3e3951';
+    r'391e6fa881a23c5da89be4ab612e381432da2beb';
 
 /// Copied from Dart SDK
 class _SystemHash {

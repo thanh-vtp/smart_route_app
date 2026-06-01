@@ -311,7 +311,14 @@ class IncidentDetailBottomSheet extends ConsumerWidget {
     final String displayName = state.isOwner
         ? 'Báo cáo bởi Bạn'
         : 'Báo cáo bởi ${state.reporterName ?? 'Cộng đồng'}';
-    // : '${state.reporterName }';
+
+    final String formattedScore = state.reporterReputationScore
+        .toString()
+        .replaceAllMapped(
+          RegExp(r'(\d{1,3})(?=(\d{3})+(?!\d))'),
+          (Match m) => '${m[1]},',
+        );
+
     return Container(
       padding: const EdgeInsets.all(12),
       decoration: BoxDecoration(
@@ -371,7 +378,7 @@ class IncidentDetailBottomSheet extends ConsumerWidget {
                 const Text('⭐', style: TextStyle(fontSize: 14)),
                 const SizedBox(width: 4),
                 Text(
-                  '2,450 uy tín',
+                  '$formattedScore uy tín',
                   style: textTheme.labelLarge?.copyWith(
                     color: cs.tertiary,
                     fontWeight: FontWeight.bold,

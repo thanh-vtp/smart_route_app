@@ -22,5 +22,7 @@ class IncidentDetailState with _$IncidentDetailState {
     // Trạng thái khi bấm nút Upvote/Downvote
     @Default(UserVoteType.none) UserVoteType currentVote,
     @Default(false) bool isVoting,
+
+    @Default(0) int reporterReputationScore,
   }) = _IncidentDetailState;
 }

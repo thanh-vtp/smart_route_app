@@ -1,6 +1,7 @@
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:smart_route_app/core/common/screens/state/incidents_provider.dart';
 import 'package:smart_route_app/core/resources/lib/supabase.dart';
+import 'package:smart_route_app/core/utils/app_logger.dart';
 import 'package:smart_route_app/features/auth/domain/entities/app_user.dart';
 import 'package:smart_route_app/features/auth/presentation/providers/uscases/use_case_providers.dart';
 import 'package:smart_route_app/features/incident/presentation/providers/usecases/use_case_providers.dart';
@@ -41,42 +42,48 @@ class IncidentDetailNotifier extends _$IncidentDetailNotifier {
           String? reporterName;
           String? reporterAvatar;
           UserVoteType currentVote = UserVoteType.none;
+          int reporterScore = 0;
 
-          if (isOwner) {
-            reporterName = currentUser.displayName;
-            reporterAvatar = currentUser.avatarUrl;
-          } else if (incident.reportedBy != null) {
+          if (incident.reportedBy != null) {
             try {
               final userResponse = await supabase
                   .from('users')
-                  .select('display_name, avatar_url')
+                  .select('display_name, avatar_url, reputation_score')
                   .eq('id', incident.reportedBy!)
                   .maybeSingle();
 
               if (userResponse != null) {
                 reporterName = userResponse['display_name'];
                 reporterAvatar = userResponse['avatar_url'];
+                reporterScore = userResponse['reputation_score'] ?? 0;
               }
             } catch (e) {
               // Bỏ qua lỗi, UI sẽ tự động dùng ảnh mặc định (Icons.person)
             }
+          }
 
-            if (currentUser.isNotEmpty) {
-              try {
-                final voteRes = await supabase
-                    .from('incident_votes')
-                    .select('vote')
-                    .eq('incident_id', incidentId)
-                    .eq('user_id', currentUser.id)
-                    .maybeSingle();
+          // Nếu là owner thì ưu tiên lấy thông tin từ currentUser
+          if (isOwner) {
+            reporterName = currentUser.displayName;
+            reporterAvatar = currentUser.avatarUrl;
+          }
 
-                if (voteRes != null) {
-                  currentVote = voteRes['vote'] == 'upvote'
-                      ? UserVoteType.upvote
-                      : UserVoteType.downvote;
-                }
-              } catch (_) {}
-            }
+          // Kiểm tra xem user hiện tại đã vote chưa (và nếu có thì là upvote hay downvote)
+          if (currentUser.isNotEmpty) {
+            try {
+              final voteRes = await supabase
+                  .from('incident_votes')
+                  .select('vote')
+                  .eq('incident_id', incidentId)
+                  .eq('user_id', currentUser.id)
+                  .maybeSingle();
+
+              if (voteRes != null) {
+                currentVote = voteRes['vote'] == 'upvote'
+                    ? UserVoteType.upvote
+                    : UserVoteType.downvote;
+              }
+            } catch (_) {}
           }
 
           state = state.copyWith(
@@ -86,6 +93,12 @@ class IncidentDetailNotifier extends _$IncidentDetailNotifier {
             reporterName: reporterName,
             reporterAvatarUrl: reporterAvatar,
             currentVote: currentVote,
+            reporterReputationScore: reporterScore,
+          );
+
+          AppLogger.ui(
+            "[State]: '${state.isLoading}, ${state.incident}, ${state.isOwner}, ${state.reporterName}, ${state.reporterAvatarUrl}, ${state.currentVote}, ${state.reporterReputationScore}'",
+            error: "[STATE]: fetchIncidentDetail",
           );
         },
       );

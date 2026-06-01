@@ -29,6 +29,7 @@ mixin _$IncidentDetailState {
       throw _privateConstructorUsedError; // Trạng thái khi bấm nút Upvote/Downvote
   UserVoteType get currentVote => throw _privateConstructorUsedError;
   bool get isVoting => throw _privateConstructorUsedError;
+  int get reporterReputationScore => throw _privateConstructorUsedError;
 
   @JsonKey(ignore: true)
   $IncidentDetailStateCopyWith<IncidentDetailState> get copyWith =>
@@ -51,7 +52,8 @@ abstract class $IncidentDetailStateCopyWith<$Res> {
       bool isResolving,
       bool isResolveSuccess,
       UserVoteType currentVote,
-      bool isVoting});
+      bool isVoting,
+      int reporterReputationScore});
 
   $IncidentCopyWith<$Res>? get incident;
 }
@@ -79,6 +81,7 @@ class _$IncidentDetailStateCopyWithImpl<$Res, $Val extends IncidentDetailState>
     Object? isResolveSuccess = null,
     Object? currentVote = null,
     Object? isVoting = null,
+    Object? reporterReputationScore = null,
   }) {
     return _then(_value.copyWith(
       isLoading: null == isLoading
@@ -121,6 +124,10 @@ class _$IncidentDetailStateCopyWithImpl<$Res, $Val extends IncidentDetailState>
           ? _value.isVoting
           : isVoting // ignore: cast_nullable_to_non_nullable
               as bool,
+      reporterReputationScore: null == reporterReputationScore
+          ? _value.reporterReputationScore
+          : reporterReputationScore // ignore: cast_nullable_to_non_nullable
+              as int,
     ) as $Val);
   }
 
@@ -155,7 +162,8 @@ abstract class _$$IncidentDetailStateImplCopyWith<$Res>
       bool isResolving,
       bool isResolveSuccess,
       UserVoteType currentVote,
-      bool isVoting});
+      bool isVoting,
+      int reporterReputationScore});
 
   @override
   $IncidentCopyWith<$Res>? get incident;
@@ -182,6 +190,7 @@ class __$$IncidentDetailStateImplCopyWithImpl<$Res>
     Object? isResolveSuccess = null,
     Object? currentVote = null,
     Object? isVoting = null,
+    Object? reporterReputationScore = null,
   }) {
     return _then(_$IncidentDetailStateImpl(
       isLoading: null == isLoading
@@ -224,6 +233,10 @@ class __$$IncidentDetailStateImplCopyWithImpl<$Res>
           ? _value.isVoting
           : isVoting // ignore: cast_nullable_to_non_nullable
               as bool,
+      reporterReputationScore: null == reporterReputationScore
+          ? _value.reporterReputationScore
+          : reporterReputationScore // ignore: cast_nullable_to_non_nullable
+              as int,
     ));
   }
 }
@@ -241,7 +254,8 @@ class _$IncidentDetailStateImpl implements _IncidentDetailState {
       this.isResolving = false,
       this.isResolveSuccess = false,
       this.currentVote = UserVoteType.none,
-      this.isVoting = false});
+      this.isVoting = false,
+      this.reporterReputationScore = 0});
 
   @override
   @JsonKey()
@@ -272,10 +286,13 @@ class _$IncidentDetailStateImpl implements _IncidentDetailState {
   @override
   @JsonKey()
   final bool isVoting;
+  @override
+  @JsonKey()
+  final int reporterReputationScore;
 
   @override
   String toString() {
-    return 'IncidentDetailState(isLoading: $isLoading, incident: $incident, isOwner: $isOwner, reporterName: $reporterName, reporterAvatarUrl: $reporterAvatarUrl, errorMessage: $errorMessage, isResolving: $isResolving, isResolveSuccess: $isResolveSuccess, currentVote: $currentVote, isVoting: $isVoting)';
+    return 'IncidentDetailState(isLoading: $isLoading, incident: $incident, isOwner: $isOwner, reporterName: $reporterName, reporterAvatarUrl: $reporterAvatarUrl, errorMessage: $errorMessage, isResolving: $isResolving, isResolveSuccess: $isResolveSuccess, currentVote: $currentVote, isVoting: $isVoting, reporterReputationScore: $reporterReputationScore)';
   }
 
   @override
@@ -301,7 +318,10 @@ class _$IncidentDetailStateImpl implements _IncidentDetailState {
             (identical(other.currentVote, currentVote) ||
                 other.currentVote == currentVote) &&
             (identical(other.isVoting, isVoting) ||
-                other.isVoting == isVoting));
+                other.isVoting == isVoting) &&
+            (identical(
+                    other.reporterReputationScore, reporterReputationScore) ||
+                other.reporterReputationScore == reporterReputationScore));
   }
 
   @override
@@ -316,7 +336,8 @@ class _$IncidentDetailStateImpl implements _IncidentDetailState {
       isResolving,
       isResolveSuccess,
       currentVote,
-      isVoting);
+      isVoting,
+      reporterReputationScore);
 
   @JsonKey(ignore: true)
   @override
@@ -337,7 +358,8 @@ abstract class _IncidentDetailState implements IncidentDetailState {
       final bool isResolving,
       final bool isResolveSuccess,
       final UserVoteType currentVote,
-      final bool isVoting}) = _$IncidentDetailStateImpl;
+      final bool isVoting,
+      final int reporterReputationScore}) = _$IncidentDetailStateImpl;
 
   @override
   bool get isLoading;
@@ -359,6 +381,8 @@ abstract class _IncidentDetailState implements IncidentDetailState {
   UserVoteType get currentVote;
   @override
   bool get isVoting;
+  @override
+  int get reporterReputationScore;
   @override
   @JsonKey(ignore: true)
   _$$IncidentDetailStateImplCopyWith<_$IncidentDetailStateImpl> get copyWith =>

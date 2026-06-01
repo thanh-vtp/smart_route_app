@@ -3,7 +3,7 @@ import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:smart_route_app/active_navigation_screen.dart';
-import 'package:smart_route_app/analytics_screen.dart';
+import 'package:smart_route_app/features/analytics/presentation/screens/analytics_screen.dart';
 import 'package:smart_route_app/features/auth/presentation/screens/auth_screen.dart';
 import 'package:smart_route_app/core/app/message.dart';
 import 'package:smart_route_app/features/auth/domain/entities/app_user.dart';
