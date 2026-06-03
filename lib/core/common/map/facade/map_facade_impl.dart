@@ -9,6 +9,9 @@ import 'package:smart_route_app/core/utils/app_logger.dart';
 import '../../../../../../features/incident/domain/entities/incident.dart'
     as domain_incident;
 
+import '../../../../../../features/navigation/domain/entities/route_entity.dart'
+    as domain_route;
+
 class MapFacadeImpl implements MapFacade {
   final MapFacadeDependencies deps;
 
@@ -23,6 +26,8 @@ class MapFacadeImpl implements MapFacade {
     deps.overlayManager.moveAllTo2D([
       deps.incidentOverlayController.overlay,
       deps.selectionOverlayController.overlay,
+      deps.routeOverlayController.routeOverlay,
+      deps.routeOverlayController.navigationOverlay,
     ]);
   }
 
@@ -33,6 +38,8 @@ class MapFacadeImpl implements MapFacade {
     deps.overlayManager.moveAllTo2D([
       deps.incidentOverlayController.overlay,
       deps.selectionOverlayController.overlay,
+      deps.routeOverlayController.routeOverlay,
+      deps.routeOverlayController.navigationOverlay,
     ]);
   }
 
@@ -43,6 +50,8 @@ class MapFacadeImpl implements MapFacade {
     deps.overlayManager.moveAllTo3D([
       deps.incidentOverlayController.overlay,
       deps.selectionOverlayController.overlay,
+      deps.routeOverlayController.routeOverlay,
+      deps.routeOverlayController.navigationOverlay,
     ]);
   }
 
@@ -141,5 +150,15 @@ class MapFacadeImpl implements MapFacade {
   @override
   void dispose() {
     deps.locationController.dispose();
+  }
+
+  @override
+  void clearRoute() {
+    deps.routeOverlayController.clear();
+  }
+
+  @override
+  Future<void> renderRoute(domain_route.RouteResult route) async {
+    await deps.routeOverlayController.renderRoute(route);
   }
 }

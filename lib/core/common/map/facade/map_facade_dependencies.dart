@@ -5,6 +5,7 @@ import 'package:smart_route_app/core/common/map/interactions/map_selection_contr
 import 'package:smart_route_app/core/common/map/location/device_location_controller.dart';
 import 'package:smart_route_app/core/common/map/overlays/incident_overlay_controller.dart';
 import 'package:smart_route_app/core/common/map/overlays/overlay_manager.dart';
+import 'package:smart_route_app/core/common/map/overlays/route_overlay_controller.dart';
 import 'package:smart_route_app/core/common/map/symbols/incident_symbol_factory.dart';
 import 'package:smart_route_app/core/common/map/symbols/symbol_preloader.dart';
 import 'package:smart_route_app/core/common/map/overlays/selection_overlay_controller.dart';
@@ -30,6 +31,8 @@ class MapFacadeDependencies {
 
   final IncidentSymbolFactory symbolFactory;
 
+  final RouteOverlayController routeOverlayController;
+
   MapFacadeDependencies({
     required this.controllers,
     required this.engine,
@@ -41,5 +44,6 @@ class MapFacadeDependencies {
     required this.locationController,
     required this.symbolPreloader,
     required this.symbolFactory,
+    required this.routeOverlayController,
   });
 }

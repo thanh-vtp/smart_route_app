@@ -9,6 +9,7 @@ import 'package:smart_route_app/core/common/map/providers/map_engine_provider.da
 import 'package:smart_route_app/core/common/map/providers/map_interaction_controller_provider.dart';
 import 'package:smart_route_app/core/common/map/providers/map_selection_controller_provider.dart';
 import 'package:smart_route_app/core/common/map/providers/overlay_manager_provider.dart';
+import 'package:smart_route_app/core/common/map/providers/route_overlay_controller_provider.dart';
 import 'package:smart_route_app/core/common/map/providers/symbol_preloader_provider.dart';
 import 'package:smart_route_app/core/common/map/providers/selection_overlay_controller_provider.dart';
 import 'package:smart_route_app/core/common/map/providers/symbol_factory_provider.dart';
@@ -34,6 +35,8 @@ final mapFacadeProvider = Provider<MapFacade>((ref) {
     symbolPreloader: ref.watch(symbolPreloaderProvider),
 
     symbolFactory: ref.watch(symbolFactoryProvider),
+
+    routeOverlayController: ref.watch(routeOverlayControllerProvider),
   );
 
   final facade = MapFacadeImpl(dependencies);

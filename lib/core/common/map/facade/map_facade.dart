@@ -4,6 +4,8 @@ import 'package:arcgis_maps/arcgis_maps.dart' hide Incident;
 import 'package:smart_route_app/core/common/map/location/location_state.dart';
 
 import '../../../../features/incident/domain/entities/incident.dart';
+import '../../../../features/navigation/domain/entities/route_entity.dart'
+    as domain_route;
 
 import '../interactions/interaction_result.dart';
 
@@ -35,6 +37,10 @@ abstract interface class MapFacade {
   void recenterLocation();
 
   bool isFollowingLocation();
+
+  Future<void> renderRoute(domain_route.RouteResult route);
+
+  void clearRoute();
 
   void dispose();
 }

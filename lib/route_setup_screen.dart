@@ -1,9 +1,7 @@
-import 'package:arcgis_maps/arcgis_maps.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:smart_route_app/core/common/domain/entities/address_result.dart';
-import 'package:smart_route_app/core/common/map/providers/map_controller_bundle_provider.dart';
 import 'package:smart_route_app/core/common/screens/state/location_ui_notifier.dart';
 import 'package:smart_route_app/core/utils/app_logger.dart';
 import 'package:smart_route_app/features/navigation/domain/entities/route_entity.dart'
@@ -39,7 +37,7 @@ class _RouteSetupScreenState extends ConsumerState<RouteSetupScreen> {
 
       final gpsLocation = ref.read(locationUiProvider).location?.position;
       AppLogger.info(
-        'Current GPS Location: ${gpsLocation != null ? '(${gpsLocation.y}, ${gpsLocation.x})' : 'Unavailable'}',
+        'Vị trí hiện tại: ${gpsLocation != null ? '(${gpsLocation.y}, ${gpsLocation.x})' : 'Chưa lấy được vị trí hiện tại'}',
         name: 'RouteSetupScreen',
       );
 
@@ -87,10 +85,10 @@ class _RouteSetupScreenState extends ConsumerState<RouteSetupScreen> {
         );
 
     AppLogger.info(
-      'Calculating route with parameters: '
+      'Tính toán route: '
       'Start(${_startLocation!.lat}, ${_startLocation!.lng}), '
       'End(${_endLocation!.lat}, ${_endLocation!.lng}), '
-      'Avoid Tolls: $_avoidTolls, Avoid Highways: $_avoidHighways',
+      'Tránh trạm thu phí: $_avoidTolls, Tránh đường cao tốc: $_avoidHighways',
       name: 'RouteSetupScreen',
     );
   }
@@ -136,226 +134,224 @@ class _RouteSetupScreenState extends ConsumerState<RouteSetupScreen> {
       }
     });
 
-    return Scaffold(
-      body: Stack(
-        children: [
-          // Simulated Map Background
-          Positioned.fill(
-            child: Container(
-              color: cs.surfaceContainerLow,
-              child: CustomPaint(
-                painter: _MapGridPainter(
-                  color: cs.outlineVariant.withOpacity(0.3),
+    // Màn hình trong suốt với các widget có thể tương tác
+    return Stack(
+      children: [
+        // Simulated Map Background
+        // Positioned.fill(
+        //   child: Container(
+        //     color: cs.surfaceContainerLow,
+        //     child: CustomPaint(
+        //       painter: _MapGridPainter(
+        //         color: cs.outlineVariant.withOpacity(0.3),
+        //       ),
+        //     ),
+
+        // TODO: BẢN ĐỒ ACRGIS (Góc nhìn 2D - Vẽ Polyline và Maneuver)
+        //     // child: ArcGISMapView(
+        //     //   controllerProvider: () =>
+        //     //       ref.read(mapControllerBundleProvider).map2D,
+        //     //   onMapViewReady: () {
+        //     //     // Tự động bật chế độ theo dõi (Navigation mode) khi mở màn hình này
+        //     //     // ref.read(locationUiProvider.notifier).startNavigationMode();
+        //     //   },
+        //     // ),
+        //   ),
+        // ),
+        SafeArea(
+          child: Column(
+            children: [
+              // Top Configuration Card
+              Container(
+                margin: const EdgeInsets.all(16.0),
+                padding: const EdgeInsets.all(16.0),
+                decoration: BoxDecoration(
+                  color: cs.surfaceContainerLowest,
+                  borderRadius: BorderRadius.circular(24.0),
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.black.withOpacity(0.05),
+                      blurRadius: 8,
+                      offset: const Offset(0, 2),
+                    ),
+                  ],
+                ),
+                child: Column(
+                  children: [
+                    // Inputs
+                    Stack(
+                      children: [
+                        Positioned(
+                          left: 19,
+                          top: 24,
+                          bottom: 24,
+                          child: Container(width: 2, color: cs.outlineVariant),
+                        ),
+                        Column(
+                          children: [
+                            // Điểm bắt đầu và điểm đến
+                            _buildLocationInput(
+                              context,
+                              icon: Icons.trip_origin,
+                              iconColor: cs.outline,
+                              value:
+                                  _startLocation?.streetName ??
+                                  _startLocation?.fullAddress ??
+                                  'Chọn điểm xuất phát',
+                              cs: cs,
+                              textTheme: textTheme,
+                              isPlaceholder: _startLocation == null,
+                              onTap: () => _openSearchScreen(true),
+                            ),
+                            const SizedBox(height: 8),
+                            _buildLocationInput(
+                              context,
+                              icon: Icons.location_on,
+                              iconColor: cs.primaryContainer,
+                              value:
+                                  _endLocation?.streetName ??
+                                  _endLocation?.fullAddress ??
+                                  'Chọn điểm đến',
+                              cs: cs,
+                              textTheme: textTheme,
+                              isPlaceholder: _endLocation == null,
+                              onTap: () => _openSearchScreen(false),
+                            ),
+                          ],
+                        ),
+                      ],
+                    ),
+                    const SizedBox(height: 16),
+
+                    // Vehicle Tabs
+                    Row(
+                      children: [
+                        _buildVehicleTab(
+                          context,
+                          0,
+                          '🚗',
+                          'Ô tô',
+                          cs,
+                          textTheme,
+                        ),
+                        const SizedBox(width: 8),
+                        _buildVehicleTab(
+                          context,
+                          1,
+                          '🛵',
+                          'Xe máy',
+                          cs,
+                          textTheme,
+                        ),
+                        const SizedBox(width: 8),
+                        _buildVehicleTab(
+                          context,
+                          2,
+                          '🚕',
+                          'Taxi',
+                          cs,
+                          textTheme,
+                        ),
+                      ],
+                    ),
+                    const SizedBox(height: 16),
+
+                    // Toggles
+                    _buildToggle(
+                      context,
+                      label: 'Tránh trạm thu phí',
+                      value: _avoidTolls,
+                      onChanged: (val) {
+                        setState(() => _avoidTolls = val);
+
+                        if (_startLocation != null && _endLocation != null) {
+                          _calculateRoute(isAuto: true);
+                        }
+                      },
+                      cs: cs,
+                      textTheme: textTheme,
+                    ),
+                    const SizedBox(height: 8),
+                    _buildToggle(
+                      context,
+                      label: 'Tránh đường cao tốc',
+                      value: _avoidHighways,
+                      onChanged: (val) {
+                        setState(() => _avoidHighways = val);
+
+                        if (_startLocation != null && _endLocation != null) {
+                          _calculateRoute(isAuto: true);
+                        }
+                      },
+                      cs: cs,
+                      textTheme: textTheme,
+                    ),
+                  ],
                 ),
               ),
 
-              // TODO: BẢN ĐỒ ACRGIS (Góc nhìn 2D - Vẽ Polyline và Maneuver)
-              // child: ArcGISMapView(
-              //   controllerProvider: () =>
-              //       ref.read(mapControllerBundleProvider).map2D,
-              //   onMapViewReady: () {
-              //     // Tự động bật chế độ theo dõi (Navigation mode) khi mở màn hình này
-              //     // ref.read(locationUiProvider.notifier).startNavigationMode();
-              //   },
-              // ),
-            ),
-          ),
-          SafeArea(
-            child: Column(
-              children: [
-                // Top Configuration Card
+              const Spacer(),
+
+              // 2.CHỈ HIỆN KHI ĐANG TÍNH HOẶC CÓ KẾT QUẢ
+              // Bottom Summary Card
+              if (routeState.isCalculating)
                 Container(
                   margin: const EdgeInsets.all(16.0),
-                  padding: const EdgeInsets.all(16.0),
+                  padding: const EdgeInsets.all(24.0),
                   decoration: BoxDecoration(
                     color: cs.surfaceContainerLowest,
-                    borderRadius: BorderRadius.circular(24.0),
-                    boxShadow: [
-                      BoxShadow(
-                        color: Colors.black.withOpacity(0.05),
-                        blurRadius: 8,
-                        offset: const Offset(0, 2),
-                      ),
-                    ],
+                    borderRadius: BorderRadius.circular(16.0),
                   ),
-                  child: Column(
-                    children: [
-                      // Inputs
-                      Stack(
-                        children: [
-                          Positioned(
-                            left: 19,
-                            top: 24,
-                            bottom: 24,
-                            child: Container(
-                              width: 2,
-                              color: cs.outlineVariant,
-                            ),
-                          ),
-                          Column(
-                            children: [
-                              // Điểm bắt đầu và điểm đến
-                              _buildLocationInput(
-                                context,
-                                icon: Icons.trip_origin,
-                                iconColor: cs.outline,
-                                value:
-                                    _startLocation?.streetName ??
-                                    _startLocation?.fullAddress ??
-                                    'Chọn điểm xuất phát',
-                                cs: cs,
-                                textTheme: textTheme,
-                                isPlaceholder: _startLocation == null,
-                                onTap: () => _openSearchScreen(true),
-                              ),
-                              const SizedBox(height: 8),
-                              _buildLocationInput(
-                                context,
-                                icon: Icons.location_on,
-                                iconColor: cs.primaryContainer,
-                                value:
-                                    _endLocation?.streetName ??
-                                    _endLocation?.fullAddress ??
-                                    'Chọn điểm đến',
-                                cs: cs,
-                                textTheme: textTheme,
-                                isPlaceholder: _endLocation == null,
-                                onTap: () => _openSearchScreen(false),
-                              ),
-                            ],
-                          ),
-                        ],
+                  child: const Center(child: CircularProgressIndicator()),
+                )
+              else if (routeState.routeResult != null)
+                // Đã có kết quả -> Hiện Thẻ Tóm tắt & Nút "BẮT ĐẦU ĐI"
+                _buildSummaryCard(cs, textTheme, routeState.routeResult!)
+              else
+                // Ban đầu (Chưa có kết quả) -> Hiện nút "TÌM ĐƯỜNG"
+                Container(
+                  width: double.infinity,
+                  margin: const EdgeInsets.all(16.0),
+                  child: FilledButton(
+                    onPressed: () => _calculateRoute(isAuto: false),
+                    style: FilledButton.styleFrom(
+                      backgroundColor: cs.primary,
+                      foregroundColor: cs.onPrimary,
+                      padding: const EdgeInsets.symmetric(vertical: 16),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(9999),
                       ),
-                      const SizedBox(height: 16),
-
-                      // Vehicle Tabs
-                      Row(
-                        children: [
-                          _buildVehicleTab(
-                            context,
-                            0,
-                            '🚗',
-                            'Ô tô',
-                            cs,
-                            textTheme,
-                          ),
-                          const SizedBox(width: 8),
-                          _buildVehicleTab(
-                            context,
-                            1,
-                            '🛵',
-                            'Xe máy',
-                            cs,
-                            textTheme,
-                          ),
-                          const SizedBox(width: 8),
-                          _buildVehicleTab(
-                            context,
-                            2,
-                            '🚕',
-                            'Taxi',
-                            cs,
-                            textTheme,
-                          ),
-                        ],
+                    ),
+                    child: Text(
+                      'TÌM ĐƯỜNG',
+                      style: textTheme.labelLarge?.copyWith(
+                        fontWeight: FontWeight.bold,
+                        color: cs.onPrimary,
+                        letterSpacing: 1.2,
                       ),
-                      const SizedBox(height: 16),
-
-                      // Toggles
-                      _buildToggle(
-                        context,
-                        label: 'Tránh trạm thu phí',
-                        value: _avoidTolls,
-                        onChanged: (val) {
-                          setState(() => _avoidTolls = val);
-
-                          if (_startLocation != null && _endLocation != null) {
-                            _calculateRoute(isAuto: true);
-                          }
-                        },
-                        cs: cs,
-                        textTheme: textTheme,
-                      ),
-                      const SizedBox(height: 8),
-                      _buildToggle(
-                        context,
-                        label: 'Tránh đường cao tốc',
-                        value: _avoidHighways,
-                        onChanged: (val) {
-                          setState(() => _avoidHighways = val);
-
-                          if (_startLocation != null && _endLocation != null) {
-                            _calculateRoute(isAuto: true);
-                          }
-                        },
-                        cs: cs,
-                        textTheme: textTheme,
-                      ),
-                    ],
+                    ),
                   ),
                 ),
-
-                const Spacer(),
-
-                // 2.CHỈ HIỆN KHI ĐANG TÍNH HOẶC CÓ KẾT QUẢ
-                // Bottom Summary Card
-                if (routeState.isCalculating)
-                  Container(
-                    margin: const EdgeInsets.all(16.0),
-                    padding: const EdgeInsets.all(24.0),
-                    decoration: BoxDecoration(
-                      color: cs.surfaceContainerLowest,
-                      borderRadius: BorderRadius.circular(16.0),
-                    ),
-                    child: const Center(child: CircularProgressIndicator()),
-                  )
-                else if (routeState.routeResult != null)
-                  _buildSummaryCard(cs, textTheme, routeState.routeResult!)
-                else
-                  Container(
-                    width: double.infinity,
-                    margin: const EdgeInsets.all(16.0),
-                    child: FilledButton(
-                      onPressed: () => _calculateRoute(isAuto: false),
-                      style: FilledButton.styleFrom(
-                        backgroundColor: cs.primary,
-                        foregroundColor: cs.onPrimary,
-                        padding: const EdgeInsets.symmetric(vertical: 16),
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(9999),
-                        ),
-                      ),
-                      child: Text(
-                        'TÌM ĐƯỜNG',
-                        style: textTheme.labelLarge?.copyWith(
-                          fontWeight: FontWeight.bold,
-                          color: cs.onPrimary,
-                          letterSpacing: 1.2,
-                        ),
-                      ),
-                    ),
-                  ),
-              ],
-            ),
+            ],
           ),
+        ),
 
-          /// TODO: Nút back về trang trước (BỎ)
-          // SafeArea(
-          //   child: Padding(
-          //     padding: const EdgeInsets.all(8.0),
-          //     child: IconButton(
-          //       onPressed: () => Navigator.pop(context),
-          //       icon: const Icon(Icons.arrow_back),
-          //       style: IconButton.styleFrom(
-          //         backgroundColor: cs.surfaceContainerLowest,
-          //         shadowColor: Colors.black.withOpacity(0.1),
-          //         elevation: 2,
-          //       ),
-          //     ),
-          //   ),
-          // ),
-        ],
-      ),
+        /// TODO: Nút back về trang trước (BỎ)
+        // SafeArea(
+        //   child: Padding(
+        //     padding: const EdgeInsets.all(8.0),
+        //     child: IconButton(
+        //       onPressed: () => Navigator.pop(context),
+        //       icon: const Icon(Icons.arrow_back),
+        //       style: IconButton.styleFrom(
+        //         backgroundColor: cs.surfaceContainerLowest,
+        //         shadowColor: Colors.black.withOpacity(0.1),
+        //         elevation: 2,
+        //       ),
+        //     ),
+        //   ),
+        // ),
+      ],
     );
   }
 
