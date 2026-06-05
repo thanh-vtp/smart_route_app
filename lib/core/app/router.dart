@@ -25,8 +25,6 @@ class AppRoutes {
   static const String explore = '/explore';
   static const String search = 'search';
   static const String notifications = 'notifications';
-  static const String go = '/go';
-  static const String activeNavigation = 'active-navigation';
   static const String reports = '/reports';
   static const String savedPlaces = '/saved-places';
 }

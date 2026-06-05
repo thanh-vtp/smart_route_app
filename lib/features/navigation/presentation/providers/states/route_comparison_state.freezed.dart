@@ -354,12 +354,12 @@ class __$$LoadedImplCopyWithImpl<$Res>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? normalRoute = null,
+    Object? normalRoute = freezed,
     Object? smartRoute = null,
     Object? isSmartMode = null,
   }) {
     return _then(_$LoadedImpl(
-      normalRoute: null == normalRoute
+      normalRoute: freezed == normalRoute
           ? _value.normalRoute
           : normalRoute // ignore: cast_nullable_to_non_nullable
               as RouteResult,
@@ -403,8 +403,8 @@ class _$LoadedImpl implements _Loaded {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _$LoadedImpl &&
-            (identical(other.normalRoute, normalRoute) ||
-                other.normalRoute == normalRoute) &&
+            const DeepCollectionEquality()
+                .equals(other.normalRoute, normalRoute) &&
             (identical(other.smartRoute, smartRoute) ||
                 other.smartRoute == smartRoute) &&
             (identical(other.isSmartMode, isSmartMode) ||
@@ -412,8 +412,11 @@ class _$LoadedImpl implements _Loaded {
   }
 
   @override
-  int get hashCode =>
-      Object.hash(runtimeType, normalRoute, smartRoute, isSmartMode);
+  int get hashCode => Object.hash(
+      runtimeType,
+      const DeepCollectionEquality().hash(normalRoute),
+      smartRoute,
+      isSmartMode);
 
   @JsonKey(ignore: true)
   @override

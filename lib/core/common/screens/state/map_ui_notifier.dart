@@ -23,11 +23,11 @@ class MapUiNotifier extends Notifier<MapUiState> {
       final route = next.routeResult;
 
       if (route == null) {
-        clearRoute();
+        _clearRouteOnMap();
         return;
       }
 
-      await showRoute(route);
+      await _showRouteOnMap(route);
     });
 
     return MapUiState.initial();
@@ -69,7 +69,7 @@ class MapUiNotifier extends Notifier<MapUiState> {
     await facade.renderIncidents(incidents);
   }
 
-  Future<void> showRoute(route_entity.RouteResult route) async {
+  Future<void> _showRouteOnMap(route_entity.RouteResult route) async {
     final facade = ref.read(mapFacadeProvider);
 
     await facade.renderRoute(route);
@@ -77,28 +77,33 @@ class MapUiNotifier extends Notifier<MapUiState> {
     state = state.copyWith(hasActiveRoute: true);
   }
 
+  void _clearRouteOnMap() {
+    ref.read(mapFacadeProvider).clearRoute();
+
+    state = state.copyWith(hasActiveRoute: false);
+  }
+
   Future<void> startNavigation() async {
     state = state.copyWith(isNavigating: true);
 
     await switchTo3D();
 
-    // Kích hoạt GPS bám theo vị trí xe chạy
+    // Lấy tuyến đường hiện tại và vẽ lại lên giao diện 3D mới
+    final route = ref.read(routeNotifierProvider).routeResult;
+    if (route != null) {
+      await _showRouteOnMap(route); // Vẽ lại đường Polyline lên viewport 3D
+    }
+
+    // 2. Kích hoạt GPS bám theo vị trí xe chạy (Nếu có)
     ref.read(locationUiProvider.notifier).startLocation();
   }
 
   Future<void> stopNavigation() async {
     state = state.copyWith(isNavigating: false);
 
-    // 1. Xóa đường đi trên bản đồ
-    clearRoute();
+    await ref.read(locationUiProvider.notifier).stopLocation();
 
-    // 2. Quay về góc nhìn 2D phẳng thẳng đứng hướng Bắc
     await switchTo2D();
-  }
-
-  void clearRoute() {
-    ref.read(mapFacadeProvider).clearRoute();
-
-    state = state.copyWith(hasActiveRoute: false);
+    ref.read(routeNotifierProvider.notifier).clearRoute();
   }
 }

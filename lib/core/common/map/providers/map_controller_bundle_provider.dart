@@ -1,10 +1,15 @@
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:smart_route_app/core/utils/app_logger.dart';
 import '../controller/map_controller_bundle.dart';
 
 final mapControllerBundleProvider = Provider<MapControllerBundle>((ref) {
   final bundle = MapControllerBundle();
+  AppLogger.debug('Create MapControllerBundle');
 
-  ref.onDispose(bundle.dispose);
+  ref.onDispose(() {
+    AppLogger.debug('Dispose MapControllerBundle');
+    bundle.dispose();
+  });
 
   return bundle;
 });

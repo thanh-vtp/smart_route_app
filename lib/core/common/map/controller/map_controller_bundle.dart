@@ -1,4 +1,5 @@
 import 'package:arcgis_maps/arcgis_maps.dart';
+import 'package:smart_route_app/core/utils/app_logger.dart';
 
 /// Bundle quản lý toàn bộ native controllers của ArcGIS.
 ///
@@ -17,7 +18,9 @@ class MapControllerBundle {
     ArcGISMapViewController? map2D,
     ArcGISSceneViewController? scene3D,
   }) : _map2D = map2D ?? ArcGISMapView.createController(),
-       _scene3D = scene3D ?? ArcGISSceneView.createController();
+       _scene3D = scene3D ?? ArcGISSceneView.createController() {
+    AppLogger.debug('MapControllerBundle created ${identityHashCode(this)}');
+  }
 
   final ArcGISMapViewController _map2D;
   final ArcGISSceneViewController _scene3D;
