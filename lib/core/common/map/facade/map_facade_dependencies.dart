@@ -3,6 +3,7 @@ import 'package:smart_route_app/core/common/map/engine/map_engine.dart';
 import 'package:smart_route_app/core/common/map/interactions/map_interaction_controller.dart';
 import 'package:smart_route_app/core/common/map/interactions/map_selection_controller.dart';
 import 'package:smart_route_app/core/common/map/location/device_location_controller.dart';
+import 'package:smart_route_app/core/common/map/overlays/cluster_overlay_controller.dart';
 import 'package:smart_route_app/core/common/map/overlays/incident_overlay_controller.dart';
 import 'package:smart_route_app/core/common/map/overlays/overlay_manager.dart';
 import 'package:smart_route_app/core/common/map/overlays/route_overlay_controller.dart';
@@ -18,6 +19,8 @@ class MapFacadeDependencies {
   final OverlayManager overlayManager;
 
   final IncidentOverlayController incidentOverlayController;
+
+  final ClusterOverlayController clusterOverlayController;
 
   final MapSelectionController selectionController;
 
@@ -38,6 +41,7 @@ class MapFacadeDependencies {
     required this.engine,
     required this.overlayManager,
     required this.incidentOverlayController,
+    required this.clusterOverlayController,
     required this.selectionController,
     required this.selectionOverlayController,
     required this.interactionController,

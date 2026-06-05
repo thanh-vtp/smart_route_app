@@ -3,6 +3,7 @@ import 'package:arcgis_maps/arcgis_maps.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:smart_route_app/core/common/map/providers/map_facade_provider.dart';
 import 'package:smart_route_app/core/common/screens/state/location_ui_notifier.dart';
+import 'package:smart_route_app/features/cluster/domain/entities/cluster_entities.dart';
 import 'package:smart_route_app/features/incident/domain/entities/incident.dart'
     as incident_entity;
 import 'package:smart_route_app/features/navigation/domain/entities/route_entity.dart'
@@ -67,6 +68,12 @@ class MapUiNotifier extends Notifier<MapUiState> {
     final facade = ref.read(mapFacadeProvider);
 
     await facade.renderIncidents(incidents);
+  }
+
+  Future<void> renderClusters(List<ClusterItem> clusters) async {
+    final facade = ref.read(mapFacadeProvider);
+
+    await facade.renderClusters(clusters);
   }
 
   Future<void> _showRouteOnMap(route_entity.RouteResult route) async {

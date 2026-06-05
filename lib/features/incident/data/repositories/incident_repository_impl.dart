@@ -8,7 +8,6 @@ import 'package:smart_route_app/features/incident/data/datasources/arcgis_remote
 import 'package:smart_route_app/features/incident/data/datasources/supabase_remote_data_source.dart';
 import 'package:smart_route_app/features/incident/data/models/incident_supabase_model.dart';
 import 'package:smart_route_app/features/incident/domain/entities/incident.dart';
-import 'package:smart_route_app/features/incident/domain/entities/cluster_item.dart';
 import 'package:smart_route_app/features/incident/domain/repositories/incident_repository.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
@@ -117,22 +116,6 @@ class IncidentRepositoryImpl implements IncidentRepository {
       return const Left(NetworkFailure('Không có kết nối mạng.'));
     } catch (e) {
       return Left(ServerFailure('Lỗi khi cập nhật báo cáo: ${e.toString()}'));
-    }
-  }
-
-  @override
-  Future<Either<Failure, List<ClusterItem>>> fetchClusters() async {
-    try {
-      final clusters = await arcgisDataSource.fetchAndApplyClusters();
-
-      final clusterEntities = clusters
-          .map((model) => model.toEntity())
-          .toList();
-      return Right(clusterEntities);
-    } on SocketException {
-      return const Left(NetworkFailure('Không có kết nối mạng.'));
-    } catch (e) {
-      return Left(ServerFailure('Lỗi khi lấy phân cụm: ${e.toString()}'));
     }
   }
 }

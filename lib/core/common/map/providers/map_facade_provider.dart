@@ -2,6 +2,7 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:smart_route_app/core/common/map/facade/map_facade.dart';
 import 'package:smart_route_app/core/common/map/facade/map_facade_dependencies.dart';
 import 'package:smart_route_app/core/common/map/facade/map_facade_impl.dart';
+import 'package:smart_route_app/core/common/map/providers/cluster_overlay_controller_provider.dart';
 import 'package:smart_route_app/core/common/map/providers/incident_overlay_controller_provider.dart';
 import 'package:smart_route_app/core/common/map/providers/location_controller_provider.dart';
 import 'package:smart_route_app/core/common/map/providers/map_controller_bundle_provider.dart';
@@ -21,6 +22,8 @@ final mapFacadeProvider = Provider<MapFacade>((ref) {
     engine: ref.watch(mapEngineProvider),
 
     overlayManager: ref.watch(overlayManagerProvider),
+
+    clusterOverlayController: ref.watch(clusterOverlayControllerProvider),
 
     incidentOverlayController: ref.watch(incidentOverlayControllerProvider),
 

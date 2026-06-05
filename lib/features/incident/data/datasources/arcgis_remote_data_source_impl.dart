@@ -1,13 +1,10 @@
 import 'dart:async';
-import 'dart:convert';
 import 'dart:io';
 import 'package:arcgis_maps/arcgis_maps.dart';
 import 'package:smart_route_app/core/common/model/incident_arcgis_model.dart';
 import 'package:smart_route_app/core/errors/exceptions.dart';
 import 'package:smart_route_app/core/utils/app_logger.dart';
-import 'package:smart_route_app/core/utils/constants.dart';
 import 'package:smart_route_app/features/incident/data/datasources/arcgis_remote_data_source.dart';
-import 'package:smart_route_app/features/incident/data/models/cluster_response_model.dart';
 import 'package:http/http.dart' as http;
 
 class ArcGISRemoteDataSourceImpl implements ArcGISRemoteDataSource {
@@ -19,38 +16,6 @@ class ArcGISRemoteDataSourceImpl implements ArcGISRemoteDataSource {
     http.Client? client,
     String? arcgisToken,
   }) : _client = client ?? http.Client();
-
-  @override
-  Future<List<ClusterItemModel>> fetchAndApplyClusters() async {
-    try {
-      final uri = Uri.parse(Constants.clusteringApiUrl);
-
-      final response = await _client.get(uri);
-
-      if (response.statusCode == 200) {
-        final jsonDecoded = jsonDecode(response.body);
-        final clusterResponse = ClusterResponseModel.fromJson(jsonDecoded);
-
-        if (clusterResponse.status == 'success') {
-          return clusterResponse.data;
-        } else {
-          throw Exception('API trả về lỗi logic: ${clusterResponse.message}');
-        }
-      } else {
-        throw Exception('Lỗi kết nối Server: HTTP ${response.statusCode}');
-      }
-    } catch (e, st) {
-      // log info error
-      AppLogger.error(
-        'Lỗi khi fetch clustering data từ API',
-        name: 'ArcGISRemoteDataSourceImpl',
-        error: e,
-        stackTrace: st,
-      );
-
-      rethrow; // Tầng Data Source → chỉ ném error thô, không wrap thêm để giữ nguyên type
-    }
-  }
 
   @override
   Future<List<IncidentArcgisModel>> getIncidents({

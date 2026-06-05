@@ -6,6 +6,7 @@ import 'package:smart_route_app/core/common/map/facade/map_facade_dependencies.d
 import 'package:smart_route_app/core/common/map/interactions/interaction_result.dart';
 import 'package:smart_route_app/core/common/map/location/location_state.dart';
 import 'package:smart_route_app/core/utils/app_logger.dart';
+import 'package:smart_route_app/features/cluster/domain/entities/cluster_entities.dart';
 import '../../../../../../features/incident/domain/entities/incident.dart'
     as domain_incident;
 
@@ -24,6 +25,7 @@ class MapFacadeImpl implements MapFacade {
     await deps.symbolPreloader.preload();
 
     deps.overlayManager.moveAllTo2D([
+      deps.clusterOverlayController.overlay,
       deps.incidentOverlayController.overlay,
       deps.selectionOverlayController.overlay,
       deps.routeOverlayController.routeOverlay,
@@ -36,6 +38,7 @@ class MapFacadeImpl implements MapFacade {
     await deps.engine.switchTo2D();
 
     deps.overlayManager.moveAllTo2D([
+      deps.clusterOverlayController.overlay,
       deps.incidentOverlayController.overlay,
       deps.selectionOverlayController.overlay,
       deps.routeOverlayController.routeOverlay,
@@ -48,6 +51,7 @@ class MapFacadeImpl implements MapFacade {
     await deps.engine.switchTo3D();
 
     deps.overlayManager.moveAllTo3D([
+      deps.clusterOverlayController.overlay,
       deps.incidentOverlayController.overlay,
       deps.selectionOverlayController.overlay,
       deps.routeOverlayController.routeOverlay,
@@ -58,6 +62,11 @@ class MapFacadeImpl implements MapFacade {
   @override
   Future<void> changeBasemap(BasemapStyle style) async {
     await deps.engine.changeBasemap(style);
+  }
+
+  @override
+  Future<void> renderClusters(List<ClusterItem> clusters) async {
+    await deps.clusterOverlayController.renderClusters(clusters);
   }
 
   @override

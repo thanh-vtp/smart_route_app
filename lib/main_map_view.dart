@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:smart_route_app/core/common/map/interactions/interaction_result.dart';
+import 'package:smart_route_app/core/common/map/location/location_state.dart';
 import 'package:smart_route_app/core/common/map/providers/map_controller_bundle_provider.dart';
 import 'package:smart_route_app/core/common/map/providers/map_facade_provider.dart';
 import 'package:smart_route_app/core/common/screens/state/incidents_provider.dart';
@@ -10,6 +11,8 @@ import 'package:smart_route_app/core/common/screens/state/location_ui_notifier.d
 import 'package:smart_route_app/core/common/screens/state/map_ui_notifier.dart';
 import 'package:smart_route_app/core/common/screens/state/map_ui_state.dart';
 import 'package:smart_route_app/core/utils/app_logger.dart';
+import 'package:smart_route_app/features/cluster/presentation/states/cluster_notifier.dart';
+import 'package:smart_route_app/features/cluster/presentation/states/cluster_state.dart';
 import 'package:smart_route_app/features/navigation/domain/entities/route_entity.dart'
     as entity;
 import 'package:smart_route_app/features/navigation/domain/entities/route_entity.dart';
@@ -57,10 +60,11 @@ class _MainMapViewState extends ConsumerState<MainMapView> {
     super.initState();
 
     Future.microtask(() async {
-      final notifier = ref.read(incidentsProvider.notifier);
+      final notifierIncidents = ref.read(incidentsProvider.notifier);
+      await notifierIncidents.fetchIncidents(); // fetch incidents
+      notifierIncidents.listenToRealtimeUpdates(); // update realtime incidents
 
-      await notifier.fetchIncidents(); // fetch
-      notifier.listenToRealtimeUpdates(); // update
+      await ref.read(clusterNotifierProvider.notifier).fetchClusters();
     });
 
     ref.listenManual<IncidentsState>(incidentsProvider, (previous, next) async {
@@ -68,7 +72,20 @@ class _MainMapViewState extends ConsumerState<MainMapView> {
       AppLogger.debug('renderIncidents: ${next.incidents.length}');
     });
 
-    AppLogger.debug('MainMapView init ${identityHashCode(this)}');
+    // LẮNG NGHE KẾT QUẢ PHÂN CỤM (DBSCAN) ĐỂ VẼ LÊN MAP
+    ref.listenManual<ClusterState>(clusterNotifierProvider, (
+      previous,
+      next,
+    ) async {
+      final clusterResult = next.result;
+      if (clusterResult != null) {
+        await ref
+            .read(mapUiProvider.notifier)
+            .renderClusters(clusterResult.items);
+      }
+    });
+
+    // AppLogger.debug('MainMapView init ${identityHashCode(this)}');
   }
 
   @override

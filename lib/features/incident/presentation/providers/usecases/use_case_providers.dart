@@ -6,7 +6,6 @@ import 'package:smart_route_app/features/incident/domain/usecases/get_incidents_
 import 'package:smart_route_app/features/incident/domain/usecases/get_my_incidents_usecase.dart';
 import 'package:smart_route_app/features/incident/domain/usecases/update_incident_usecase.dart';
 import 'package:smart_route_app/features/incident/presentation/providers/repositories/repository_providers.dart';
-import 'package:smart_route_app/features/incident/domain/usecases/fetch_cluster_usecase.dart';
 
 part 'use_case_providers.g.dart';
 
@@ -48,10 +47,4 @@ UpdateIncidentUsecase updateIncidentUsecase(UpdateIncidentUsecaseRef ref) {
 DeleteIncidentUsecase deleteIncidentUsecase(DeleteIncidentUsecaseRef ref) {
   final repository = ref.watch(incidentRepositoryProvider);
   return DeleteIncidentUsecase(repository);
-}
-
-@Riverpod(keepAlive: true)
-FetchClusterUseCase fetchClusterUseCase(FetchClusterUseCaseRef ref) {
-  final repository = ref.watch(incidentRepositoryProvider);
-  return FetchClusterUseCase(repository);
 }

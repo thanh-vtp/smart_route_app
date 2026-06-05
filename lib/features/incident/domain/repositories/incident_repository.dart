@@ -2,7 +2,6 @@ import 'package:arcgis_maps/arcgis_maps.dart' as arcgis;
 import 'package:fpdart/fpdart.dart';
 import 'package:smart_route_app/core/errors/failures.dart';
 import 'package:smart_route_app/features/incident/domain/entities/incident.dart';
-import 'package:smart_route_app/features/incident/domain/entities/cluster_item.dart';
 
 /// Domain Repository Interface
 abstract class IncidentRepository {
@@ -18,9 +17,6 @@ abstract class IncidentRepository {
 
   /// Lấy lịch sử báo cáo của User
   Future<Either<Failure, List<Incident>>> getMyIncidents(String userId);
-
-  /// Fetch and apply clustering data từ API
-  Future<Either<Failure, List<ClusterItem>>> fetchClusters();
 
   // ============ Cache Management ============
 
