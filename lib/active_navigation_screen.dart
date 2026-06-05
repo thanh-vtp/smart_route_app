@@ -1,7 +1,5 @@
-import 'package:arcgis_maps/arcgis_maps.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:smart_route_app/core/common/map/providers/map_controller_bundle_provider.dart';
 import 'package:smart_route_app/core/common/screens/state/location_ui_notifier.dart';
 import 'package:smart_route_app/features/navigation/domain/entities/route_entity.dart';
 import 'package:smart_route_app/features/navigation/domain/entities/route_entity.dart'

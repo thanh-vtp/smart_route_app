@@ -2,7 +2,6 @@ import 'package:arcgis_maps/arcgis_maps.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:smart_route_app/core/common/domain/entities/address_result.dart';
 import 'package:smart_route_app/core/common/map/interactions/interaction_result.dart';
 import 'package:smart_route_app/core/common/map/providers/map_controller_bundle_provider.dart';
 import 'package:smart_route_app/core/common/map/providers/map_facade_provider.dart';
@@ -10,6 +9,9 @@ import 'package:smart_route_app/core/common/screens/state/incidents_provider.dar
 import 'package:smart_route_app/core/common/screens/state/location_ui_notifier.dart';
 import 'package:smart_route_app/core/common/screens/state/map_ui_notifier.dart';
 import 'package:smart_route_app/core/utils/app_logger.dart';
+import 'package:smart_route_app/features/navigation/domain/entities/route_entity.dart'
+    as entity;
+import 'package:smart_route_app/features/navigation/presentation/state/route_notifier.dart';
 import 'reporting_bottom_sheet.dart';
 import 'incident_detail_bottom_sheet.dart';
 import 'package:smart_route_app/core/common/map/location/device_location_status.dart';
@@ -64,210 +66,319 @@ class _MainMapViewState extends ConsumerState<MainMapView> {
   ) {
     final mapUiState = ref.watch(mapUiProvider);
     final locationState = ref.watch(locationUiProvider);
+    final routeState = ref.watch(routeNotifierProvider);
+    final hasRoute = routeState.routeResult != null;
 
-    return Stack(
-      children: [
-        // 1. Map Layer (Placeholder filling the screen)
-        Positioned.fill(
-          child: ArcGISMapView(
-            controllerProvider: () {
-              return ref.read(mapControllerBundleProvider).map2D;
-            },
-            onMapViewReady: () async {
-              if (_isMapInitialized) return;
-
-              _isMapInitialized = true;
-
-              await ref.read(mapUiProvider.notifier).initialize();
-            },
-
-            onTap: (screenPoint) async {
-              // Tap marker to Identify marker to Highlight marker to Show bottom sheet
-              final result = await ref
-                  .read(mapFacadeProvider)
-                  .onTap(screenPoint);
-
-              if (!mounted) return;
-
-              switch (result.type) {
-                case InteractionType.incident:
-                  if (result.objectId == null) {
-                    ScaffoldMessenger.of(this.context).showSnackBar(
-                      const SnackBar(
-                        content: Text(
-                          'Không thể xác định báo cáo. Thử lại sau.',
-                        ),
-                      ),
-                    );
-                    return;
-                  }
-
-                  await ref
-                      .read(mapFacadeProvider)
-                      .selectIncident(result.objectId!);
-
-                  if (!mounted) return;
-
-                  await _showIncidentDetail(this.context, result.objectId!);
-
-                  ref
-                      .read(mapFacadeProvider)
-                      .clearSelection(); // Clear highlight marker
-
-                  AppLogger.ui("Mở Báo Cáo: ${result.objectId!}");
-
-                  break;
-
-                case InteractionType.none:
-                  ref.read(mapFacadeProvider).clearSelection();
-                  break;
-
-                default:
-                  break;
-              }
-            },
-          ),
-        ),
-
-        // Central Map Makers (Placeholder for visual context)
-        // Center(
-        //   child: GestureDetector(
-        //     onTap: () {
-        //       _showIncidentDetail(context);
-        //     },
-        //     child: Icon(Icons.shield, size: 48, color: cs.primary),
-        //   ),
-        // ),
-
-        /// LOADING
-        if (mapUiState.isLoading)
+    return Scaffold(
+      backgroundColor: cs.surface,
+      bottomSheet: hasRoute
+          ? _buildSummaryBottomSheet(
+              cs,
+              textTheme,
+              context,
+              routeState.routeResult!,
+            )
+          : null,
+      body: Stack(
+        children: [
+          // 1. Map Layer (Placeholder filling the screen)
           Positioned.fill(
-            child: Container(
-              color: cs.surface,
-              child: const Center(child: CircularProgressIndicator()),
+            child: ArcGISMapView(
+              controllerProvider: () {
+                return ref.read(mapControllerBundleProvider).map2D;
+              },
+              onMapViewReady: () async {
+                if (_isMapInitialized) return;
+                _isMapInitialized = true;
+                await ref.read(mapUiProvider.notifier).initialize();
+              },
+
+              onTap: (screenPoint) async {
+                // Tap marker to Identify marker to Highlight marker to Show bottom sheet
+                final result = await ref
+                    .read(mapFacadeProvider)
+                    .onTap(screenPoint);
+                if (!mounted) return;
+                switch (result.type) {
+                  case InteractionType.incident:
+                    if (result.objectId == null) {
+                      ScaffoldMessenger.of(this.context).showSnackBar(
+                        const SnackBar(
+                          content: Text(
+                            'Không thể xác định báo cáo. Thử lại sau.',
+                          ),
+                        ),
+                      );
+                      return;
+                    }
+                    await ref
+                        .read(mapFacadeProvider)
+                        .selectIncident(result.objectId!);
+                    if (!mounted) return;
+                    await _showIncidentDetail(this.context, result.objectId!);
+                    ref
+                        .read(mapFacadeProvider)
+                        .clearSelection(); // Clear highlight marker
+                    AppLogger.ui("Mở Báo Cáo: ${result.objectId!}");
+                    break;
+                  case InteractionType.none:
+                    ref.read(mapFacadeProvider).clearSelection();
+                    break;
+                  default:
+                    break;
+                }
+              },
             ),
           ),
 
-        /// ERROR FALLBACK
-        if (mapUiState.error != null)
-          Positioned.fill(
-            child: Container(
-              color: cs.surfaceContainerLow,
+          /// LOADING
+          if (mapUiState.isLoading)
+            Positioned.fill(
+              child: Container(
+                color: cs.surface,
+                child: const Center(child: CircularProgressIndicator()),
+              ),
+            ),
+
+          /// ERROR FALLBACK
+          if (mapUiState.error != null)
+            Positioned.fill(
+              child: Container(
+                color: cs.surfaceContainerLow,
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Icon(Icons.map_outlined, size: 64, color: cs.outline),
+
+                    const SizedBox(height: 16),
+
+                    Text(
+                      mapUiState.error ?? 'Không thể tải bản đồ',
+                      style: textTheme.bodyLarge,
+                    ),
+
+                    const SizedBox(height: 24),
+
+                    FilledButton(
+                      onPressed: () {
+                        // ref.read(mapViewProvider.notifier).retry();
+                      },
+                      child: const Text('Thử lại'),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+
+          // KHI ĐANG CÓ LỘ TRÌNH (TÌM ĐƯỜNG XONG)
+          if (!hasRoute) ...[
+            // 2. Top Search Bar (Floating Card)
+            Positioned(
+              top: MediaQuery.of(context).padding.top + 16,
+              left: 16,
+              right: 16,
+              child: _buildSearchBar(context, cs, textTheme),
+            ),
+
+            // 3. Floating Controls (Bottom Right)
+            Positioned(
+              bottom: 16,
+              right: 16,
               child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
+                mainAxisSize: MainAxisSize.min,
+                crossAxisAlignment: CrossAxisAlignment.end,
                 children: [
-                  Icon(Icons.map_outlined, size: 64, color: cs.outline),
+                  // My Location Button
+                  FloatingActionButton.small(
+                    heroTag: 'my_location',
+                    onPressed: () async {
+                      final notifier = ref.read(locationUiProvider.notifier);
 
-                  const SizedBox(height: 16),
+                      if (locationState.status !=
+                          DeviceLocationStatus.running) {
+                        await notifier.startLocation();
+                        return;
+                      }
 
-                  Text(
-                    mapUiState.error ?? 'Không thể tải bản đồ',
-                    style: textTheme.bodyLarge,
-                  ),
-
-                  const SizedBox(height: 24),
-
-                  FilledButton(
-                    onPressed: () {
-                      // ref.read(mapViewProvider.notifier).retry();
+                      notifier.recenter();
                     },
-                    child: const Text('Thử lại'),
+                    backgroundColor: cs.surfaceContainerLowest,
+                    foregroundColor: cs.onSurfaceVariant,
+                    elevation: 2,
+                    child: Icon(
+                      locationState.isFollowing
+                          ? Icons.my_location
+                          : Icons.location_searching,
+                    ),
+                  ),
+                  const SizedBox(height: 16),
+                  // Massive BÁO CÁO FAB
+                  FloatingActionButton.extended(
+                    heroTag: 'report_incident',
+                    onPressed: () {
+                      _showReportingSheet(context);
+                    },
+                    backgroundColor: cs.primary,
+                    foregroundColor: cs.onPrimary,
+                    elevation: 4,
+                    icon: const Icon(Icons.campaign),
+                    label: Text(
+                      'BÁO CÁO',
+                      style: textTheme.labelLarge?.copyWith(
+                        fontWeight: FontWeight.bold,
+                        color: cs.onPrimary,
+                      ),
+                    ),
                   ),
                 ],
               ),
             ),
+
+            // Extra floating controls (Bottom Left) like Layers/Tune
+            Positioned(
+              bottom: 16,
+              left: 16,
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  FloatingActionButton.small(
+                    heroTag: 'layers',
+                    onPressed: () {},
+                    backgroundColor: cs.surfaceContainerLowest,
+                    foregroundColor: cs.onSurfaceVariant,
+                    elevation: 2,
+                    child: const Icon(Icons.layers_outlined),
+                  ),
+                  const SizedBox(height: 16),
+                  FloatingActionButton.small(
+                    heroTag: 'tune',
+                    onPressed: () {},
+                    backgroundColor: cs.surfaceContainerLowest,
+                    foregroundColor: cs.onSurfaceVariant,
+                    elevation: 2,
+                    child: const Icon(Icons.tune),
+                  ),
+                ],
+              ),
+            ),
+          ],
+        ],
+      ),
+    );
+  }
+
+  Widget _buildSummaryBottomSheet(
+    ColorScheme cs,
+    TextTheme textTheme,
+    BuildContext context,
+    entity.RouteResult routeResult,
+  ) {
+    return Container(
+      // Bỏ margin ngoài để nó dính chặt vào đáy điện thoại
+      padding: const EdgeInsets.fromLTRB(24, 12, 16, 32),
+      decoration: BoxDecoration(
+        color: cs.surfaceContainerLowest,
+        borderRadius: const BorderRadius.vertical(top: Radius.circular(24.0)),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withOpacity(0.15),
+            blurRadius: 16,
+            offset: const Offset(0, -4),
+          ),
+        ],
+      ),
+      child: Column(
+        mainAxisSize: MainAxisSize.min, // Tự co giãn ôm sát nội dung
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: [
+          // Thanh Drag Handle xám nhỏ trên đỉnh sheet
+          Center(
+            child: Container(
+              width: 40,
+              height: 4,
+              margin: const EdgeInsets.only(bottom: 16),
+              decoration: BoxDecoration(
+                color: cs.outlineVariant,
+                borderRadius: BorderRadius.circular(2),
+              ),
+            ),
           ),
 
-        // 2. Top Search Bar (Floating Card)
-        Positioned(
-          top: MediaQuery.of(context).padding.top + 16,
-          left: 16,
-          right: 16,
-          child: _buildSearchBar(context, cs, textTheme),
-        ),
-
-        // 3. Floating Controls (Bottom Right)
-        Positioned(
-          bottom: 16,
-          right: 16,
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            crossAxisAlignment: CrossAxisAlignment.end,
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              // My Location Button
-              FloatingActionButton.small(
-                heroTag: 'my_location',
-                onPressed: () async {
-                  final notifier = ref.read(locationUiProvider.notifier);
-
-                  if (locationState.status != DeviceLocationStatus.running) {
-                    await notifier.startLocation();
-                    return;
-                  }
-
-                  notifier.recenter();
-                },
-                backgroundColor: cs.surfaceContainerLowest,
-                foregroundColor: cs.onSurfaceVariant,
-                elevation: 2,
-                child: Icon(
-                  locationState.isFollowing
-                      ? Icons.my_location
-                      : Icons.location_searching,
+              Text(
+                'Đã chọn lộ trình né sự cố',
+                style: textTheme.titleSmall?.copyWith(
+                  color: cs.primary,
+                  fontWeight: FontWeight.bold,
                 ),
               ),
-              const SizedBox(height: 16),
-              // Massive BÁO CÁO FAB
-              FloatingActionButton.extended(
-                heroTag: 'report_incident',
+
+              // Button hủy Route
+              IconButton(
+                icon: Icon(Icons.close, color: cs.onSurfaceVariant),
                 onPressed: () {
-                  _showReportingSheet(context);
+                  // Gọi hàm xóa lộ trình -> Bản đồ tự dọn đường, BottomSheet tự thụt xuống
+                  ref.read(routeNotifierProvider.notifier).clearRoute();
                 },
-                backgroundColor: cs.primary,
-                foregroundColor: cs.onPrimary,
-                elevation: 4,
-                icon: const Icon(Icons.campaign),
-                label: Text(
-                  'BÁO CÁO',
+                style: IconButton.styleFrom(
+                  padding: EdgeInsets.zero,
+                  tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                  backgroundColor: cs.surface,
+                  side: BorderSide(color: cs.outlineVariant),
+                  elevation: 2,
+                  shadowColor: Colors.black26,
+                  minimumSize: const Size(40, 40),
+                ),
+              ),
+            ],
+          ),
+
+          const SizedBox(height: 8),
+          Text(
+            routeResult.formattedTime,
+            style: textTheme.headlineMedium?.copyWith(
+              fontWeight: FontWeight.bold,
+              color: cs.onSurface,
+            ),
+          ),
+          const SizedBox(height: 4),
+          Text(
+            '${routeResult.formattedDistance} • Tới lúc ${routeResult.estimatedArrival}',
+            style: textTheme.bodyMedium?.copyWith(color: cs.onSurfaceVariant),
+          ),
+          const SizedBox(height: 20),
+          FilledButton(
+            onPressed: () {
+              context.push('/explore/active-navigation');
+            },
+            style: FilledButton.styleFrom(
+              backgroundColor: cs.primary,
+              foregroundColor: cs.onPrimary,
+              padding: const EdgeInsets.symmetric(vertical: 16),
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(9999),
+              ),
+            ),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Text(
+                  'BẮT ĐẦU ĐI',
                   style: textTheme.labelLarge?.copyWith(
                     fontWeight: FontWeight.bold,
                     color: cs.onPrimary,
                   ),
                 ),
-              ),
-            ],
+                const SizedBox(width: 8),
+                Icon(Icons.navigation, color: cs.onPrimary, size: 20),
+              ],
+            ),
           ),
-        ),
-
-        // Extra floating controls (Bottom Left) like Layers/Tune
-        Positioned(
-          bottom: 16,
-          left: 16,
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              FloatingActionButton.small(
-                heroTag: 'layers',
-                onPressed: () {},
-                backgroundColor: cs.surfaceContainerLowest,
-                foregroundColor: cs.onSurfaceVariant,
-                elevation: 2,
-                child: const Icon(Icons.layers_outlined),
-              ),
-              const SizedBox(height: 16),
-              FloatingActionButton.small(
-                heroTag: 'tune',
-                onPressed: () {},
-                backgroundColor: cs.surfaceContainerLowest,
-                foregroundColor: cs.onSurfaceVariant,
-                elevation: 2,
-                child: const Icon(Icons.tune),
-              ),
-            ],
-          ),
-        ),
-      ],
+        ],
+      ),
     );
   }
 
@@ -297,18 +408,7 @@ class _MainMapViewState extends ConsumerState<MainMapView> {
     return GestureDetector(
       onTap: () async {
         // TODO '/explore/search' is the route for SearchScreen
-        // context.push('/explore/search');
-
-        // 1. Mở màn hình Search đè lên trên (dùng push)
-        final selectedLocation = await context.push<AddressResult>(
-          '/explore/search',
-        );
-
-        // 2. Nhận kết quả về. Nếu có kết quả thì ĐỔI TAB sang màn GO (dùng go)
-        if (selectedLocation != null && mounted) {
-          // Dùng context.go để đổi Tab Bottom Navigation, kèm theo cục data
-          this.context.go('/go', extra: selectedLocation);
-        }
+        context.push('/explore/route-setup');
       },
       child: Container(
         padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
@@ -384,33 +484,82 @@ class _MainMapViewState extends ConsumerState<MainMapView> {
       ),
     );
   }
-}
 
-// Subtle grid painter to simulate the map background aesthetic in the spec.
-class _MapGridPainter extends CustomPainter {
-  final Color color;
+  Container _buildSummaryCard(
+    ColorScheme cs,
+    TextTheme textTheme,
+    entity.RouteResult routeResult,
+  ) {
+    return Container(
+      margin: const EdgeInsets.all(16.0),
+      padding: const EdgeInsets.all(24.0),
+      decoration: BoxDecoration(
+        color: cs.surfaceContainerLowest,
+        borderRadius: BorderRadius.circular(16.0),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withOpacity(0.1),
+            blurRadius: 12,
+            offset: const Offset(0, 4),
+          ),
+        ],
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: [
+          Text(
+            // NẾU SAU NÀY BẠN CÓ CHỨC NĂNG SO SÁNH (Ví dụ: Né được kẹt xe)
+            'Đã chọn đường né sự cố',
+            style: textTheme.titleSmall?.copyWith(
+              color: cs.primary,
+              fontWeight: FontWeight.bold,
+            ),
+          ),
 
-  _MapGridPainter({required this.color});
-
-  @override
-  void paint(Canvas canvas, Size size) {
-    final paint = Paint()
-      ..color = color
-      ..strokeWidth = 1.0;
-
-    const double spacing = 40.0;
-
-    for (double i = 0; i <= size.width; i += spacing) {
-      canvas.drawLine(Offset(i, 0), Offset(i, size.height), paint);
-    }
-
-    for (double i = 0; i <= size.height; i += spacing) {
-      canvas.drawLine(Offset(0, i), Offset(size.width, i), paint);
-    }
-  }
-
-  @override
-  bool shouldRepaint(covariant _MapGridPainter oldDelegate) {
-    return color != oldDelegate.color;
+          const SizedBox(height: 16),
+          Text(
+            routeResult.formattedTime, // Thời gian
+            style: textTheme.headlineMedium?.copyWith(
+              fontWeight: FontWeight.bold,
+              color: cs.onSurface,
+            ),
+          ),
+          const SizedBox(height: 4),
+          Text(
+            '${routeResult.formattedDistance} • Tới lúc ${routeResult.estimatedArrival}',
+            style: textTheme.bodyMedium?.copyWith(color: cs.onSurfaceVariant),
+          ),
+          const SizedBox(height: 16),
+          FilledButton(
+            onPressed: () {
+              /// TODO: '/explore/active-navigation' is the route for ActiveNavigationScreen
+              context.push('/explore/active-navigation');
+            },
+            style: FilledButton.styleFrom(
+              backgroundColor: cs.primary,
+              foregroundColor: cs.onPrimary,
+              padding: const EdgeInsets.symmetric(vertical: 16),
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(9999),
+              ),
+            ),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Text(
+                  'BẮT ĐẦU ĐI',
+                  style: textTheme.labelLarge?.copyWith(
+                    fontWeight: FontWeight.bold,
+                    color: cs.onPrimary,
+                  ),
+                ),
+                const SizedBox(width: 8),
+                Icon(Icons.navigation, color: cs.onPrimary, size: 20),
+              ],
+            ),
+          ),
+        ],
+      ),
+    );
   }
 }

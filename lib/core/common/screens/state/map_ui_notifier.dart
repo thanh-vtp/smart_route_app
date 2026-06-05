@@ -2,6 +2,7 @@ import 'package:arcgis_maps/arcgis_maps.dart';
 
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:smart_route_app/core/common/map/providers/map_facade_provider.dart';
+import 'package:smart_route_app/core/common/screens/state/location_ui_notifier.dart';
 import 'package:smart_route_app/features/incident/domain/entities/incident.dart'
     as incident_entity;
 import 'package:smart_route_app/features/navigation/domain/entities/route_entity.dart'
@@ -74,6 +75,25 @@ class MapUiNotifier extends Notifier<MapUiState> {
     await facade.renderRoute(route);
 
     state = state.copyWith(hasActiveRoute: true);
+  }
+
+  Future<void> startNavigation() async {
+    state = state.copyWith(isNavigating: true);
+
+    await switchTo3D();
+
+    // Kích hoạt GPS bám theo vị trí xe chạy
+    ref.read(locationUiProvider.notifier).startLocation();
+  }
+
+  Future<void> stopNavigation() async {
+    state = state.copyWith(isNavigating: false);
+
+    // 1. Xóa đường đi trên bản đồ
+    clearRoute();
+
+    // 2. Quay về góc nhìn 2D phẳng thẳng đứng hướng Bắc
+    await switchTo2D();
   }
 
   void clearRoute() {

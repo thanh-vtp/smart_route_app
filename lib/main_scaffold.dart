@@ -29,11 +29,6 @@ class MainScaffold extends StatelessWidget {
             label: 'Explore',
           ),
           NavigationDestination(
-            icon: Icon(Icons.navigation_outlined),
-            selectedIcon: Icon(Icons.navigation),
-            label: 'Go',
-          ),
-          NavigationDestination(
             icon: Icon(Icons.report_outlined),
             selectedIcon: Icon(Icons.report),
             label: 'Reports',

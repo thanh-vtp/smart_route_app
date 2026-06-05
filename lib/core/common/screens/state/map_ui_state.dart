@@ -2,16 +2,15 @@ enum MapViewMode { map2D, scene3D }
 
 class MapUiState {
   final bool isLoading;
-
-  final bool hasActiveRoute;
-
+  final bool hasActiveRoute; // state route
+  final bool isNavigating; // state navigation
   final MapViewMode mode;
-
   final String? error;
 
   const MapUiState({
     required this.isLoading,
     required this.hasActiveRoute,
+    required this.isNavigating,
     required this.mode,
     this.error,
   });
@@ -20,6 +19,7 @@ class MapUiState {
     return const MapUiState(
       isLoading: true,
       hasActiveRoute: false,
+      isNavigating: false,
       mode: MapViewMode.map2D,
     );
   }
@@ -34,11 +34,13 @@ class MapUiState {
     bool? isLoading,
     MapViewMode? mode,
     bool? hasActiveRoute,
+    bool? isNavigating,
     String? error,
   }) {
     return MapUiState(
       isLoading: isLoading ?? this.isLoading,
       hasActiveRoute: hasActiveRoute ?? this.hasActiveRoute,
+      isNavigating: isNavigating ?? this.isNavigating,
       mode: mode ?? this.mode,
       error: error,
     );

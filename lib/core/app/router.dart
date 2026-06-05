@@ -156,35 +156,28 @@ GoRouter router(Ref ref) {
                     path: 'search',
                     parentNavigatorKey: _rootNavigatorKey,
                     builder: (context, state) => const SearchScreen(),
-                    routes: [],
                   ),
 
                   GoRoute(
                     path: 'notifications',
                     parentNavigatorKey: _rootNavigatorKey,
                     builder: (context, state) => const NotificationScreen(),
-                    routes: [],
                   ),
-                ],
-              ),
-            ],
-          ),
 
-          StatefulShellBranch(
-            routes: [
-              GoRoute(
-                path: AppRoutes.go, // '/go',
-                name: 'go',
-                builder: (context, state) {
-                  final destination = state.extra as AddressResult?;
-                  return RouteSetupScreen(initialDestination: destination);
-                },
-                routes: [
+                  GoRoute(
+                    path: 'route-setup',
+                    parentNavigatorKey: _rootNavigatorKey,
+                    name: 'go',
+                    builder: (context, state) {
+                      final destination = state.extra as AddressResult?;
+                      return RouteSetupScreen(initialDestination: destination);
+                    },
+                  ),
+
                   GoRoute(
                     path: 'active-navigation',
                     parentNavigatorKey: _rootNavigatorKey,
                     builder: (context, state) => const ActiveNavigationScreen(),
-                    routes: [],
                   ),
                 ],
               ),
