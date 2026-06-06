@@ -13,7 +13,8 @@ class ClusterOverlayController {
 
     for (final cluster in clusters) {
       try {
-        _drawCluster(cluster);
+        _drawHotspotCircle(cluster);
+        _drawBadge(cluster);
       } catch (e, st) {
         AppLogger.error(
           'Lỗi render hotspot ${cluster.clusterId}',
@@ -24,109 +25,91 @@ class ClusterOverlayController {
       }
     }
 
-    AppLogger.ui('Rendered ${clusters.length} hotspot clusters');
-  }
-
-  void _drawCluster(ClusterHotspot cluster) {
     AppLogger.debug(
-      'Cluster ${cluster.clusterId} polygon points: ${cluster.polygon.length}',
-      name: 'ClusterOverlayController',
-    );
-
-    if (cluster.polygon.length < 3) {
-      AppLogger.warning(
-        'Cluster ${cluster.clusterId} polygon không hợp lệ',
-        name: 'ClusterOverlayController',
-      );
-      return;
-    }
-
-    final polygonBuilder = PolygonBuilder(
-      spatialReference: SpatialReference.wgs84,
-    );
-
-    for (final point in cluster.polygon) {
-      polygonBuilder.addPoint(
-        ArcGISPoint(
-          x: point[0],
-          y: point[1],
-          spatialReference: SpatialReference.wgs84,
-        ),
-      );
-    }
-
-    final polygon = polygonBuilder.toGeometry();
-
-    final symbol = _createSymbol(cluster);
-
-    final graphic = Graphic(
-      geometry: polygon,
-      symbol: symbol,
-      attributes: {
-        'cluster_id': cluster.clusterId,
-        'incident_count': cluster.incidentCount,
-        'severity': cluster.severity,
-        'cluster_type': cluster.clusterType,
-        'incident_object_ids': cluster.incidentObjectIds.join(','),
-        'radius_m': cluster.radiusM,
-        'density': cluster.density,
-      },
-    );
-
-    graphic.zIndex = -100;
-
-    overlay.graphics.add(graphic);
-
-    AppLogger.debug(
-      'Graphics count = ${overlay.graphics.length}',
-      name: 'ClusterOverlayController',
-    );
-
-    _drawCenterPoint(cluster);
-
-    AppLogger.debug(
-      'Overlay graphics count: ${overlay.graphics.length}',
+      'Rendered ${clusters.length} hotspot clusters',
       name: 'ClusterOverlayController',
     );
   }
 
-  void _drawCenterPoint(ClusterHotspot cluster) {
-    final point = ArcGISPoint(
+  void _drawHotspotCircle(ClusterHotspot cluster) {
+    final center = ArcGISPoint(
       x: cluster.centerLng,
       y: cluster.centerLat,
       spatialReference: SpatialReference.wgs84,
     );
 
-    final marker = SimpleMarkerSymbol(
-      style: SimpleMarkerSymbolStyle.circle,
-      color: _getSeverityColor(cluster.severity),
-      size: 10,
+    final circle = GeometryEngine.bufferGeodetic(
+      geometry: center,
+      distance: cluster.displayRadiusM,
+      distanceUnit: LinearUnit(unitId: LinearUnitId.meters),
+      maxDeviation: 64.0,
+      curveType: GeodeticCurveType.geodesic,
     );
 
     final graphic = Graphic(
-      geometry: point,
-      symbol: marker,
-      attributes: {'cluster_id': cluster.clusterId, 'type': 'cluster_center'},
+      geometry: circle,
+      symbol: _createCircleSymbol(cluster),
+      attributes: {
+        'cluster_id': cluster.clusterId,
+        'incident_count': cluster.incidentCount,
+        'severity': cluster.severity,
+        'cluster_type': cluster.clusterType,
+        'display_radius_m': cluster.displayRadiusM,
+        'impact_radius_m': cluster.impactRadiusM,
+        'avg_radius_m': cluster.avgRadiusM,
+        'density': cluster.density,
+        'incident_object_ids': cluster.incidentObjectIds.join(','),
+      },
     );
 
-    graphic.zIndex = -50;
+    graphic.zIndex = 10;
+    // badge.zIndex = 20;
+    // route.zIndex = 30;
 
     overlay.graphics.add(graphic);
   }
 
-  SimpleFillSymbol _createSymbol(ClusterHotspot cluster) {
-    final color = _getSeverityColor(cluster.severity);
+  void _drawBadge(ClusterHotspot cluster) {
+    final center = ArcGISPoint(
+      x: cluster.centerLng,
+      y: cluster.centerLat,
+      spatialReference: SpatialReference.wgs84,
+    );
 
-    final opacity = switch (cluster.clusterType) {
-      'compact' => 0.30,
-      'linear' => 0.25,
-      'dispersed' => 0.15,
-      _ => 0.20,
-    };
+    final markerGraphic = Graphic(
+      geometry: center,
+      symbol: SimpleMarkerSymbol(
+        style: SimpleMarkerSymbolStyle.circle,
+        color: _getSeverityColor(cluster.severity),
+        size: 24,
+      ),
+    );
+
+    markerGraphic.zIndex = 100;
+
+    overlay.graphics.add(markerGraphic);
+
+    final textGraphic = Graphic(
+      geometry: center,
+      symbol: TextSymbol(
+        text: cluster.incidentCount.toString(),
+        color: Colors.white,
+        size: 12,
+      ),
+      attributes: {'cluster_id': cluster.clusterId, 'type': 'cluster_badge'},
+    );
+
+    textGraphic.zIndex = 101;
+
+    overlay.graphics.add(textGraphic);
+  }
+
+  SimpleFillSymbol _createCircleSymbol(ClusterHotspot cluster) {
+    final color = _getSeverityColor(cluster.severity);
 
     return SimpleFillSymbol(
       style: SimpleFillSymbolStyle.solid,
-      color: color.withValues(alpha: opacity),
+      color: color.withValues(alpha: 0.25),
       outline: SimpleLineSymbol(
         style: SimpleLineSymbolStyle.solid,
         color: color,
@@ -144,7 +127,7 @@ class ClusterOverlayController {
         return Colors.orange;
 
       case 'low':
-        return Colors.yellow;
+        return Colors.amber;
 
       default:
         return Colors.grey;

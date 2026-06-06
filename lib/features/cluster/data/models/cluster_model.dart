@@ -1,4 +1,3 @@
-// data/models/cluster_model.dart
 import 'package:freezed_annotation/freezed_annotation.dart';
 import '../../domain/entities/cluster_entities.dart';
 
@@ -38,6 +37,8 @@ class ClusterResponseModel with _$ClusterResponseModel {
 @freezed
 class ClusteringInfoModel with _$ClusteringInfoModel {
   const factory ClusteringInfoModel({
+    required String algorithm,
+    required double eps,
     @JsonKey(name: 'n_clusters') required int nClusters,
     @JsonKey(name: 'n_noise') required int nNoise,
     @JsonKey(name: 'n_core_points') required int nCorePoints,
@@ -114,7 +115,13 @@ class ClusterHotspotModel with _$ClusterHotspotModel {
     @JsonKey(name: 'incident_count') required int incidentCount,
     @JsonKey(name: 'incident_object_ids') required List<int> incidentObjectIds,
     required ClusterCentroidModel centroid,
-    @JsonKey(name: 'radius_m') required double radiusM,
+    @JsonKey(name: 'display_radius_m') required double displayRadiusM,
+
+    @JsonKey(name: 'impact_radius_m') required double impactRadiusM,
+
+    @JsonKey(name: 'avg_radius_m') required double avgRadiusM,
+
+    required ClusterGeometryModel geometry,
     required double density,
     required String severity,
     @JsonKey(name: 'cluster_type') required String clusterType,
@@ -130,14 +137,48 @@ class ClusterHotspotModel with _$ClusterHotspotModel {
       clusterId: clusterId,
       incidentCount: incidentCount,
       incidentObjectIds: incidentObjectIds,
+
       centerLat: centroid.lat,
       centerLng: centroid.lng,
-      radiusM: radiusM,
+
+      displayRadiusM: displayRadiusM,
+      impactRadiusM: impactRadiusM,
+      avgRadiusM: avgRadiusM,
+
       density: density,
       severity: severity,
       clusterType: clusterType,
+
       bbox: bbox.toEntity(),
+
       polygon: polygon,
+      geometry: geometry.toEntity(),
     );
   }
+}
+
+@freezed
+class ClusterGeometryModel with _$ClusterGeometryModel {
+  const ClusterGeometryModel._();
+
+  const factory ClusterGeometryModel({
+    required List<List<List<double>>> rings,
+    required SpatialReferenceModel spatialReference,
+  }) = _ClusterGeometryModel;
+
+  factory ClusterGeometryModel.fromJson(Map<String, dynamic> json) =>
+      _$ClusterGeometryModelFromJson(json);
+
+  ClusterGeometry toEntity() {
+    return ClusterGeometry(rings: rings, wkid: spatialReference.wkid);
+  }
+}
+
+@freezed
+class SpatialReferenceModel with _$SpatialReferenceModel {
+  const factory SpatialReferenceModel({required int wkid}) =
+      _SpatialReferenceModel;
+
+  factory SpatialReferenceModel.fromJson(Map<String, dynamic> json) =>
+      _$SpatialReferenceModelFromJson(json);
 }

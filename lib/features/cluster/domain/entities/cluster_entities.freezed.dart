@@ -476,14 +476,25 @@ mixin _$ClusterHotspot {
   List<int> get incidentObjectIds => throw _privateConstructorUsedError;
   double get centerLat => throw _privateConstructorUsedError;
   double get centerLng => throw _privateConstructorUsedError;
-  double get radiusM => throw _privateConstructorUsedError;
+
+  /// Circle visualization
+  double get displayRadiusM => throw _privateConstructorUsedError;
+
+  /// Reference only (không dùng routing)
+  double get impactRadiusM => throw _privateConstructorUsedError;
+
+  /// Analytics
+  double get avgRadiusM => throw _privateConstructorUsedError;
   double get density => throw _privateConstructorUsedError;
   String get severity => throw _privateConstructorUsedError;
   String get clusterType => throw _privateConstructorUsedError;
   ClusterBBox get bbox => throw _privateConstructorUsedError;
 
-  /// Polygon đơn giản
+  /// Hiển thị polygon khi user tap hotspot
   List<List<double>> get polygon => throw _privateConstructorUsedError;
+
+  /// ArcGIS geometry
+  ClusterGeometry get geometry => throw _privateConstructorUsedError;
 
   @JsonKey(ignore: true)
   $ClusterHotspotCopyWith<ClusterHotspot> get copyWith =>
@@ -502,14 +513,18 @@ abstract class $ClusterHotspotCopyWith<$Res> {
       List<int> incidentObjectIds,
       double centerLat,
       double centerLng,
-      double radiusM,
+      double displayRadiusM,
+      double impactRadiusM,
+      double avgRadiusM,
       double density,
       String severity,
       String clusterType,
       ClusterBBox bbox,
-      List<List<double>> polygon});
+      List<List<double>> polygon,
+      ClusterGeometry geometry});
 
   $ClusterBBoxCopyWith<$Res> get bbox;
+  $ClusterGeometryCopyWith<$Res> get geometry;
 }
 
 /// @nodoc
@@ -530,12 +545,15 @@ class _$ClusterHotspotCopyWithImpl<$Res, $Val extends ClusterHotspot>
     Object? incidentObjectIds = null,
     Object? centerLat = null,
     Object? centerLng = null,
-    Object? radiusM = null,
+    Object? displayRadiusM = null,
+    Object? impactRadiusM = null,
+    Object? avgRadiusM = null,
     Object? density = null,
     Object? severity = null,
     Object? clusterType = null,
     Object? bbox = null,
     Object? polygon = null,
+    Object? geometry = null,
   }) {
     return _then(_value.copyWith(
       clusterId: null == clusterId
@@ -558,9 +576,17 @@ class _$ClusterHotspotCopyWithImpl<$Res, $Val extends ClusterHotspot>
           ? _value.centerLng
           : centerLng // ignore: cast_nullable_to_non_nullable
               as double,
-      radiusM: null == radiusM
-          ? _value.radiusM
-          : radiusM // ignore: cast_nullable_to_non_nullable
+      displayRadiusM: null == displayRadiusM
+          ? _value.displayRadiusM
+          : displayRadiusM // ignore: cast_nullable_to_non_nullable
+              as double,
+      impactRadiusM: null == impactRadiusM
+          ? _value.impactRadiusM
+          : impactRadiusM // ignore: cast_nullable_to_non_nullable
+              as double,
+      avgRadiusM: null == avgRadiusM
+          ? _value.avgRadiusM
+          : avgRadiusM // ignore: cast_nullable_to_non_nullable
               as double,
       density: null == density
           ? _value.density
@@ -582,6 +608,10 @@ class _$ClusterHotspotCopyWithImpl<$Res, $Val extends ClusterHotspot>
           ? _value.polygon
           : polygon // ignore: cast_nullable_to_non_nullable
               as List<List<double>>,
+      geometry: null == geometry
+          ? _value.geometry
+          : geometry // ignore: cast_nullable_to_non_nullable
+              as ClusterGeometry,
     ) as $Val);
   }
 
@@ -590,6 +620,14 @@ class _$ClusterHotspotCopyWithImpl<$Res, $Val extends ClusterHotspot>
   $ClusterBBoxCopyWith<$Res> get bbox {
     return $ClusterBBoxCopyWith<$Res>(_value.bbox, (value) {
       return _then(_value.copyWith(bbox: value) as $Val);
+    });
+  }
+
+  @override
+  @pragma('vm:prefer-inline')
+  $ClusterGeometryCopyWith<$Res> get geometry {
+    return $ClusterGeometryCopyWith<$Res>(_value.geometry, (value) {
+      return _then(_value.copyWith(geometry: value) as $Val);
     });
   }
 }
@@ -608,15 +646,20 @@ abstract class _$$ClusterHotspotImplCopyWith<$Res>
       List<int> incidentObjectIds,
       double centerLat,
       double centerLng,
-      double radiusM,
+      double displayRadiusM,
+      double impactRadiusM,
+      double avgRadiusM,
       double density,
       String severity,
       String clusterType,
       ClusterBBox bbox,
-      List<List<double>> polygon});
+      List<List<double>> polygon,
+      ClusterGeometry geometry});
 
   @override
   $ClusterBBoxCopyWith<$Res> get bbox;
+  @override
+  $ClusterGeometryCopyWith<$Res> get geometry;
 }
 
 /// @nodoc
@@ -635,12 +678,15 @@ class __$$ClusterHotspotImplCopyWithImpl<$Res>
     Object? incidentObjectIds = null,
     Object? centerLat = null,
     Object? centerLng = null,
-    Object? radiusM = null,
+    Object? displayRadiusM = null,
+    Object? impactRadiusM = null,
+    Object? avgRadiusM = null,
     Object? density = null,
     Object? severity = null,
     Object? clusterType = null,
     Object? bbox = null,
     Object? polygon = null,
+    Object? geometry = null,
   }) {
     return _then(_$ClusterHotspotImpl(
       clusterId: null == clusterId
@@ -663,9 +709,17 @@ class __$$ClusterHotspotImplCopyWithImpl<$Res>
           ? _value.centerLng
           : centerLng // ignore: cast_nullable_to_non_nullable
               as double,
-      radiusM: null == radiusM
-          ? _value.radiusM
-          : radiusM // ignore: cast_nullable_to_non_nullable
+      displayRadiusM: null == displayRadiusM
+          ? _value.displayRadiusM
+          : displayRadiusM // ignore: cast_nullable_to_non_nullable
+              as double,
+      impactRadiusM: null == impactRadiusM
+          ? _value.impactRadiusM
+          : impactRadiusM // ignore: cast_nullable_to_non_nullable
+              as double,
+      avgRadiusM: null == avgRadiusM
+          ? _value.avgRadiusM
+          : avgRadiusM // ignore: cast_nullable_to_non_nullable
               as double,
       density: null == density
           ? _value.density
@@ -687,6 +741,10 @@ class __$$ClusterHotspotImplCopyWithImpl<$Res>
           ? _value._polygon
           : polygon // ignore: cast_nullable_to_non_nullable
               as List<List<double>>,
+      geometry: null == geometry
+          ? _value.geometry
+          : geometry // ignore: cast_nullable_to_non_nullable
+              as ClusterGeometry,
     ));
   }
 }
@@ -700,12 +758,15 @@ class _$ClusterHotspotImpl implements _ClusterHotspot {
       required final List<int> incidentObjectIds,
       required this.centerLat,
       required this.centerLng,
-      required this.radiusM,
+      required this.displayRadiusM,
+      required this.impactRadiusM,
+      required this.avgRadiusM,
       required this.density,
       required this.severity,
       required this.clusterType,
       required this.bbox,
-      required final List<List<double>> polygon})
+      required final List<List<double>> polygon,
+      required this.geometry})
       : _incidentObjectIds = incidentObjectIds,
         _polygon = polygon;
 
@@ -726,8 +787,18 @@ class _$ClusterHotspotImpl implements _ClusterHotspot {
   final double centerLat;
   @override
   final double centerLng;
+
+  /// Circle visualization
   @override
-  final double radiusM;
+  final double displayRadiusM;
+
+  /// Reference only (không dùng routing)
+  @override
+  final double impactRadiusM;
+
+  /// Analytics
+  @override
+  final double avgRadiusM;
   @override
   final double density;
   @override
@@ -737,10 +808,10 @@ class _$ClusterHotspotImpl implements _ClusterHotspot {
   @override
   final ClusterBBox bbox;
 
-  /// Polygon đơn giản
+  /// Hiển thị polygon khi user tap hotspot
   final List<List<double>> _polygon;
 
-  /// Polygon đơn giản
+  /// Hiển thị polygon khi user tap hotspot
   @override
   List<List<double>> get polygon {
     if (_polygon is EqualUnmodifiableListView) return _polygon;
@@ -748,9 +819,13 @@ class _$ClusterHotspotImpl implements _ClusterHotspot {
     return EqualUnmodifiableListView(_polygon);
   }
 
+  /// ArcGIS geometry
+  @override
+  final ClusterGeometry geometry;
+
   @override
   String toString() {
-    return 'ClusterHotspot(clusterId: $clusterId, incidentCount: $incidentCount, incidentObjectIds: $incidentObjectIds, centerLat: $centerLat, centerLng: $centerLng, radiusM: $radiusM, density: $density, severity: $severity, clusterType: $clusterType, bbox: $bbox, polygon: $polygon)';
+    return 'ClusterHotspot(clusterId: $clusterId, incidentCount: $incidentCount, incidentObjectIds: $incidentObjectIds, centerLat: $centerLat, centerLng: $centerLng, displayRadiusM: $displayRadiusM, impactRadiusM: $impactRadiusM, avgRadiusM: $avgRadiusM, density: $density, severity: $severity, clusterType: $clusterType, bbox: $bbox, polygon: $polygon, geometry: $geometry)';
   }
 
   @override
@@ -768,14 +843,21 @@ class _$ClusterHotspotImpl implements _ClusterHotspot {
                 other.centerLat == centerLat) &&
             (identical(other.centerLng, centerLng) ||
                 other.centerLng == centerLng) &&
-            (identical(other.radiusM, radiusM) || other.radiusM == radiusM) &&
+            (identical(other.displayRadiusM, displayRadiusM) ||
+                other.displayRadiusM == displayRadiusM) &&
+            (identical(other.impactRadiusM, impactRadiusM) ||
+                other.impactRadiusM == impactRadiusM) &&
+            (identical(other.avgRadiusM, avgRadiusM) ||
+                other.avgRadiusM == avgRadiusM) &&
             (identical(other.density, density) || other.density == density) &&
             (identical(other.severity, severity) ||
                 other.severity == severity) &&
             (identical(other.clusterType, clusterType) ||
                 other.clusterType == clusterType) &&
             (identical(other.bbox, bbox) || other.bbox == bbox) &&
-            const DeepCollectionEquality().equals(other._polygon, _polygon));
+            const DeepCollectionEquality().equals(other._polygon, _polygon) &&
+            (identical(other.geometry, geometry) ||
+                other.geometry == geometry));
   }
 
   @override
@@ -786,12 +868,15 @@ class _$ClusterHotspotImpl implements _ClusterHotspot {
       const DeepCollectionEquality().hash(_incidentObjectIds),
       centerLat,
       centerLng,
-      radiusM,
+      displayRadiusM,
+      impactRadiusM,
+      avgRadiusM,
       density,
       severity,
       clusterType,
       bbox,
-      const DeepCollectionEquality().hash(_polygon));
+      const DeepCollectionEquality().hash(_polygon),
+      geometry);
 
   @JsonKey(ignore: true)
   @override
@@ -808,12 +893,15 @@ abstract class _ClusterHotspot implements ClusterHotspot {
       required final List<int> incidentObjectIds,
       required final double centerLat,
       required final double centerLng,
-      required final double radiusM,
+      required final double displayRadiusM,
+      required final double impactRadiusM,
+      required final double avgRadiusM,
       required final double density,
       required final String severity,
       required final String clusterType,
       required final ClusterBBox bbox,
-      required final List<List<double>> polygon}) = _$ClusterHotspotImpl;
+      required final List<List<double>> polygon,
+      required final ClusterGeometry geometry}) = _$ClusterHotspotImpl;
 
   @override
   int get clusterId;
@@ -826,7 +914,17 @@ abstract class _ClusterHotspot implements ClusterHotspot {
   @override
   double get centerLng;
   @override
-  double get radiusM;
+
+  /// Circle visualization
+  double get displayRadiusM;
+  @override
+
+  /// Reference only (không dùng routing)
+  double get impactRadiusM;
+  @override
+
+  /// Analytics
+  double get avgRadiusM;
   @override
   double get density;
   @override
@@ -837,8 +935,12 @@ abstract class _ClusterHotspot implements ClusterHotspot {
   ClusterBBox get bbox;
   @override
 
-  /// Polygon đơn giản
+  /// Hiển thị polygon khi user tap hotspot
   List<List<double>> get polygon;
+  @override
+
+  /// ArcGIS geometry
+  ClusterGeometry get geometry;
   @override
   @JsonKey(ignore: true)
   _$$ClusterHotspotImplCopyWith<_$ClusterHotspotImpl> get copyWith =>
@@ -1015,5 +1117,150 @@ abstract class _ClusterBBox implements ClusterBBox {
   @override
   @JsonKey(ignore: true)
   _$$ClusterBBoxImplCopyWith<_$ClusterBBoxImpl> get copyWith =>
+      throw _privateConstructorUsedError;
+}
+
+/// @nodoc
+mixin _$ClusterGeometry {
+  List<List<List<double>>> get rings => throw _privateConstructorUsedError;
+  int get wkid => throw _privateConstructorUsedError;
+
+  @JsonKey(ignore: true)
+  $ClusterGeometryCopyWith<ClusterGeometry> get copyWith =>
+      throw _privateConstructorUsedError;
+}
+
+/// @nodoc
+abstract class $ClusterGeometryCopyWith<$Res> {
+  factory $ClusterGeometryCopyWith(
+          ClusterGeometry value, $Res Function(ClusterGeometry) then) =
+      _$ClusterGeometryCopyWithImpl<$Res, ClusterGeometry>;
+  @useResult
+  $Res call({List<List<List<double>>> rings, int wkid});
+}
+
+/// @nodoc
+class _$ClusterGeometryCopyWithImpl<$Res, $Val extends ClusterGeometry>
+    implements $ClusterGeometryCopyWith<$Res> {
+  _$ClusterGeometryCopyWithImpl(this._value, this._then);
+
+  // ignore: unused_field
+  final $Val _value;
+  // ignore: unused_field
+  final $Res Function($Val) _then;
+
+  @pragma('vm:prefer-inline')
+  @override
+  $Res call({
+    Object? rings = null,
+    Object? wkid = null,
+  }) {
+    return _then(_value.copyWith(
+      rings: null == rings
+          ? _value.rings
+          : rings // ignore: cast_nullable_to_non_nullable
+              as List<List<List<double>>>,
+      wkid: null == wkid
+          ? _value.wkid
+          : wkid // ignore: cast_nullable_to_non_nullable
+              as int,
+    ) as $Val);
+  }
+}
+
+/// @nodoc
+abstract class _$$ClusterGeometryImplCopyWith<$Res>
+    implements $ClusterGeometryCopyWith<$Res> {
+  factory _$$ClusterGeometryImplCopyWith(_$ClusterGeometryImpl value,
+          $Res Function(_$ClusterGeometryImpl) then) =
+      __$$ClusterGeometryImplCopyWithImpl<$Res>;
+  @override
+  @useResult
+  $Res call({List<List<List<double>>> rings, int wkid});
+}
+
+/// @nodoc
+class __$$ClusterGeometryImplCopyWithImpl<$Res>
+    extends _$ClusterGeometryCopyWithImpl<$Res, _$ClusterGeometryImpl>
+    implements _$$ClusterGeometryImplCopyWith<$Res> {
+  __$$ClusterGeometryImplCopyWithImpl(
+      _$ClusterGeometryImpl _value, $Res Function(_$ClusterGeometryImpl) _then)
+      : super(_value, _then);
+
+  @pragma('vm:prefer-inline')
+  @override
+  $Res call({
+    Object? rings = null,
+    Object? wkid = null,
+  }) {
+    return _then(_$ClusterGeometryImpl(
+      rings: null == rings
+          ? _value._rings
+          : rings // ignore: cast_nullable_to_non_nullable
+              as List<List<List<double>>>,
+      wkid: null == wkid
+          ? _value.wkid
+          : wkid // ignore: cast_nullable_to_non_nullable
+              as int,
+    ));
+  }
+}
+
+/// @nodoc
+
+class _$ClusterGeometryImpl implements _ClusterGeometry {
+  const _$ClusterGeometryImpl(
+      {required final List<List<List<double>>> rings, required this.wkid})
+      : _rings = rings;
+
+  final List<List<List<double>>> _rings;
+  @override
+  List<List<List<double>>> get rings {
+    if (_rings is EqualUnmodifiableListView) return _rings;
+    // ignore: implicit_dynamic_type
+    return EqualUnmodifiableListView(_rings);
+  }
+
+  @override
+  final int wkid;
+
+  @override
+  String toString() {
+    return 'ClusterGeometry(rings: $rings, wkid: $wkid)';
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType &&
+            other is _$ClusterGeometryImpl &&
+            const DeepCollectionEquality().equals(other._rings, _rings) &&
+            (identical(other.wkid, wkid) || other.wkid == wkid));
+  }
+
+  @override
+  int get hashCode => Object.hash(
+      runtimeType, const DeepCollectionEquality().hash(_rings), wkid);
+
+  @JsonKey(ignore: true)
+  @override
+  @pragma('vm:prefer-inline')
+  _$$ClusterGeometryImplCopyWith<_$ClusterGeometryImpl> get copyWith =>
+      __$$ClusterGeometryImplCopyWithImpl<_$ClusterGeometryImpl>(
+          this, _$identity);
+}
+
+abstract class _ClusterGeometry implements ClusterGeometry {
+  const factory _ClusterGeometry(
+      {required final List<List<List<double>>> rings,
+      required final int wkid}) = _$ClusterGeometryImpl;
+
+  @override
+  List<List<List<double>>> get rings;
+  @override
+  int get wkid;
+  @override
+  @JsonKey(ignore: true)
+  _$$ClusterGeometryImplCopyWith<_$ClusterGeometryImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }

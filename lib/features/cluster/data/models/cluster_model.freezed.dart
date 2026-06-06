@@ -316,6 +316,8 @@ ClusteringInfoModel _$ClusteringInfoModelFromJson(Map<String, dynamic> json) {
 
 /// @nodoc
 mixin _$ClusteringInfoModel {
+  String get algorithm => throw _privateConstructorUsedError;
+  double get eps => throw _privateConstructorUsedError;
   @JsonKey(name: 'n_clusters')
   int get nClusters => throw _privateConstructorUsedError;
   @JsonKey(name: 'n_noise')
@@ -336,7 +338,9 @@ abstract class $ClusteringInfoModelCopyWith<$Res> {
       _$ClusteringInfoModelCopyWithImpl<$Res, ClusteringInfoModel>;
   @useResult
   $Res call(
-      {@JsonKey(name: 'n_clusters') int nClusters,
+      {String algorithm,
+      double eps,
+      @JsonKey(name: 'n_clusters') int nClusters,
       @JsonKey(name: 'n_noise') int nNoise,
       @JsonKey(name: 'n_core_points') int nCorePoints});
 }
@@ -354,11 +358,21 @@ class _$ClusteringInfoModelCopyWithImpl<$Res, $Val extends ClusteringInfoModel>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
+    Object? algorithm = null,
+    Object? eps = null,
     Object? nClusters = null,
     Object? nNoise = null,
     Object? nCorePoints = null,
   }) {
     return _then(_value.copyWith(
+      algorithm: null == algorithm
+          ? _value.algorithm
+          : algorithm // ignore: cast_nullable_to_non_nullable
+              as String,
+      eps: null == eps
+          ? _value.eps
+          : eps // ignore: cast_nullable_to_non_nullable
+              as double,
       nClusters: null == nClusters
           ? _value.nClusters
           : nClusters // ignore: cast_nullable_to_non_nullable
@@ -384,7 +398,9 @@ abstract class _$$ClusteringInfoModelImplCopyWith<$Res>
   @override
   @useResult
   $Res call(
-      {@JsonKey(name: 'n_clusters') int nClusters,
+      {String algorithm,
+      double eps,
+      @JsonKey(name: 'n_clusters') int nClusters,
       @JsonKey(name: 'n_noise') int nNoise,
       @JsonKey(name: 'n_core_points') int nCorePoints});
 }
@@ -400,11 +416,21 @@ class __$$ClusteringInfoModelImplCopyWithImpl<$Res>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
+    Object? algorithm = null,
+    Object? eps = null,
     Object? nClusters = null,
     Object? nNoise = null,
     Object? nCorePoints = null,
   }) {
     return _then(_$ClusteringInfoModelImpl(
+      algorithm: null == algorithm
+          ? _value.algorithm
+          : algorithm // ignore: cast_nullable_to_non_nullable
+              as String,
+      eps: null == eps
+          ? _value.eps
+          : eps // ignore: cast_nullable_to_non_nullable
+              as double,
       nClusters: null == nClusters
           ? _value.nClusters
           : nClusters // ignore: cast_nullable_to_non_nullable
@@ -425,13 +451,19 @@ class __$$ClusteringInfoModelImplCopyWithImpl<$Res>
 @JsonSerializable()
 class _$ClusteringInfoModelImpl implements _ClusteringInfoModel {
   const _$ClusteringInfoModelImpl(
-      {@JsonKey(name: 'n_clusters') required this.nClusters,
+      {required this.algorithm,
+      required this.eps,
+      @JsonKey(name: 'n_clusters') required this.nClusters,
       @JsonKey(name: 'n_noise') required this.nNoise,
       @JsonKey(name: 'n_core_points') required this.nCorePoints});
 
   factory _$ClusteringInfoModelImpl.fromJson(Map<String, dynamic> json) =>
       _$$ClusteringInfoModelImplFromJson(json);
 
+  @override
+  final String algorithm;
+  @override
+  final double eps;
   @override
   @JsonKey(name: 'n_clusters')
   final int nClusters;
@@ -444,7 +476,7 @@ class _$ClusteringInfoModelImpl implements _ClusteringInfoModel {
 
   @override
   String toString() {
-    return 'ClusteringInfoModel(nClusters: $nClusters, nNoise: $nNoise, nCorePoints: $nCorePoints)';
+    return 'ClusteringInfoModel(algorithm: $algorithm, eps: $eps, nClusters: $nClusters, nNoise: $nNoise, nCorePoints: $nCorePoints)';
   }
 
   @override
@@ -452,6 +484,9 @@ class _$ClusteringInfoModelImpl implements _ClusteringInfoModel {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _$ClusteringInfoModelImpl &&
+            (identical(other.algorithm, algorithm) ||
+                other.algorithm == algorithm) &&
+            (identical(other.eps, eps) || other.eps == eps) &&
             (identical(other.nClusters, nClusters) ||
                 other.nClusters == nClusters) &&
             (identical(other.nNoise, nNoise) || other.nNoise == nNoise) &&
@@ -461,7 +496,8 @@ class _$ClusteringInfoModelImpl implements _ClusteringInfoModel {
 
   @JsonKey(ignore: true)
   @override
-  int get hashCode => Object.hash(runtimeType, nClusters, nNoise, nCorePoints);
+  int get hashCode =>
+      Object.hash(runtimeType, algorithm, eps, nClusters, nNoise, nCorePoints);
 
   @JsonKey(ignore: true)
   @override
@@ -480,7 +516,9 @@ class _$ClusteringInfoModelImpl implements _ClusteringInfoModel {
 
 abstract class _ClusteringInfoModel implements ClusteringInfoModel {
   const factory _ClusteringInfoModel(
-          {@JsonKey(name: 'n_clusters') required final int nClusters,
+          {required final String algorithm,
+          required final double eps,
+          @JsonKey(name: 'n_clusters') required final int nClusters,
           @JsonKey(name: 'n_noise') required final int nNoise,
           @JsonKey(name: 'n_core_points') required final int nCorePoints}) =
       _$ClusteringInfoModelImpl;
@@ -488,6 +526,10 @@ abstract class _ClusteringInfoModel implements ClusteringInfoModel {
   factory _ClusteringInfoModel.fromJson(Map<String, dynamic> json) =
       _$ClusteringInfoModelImpl.fromJson;
 
+  @override
+  String get algorithm;
+  @override
+  double get eps;
   @override
   @JsonKey(name: 'n_clusters')
   int get nClusters;
@@ -1107,8 +1149,13 @@ mixin _$ClusterHotspotModel {
   @JsonKey(name: 'incident_object_ids')
   List<int> get incidentObjectIds => throw _privateConstructorUsedError;
   ClusterCentroidModel get centroid => throw _privateConstructorUsedError;
-  @JsonKey(name: 'radius_m')
-  double get radiusM => throw _privateConstructorUsedError;
+  @JsonKey(name: 'display_radius_m')
+  double get displayRadiusM => throw _privateConstructorUsedError;
+  @JsonKey(name: 'impact_radius_m')
+  double get impactRadiusM => throw _privateConstructorUsedError;
+  @JsonKey(name: 'avg_radius_m')
+  double get avgRadiusM => throw _privateConstructorUsedError;
+  ClusterGeometryModel get geometry => throw _privateConstructorUsedError;
   double get density => throw _privateConstructorUsedError;
   String get severity => throw _privateConstructorUsedError;
   @JsonKey(name: 'cluster_type')
@@ -1133,7 +1180,10 @@ abstract class $ClusterHotspotModelCopyWith<$Res> {
       @JsonKey(name: 'incident_count') int incidentCount,
       @JsonKey(name: 'incident_object_ids') List<int> incidentObjectIds,
       ClusterCentroidModel centroid,
-      @JsonKey(name: 'radius_m') double radiusM,
+      @JsonKey(name: 'display_radius_m') double displayRadiusM,
+      @JsonKey(name: 'impact_radius_m') double impactRadiusM,
+      @JsonKey(name: 'avg_radius_m') double avgRadiusM,
+      ClusterGeometryModel geometry,
       double density,
       String severity,
       @JsonKey(name: 'cluster_type') String clusterType,
@@ -1141,6 +1191,7 @@ abstract class $ClusterHotspotModelCopyWith<$Res> {
       List<List<double>> polygon});
 
   $ClusterCentroidModelCopyWith<$Res> get centroid;
+  $ClusterGeometryModelCopyWith<$Res> get geometry;
   $ClusterBBoxModelCopyWith<$Res> get bbox;
 }
 
@@ -1161,7 +1212,10 @@ class _$ClusterHotspotModelCopyWithImpl<$Res, $Val extends ClusterHotspotModel>
     Object? incidentCount = null,
     Object? incidentObjectIds = null,
     Object? centroid = null,
-    Object? radiusM = null,
+    Object? displayRadiusM = null,
+    Object? impactRadiusM = null,
+    Object? avgRadiusM = null,
+    Object? geometry = null,
     Object? density = null,
     Object? severity = null,
     Object? clusterType = null,
@@ -1185,10 +1239,22 @@ class _$ClusterHotspotModelCopyWithImpl<$Res, $Val extends ClusterHotspotModel>
           ? _value.centroid
           : centroid // ignore: cast_nullable_to_non_nullable
               as ClusterCentroidModel,
-      radiusM: null == radiusM
-          ? _value.radiusM
-          : radiusM // ignore: cast_nullable_to_non_nullable
+      displayRadiusM: null == displayRadiusM
+          ? _value.displayRadiusM
+          : displayRadiusM // ignore: cast_nullable_to_non_nullable
               as double,
+      impactRadiusM: null == impactRadiusM
+          ? _value.impactRadiusM
+          : impactRadiusM // ignore: cast_nullable_to_non_nullable
+              as double,
+      avgRadiusM: null == avgRadiusM
+          ? _value.avgRadiusM
+          : avgRadiusM // ignore: cast_nullable_to_non_nullable
+              as double,
+      geometry: null == geometry
+          ? _value.geometry
+          : geometry // ignore: cast_nullable_to_non_nullable
+              as ClusterGeometryModel,
       density: null == density
           ? _value.density
           : density // ignore: cast_nullable_to_non_nullable
@@ -1222,6 +1288,14 @@ class _$ClusterHotspotModelCopyWithImpl<$Res, $Val extends ClusterHotspotModel>
 
   @override
   @pragma('vm:prefer-inline')
+  $ClusterGeometryModelCopyWith<$Res> get geometry {
+    return $ClusterGeometryModelCopyWith<$Res>(_value.geometry, (value) {
+      return _then(_value.copyWith(geometry: value) as $Val);
+    });
+  }
+
+  @override
+  @pragma('vm:prefer-inline')
   $ClusterBBoxModelCopyWith<$Res> get bbox {
     return $ClusterBBoxModelCopyWith<$Res>(_value.bbox, (value) {
       return _then(_value.copyWith(bbox: value) as $Val);
@@ -1242,7 +1316,10 @@ abstract class _$$ClusterHotspotModelImplCopyWith<$Res>
       @JsonKey(name: 'incident_count') int incidentCount,
       @JsonKey(name: 'incident_object_ids') List<int> incidentObjectIds,
       ClusterCentroidModel centroid,
-      @JsonKey(name: 'radius_m') double radiusM,
+      @JsonKey(name: 'display_radius_m') double displayRadiusM,
+      @JsonKey(name: 'impact_radius_m') double impactRadiusM,
+      @JsonKey(name: 'avg_radius_m') double avgRadiusM,
+      ClusterGeometryModel geometry,
       double density,
       String severity,
       @JsonKey(name: 'cluster_type') String clusterType,
@@ -1251,6 +1328,8 @@ abstract class _$$ClusterHotspotModelImplCopyWith<$Res>
 
   @override
   $ClusterCentroidModelCopyWith<$Res> get centroid;
+  @override
+  $ClusterGeometryModelCopyWith<$Res> get geometry;
   @override
   $ClusterBBoxModelCopyWith<$Res> get bbox;
 }
@@ -1270,7 +1349,10 @@ class __$$ClusterHotspotModelImplCopyWithImpl<$Res>
     Object? incidentCount = null,
     Object? incidentObjectIds = null,
     Object? centroid = null,
-    Object? radiusM = null,
+    Object? displayRadiusM = null,
+    Object? impactRadiusM = null,
+    Object? avgRadiusM = null,
+    Object? geometry = null,
     Object? density = null,
     Object? severity = null,
     Object? clusterType = null,
@@ -1294,10 +1376,22 @@ class __$$ClusterHotspotModelImplCopyWithImpl<$Res>
           ? _value.centroid
           : centroid // ignore: cast_nullable_to_non_nullable
               as ClusterCentroidModel,
-      radiusM: null == radiusM
-          ? _value.radiusM
-          : radiusM // ignore: cast_nullable_to_non_nullable
+      displayRadiusM: null == displayRadiusM
+          ? _value.displayRadiusM
+          : displayRadiusM // ignore: cast_nullable_to_non_nullable
               as double,
+      impactRadiusM: null == impactRadiusM
+          ? _value.impactRadiusM
+          : impactRadiusM // ignore: cast_nullable_to_non_nullable
+              as double,
+      avgRadiusM: null == avgRadiusM
+          ? _value.avgRadiusM
+          : avgRadiusM // ignore: cast_nullable_to_non_nullable
+              as double,
+      geometry: null == geometry
+          ? _value.geometry
+          : geometry // ignore: cast_nullable_to_non_nullable
+              as ClusterGeometryModel,
       density: null == density
           ? _value.density
           : density // ignore: cast_nullable_to_non_nullable
@@ -1331,7 +1425,10 @@ class _$ClusterHotspotModelImpl extends _ClusterHotspotModel {
       @JsonKey(name: 'incident_object_ids')
       required final List<int> incidentObjectIds,
       required this.centroid,
-      @JsonKey(name: 'radius_m') required this.radiusM,
+      @JsonKey(name: 'display_radius_m') required this.displayRadiusM,
+      @JsonKey(name: 'impact_radius_m') required this.impactRadiusM,
+      @JsonKey(name: 'avg_radius_m') required this.avgRadiusM,
+      required this.geometry,
       required this.density,
       required this.severity,
       @JsonKey(name: 'cluster_type') required this.clusterType,
@@ -1363,8 +1460,16 @@ class _$ClusterHotspotModelImpl extends _ClusterHotspotModel {
   @override
   final ClusterCentroidModel centroid;
   @override
-  @JsonKey(name: 'radius_m')
-  final double radiusM;
+  @JsonKey(name: 'display_radius_m')
+  final double displayRadiusM;
+  @override
+  @JsonKey(name: 'impact_radius_m')
+  final double impactRadiusM;
+  @override
+  @JsonKey(name: 'avg_radius_m')
+  final double avgRadiusM;
+  @override
+  final ClusterGeometryModel geometry;
   @override
   final double density;
   @override
@@ -1384,7 +1489,7 @@ class _$ClusterHotspotModelImpl extends _ClusterHotspotModel {
 
   @override
   String toString() {
-    return 'ClusterHotspotModel(clusterId: $clusterId, incidentCount: $incidentCount, incidentObjectIds: $incidentObjectIds, centroid: $centroid, radiusM: $radiusM, density: $density, severity: $severity, clusterType: $clusterType, bbox: $bbox, polygon: $polygon)';
+    return 'ClusterHotspotModel(clusterId: $clusterId, incidentCount: $incidentCount, incidentObjectIds: $incidentObjectIds, centroid: $centroid, displayRadiusM: $displayRadiusM, impactRadiusM: $impactRadiusM, avgRadiusM: $avgRadiusM, geometry: $geometry, density: $density, severity: $severity, clusterType: $clusterType, bbox: $bbox, polygon: $polygon)';
   }
 
   @override
@@ -1400,7 +1505,14 @@ class _$ClusterHotspotModelImpl extends _ClusterHotspotModel {
                 .equals(other._incidentObjectIds, _incidentObjectIds) &&
             (identical(other.centroid, centroid) ||
                 other.centroid == centroid) &&
-            (identical(other.radiusM, radiusM) || other.radiusM == radiusM) &&
+            (identical(other.displayRadiusM, displayRadiusM) ||
+                other.displayRadiusM == displayRadiusM) &&
+            (identical(other.impactRadiusM, impactRadiusM) ||
+                other.impactRadiusM == impactRadiusM) &&
+            (identical(other.avgRadiusM, avgRadiusM) ||
+                other.avgRadiusM == avgRadiusM) &&
+            (identical(other.geometry, geometry) ||
+                other.geometry == geometry) &&
             (identical(other.density, density) || other.density == density) &&
             (identical(other.severity, severity) ||
                 other.severity == severity) &&
@@ -1418,7 +1530,10 @@ class _$ClusterHotspotModelImpl extends _ClusterHotspotModel {
       incidentCount,
       const DeepCollectionEquality().hash(_incidentObjectIds),
       centroid,
-      radiusM,
+      displayRadiusM,
+      impactRadiusM,
+      avgRadiusM,
+      geometry,
       density,
       severity,
       clusterType,
@@ -1447,7 +1562,10 @@ abstract class _ClusterHotspotModel extends ClusterHotspotModel {
       @JsonKey(name: 'incident_object_ids')
       required final List<int> incidentObjectIds,
       required final ClusterCentroidModel centroid,
-      @JsonKey(name: 'radius_m') required final double radiusM,
+      @JsonKey(name: 'display_radius_m') required final double displayRadiusM,
+      @JsonKey(name: 'impact_radius_m') required final double impactRadiusM,
+      @JsonKey(name: 'avg_radius_m') required final double avgRadiusM,
+      required final ClusterGeometryModel geometry,
       required final double density,
       required final String severity,
       @JsonKey(name: 'cluster_type') required final String clusterType,
@@ -1470,8 +1588,16 @@ abstract class _ClusterHotspotModel extends ClusterHotspotModel {
   @override
   ClusterCentroidModel get centroid;
   @override
-  @JsonKey(name: 'radius_m')
-  double get radiusM;
+  @JsonKey(name: 'display_radius_m')
+  double get displayRadiusM;
+  @override
+  @JsonKey(name: 'impact_radius_m')
+  double get impactRadiusM;
+  @override
+  @JsonKey(name: 'avg_radius_m')
+  double get avgRadiusM;
+  @override
+  ClusterGeometryModel get geometry;
   @override
   double get density;
   @override
@@ -1487,4 +1613,334 @@ abstract class _ClusterHotspotModel extends ClusterHotspotModel {
   @JsonKey(ignore: true)
   _$$ClusterHotspotModelImplCopyWith<_$ClusterHotspotModelImpl> get copyWith =>
       throw _privateConstructorUsedError;
+}
+
+ClusterGeometryModel _$ClusterGeometryModelFromJson(Map<String, dynamic> json) {
+  return _ClusterGeometryModel.fromJson(json);
+}
+
+/// @nodoc
+mixin _$ClusterGeometryModel {
+  List<List<List<double>>> get rings => throw _privateConstructorUsedError;
+  SpatialReferenceModel get spatialReference =>
+      throw _privateConstructorUsedError;
+
+  Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
+  @JsonKey(ignore: true)
+  $ClusterGeometryModelCopyWith<ClusterGeometryModel> get copyWith =>
+      throw _privateConstructorUsedError;
+}
+
+/// @nodoc
+abstract class $ClusterGeometryModelCopyWith<$Res> {
+  factory $ClusterGeometryModelCopyWith(ClusterGeometryModel value,
+          $Res Function(ClusterGeometryModel) then) =
+      _$ClusterGeometryModelCopyWithImpl<$Res, ClusterGeometryModel>;
+  @useResult
+  $Res call(
+      {List<List<List<double>>> rings, SpatialReferenceModel spatialReference});
+
+  $SpatialReferenceModelCopyWith<$Res> get spatialReference;
+}
+
+/// @nodoc
+class _$ClusterGeometryModelCopyWithImpl<$Res,
+        $Val extends ClusterGeometryModel>
+    implements $ClusterGeometryModelCopyWith<$Res> {
+  _$ClusterGeometryModelCopyWithImpl(this._value, this._then);
+
+  // ignore: unused_field
+  final $Val _value;
+  // ignore: unused_field
+  final $Res Function($Val) _then;
+
+  @pragma('vm:prefer-inline')
+  @override
+  $Res call({
+    Object? rings = null,
+    Object? spatialReference = null,
+  }) {
+    return _then(_value.copyWith(
+      rings: null == rings
+          ? _value.rings
+          : rings // ignore: cast_nullable_to_non_nullable
+              as List<List<List<double>>>,
+      spatialReference: null == spatialReference
+          ? _value.spatialReference
+          : spatialReference // ignore: cast_nullable_to_non_nullable
+              as SpatialReferenceModel,
+    ) as $Val);
+  }
+
+  @override
+  @pragma('vm:prefer-inline')
+  $SpatialReferenceModelCopyWith<$Res> get spatialReference {
+    return $SpatialReferenceModelCopyWith<$Res>(_value.spatialReference,
+        (value) {
+      return _then(_value.copyWith(spatialReference: value) as $Val);
+    });
+  }
+}
+
+/// @nodoc
+abstract class _$$ClusterGeometryModelImplCopyWith<$Res>
+    implements $ClusterGeometryModelCopyWith<$Res> {
+  factory _$$ClusterGeometryModelImplCopyWith(_$ClusterGeometryModelImpl value,
+          $Res Function(_$ClusterGeometryModelImpl) then) =
+      __$$ClusterGeometryModelImplCopyWithImpl<$Res>;
+  @override
+  @useResult
+  $Res call(
+      {List<List<List<double>>> rings, SpatialReferenceModel spatialReference});
+
+  @override
+  $SpatialReferenceModelCopyWith<$Res> get spatialReference;
+}
+
+/// @nodoc
+class __$$ClusterGeometryModelImplCopyWithImpl<$Res>
+    extends _$ClusterGeometryModelCopyWithImpl<$Res, _$ClusterGeometryModelImpl>
+    implements _$$ClusterGeometryModelImplCopyWith<$Res> {
+  __$$ClusterGeometryModelImplCopyWithImpl(_$ClusterGeometryModelImpl _value,
+      $Res Function(_$ClusterGeometryModelImpl) _then)
+      : super(_value, _then);
+
+  @pragma('vm:prefer-inline')
+  @override
+  $Res call({
+    Object? rings = null,
+    Object? spatialReference = null,
+  }) {
+    return _then(_$ClusterGeometryModelImpl(
+      rings: null == rings
+          ? _value._rings
+          : rings // ignore: cast_nullable_to_non_nullable
+              as List<List<List<double>>>,
+      spatialReference: null == spatialReference
+          ? _value.spatialReference
+          : spatialReference // ignore: cast_nullable_to_non_nullable
+              as SpatialReferenceModel,
+    ));
+  }
+}
+
+/// @nodoc
+@JsonSerializable()
+class _$ClusterGeometryModelImpl extends _ClusterGeometryModel {
+  const _$ClusterGeometryModelImpl(
+      {required final List<List<List<double>>> rings,
+      required this.spatialReference})
+      : _rings = rings,
+        super._();
+
+  factory _$ClusterGeometryModelImpl.fromJson(Map<String, dynamic> json) =>
+      _$$ClusterGeometryModelImplFromJson(json);
+
+  final List<List<List<double>>> _rings;
+  @override
+  List<List<List<double>>> get rings {
+    if (_rings is EqualUnmodifiableListView) return _rings;
+    // ignore: implicit_dynamic_type
+    return EqualUnmodifiableListView(_rings);
+  }
+
+  @override
+  final SpatialReferenceModel spatialReference;
+
+  @override
+  String toString() {
+    return 'ClusterGeometryModel(rings: $rings, spatialReference: $spatialReference)';
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType &&
+            other is _$ClusterGeometryModelImpl &&
+            const DeepCollectionEquality().equals(other._rings, _rings) &&
+            (identical(other.spatialReference, spatialReference) ||
+                other.spatialReference == spatialReference));
+  }
+
+  @JsonKey(ignore: true)
+  @override
+  int get hashCode => Object.hash(runtimeType,
+      const DeepCollectionEquality().hash(_rings), spatialReference);
+
+  @JsonKey(ignore: true)
+  @override
+  @pragma('vm:prefer-inline')
+  _$$ClusterGeometryModelImplCopyWith<_$ClusterGeometryModelImpl>
+      get copyWith =>
+          __$$ClusterGeometryModelImplCopyWithImpl<_$ClusterGeometryModelImpl>(
+              this, _$identity);
+
+  @override
+  Map<String, dynamic> toJson() {
+    return _$$ClusterGeometryModelImplToJson(
+      this,
+    );
+  }
+}
+
+abstract class _ClusterGeometryModel extends ClusterGeometryModel {
+  const factory _ClusterGeometryModel(
+          {required final List<List<List<double>>> rings,
+          required final SpatialReferenceModel spatialReference}) =
+      _$ClusterGeometryModelImpl;
+  const _ClusterGeometryModel._() : super._();
+
+  factory _ClusterGeometryModel.fromJson(Map<String, dynamic> json) =
+      _$ClusterGeometryModelImpl.fromJson;
+
+  @override
+  List<List<List<double>>> get rings;
+  @override
+  SpatialReferenceModel get spatialReference;
+  @override
+  @JsonKey(ignore: true)
+  _$$ClusterGeometryModelImplCopyWith<_$ClusterGeometryModelImpl>
+      get copyWith => throw _privateConstructorUsedError;
+}
+
+SpatialReferenceModel _$SpatialReferenceModelFromJson(
+    Map<String, dynamic> json) {
+  return _SpatialReferenceModel.fromJson(json);
+}
+
+/// @nodoc
+mixin _$SpatialReferenceModel {
+  int get wkid => throw _privateConstructorUsedError;
+
+  Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
+  @JsonKey(ignore: true)
+  $SpatialReferenceModelCopyWith<SpatialReferenceModel> get copyWith =>
+      throw _privateConstructorUsedError;
+}
+
+/// @nodoc
+abstract class $SpatialReferenceModelCopyWith<$Res> {
+  factory $SpatialReferenceModelCopyWith(SpatialReferenceModel value,
+          $Res Function(SpatialReferenceModel) then) =
+      _$SpatialReferenceModelCopyWithImpl<$Res, SpatialReferenceModel>;
+  @useResult
+  $Res call({int wkid});
+}
+
+/// @nodoc
+class _$SpatialReferenceModelCopyWithImpl<$Res,
+        $Val extends SpatialReferenceModel>
+    implements $SpatialReferenceModelCopyWith<$Res> {
+  _$SpatialReferenceModelCopyWithImpl(this._value, this._then);
+
+  // ignore: unused_field
+  final $Val _value;
+  // ignore: unused_field
+  final $Res Function($Val) _then;
+
+  @pragma('vm:prefer-inline')
+  @override
+  $Res call({
+    Object? wkid = null,
+  }) {
+    return _then(_value.copyWith(
+      wkid: null == wkid
+          ? _value.wkid
+          : wkid // ignore: cast_nullable_to_non_nullable
+              as int,
+    ) as $Val);
+  }
+}
+
+/// @nodoc
+abstract class _$$SpatialReferenceModelImplCopyWith<$Res>
+    implements $SpatialReferenceModelCopyWith<$Res> {
+  factory _$$SpatialReferenceModelImplCopyWith(
+          _$SpatialReferenceModelImpl value,
+          $Res Function(_$SpatialReferenceModelImpl) then) =
+      __$$SpatialReferenceModelImplCopyWithImpl<$Res>;
+  @override
+  @useResult
+  $Res call({int wkid});
+}
+
+/// @nodoc
+class __$$SpatialReferenceModelImplCopyWithImpl<$Res>
+    extends _$SpatialReferenceModelCopyWithImpl<$Res,
+        _$SpatialReferenceModelImpl>
+    implements _$$SpatialReferenceModelImplCopyWith<$Res> {
+  __$$SpatialReferenceModelImplCopyWithImpl(_$SpatialReferenceModelImpl _value,
+      $Res Function(_$SpatialReferenceModelImpl) _then)
+      : super(_value, _then);
+
+  @pragma('vm:prefer-inline')
+  @override
+  $Res call({
+    Object? wkid = null,
+  }) {
+    return _then(_$SpatialReferenceModelImpl(
+      wkid: null == wkid
+          ? _value.wkid
+          : wkid // ignore: cast_nullable_to_non_nullable
+              as int,
+    ));
+  }
+}
+
+/// @nodoc
+@JsonSerializable()
+class _$SpatialReferenceModelImpl implements _SpatialReferenceModel {
+  const _$SpatialReferenceModelImpl({required this.wkid});
+
+  factory _$SpatialReferenceModelImpl.fromJson(Map<String, dynamic> json) =>
+      _$$SpatialReferenceModelImplFromJson(json);
+
+  @override
+  final int wkid;
+
+  @override
+  String toString() {
+    return 'SpatialReferenceModel(wkid: $wkid)';
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType &&
+            other is _$SpatialReferenceModelImpl &&
+            (identical(other.wkid, wkid) || other.wkid == wkid));
+  }
+
+  @JsonKey(ignore: true)
+  @override
+  int get hashCode => Object.hash(runtimeType, wkid);
+
+  @JsonKey(ignore: true)
+  @override
+  @pragma('vm:prefer-inline')
+  _$$SpatialReferenceModelImplCopyWith<_$SpatialReferenceModelImpl>
+      get copyWith => __$$SpatialReferenceModelImplCopyWithImpl<
+          _$SpatialReferenceModelImpl>(this, _$identity);
+
+  @override
+  Map<String, dynamic> toJson() {
+    return _$$SpatialReferenceModelImplToJson(
+      this,
+    );
+  }
+}
+
+abstract class _SpatialReferenceModel implements SpatialReferenceModel {
+  const factory _SpatialReferenceModel({required final int wkid}) =
+      _$SpatialReferenceModelImpl;
+
+  factory _SpatialReferenceModel.fromJson(Map<String, dynamic> json) =
+      _$SpatialReferenceModelImpl.fromJson;
+
+  @override
+  int get wkid;
+  @override
+  @JsonKey(ignore: true)
+  _$$SpatialReferenceModelImplCopyWith<_$SpatialReferenceModelImpl>
+      get copyWith => throw _privateConstructorUsedError;
 }

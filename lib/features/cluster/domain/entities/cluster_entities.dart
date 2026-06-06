@@ -35,16 +35,30 @@ class ClusterHotspot with _$ClusterHotspot {
     required int clusterId,
     required int incidentCount,
     required List<int> incidentObjectIds,
+
     required double centerLat,
     required double centerLng,
-    required double radiusM,
+
+    /// Circle visualization
+    required double displayRadiusM,
+
+    /// Reference only (không dùng routing)
+    required double impactRadiusM,
+
+    /// Analytics
+    required double avgRadiusM,
+
     required double density,
     required String severity,
     required String clusterType,
+
     required ClusterBBox bbox,
 
-    /// Polygon đơn giản
+    /// Hiển thị polygon khi user tap hotspot
     required List<List<double>> polygon,
+
+    /// ArcGIS geometry
+    required ClusterGeometry geometry,
   }) = _ClusterHotspot;
 }
 
@@ -56,4 +70,12 @@ class ClusterBBox with _$ClusterBBox {
     required double xmax,
     required double ymax,
   }) = _ClusterBBox;
+}
+
+@freezed
+class ClusterGeometry with _$ClusterGeometry {
+  const factory ClusterGeometry({
+    required List<List<List<double>>> rings,
+    required int wkid,
+  }) = _ClusterGeometry;
 }

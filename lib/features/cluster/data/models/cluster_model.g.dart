@@ -36,6 +36,8 @@ Map<String, dynamic> _$$ClusterResponseModelImplToJson(
 _$ClusteringInfoModelImpl _$$ClusteringInfoModelImplFromJson(
         Map<String, dynamic> json) =>
     _$ClusteringInfoModelImpl(
+      algorithm: json['algorithm'] as String,
+      eps: (json['eps'] as num).toDouble(),
       nClusters: (json['n_clusters'] as num).toInt(),
       nNoise: (json['n_noise'] as num).toInt(),
       nCorePoints: (json['n_core_points'] as num).toInt(),
@@ -44,6 +46,8 @@ _$ClusteringInfoModelImpl _$$ClusteringInfoModelImplFromJson(
 Map<String, dynamic> _$$ClusteringInfoModelImplToJson(
         _$ClusteringInfoModelImpl instance) =>
     <String, dynamic>{
+      'algorithm': instance.algorithm,
+      'eps': instance.eps,
       'n_clusters': instance.nClusters,
       'n_noise': instance.nNoise,
       'n_core_points': instance.nCorePoints,
@@ -111,7 +115,11 @@ _$ClusterHotspotModelImpl _$$ClusterHotspotModelImplFromJson(
           .toList(),
       centroid: ClusterCentroidModel.fromJson(
           json['centroid'] as Map<String, dynamic>),
-      radiusM: (json['radius_m'] as num).toDouble(),
+      displayRadiusM: (json['display_radius_m'] as num).toDouble(),
+      impactRadiusM: (json['impact_radius_m'] as num).toDouble(),
+      avgRadiusM: (json['avg_radius_m'] as num).toDouble(),
+      geometry: ClusterGeometryModel.fromJson(
+          json['geometry'] as Map<String, dynamic>),
       density: (json['density'] as num).toDouble(),
       severity: json['severity'] as String,
       clusterType: json['cluster_type'] as String,
@@ -129,10 +137,46 @@ Map<String, dynamic> _$$ClusterHotspotModelImplToJson(
       'incident_count': instance.incidentCount,
       'incident_object_ids': instance.incidentObjectIds,
       'centroid': instance.centroid,
-      'radius_m': instance.radiusM,
+      'display_radius_m': instance.displayRadiusM,
+      'impact_radius_m': instance.impactRadiusM,
+      'avg_radius_m': instance.avgRadiusM,
+      'geometry': instance.geometry,
       'density': instance.density,
       'severity': instance.severity,
       'cluster_type': instance.clusterType,
       'bbox': instance.bbox,
       'polygon': instance.polygon,
+    };
+
+_$ClusterGeometryModelImpl _$$ClusterGeometryModelImplFromJson(
+        Map<String, dynamic> json) =>
+    _$ClusterGeometryModelImpl(
+      rings: (json['rings'] as List<dynamic>)
+          .map((e) => (e as List<dynamic>)
+              .map((e) => (e as List<dynamic>)
+                  .map((e) => (e as num).toDouble())
+                  .toList())
+              .toList())
+          .toList(),
+      spatialReference: SpatialReferenceModel.fromJson(
+          json['spatialReference'] as Map<String, dynamic>),
+    );
+
+Map<String, dynamic> _$$ClusterGeometryModelImplToJson(
+        _$ClusterGeometryModelImpl instance) =>
+    <String, dynamic>{
+      'rings': instance.rings,
+      'spatialReference': instance.spatialReference,
+    };
+
+_$SpatialReferenceModelImpl _$$SpatialReferenceModelImplFromJson(
+        Map<String, dynamic> json) =>
+    _$SpatialReferenceModelImpl(
+      wkid: (json['wkid'] as num).toInt(),
+    );
+
+Map<String, dynamic> _$$SpatialReferenceModelImplToJson(
+        _$SpatialReferenceModelImpl instance) =>
+    <String, dynamic>{
+      'wkid': instance.wkid,
     };
