@@ -7,7 +7,7 @@ part 'cluster_state.freezed.dart';
 class ClusterState with _$ClusterState {
   const factory ClusterState({
     @Default(false) bool isLoading,
-    ClusterResult? result, // Chứa thông tin phân cụm chi tiết từ FastAPI
+    final ClusterResult? clusterResult,
     String? errorMessage,
   }) = _ClusterState;
 }

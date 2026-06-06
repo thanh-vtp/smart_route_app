@@ -70,7 +70,7 @@ class MapUiNotifier extends Notifier<MapUiState> {
     await facade.renderIncidents(incidents);
   }
 
-  Future<void> renderClusters(List<ClusterItem> clusters) async {
+  Future<void> renderClusters(List<ClusterHotspot> clusters) async {
     final facade = ref.read(mapFacadeProvider);
 
     await facade.renderClusters(clusters);

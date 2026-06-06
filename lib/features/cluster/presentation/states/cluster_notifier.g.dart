@@ -6,7 +6,7 @@ part of 'cluster_notifier.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$clusterNotifierHash() => r'3cd9f65756dff6e628499a09e3f0d4b146f9f8b6';
+String _$clusterNotifierHash() => r'9605df66198a16381c6e98a50b0d2ff6f791fe2a';
 
 /// See also [ClusterNotifier].
 @ProviderFor(ClusterNotifier)

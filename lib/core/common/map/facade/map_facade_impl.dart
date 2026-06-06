@@ -65,7 +65,7 @@ class MapFacadeImpl implements MapFacade {
   }
 
   @override
-  Future<void> renderClusters(List<ClusterItem> clusters) async {
+  Future<void> renderClusters(List<ClusterHotspot> clusters) async {
     await deps.clusterOverlayController.renderClusters(clusters);
   }
 

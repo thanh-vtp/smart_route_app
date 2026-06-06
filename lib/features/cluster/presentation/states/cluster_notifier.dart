@@ -20,8 +20,10 @@ class ClusterNotifier extends _$ClusterNotifier {
         isLoading: false,
         errorMessage: failure.message,
       ),
-      (clusterResult) =>
-          state = state.copyWith(isLoading: false, result: clusterResult),
+      (clusterResult) => state = state.copyWith(
+        isLoading: false,
+        clusterResult: clusterResult,
+      ),
     );
   }
 

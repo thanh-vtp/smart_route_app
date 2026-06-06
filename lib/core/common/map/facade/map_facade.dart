@@ -21,7 +21,7 @@ abstract interface class MapFacade {
 
   Future<void> renderIncidents(List<Incident> incidents);
 
-  Future<void> renderClusters(List<ClusterItem> clusters);
+  Future<void> renderClusters(List<ClusterHotspot> clusters);
 
   Future<void> selectIncident(String incidentId);
 

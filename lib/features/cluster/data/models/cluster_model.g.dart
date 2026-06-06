@@ -14,6 +14,9 @@ _$ClusterResponseModelImpl _$$ClusterResponseModelImplFromJson(
       totalRecords: (json['total_records'] as num).toInt(),
       clusteringInfo: ClusteringInfoModel.fromJson(
           json['clustering_info'] as Map<String, dynamic>),
+      clusters: (json['clusters'] as List<dynamic>)
+          .map((e) => ClusterHotspotModel.fromJson(e as Map<String, dynamic>))
+          .toList(),
       data: (json['data'] as List<dynamic>)
           .map((e) => ClusterItemModel.fromJson(e as Map<String, dynamic>))
           .toList(),
@@ -26,6 +29,7 @@ Map<String, dynamic> _$$ClusterResponseModelImplToJson(
       'message': instance.message,
       'total_records': instance.totalRecords,
       'clustering_info': instance.clusteringInfo,
+      'clusters': instance.clusters,
       'data': instance.data,
     };
 
@@ -63,4 +67,72 @@ Map<String, dynamic> _$$ClusterItemModelImplToJson(
       'latitude': instance.latitude,
       'Cluster_ID': instance.clusterId,
       'Is_Core_Point': instance.isCorePoint,
+    };
+
+_$ClusterBBoxModelImpl _$$ClusterBBoxModelImplFromJson(
+        Map<String, dynamic> json) =>
+    _$ClusterBBoxModelImpl(
+      xmin: (json['xmin'] as num).toDouble(),
+      ymin: (json['ymin'] as num).toDouble(),
+      xmax: (json['xmax'] as num).toDouble(),
+      ymax: (json['ymax'] as num).toDouble(),
+    );
+
+Map<String, dynamic> _$$ClusterBBoxModelImplToJson(
+        _$ClusterBBoxModelImpl instance) =>
+    <String, dynamic>{
+      'xmin': instance.xmin,
+      'ymin': instance.ymin,
+      'xmax': instance.xmax,
+      'ymax': instance.ymax,
+    };
+
+_$ClusterCentroidModelImpl _$$ClusterCentroidModelImplFromJson(
+        Map<String, dynamic> json) =>
+    _$ClusterCentroidModelImpl(
+      lat: (json['lat'] as num).toDouble(),
+      lng: (json['lng'] as num).toDouble(),
+    );
+
+Map<String, dynamic> _$$ClusterCentroidModelImplToJson(
+        _$ClusterCentroidModelImpl instance) =>
+    <String, dynamic>{
+      'lat': instance.lat,
+      'lng': instance.lng,
+    };
+
+_$ClusterHotspotModelImpl _$$ClusterHotspotModelImplFromJson(
+        Map<String, dynamic> json) =>
+    _$ClusterHotspotModelImpl(
+      clusterId: (json['cluster_id'] as num).toInt(),
+      incidentCount: (json['incident_count'] as num).toInt(),
+      incidentObjectIds: (json['incident_object_ids'] as List<dynamic>)
+          .map((e) => (e as num).toInt())
+          .toList(),
+      centroid: ClusterCentroidModel.fromJson(
+          json['centroid'] as Map<String, dynamic>),
+      radiusM: (json['radius_m'] as num).toDouble(),
+      density: (json['density'] as num).toDouble(),
+      severity: json['severity'] as String,
+      clusterType: json['cluster_type'] as String,
+      bbox: ClusterBBoxModel.fromJson(json['bbox'] as Map<String, dynamic>),
+      polygon: (json['polygon'] as List<dynamic>)
+          .map((e) =>
+              (e as List<dynamic>).map((e) => (e as num).toDouble()).toList())
+          .toList(),
+    );
+
+Map<String, dynamic> _$$ClusterHotspotModelImplToJson(
+        _$ClusterHotspotModelImpl instance) =>
+    <String, dynamic>{
+      'cluster_id': instance.clusterId,
+      'incident_count': instance.incidentCount,
+      'incident_object_ids': instance.incidentObjectIds,
+      'centroid': instance.centroid,
+      'radius_m': instance.radiusM,
+      'density': instance.density,
+      'severity': instance.severity,
+      'cluster_type': instance.clusterType,
+      'bbox': instance.bbox,
+      'polygon': instance.polygon,
     };

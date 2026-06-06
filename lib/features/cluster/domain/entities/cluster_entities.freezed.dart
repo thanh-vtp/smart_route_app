@@ -17,13 +17,15 @@ final _privateConstructorUsedError = UnsupportedError(
 /// @nodoc
 mixin _$ClusterResult {
   int get totalRecords => throw _privateConstructorUsedError;
-  int get nClusters =>
-      throw _privateConstructorUsedError; // Số lượng cụm (Vùng nguy hiểm)
-  int get nNoise =>
-      throw _privateConstructorUsedError; // Số lượng điểm nhiễu (Sự cố đơn lẻ)
-  int get nCorePoints =>
-      throw _privateConstructorUsedError; // Số lượng điểm lõi
+  int get nClusters => throw _privateConstructorUsedError;
+  int get nNoise => throw _privateConstructorUsedError;
+  int get nCorePoints => throw _privateConstructorUsedError;
+
+  /// Các điểm sự cố gốc
   List<ClusterItem> get items => throw _privateConstructorUsedError;
+
+  /// Các hotspot sau khi clustering
+  List<ClusterHotspot> get clusters => throw _privateConstructorUsedError;
 
   @JsonKey(ignore: true)
   $ClusterResultCopyWith<ClusterResult> get copyWith =>
@@ -41,7 +43,8 @@ abstract class $ClusterResultCopyWith<$Res> {
       int nClusters,
       int nNoise,
       int nCorePoints,
-      List<ClusterItem> items});
+      List<ClusterItem> items,
+      List<ClusterHotspot> clusters});
 }
 
 /// @nodoc
@@ -62,6 +65,7 @@ class _$ClusterResultCopyWithImpl<$Res, $Val extends ClusterResult>
     Object? nNoise = null,
     Object? nCorePoints = null,
     Object? items = null,
+    Object? clusters = null,
   }) {
     return _then(_value.copyWith(
       totalRecords: null == totalRecords
@@ -84,6 +88,10 @@ class _$ClusterResultCopyWithImpl<$Res, $Val extends ClusterResult>
           ? _value.items
           : items // ignore: cast_nullable_to_non_nullable
               as List<ClusterItem>,
+      clusters: null == clusters
+          ? _value.clusters
+          : clusters // ignore: cast_nullable_to_non_nullable
+              as List<ClusterHotspot>,
     ) as $Val);
   }
 }
@@ -101,7 +109,8 @@ abstract class _$$ClusterResultImplCopyWith<$Res>
       int nClusters,
       int nNoise,
       int nCorePoints,
-      List<ClusterItem> items});
+      List<ClusterItem> items,
+      List<ClusterHotspot> clusters});
 }
 
 /// @nodoc
@@ -120,6 +129,7 @@ class __$$ClusterResultImplCopyWithImpl<$Res>
     Object? nNoise = null,
     Object? nCorePoints = null,
     Object? items = null,
+    Object? clusters = null,
   }) {
     return _then(_$ClusterResultImpl(
       totalRecords: null == totalRecords
@@ -142,6 +152,10 @@ class __$$ClusterResultImplCopyWithImpl<$Res>
           ? _value._items
           : items // ignore: cast_nullable_to_non_nullable
               as List<ClusterItem>,
+      clusters: null == clusters
+          ? _value._clusters
+          : clusters // ignore: cast_nullable_to_non_nullable
+              as List<ClusterHotspot>,
     ));
   }
 }
@@ -154,22 +168,24 @@ class _$ClusterResultImpl implements _ClusterResult {
       required this.nClusters,
       required this.nNoise,
       required this.nCorePoints,
-      required final List<ClusterItem> items})
-      : _items = items;
+      required final List<ClusterItem> items,
+      required final List<ClusterHotspot> clusters})
+      : _items = items,
+        _clusters = clusters;
 
   @override
   final int totalRecords;
   @override
   final int nClusters;
-// Số lượng cụm (Vùng nguy hiểm)
   @override
   final int nNoise;
-// Số lượng điểm nhiễu (Sự cố đơn lẻ)
   @override
   final int nCorePoints;
-// Số lượng điểm lõi
+
+  /// Các điểm sự cố gốc
   final List<ClusterItem> _items;
-// Số lượng điểm lõi
+
+  /// Các điểm sự cố gốc
   @override
   List<ClusterItem> get items {
     if (_items is EqualUnmodifiableListView) return _items;
@@ -177,9 +193,20 @@ class _$ClusterResultImpl implements _ClusterResult {
     return EqualUnmodifiableListView(_items);
   }
 
+  /// Các hotspot sau khi clustering
+  final List<ClusterHotspot> _clusters;
+
+  /// Các hotspot sau khi clustering
+  @override
+  List<ClusterHotspot> get clusters {
+    if (_clusters is EqualUnmodifiableListView) return _clusters;
+    // ignore: implicit_dynamic_type
+    return EqualUnmodifiableListView(_clusters);
+  }
+
   @override
   String toString() {
-    return 'ClusterResult(totalRecords: $totalRecords, nClusters: $nClusters, nNoise: $nNoise, nCorePoints: $nCorePoints, items: $items)';
+    return 'ClusterResult(totalRecords: $totalRecords, nClusters: $nClusters, nNoise: $nNoise, nCorePoints: $nCorePoints, items: $items, clusters: $clusters)';
   }
 
   @override
@@ -194,12 +221,19 @@ class _$ClusterResultImpl implements _ClusterResult {
             (identical(other.nNoise, nNoise) || other.nNoise == nNoise) &&
             (identical(other.nCorePoints, nCorePoints) ||
                 other.nCorePoints == nCorePoints) &&
-            const DeepCollectionEquality().equals(other._items, _items));
+            const DeepCollectionEquality().equals(other._items, _items) &&
+            const DeepCollectionEquality().equals(other._clusters, _clusters));
   }
 
   @override
-  int get hashCode => Object.hash(runtimeType, totalRecords, nClusters, nNoise,
-      nCorePoints, const DeepCollectionEquality().hash(_items));
+  int get hashCode => Object.hash(
+      runtimeType,
+      totalRecords,
+      nClusters,
+      nNoise,
+      nCorePoints,
+      const DeepCollectionEquality().hash(_items),
+      const DeepCollectionEquality().hash(_clusters));
 
   @JsonKey(ignore: true)
   @override
@@ -214,18 +248,25 @@ abstract class _ClusterResult implements ClusterResult {
       required final int nClusters,
       required final int nNoise,
       required final int nCorePoints,
-      required final List<ClusterItem> items}) = _$ClusterResultImpl;
+      required final List<ClusterItem> items,
+      required final List<ClusterHotspot> clusters}) = _$ClusterResultImpl;
 
   @override
   int get totalRecords;
   @override
   int get nClusters;
-  @override // Số lượng cụm (Vùng nguy hiểm)
+  @override
   int get nNoise;
-  @override // Số lượng điểm nhiễu (Sự cố đơn lẻ)
+  @override
   int get nCorePoints;
-  @override // Số lượng điểm lõi
+  @override
+
+  /// Các điểm sự cố gốc
   List<ClusterItem> get items;
+  @override
+
+  /// Các hotspot sau khi clustering
+  List<ClusterHotspot> get clusters;
   @override
   @JsonKey(ignore: true)
   _$$ClusterResultImplCopyWith<_$ClusterResultImpl> get copyWith =>
@@ -234,11 +275,10 @@ abstract class _ClusterResult implements ClusterResult {
 
 /// @nodoc
 mixin _$ClusterItem {
-  String get id => throw _privateConstructorUsedError; // Ánh xạ từ OBJECTID
-  double get lat => throw _privateConstructorUsedError; // Vĩ độ
-  double get lng => throw _privateConstructorUsedError; // Kinh độ
-  int get clusterId =>
-      throw _privateConstructorUsedError; // ID cụm (-1 nếu là điểm đơn lẻ, >=0 nếu thuộc cụm)
+  String get id => throw _privateConstructorUsedError;
+  double get lat => throw _privateConstructorUsedError;
+  double get lng => throw _privateConstructorUsedError;
+  int get clusterId => throw _privateConstructorUsedError;
   bool get isCorePoint => throw _privateConstructorUsedError;
 
   @JsonKey(ignore: true)
@@ -366,16 +406,12 @@ class _$ClusterItemImpl implements _ClusterItem {
 
   @override
   final String id;
-// Ánh xạ từ OBJECTID
   @override
   final double lat;
-// Vĩ độ
   @override
   final double lng;
-// Kinh độ
   @override
   final int clusterId;
-// ID cụm (-1 nếu là điểm đơn lẻ, >=0 nếu thuộc cụm)
   @override
   final bool isCorePoint;
 
@@ -419,16 +455,565 @@ abstract class _ClusterItem implements ClusterItem {
 
   @override
   String get id;
-  @override // Ánh xạ từ OBJECTID
+  @override
   double get lat;
-  @override // Vĩ độ
+  @override
   double get lng;
-  @override // Kinh độ
+  @override
   int get clusterId;
-  @override // ID cụm (-1 nếu là điểm đơn lẻ, >=0 nếu thuộc cụm)
+  @override
   bool get isCorePoint;
   @override
   @JsonKey(ignore: true)
   _$$ClusterItemImplCopyWith<_$ClusterItemImpl> get copyWith =>
+      throw _privateConstructorUsedError;
+}
+
+/// @nodoc
+mixin _$ClusterHotspot {
+  int get clusterId => throw _privateConstructorUsedError;
+  int get incidentCount => throw _privateConstructorUsedError;
+  List<int> get incidentObjectIds => throw _privateConstructorUsedError;
+  double get centerLat => throw _privateConstructorUsedError;
+  double get centerLng => throw _privateConstructorUsedError;
+  double get radiusM => throw _privateConstructorUsedError;
+  double get density => throw _privateConstructorUsedError;
+  String get severity => throw _privateConstructorUsedError;
+  String get clusterType => throw _privateConstructorUsedError;
+  ClusterBBox get bbox => throw _privateConstructorUsedError;
+
+  /// Polygon đơn giản
+  List<List<double>> get polygon => throw _privateConstructorUsedError;
+
+  @JsonKey(ignore: true)
+  $ClusterHotspotCopyWith<ClusterHotspot> get copyWith =>
+      throw _privateConstructorUsedError;
+}
+
+/// @nodoc
+abstract class $ClusterHotspotCopyWith<$Res> {
+  factory $ClusterHotspotCopyWith(
+          ClusterHotspot value, $Res Function(ClusterHotspot) then) =
+      _$ClusterHotspotCopyWithImpl<$Res, ClusterHotspot>;
+  @useResult
+  $Res call(
+      {int clusterId,
+      int incidentCount,
+      List<int> incidentObjectIds,
+      double centerLat,
+      double centerLng,
+      double radiusM,
+      double density,
+      String severity,
+      String clusterType,
+      ClusterBBox bbox,
+      List<List<double>> polygon});
+
+  $ClusterBBoxCopyWith<$Res> get bbox;
+}
+
+/// @nodoc
+class _$ClusterHotspotCopyWithImpl<$Res, $Val extends ClusterHotspot>
+    implements $ClusterHotspotCopyWith<$Res> {
+  _$ClusterHotspotCopyWithImpl(this._value, this._then);
+
+  // ignore: unused_field
+  final $Val _value;
+  // ignore: unused_field
+  final $Res Function($Val) _then;
+
+  @pragma('vm:prefer-inline')
+  @override
+  $Res call({
+    Object? clusterId = null,
+    Object? incidentCount = null,
+    Object? incidentObjectIds = null,
+    Object? centerLat = null,
+    Object? centerLng = null,
+    Object? radiusM = null,
+    Object? density = null,
+    Object? severity = null,
+    Object? clusterType = null,
+    Object? bbox = null,
+    Object? polygon = null,
+  }) {
+    return _then(_value.copyWith(
+      clusterId: null == clusterId
+          ? _value.clusterId
+          : clusterId // ignore: cast_nullable_to_non_nullable
+              as int,
+      incidentCount: null == incidentCount
+          ? _value.incidentCount
+          : incidentCount // ignore: cast_nullable_to_non_nullable
+              as int,
+      incidentObjectIds: null == incidentObjectIds
+          ? _value.incidentObjectIds
+          : incidentObjectIds // ignore: cast_nullable_to_non_nullable
+              as List<int>,
+      centerLat: null == centerLat
+          ? _value.centerLat
+          : centerLat // ignore: cast_nullable_to_non_nullable
+              as double,
+      centerLng: null == centerLng
+          ? _value.centerLng
+          : centerLng // ignore: cast_nullable_to_non_nullable
+              as double,
+      radiusM: null == radiusM
+          ? _value.radiusM
+          : radiusM // ignore: cast_nullable_to_non_nullable
+              as double,
+      density: null == density
+          ? _value.density
+          : density // ignore: cast_nullable_to_non_nullable
+              as double,
+      severity: null == severity
+          ? _value.severity
+          : severity // ignore: cast_nullable_to_non_nullable
+              as String,
+      clusterType: null == clusterType
+          ? _value.clusterType
+          : clusterType // ignore: cast_nullable_to_non_nullable
+              as String,
+      bbox: null == bbox
+          ? _value.bbox
+          : bbox // ignore: cast_nullable_to_non_nullable
+              as ClusterBBox,
+      polygon: null == polygon
+          ? _value.polygon
+          : polygon // ignore: cast_nullable_to_non_nullable
+              as List<List<double>>,
+    ) as $Val);
+  }
+
+  @override
+  @pragma('vm:prefer-inline')
+  $ClusterBBoxCopyWith<$Res> get bbox {
+    return $ClusterBBoxCopyWith<$Res>(_value.bbox, (value) {
+      return _then(_value.copyWith(bbox: value) as $Val);
+    });
+  }
+}
+
+/// @nodoc
+abstract class _$$ClusterHotspotImplCopyWith<$Res>
+    implements $ClusterHotspotCopyWith<$Res> {
+  factory _$$ClusterHotspotImplCopyWith(_$ClusterHotspotImpl value,
+          $Res Function(_$ClusterHotspotImpl) then) =
+      __$$ClusterHotspotImplCopyWithImpl<$Res>;
+  @override
+  @useResult
+  $Res call(
+      {int clusterId,
+      int incidentCount,
+      List<int> incidentObjectIds,
+      double centerLat,
+      double centerLng,
+      double radiusM,
+      double density,
+      String severity,
+      String clusterType,
+      ClusterBBox bbox,
+      List<List<double>> polygon});
+
+  @override
+  $ClusterBBoxCopyWith<$Res> get bbox;
+}
+
+/// @nodoc
+class __$$ClusterHotspotImplCopyWithImpl<$Res>
+    extends _$ClusterHotspotCopyWithImpl<$Res, _$ClusterHotspotImpl>
+    implements _$$ClusterHotspotImplCopyWith<$Res> {
+  __$$ClusterHotspotImplCopyWithImpl(
+      _$ClusterHotspotImpl _value, $Res Function(_$ClusterHotspotImpl) _then)
+      : super(_value, _then);
+
+  @pragma('vm:prefer-inline')
+  @override
+  $Res call({
+    Object? clusterId = null,
+    Object? incidentCount = null,
+    Object? incidentObjectIds = null,
+    Object? centerLat = null,
+    Object? centerLng = null,
+    Object? radiusM = null,
+    Object? density = null,
+    Object? severity = null,
+    Object? clusterType = null,
+    Object? bbox = null,
+    Object? polygon = null,
+  }) {
+    return _then(_$ClusterHotspotImpl(
+      clusterId: null == clusterId
+          ? _value.clusterId
+          : clusterId // ignore: cast_nullable_to_non_nullable
+              as int,
+      incidentCount: null == incidentCount
+          ? _value.incidentCount
+          : incidentCount // ignore: cast_nullable_to_non_nullable
+              as int,
+      incidentObjectIds: null == incidentObjectIds
+          ? _value._incidentObjectIds
+          : incidentObjectIds // ignore: cast_nullable_to_non_nullable
+              as List<int>,
+      centerLat: null == centerLat
+          ? _value.centerLat
+          : centerLat // ignore: cast_nullable_to_non_nullable
+              as double,
+      centerLng: null == centerLng
+          ? _value.centerLng
+          : centerLng // ignore: cast_nullable_to_non_nullable
+              as double,
+      radiusM: null == radiusM
+          ? _value.radiusM
+          : radiusM // ignore: cast_nullable_to_non_nullable
+              as double,
+      density: null == density
+          ? _value.density
+          : density // ignore: cast_nullable_to_non_nullable
+              as double,
+      severity: null == severity
+          ? _value.severity
+          : severity // ignore: cast_nullable_to_non_nullable
+              as String,
+      clusterType: null == clusterType
+          ? _value.clusterType
+          : clusterType // ignore: cast_nullable_to_non_nullable
+              as String,
+      bbox: null == bbox
+          ? _value.bbox
+          : bbox // ignore: cast_nullable_to_non_nullable
+              as ClusterBBox,
+      polygon: null == polygon
+          ? _value._polygon
+          : polygon // ignore: cast_nullable_to_non_nullable
+              as List<List<double>>,
+    ));
+  }
+}
+
+/// @nodoc
+
+class _$ClusterHotspotImpl implements _ClusterHotspot {
+  const _$ClusterHotspotImpl(
+      {required this.clusterId,
+      required this.incidentCount,
+      required final List<int> incidentObjectIds,
+      required this.centerLat,
+      required this.centerLng,
+      required this.radiusM,
+      required this.density,
+      required this.severity,
+      required this.clusterType,
+      required this.bbox,
+      required final List<List<double>> polygon})
+      : _incidentObjectIds = incidentObjectIds,
+        _polygon = polygon;
+
+  @override
+  final int clusterId;
+  @override
+  final int incidentCount;
+  final List<int> _incidentObjectIds;
+  @override
+  List<int> get incidentObjectIds {
+    if (_incidentObjectIds is EqualUnmodifiableListView)
+      return _incidentObjectIds;
+    // ignore: implicit_dynamic_type
+    return EqualUnmodifiableListView(_incidentObjectIds);
+  }
+
+  @override
+  final double centerLat;
+  @override
+  final double centerLng;
+  @override
+  final double radiusM;
+  @override
+  final double density;
+  @override
+  final String severity;
+  @override
+  final String clusterType;
+  @override
+  final ClusterBBox bbox;
+
+  /// Polygon đơn giản
+  final List<List<double>> _polygon;
+
+  /// Polygon đơn giản
+  @override
+  List<List<double>> get polygon {
+    if (_polygon is EqualUnmodifiableListView) return _polygon;
+    // ignore: implicit_dynamic_type
+    return EqualUnmodifiableListView(_polygon);
+  }
+
+  @override
+  String toString() {
+    return 'ClusterHotspot(clusterId: $clusterId, incidentCount: $incidentCount, incidentObjectIds: $incidentObjectIds, centerLat: $centerLat, centerLng: $centerLng, radiusM: $radiusM, density: $density, severity: $severity, clusterType: $clusterType, bbox: $bbox, polygon: $polygon)';
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType &&
+            other is _$ClusterHotspotImpl &&
+            (identical(other.clusterId, clusterId) ||
+                other.clusterId == clusterId) &&
+            (identical(other.incidentCount, incidentCount) ||
+                other.incidentCount == incidentCount) &&
+            const DeepCollectionEquality()
+                .equals(other._incidentObjectIds, _incidentObjectIds) &&
+            (identical(other.centerLat, centerLat) ||
+                other.centerLat == centerLat) &&
+            (identical(other.centerLng, centerLng) ||
+                other.centerLng == centerLng) &&
+            (identical(other.radiusM, radiusM) || other.radiusM == radiusM) &&
+            (identical(other.density, density) || other.density == density) &&
+            (identical(other.severity, severity) ||
+                other.severity == severity) &&
+            (identical(other.clusterType, clusterType) ||
+                other.clusterType == clusterType) &&
+            (identical(other.bbox, bbox) || other.bbox == bbox) &&
+            const DeepCollectionEquality().equals(other._polygon, _polygon));
+  }
+
+  @override
+  int get hashCode => Object.hash(
+      runtimeType,
+      clusterId,
+      incidentCount,
+      const DeepCollectionEquality().hash(_incidentObjectIds),
+      centerLat,
+      centerLng,
+      radiusM,
+      density,
+      severity,
+      clusterType,
+      bbox,
+      const DeepCollectionEquality().hash(_polygon));
+
+  @JsonKey(ignore: true)
+  @override
+  @pragma('vm:prefer-inline')
+  _$$ClusterHotspotImplCopyWith<_$ClusterHotspotImpl> get copyWith =>
+      __$$ClusterHotspotImplCopyWithImpl<_$ClusterHotspotImpl>(
+          this, _$identity);
+}
+
+abstract class _ClusterHotspot implements ClusterHotspot {
+  const factory _ClusterHotspot(
+      {required final int clusterId,
+      required final int incidentCount,
+      required final List<int> incidentObjectIds,
+      required final double centerLat,
+      required final double centerLng,
+      required final double radiusM,
+      required final double density,
+      required final String severity,
+      required final String clusterType,
+      required final ClusterBBox bbox,
+      required final List<List<double>> polygon}) = _$ClusterHotspotImpl;
+
+  @override
+  int get clusterId;
+  @override
+  int get incidentCount;
+  @override
+  List<int> get incidentObjectIds;
+  @override
+  double get centerLat;
+  @override
+  double get centerLng;
+  @override
+  double get radiusM;
+  @override
+  double get density;
+  @override
+  String get severity;
+  @override
+  String get clusterType;
+  @override
+  ClusterBBox get bbox;
+  @override
+
+  /// Polygon đơn giản
+  List<List<double>> get polygon;
+  @override
+  @JsonKey(ignore: true)
+  _$$ClusterHotspotImplCopyWith<_$ClusterHotspotImpl> get copyWith =>
+      throw _privateConstructorUsedError;
+}
+
+/// @nodoc
+mixin _$ClusterBBox {
+  double get xmin => throw _privateConstructorUsedError;
+  double get ymin => throw _privateConstructorUsedError;
+  double get xmax => throw _privateConstructorUsedError;
+  double get ymax => throw _privateConstructorUsedError;
+
+  @JsonKey(ignore: true)
+  $ClusterBBoxCopyWith<ClusterBBox> get copyWith =>
+      throw _privateConstructorUsedError;
+}
+
+/// @nodoc
+abstract class $ClusterBBoxCopyWith<$Res> {
+  factory $ClusterBBoxCopyWith(
+          ClusterBBox value, $Res Function(ClusterBBox) then) =
+      _$ClusterBBoxCopyWithImpl<$Res, ClusterBBox>;
+  @useResult
+  $Res call({double xmin, double ymin, double xmax, double ymax});
+}
+
+/// @nodoc
+class _$ClusterBBoxCopyWithImpl<$Res, $Val extends ClusterBBox>
+    implements $ClusterBBoxCopyWith<$Res> {
+  _$ClusterBBoxCopyWithImpl(this._value, this._then);
+
+  // ignore: unused_field
+  final $Val _value;
+  // ignore: unused_field
+  final $Res Function($Val) _then;
+
+  @pragma('vm:prefer-inline')
+  @override
+  $Res call({
+    Object? xmin = null,
+    Object? ymin = null,
+    Object? xmax = null,
+    Object? ymax = null,
+  }) {
+    return _then(_value.copyWith(
+      xmin: null == xmin
+          ? _value.xmin
+          : xmin // ignore: cast_nullable_to_non_nullable
+              as double,
+      ymin: null == ymin
+          ? _value.ymin
+          : ymin // ignore: cast_nullable_to_non_nullable
+              as double,
+      xmax: null == xmax
+          ? _value.xmax
+          : xmax // ignore: cast_nullable_to_non_nullable
+              as double,
+      ymax: null == ymax
+          ? _value.ymax
+          : ymax // ignore: cast_nullable_to_non_nullable
+              as double,
+    ) as $Val);
+  }
+}
+
+/// @nodoc
+abstract class _$$ClusterBBoxImplCopyWith<$Res>
+    implements $ClusterBBoxCopyWith<$Res> {
+  factory _$$ClusterBBoxImplCopyWith(
+          _$ClusterBBoxImpl value, $Res Function(_$ClusterBBoxImpl) then) =
+      __$$ClusterBBoxImplCopyWithImpl<$Res>;
+  @override
+  @useResult
+  $Res call({double xmin, double ymin, double xmax, double ymax});
+}
+
+/// @nodoc
+class __$$ClusterBBoxImplCopyWithImpl<$Res>
+    extends _$ClusterBBoxCopyWithImpl<$Res, _$ClusterBBoxImpl>
+    implements _$$ClusterBBoxImplCopyWith<$Res> {
+  __$$ClusterBBoxImplCopyWithImpl(
+      _$ClusterBBoxImpl _value, $Res Function(_$ClusterBBoxImpl) _then)
+      : super(_value, _then);
+
+  @pragma('vm:prefer-inline')
+  @override
+  $Res call({
+    Object? xmin = null,
+    Object? ymin = null,
+    Object? xmax = null,
+    Object? ymax = null,
+  }) {
+    return _then(_$ClusterBBoxImpl(
+      xmin: null == xmin
+          ? _value.xmin
+          : xmin // ignore: cast_nullable_to_non_nullable
+              as double,
+      ymin: null == ymin
+          ? _value.ymin
+          : ymin // ignore: cast_nullable_to_non_nullable
+              as double,
+      xmax: null == xmax
+          ? _value.xmax
+          : xmax // ignore: cast_nullable_to_non_nullable
+              as double,
+      ymax: null == ymax
+          ? _value.ymax
+          : ymax // ignore: cast_nullable_to_non_nullable
+              as double,
+    ));
+  }
+}
+
+/// @nodoc
+
+class _$ClusterBBoxImpl implements _ClusterBBox {
+  const _$ClusterBBoxImpl(
+      {required this.xmin,
+      required this.ymin,
+      required this.xmax,
+      required this.ymax});
+
+  @override
+  final double xmin;
+  @override
+  final double ymin;
+  @override
+  final double xmax;
+  @override
+  final double ymax;
+
+  @override
+  String toString() {
+    return 'ClusterBBox(xmin: $xmin, ymin: $ymin, xmax: $xmax, ymax: $ymax)';
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType &&
+            other is _$ClusterBBoxImpl &&
+            (identical(other.xmin, xmin) || other.xmin == xmin) &&
+            (identical(other.ymin, ymin) || other.ymin == ymin) &&
+            (identical(other.xmax, xmax) || other.xmax == xmax) &&
+            (identical(other.ymax, ymax) || other.ymax == ymax));
+  }
+
+  @override
+  int get hashCode => Object.hash(runtimeType, xmin, ymin, xmax, ymax);
+
+  @JsonKey(ignore: true)
+  @override
+  @pragma('vm:prefer-inline')
+  _$$ClusterBBoxImplCopyWith<_$ClusterBBoxImpl> get copyWith =>
+      __$$ClusterBBoxImplCopyWithImpl<_$ClusterBBoxImpl>(this, _$identity);
+}
+
+abstract class _ClusterBBox implements ClusterBBox {
+  const factory _ClusterBBox(
+      {required final double xmin,
+      required final double ymin,
+      required final double xmax,
+      required final double ymax}) = _$ClusterBBoxImpl;
+
+  @override
+  double get xmin;
+  @override
+  double get ymin;
+  @override
+  double get xmax;
+  @override
+  double get ymax;
+  @override
+  @JsonKey(ignore: true)
+  _$$ClusterBBoxImplCopyWith<_$ClusterBBoxImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }

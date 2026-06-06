@@ -17,8 +17,7 @@ final _privateConstructorUsedError = UnsupportedError(
 /// @nodoc
 mixin _$ClusterState {
   bool get isLoading => throw _privateConstructorUsedError;
-  ClusterResult? get result =>
-      throw _privateConstructorUsedError; // Chứa thông tin phân cụm chi tiết từ FastAPI
+  ClusterResult? get clusterResult => throw _privateConstructorUsedError;
   String? get errorMessage => throw _privateConstructorUsedError;
 
   @JsonKey(ignore: true)
@@ -32,9 +31,10 @@ abstract class $ClusterStateCopyWith<$Res> {
           ClusterState value, $Res Function(ClusterState) then) =
       _$ClusterStateCopyWithImpl<$Res, ClusterState>;
   @useResult
-  $Res call({bool isLoading, ClusterResult? result, String? errorMessage});
+  $Res call(
+      {bool isLoading, ClusterResult? clusterResult, String? errorMessage});
 
-  $ClusterResultCopyWith<$Res>? get result;
+  $ClusterResultCopyWith<$Res>? get clusterResult;
 }
 
 /// @nodoc
@@ -51,7 +51,7 @@ class _$ClusterStateCopyWithImpl<$Res, $Val extends ClusterState>
   @override
   $Res call({
     Object? isLoading = null,
-    Object? result = freezed,
+    Object? clusterResult = freezed,
     Object? errorMessage = freezed,
   }) {
     return _then(_value.copyWith(
@@ -59,9 +59,9 @@ class _$ClusterStateCopyWithImpl<$Res, $Val extends ClusterState>
           ? _value.isLoading
           : isLoading // ignore: cast_nullable_to_non_nullable
               as bool,
-      result: freezed == result
-          ? _value.result
-          : result // ignore: cast_nullable_to_non_nullable
+      clusterResult: freezed == clusterResult
+          ? _value.clusterResult
+          : clusterResult // ignore: cast_nullable_to_non_nullable
               as ClusterResult?,
       errorMessage: freezed == errorMessage
           ? _value.errorMessage
@@ -72,13 +72,13 @@ class _$ClusterStateCopyWithImpl<$Res, $Val extends ClusterState>
 
   @override
   @pragma('vm:prefer-inline')
-  $ClusterResultCopyWith<$Res>? get result {
-    if (_value.result == null) {
+  $ClusterResultCopyWith<$Res>? get clusterResult {
+    if (_value.clusterResult == null) {
       return null;
     }
 
-    return $ClusterResultCopyWith<$Res>(_value.result!, (value) {
-      return _then(_value.copyWith(result: value) as $Val);
+    return $ClusterResultCopyWith<$Res>(_value.clusterResult!, (value) {
+      return _then(_value.copyWith(clusterResult: value) as $Val);
     });
   }
 }
@@ -91,10 +91,11 @@ abstract class _$$ClusterStateImplCopyWith<$Res>
       __$$ClusterStateImplCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call({bool isLoading, ClusterResult? result, String? errorMessage});
+  $Res call(
+      {bool isLoading, ClusterResult? clusterResult, String? errorMessage});
 
   @override
-  $ClusterResultCopyWith<$Res>? get result;
+  $ClusterResultCopyWith<$Res>? get clusterResult;
 }
 
 /// @nodoc
@@ -109,7 +110,7 @@ class __$$ClusterStateImplCopyWithImpl<$Res>
   @override
   $Res call({
     Object? isLoading = null,
-    Object? result = freezed,
+    Object? clusterResult = freezed,
     Object? errorMessage = freezed,
   }) {
     return _then(_$ClusterStateImpl(
@@ -117,9 +118,9 @@ class __$$ClusterStateImplCopyWithImpl<$Res>
           ? _value.isLoading
           : isLoading // ignore: cast_nullable_to_non_nullable
               as bool,
-      result: freezed == result
-          ? _value.result
-          : result // ignore: cast_nullable_to_non_nullable
+      clusterResult: freezed == clusterResult
+          ? _value.clusterResult
+          : clusterResult // ignore: cast_nullable_to_non_nullable
               as ClusterResult?,
       errorMessage: freezed == errorMessage
           ? _value.errorMessage
@@ -133,20 +134,19 @@ class __$$ClusterStateImplCopyWithImpl<$Res>
 
 class _$ClusterStateImpl implements _ClusterState {
   const _$ClusterStateImpl(
-      {this.isLoading = false, this.result, this.errorMessage});
+      {this.isLoading = false, this.clusterResult, this.errorMessage});
 
   @override
   @JsonKey()
   final bool isLoading;
   @override
-  final ClusterResult? result;
-// Chứa thông tin phân cụm chi tiết từ FastAPI
+  final ClusterResult? clusterResult;
   @override
   final String? errorMessage;
 
   @override
   String toString() {
-    return 'ClusterState(isLoading: $isLoading, result: $result, errorMessage: $errorMessage)';
+    return 'ClusterState(isLoading: $isLoading, clusterResult: $clusterResult, errorMessage: $errorMessage)';
   }
 
   @override
@@ -156,13 +156,15 @@ class _$ClusterStateImpl implements _ClusterState {
             other is _$ClusterStateImpl &&
             (identical(other.isLoading, isLoading) ||
                 other.isLoading == isLoading) &&
-            (identical(other.result, result) || other.result == result) &&
+            (identical(other.clusterResult, clusterResult) ||
+                other.clusterResult == clusterResult) &&
             (identical(other.errorMessage, errorMessage) ||
                 other.errorMessage == errorMessage));
   }
 
   @override
-  int get hashCode => Object.hash(runtimeType, isLoading, result, errorMessage);
+  int get hashCode =>
+      Object.hash(runtimeType, isLoading, clusterResult, errorMessage);
 
   @JsonKey(ignore: true)
   @override
@@ -174,14 +176,14 @@ class _$ClusterStateImpl implements _ClusterState {
 abstract class _ClusterState implements ClusterState {
   const factory _ClusterState(
       {final bool isLoading,
-      final ClusterResult? result,
+      final ClusterResult? clusterResult,
       final String? errorMessage}) = _$ClusterStateImpl;
 
   @override
   bool get isLoading;
   @override
-  ClusterResult? get result;
-  @override // Chứa thông tin phân cụm chi tiết từ FastAPI
+  ClusterResult? get clusterResult;
+  @override
   String? get errorMessage;
   @override
   @JsonKey(ignore: true)

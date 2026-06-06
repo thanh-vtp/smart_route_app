@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'dart:io';
 import 'package:http/http.dart' as http;
 import 'package:smart_route_app/core/errors/failures.dart';
+import 'package:smart_route_app/core/utils/app_logger.dart';
 import 'package:smart_route_app/core/utils/constants.dart';
 import '../models/cluster_model.dart';
 import 'cluster_remote_data_source.dart';
@@ -28,6 +29,16 @@ class ClusterRemoteDataSourceImpl implements ClusterRemoteDataSource {
 
       final data = json.decode(response.body) as Map<String, dynamic>;
 
+      AppLogger.debug(
+        'Cluster data: $data',
+        name: 'ClusterRemoteDataSourceImpl',
+      );
+
+      AppLogger.debug(
+        'Fields: ${data.keys.toList().toString()}',
+        name: 'ClusterRemoteDataSourceImpl',
+      );
+
       if (data['status'] != 'success') {
         throw ServerFailure(data['message'] ?? 'Lỗi tính toán phân cụm');
       }
@@ -41,7 +52,13 @@ class ClusterRemoteDataSourceImpl implements ClusterRemoteDataSource {
       );
     } catch (e) {
       if (e is Failure) rethrow;
-      throw ServerFailure('Lỗi không xác định khi phân cụm: ${e.toString()}');
+      AppLogger.error(
+        'Lỗi không xác định khi lấy phân cụm: ${e.toString()}',
+        name: 'ClusterRemoteDataSourceImpl',
+      );
+      throw ServerFailure(
+        'Lỗi không xác định khi lấy phân cụm: ${e.toString()}',
+      );
     }
   }
 }

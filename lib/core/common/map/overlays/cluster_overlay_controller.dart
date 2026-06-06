@@ -1,99 +1,157 @@
 import 'package:arcgis_maps/arcgis_maps.dart';
 import 'package:flutter/material.dart';
+import 'package:smart_route_app/core/utils/app_logger.dart';
 import 'package:smart_route_app/features/cluster/domain/entities/cluster_entities.dart';
 
 class ClusterOverlayController {
   final GraphicsOverlay overlay;
 
-  // Cache graphic theo ID duy nhất của sự cố (id = OBJECTID)
-  final Map<String, Graphic> _graphicsById = {};
-
   ClusterOverlayController({required this.overlay});
 
-  Future<void> renderClusters(List<ClusterItem> clusters) async {
-    // 🟢 SỬA TẠI ĐÂY: Lấy ID duy nhất của điểm (id) thay vì clusterId chung
-    final incomingIds = clusters.map((e) => e.id).toSet();
+  Future<void> renderClusters(List<ClusterHotspot> clusters) async {
+    overlay.graphics.clear();
 
-    final removedIds = _graphicsById.keys
-        .where((id) => !incomingIds.contains(id))
-        .toList();
-
-    for (final id in removedIds) {
-      final graphic = _graphicsById.remove(id);
-      if (graphic != null) {
-        overlay.graphics.remove(graphic);
+    for (final cluster in clusters) {
+      try {
+        _drawCluster(cluster);
+      } catch (e, st) {
+        AppLogger.error(
+          'Lỗi render hotspot ${cluster.clusterId}',
+          error: e,
+          stackTrace: st,
+          name: 'ClusterOverlayController',
+        );
       }
     }
 
-    for (final cluster in clusters) {
-      await _upsertCluster(cluster);
-    }
+    AppLogger.ui('Rendered ${clusters.length} hotspot clusters');
   }
 
-  Future<void> _upsertCluster(ClusterItem cluster) async {
-    // 🟢 LỌC BỎ ĐIỂM NHIỄU: Điểm nhiễu (DBSCAN định nghĩa là -1)
-    // không thuộc cụm nguy hiểm nào nên không cần vẽ vòng tròn mờ
-    if (cluster.clusterId == -1) {
+  void _drawCluster(ClusterHotspot cluster) {
+    AppLogger.debug(
+      'Cluster ${cluster.clusterId} polygon points: ${cluster.polygon.length}',
+      name: 'ClusterOverlayController',
+    );
+
+    if (cluster.polygon.length < 3) {
+      AppLogger.warning(
+        'Cluster ${cluster.clusterId} polygon không hợp lệ',
+        name: 'ClusterOverlayController',
+      );
       return;
     }
 
-    final key = cluster.id; // 🟢 Dùng id duy nhất làm khóa cache
-    final existing = _graphicsById[key];
-
-    final point = ArcGISPoint(
-      x: cluster.lng,
-      y: cluster.lat,
+    final polygonBuilder = PolygonBuilder(
       spatialReference: SpatialReference.wgs84,
     );
 
-    if (existing != null) {
-      existing.geometry = point;
-      return;
+    for (final point in cluster.polygon) {
+      polygonBuilder.addPoint(
+        ArcGISPoint(
+          x: point[0],
+          y: point[1],
+          spatialReference: SpatialReference.wgs84,
+        ),
+      );
     }
 
-    // Tự động lấy màu mờ đặc trưng cho từng cụm để phân biệt vùng nóng trên map
-    final clusterColor = _getClusterColor(cluster.clusterId);
+    final polygon = polygonBuilder.toGeometry();
 
-    final symbol = SimpleMarkerSymbol(
+    final symbol = _createSymbol(cluster);
+
+    final graphic = Graphic(
+      geometry: polygon,
+      symbol: symbol,
+      attributes: {
+        'cluster_id': cluster.clusterId,
+        'incident_count': cluster.incidentCount,
+        'severity': cluster.severity,
+        'cluster_type': cluster.clusterType,
+        'incident_object_ids': cluster.incidentObjectIds.join(','),
+        'radius_m': cluster.radiusM,
+        'density': cluster.density,
+      },
+    );
+
+    graphic.zIndex = -100;
+
+    overlay.graphics.add(graphic);
+
+    AppLogger.debug(
+      'Graphics count = ${overlay.graphics.length}',
+      name: 'ClusterOverlayController',
+    );
+
+    _drawCenterPoint(cluster);
+
+    AppLogger.debug(
+      'Overlay graphics count: ${overlay.graphics.length}',
+      name: 'ClusterOverlayController',
+    );
+  }
+
+  void _drawCenterPoint(ClusterHotspot cluster) {
+    final point = ArcGISPoint(
+      x: cluster.centerLng,
+      y: cluster.centerLat,
+      spatialReference: SpatialReference.wgs84,
+    );
+
+    final marker = SimpleMarkerSymbol(
       style: SimpleMarkerSymbolStyle.circle,
-      color: clusterColor.withValues(
-        alpha: 0.25,
-      ), // Màu mờ 25% tạo hiệu ứng vùng ảnh hưởng
-      size:
-          45, // Size to hẳn ra (45px) để bao bọc lấy cái Marker sự cố thô nằm ở giữa
+      color: _getSeverityColor(cluster.severity),
+      size: 10,
     );
 
     final graphic = Graphic(
       geometry: point,
-      symbol: symbol,
-      attributes: {'incident_id': cluster.id, 'cluster_id': cluster.clusterId},
+      symbol: marker,
+      attributes: {'cluster_id': cluster.clusterId, 'type': 'cluster_center'},
     );
 
-    // Đặt Z-Index cực thấp để vòng tròn mờ luôn nằm lót dưới các Icon sự cố thô
-    graphic.zIndex = -100;
+    graphic.zIndex = -50;
 
-    _graphicsById[key] = graphic;
     overlay.graphics.add(graphic);
   }
 
-  /// Hàm Helper tự chọn màu sắc theo ID cụm
-  Color _getClusterColor(int clusterId) {
-    switch (clusterId % 4) {
-      case 0:
-        return Colors.orange; // Cụm 0: Cam mờ
-      case 1:
-        return Colors.purple; // Cụm 1: Tím mờ
-      case 2:
-        return Colors.blue; // Cụm 2: Xanh dương mờ
-      case 3:
-        return Colors.pink; // Cụm 3: Hồng mờ
-      default:
+  SimpleFillSymbol _createSymbol(ClusterHotspot cluster) {
+    final color = _getSeverityColor(cluster.severity);
+
+    final opacity = switch (cluster.clusterType) {
+      'compact' => 0.30,
+      'linear' => 0.25,
+      'dispersed' => 0.15,
+      _ => 0.20,
+    };
+
+    return SimpleFillSymbol(
+      style: SimpleFillSymbolStyle.solid,
+      color: color.withValues(alpha: opacity),
+      outline: SimpleLineSymbol(
+        style: SimpleLineSymbolStyle.solid,
+        color: color,
+        width: 2,
+      ),
+    );
+  }
+
+  Color _getSeverityColor(String severity) {
+    switch (severity.toLowerCase()) {
+      case 'high':
         return Colors.red;
+
+      case 'medium':
+        return Colors.orange;
+
+      case 'low':
+        return Colors.yellow;
+
+      default:
+        return Colors.grey;
     }
   }
 
   void clear() {
-    _graphicsById.clear();
     overlay.graphics.clear();
   }
 }

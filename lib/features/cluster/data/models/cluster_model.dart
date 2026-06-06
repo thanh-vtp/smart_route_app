@@ -15,6 +15,7 @@ class ClusterResponseModel with _$ClusterResponseModel {
     @JsonKey(name: 'total_records') required int totalRecords,
     @JsonKey(name: 'clustering_info')
     required ClusteringInfoModel clusteringInfo,
+    @JsonKey(name: 'clusters') required List<ClusterHotspotModel> clusters,
     @JsonKey(name: 'data') required List<ClusterItemModel> data,
   }) = _ClusterResponseModel;
 
@@ -29,6 +30,7 @@ class ClusterResponseModel with _$ClusterResponseModel {
       nNoise: clusteringInfo.nNoise,
       nCorePoints: clusteringInfo.nCorePoints,
       items: data.map((e) => e.toEntity()).toList(),
+      clusters: clusters.map((e) => e.toEntity()).toList(),
     );
   }
 }
@@ -69,6 +71,73 @@ class ClusterItemModel with _$ClusterItemModel {
       lng: longitude,
       clusterId: clusterId,
       isCorePoint: isCorePoint == 1, // Đổi số 1 thành true, 0 thành false
+    );
+  }
+}
+
+@freezed
+class ClusterBBoxModel with _$ClusterBBoxModel {
+  const ClusterBBoxModel._();
+
+  const factory ClusterBBoxModel({
+    required double xmin,
+    required double ymin,
+    required double xmax,
+    required double ymax,
+  }) = _ClusterBBoxModel;
+
+  factory ClusterBBoxModel.fromJson(Map<String, dynamic> json) =>
+      _$ClusterBBoxModelFromJson(json);
+
+  ClusterBBox toEntity() {
+    return ClusterBBox(xmin: xmin, ymin: ymin, xmax: xmax, ymax: ymax);
+  }
+}
+
+@freezed
+class ClusterCentroidModel with _$ClusterCentroidModel {
+  const factory ClusterCentroidModel({
+    required double lat,
+    required double lng,
+  }) = _ClusterCentroidModel;
+
+  factory ClusterCentroidModel.fromJson(Map<String, dynamic> json) =>
+      _$ClusterCentroidModelFromJson(json);
+}
+
+@freezed
+class ClusterHotspotModel with _$ClusterHotspotModel {
+  const ClusterHotspotModel._();
+
+  const factory ClusterHotspotModel({
+    @JsonKey(name: 'cluster_id') required int clusterId,
+    @JsonKey(name: 'incident_count') required int incidentCount,
+    @JsonKey(name: 'incident_object_ids') required List<int> incidentObjectIds,
+    required ClusterCentroidModel centroid,
+    @JsonKey(name: 'radius_m') required double radiusM,
+    required double density,
+    required String severity,
+    @JsonKey(name: 'cluster_type') required String clusterType,
+    required ClusterBBoxModel bbox,
+    required List<List<double>> polygon,
+  }) = _ClusterHotspotModel;
+
+  factory ClusterHotspotModel.fromJson(Map<String, dynamic> json) =>
+      _$ClusterHotspotModelFromJson(json);
+
+  ClusterHotspot toEntity() {
+    return ClusterHotspot(
+      clusterId: clusterId,
+      incidentCount: incidentCount,
+      incidentObjectIds: incidentObjectIds,
+      centerLat: centroid.lat,
+      centerLng: centroid.lng,
+      radiusM: radiusM,
+      density: density,
+      severity: severity,
+      clusterType: clusterType,
+      bbox: bbox.toEntity(),
+      polygon: polygon,
     );
   }
 }
