@@ -75,3 +75,20 @@ release-keystore.jks
 
 # Ignore all JSON files
 *.json
+
+
+# ========================
+# Supabase Local
+# ========================
+
+# Supabase Local CLI
+# Bỏ qua các file tạm thời và thư mục quản lý branch local của Supabase
+supabase/.temp/
+supabase/.branches/
+
+# NODEJS (code Edge Functions)
+node_modules/
+
+# Real data
+supabase/seed.sql
+
