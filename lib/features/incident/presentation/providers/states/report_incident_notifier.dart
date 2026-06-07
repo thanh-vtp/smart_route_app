@@ -113,12 +113,17 @@ class ReportIncidentNotifier extends _$ReportIncidentNotifier {
     }
 
     // 4. Khởi tạo Entity
+    final String finalAddress =
+        state.address ??
+        'Tọa độ: ${position.y.toStringAsFixed(4)}, ${position.x.toStringAsFixed(4)}';
+
     final incident = Incident(
       id: const Uuid().v4(),
       lat: position.y,
       lng: position.x,
       type: type,
       severity: severityStr,
+      address: finalAddress,
       description: description.trim().isEmpty ? null : description.trim(),
       status: 'active',
       reportedBy: currentUser.id, // UID từ Auth

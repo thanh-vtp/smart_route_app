@@ -24,6 +24,7 @@ mixin _$Incident {
   double get lat => throw _privateConstructorUsedError; // vĩ độ
   double get lng => throw _privateConstructorUsedError; // kinh độ
   String? get description => throw _privateConstructorUsedError;
+  String? get address => throw _privateConstructorUsedError;
   String? get reportedBy => throw _privateConstructorUsedError;
   int get upvotes => throw _privateConstructorUsedError;
   int get downvotes => throw _privateConstructorUsedError;
@@ -50,6 +51,7 @@ abstract class $IncidentCopyWith<$Res> {
       double lat,
       double lng,
       String? description,
+      String? address,
       String? reportedBy,
       int upvotes,
       int downvotes,
@@ -79,6 +81,7 @@ class _$IncidentCopyWithImpl<$Res, $Val extends Incident>
     Object? lat = null,
     Object? lng = null,
     Object? description = freezed,
+    Object? address = freezed,
     Object? reportedBy = freezed,
     Object? upvotes = null,
     Object? downvotes = null,
@@ -115,6 +118,10 @@ class _$IncidentCopyWithImpl<$Res, $Val extends Incident>
       description: freezed == description
           ? _value.description
           : description // ignore: cast_nullable_to_non_nullable
+              as String?,
+      address: freezed == address
+          ? _value.address
+          : address // ignore: cast_nullable_to_non_nullable
               as String?,
       reportedBy: freezed == reportedBy
           ? _value.reportedBy
@@ -164,6 +171,7 @@ abstract class _$$IncidentImplCopyWith<$Res>
       double lat,
       double lng,
       String? description,
+      String? address,
       String? reportedBy,
       int upvotes,
       int downvotes,
@@ -191,6 +199,7 @@ class __$$IncidentImplCopyWithImpl<$Res>
     Object? lat = null,
     Object? lng = null,
     Object? description = freezed,
+    Object? address = freezed,
     Object? reportedBy = freezed,
     Object? upvotes = null,
     Object? downvotes = null,
@@ -227,6 +236,10 @@ class __$$IncidentImplCopyWithImpl<$Res>
       description: freezed == description
           ? _value.description
           : description // ignore: cast_nullable_to_non_nullable
+              as String?,
+      address: freezed == address
+          ? _value.address
+          : address // ignore: cast_nullable_to_non_nullable
               as String?,
       reportedBy: freezed == reportedBy
           ? _value.reportedBy
@@ -271,6 +284,7 @@ class _$IncidentImpl implements _Incident {
       required this.lat,
       required this.lng,
       this.description,
+      this.address,
       this.reportedBy,
       this.upvotes = 0,
       this.downvotes = 0,
@@ -298,6 +312,8 @@ class _$IncidentImpl implements _Incident {
   @override
   final String? description;
   @override
+  final String? address;
+  @override
   final String? reportedBy;
   @override
   @JsonKey()
@@ -317,7 +333,7 @@ class _$IncidentImpl implements _Incident {
 
   @override
   String toString() {
-    return 'Incident(id: $id, arcgisObjectId: $arcgisObjectId, type: $type, severity: $severity, lat: $lat, lng: $lng, description: $description, reportedBy: $reportedBy, upvotes: $upvotes, downvotes: $downvotes, status: $status, expiresAt: $expiresAt, createdAt: $createdAt, updatedAt: $updatedAt)';
+    return 'Incident(id: $id, arcgisObjectId: $arcgisObjectId, type: $type, severity: $severity, lat: $lat, lng: $lng, description: $description, address: $address, reportedBy: $reportedBy, upvotes: $upvotes, downvotes: $downvotes, status: $status, expiresAt: $expiresAt, createdAt: $createdAt, updatedAt: $updatedAt)';
   }
 
   @override
@@ -335,6 +351,7 @@ class _$IncidentImpl implements _Incident {
             (identical(other.lng, lng) || other.lng == lng) &&
             (identical(other.description, description) ||
                 other.description == description) &&
+            (identical(other.address, address) || other.address == address) &&
             (identical(other.reportedBy, reportedBy) ||
                 other.reportedBy == reportedBy) &&
             (identical(other.upvotes, upvotes) || other.upvotes == upvotes) &&
@@ -359,6 +376,7 @@ class _$IncidentImpl implements _Incident {
       lat,
       lng,
       description,
+      address,
       reportedBy,
       upvotes,
       downvotes,
@@ -383,6 +401,7 @@ abstract class _Incident implements Incident {
       required final double lat,
       required final double lng,
       final String? description,
+      final String? address,
       final String? reportedBy,
       final int upvotes,
       final int downvotes,
@@ -405,6 +424,8 @@ abstract class _Incident implements Incident {
   double get lng;
   @override // kinh độ
   String? get description;
+  @override
+  String? get address;
   @override
   String? get reportedBy;
   @override

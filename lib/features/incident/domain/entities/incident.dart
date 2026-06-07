@@ -12,6 +12,7 @@ class Incident with _$Incident {
     required double lat, // vĩ độ
     required double lng, // kinh độ
     String? description,
+    String? address,
     String? reportedBy,
     @Default(0) int upvotes,
     @Default(0) int downvotes,

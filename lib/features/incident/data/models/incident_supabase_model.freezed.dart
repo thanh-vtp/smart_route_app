@@ -29,6 +29,7 @@ mixin _$IncidentSupabaseModel {
   double get lat => throw _privateConstructorUsedError; // vĩ độ
   double get lng => throw _privateConstructorUsedError; // kinh độ
   String? get description => throw _privateConstructorUsedError;
+  String? get address => throw _privateConstructorUsedError;
   @JsonKey(name: 'reported_by')
   String? get reportedBy => throw _privateConstructorUsedError;
   int get upvotes => throw _privateConstructorUsedError;
@@ -61,6 +62,7 @@ abstract class $IncidentSupabaseModelCopyWith<$Res> {
       double lat,
       double lng,
       String? description,
+      String? address,
       @JsonKey(name: 'reported_by') String? reportedBy,
       int upvotes,
       int downvotes,
@@ -91,6 +93,7 @@ class _$IncidentSupabaseModelCopyWithImpl<$Res,
     Object? lat = null,
     Object? lng = null,
     Object? description = freezed,
+    Object? address = freezed,
     Object? reportedBy = freezed,
     Object? upvotes = null,
     Object? downvotes = null,
@@ -127,6 +130,10 @@ class _$IncidentSupabaseModelCopyWithImpl<$Res,
       description: freezed == description
           ? _value.description
           : description // ignore: cast_nullable_to_non_nullable
+              as String?,
+      address: freezed == address
+          ? _value.address
+          : address // ignore: cast_nullable_to_non_nullable
               as String?,
       reportedBy: freezed == reportedBy
           ? _value.reportedBy
@@ -177,6 +184,7 @@ abstract class _$$IncidentSupabaseModelImplCopyWith<$Res>
       double lat,
       double lng,
       String? description,
+      String? address,
       @JsonKey(name: 'reported_by') String? reportedBy,
       int upvotes,
       int downvotes,
@@ -205,6 +213,7 @@ class __$$IncidentSupabaseModelImplCopyWithImpl<$Res>
     Object? lat = null,
     Object? lng = null,
     Object? description = freezed,
+    Object? address = freezed,
     Object? reportedBy = freezed,
     Object? upvotes = null,
     Object? downvotes = null,
@@ -241,6 +250,10 @@ class __$$IncidentSupabaseModelImplCopyWithImpl<$Res>
       description: freezed == description
           ? _value.description
           : description // ignore: cast_nullable_to_non_nullable
+              as String?,
+      address: freezed == address
+          ? _value.address
+          : address // ignore: cast_nullable_to_non_nullable
               as String?,
       reportedBy: freezed == reportedBy
           ? _value.reportedBy
@@ -285,6 +298,7 @@ class _$IncidentSupabaseModelImpl extends _IncidentSupabaseModel {
       required this.lat,
       required this.lng,
       this.description,
+      this.address,
       @JsonKey(name: 'reported_by') this.reportedBy,
       this.upvotes = 0,
       this.downvotes = 0,
@@ -315,6 +329,8 @@ class _$IncidentSupabaseModelImpl extends _IncidentSupabaseModel {
   @override
   final String? description;
   @override
+  final String? address;
+  @override
   @JsonKey(name: 'reported_by')
   final String? reportedBy;
   @override
@@ -338,7 +354,7 @@ class _$IncidentSupabaseModelImpl extends _IncidentSupabaseModel {
 
   @override
   String toString() {
-    return 'IncidentSupabaseModel(id: $id, arcgisObjectId: $arcgisObjectId, type: $type, severity: $severity, lat: $lat, lng: $lng, description: $description, reportedBy: $reportedBy, upvotes: $upvotes, downvotes: $downvotes, status: $status, expiresAt: $expiresAt, createdAt: $createdAt, updatedAt: $updatedAt)';
+    return 'IncidentSupabaseModel(id: $id, arcgisObjectId: $arcgisObjectId, type: $type, severity: $severity, lat: $lat, lng: $lng, description: $description, address: $address, reportedBy: $reportedBy, upvotes: $upvotes, downvotes: $downvotes, status: $status, expiresAt: $expiresAt, createdAt: $createdAt, updatedAt: $updatedAt)';
   }
 
   @override
@@ -356,6 +372,7 @@ class _$IncidentSupabaseModelImpl extends _IncidentSupabaseModel {
             (identical(other.lng, lng) || other.lng == lng) &&
             (identical(other.description, description) ||
                 other.description == description) &&
+            (identical(other.address, address) || other.address == address) &&
             (identical(other.reportedBy, reportedBy) ||
                 other.reportedBy == reportedBy) &&
             (identical(other.upvotes, upvotes) || other.upvotes == upvotes) &&
@@ -381,6 +398,7 @@ class _$IncidentSupabaseModelImpl extends _IncidentSupabaseModel {
       lat,
       lng,
       description,
+      address,
       reportedBy,
       upvotes,
       downvotes,
@@ -413,6 +431,7 @@ abstract class _IncidentSupabaseModel extends IncidentSupabaseModel {
       required final double lat,
       required final double lng,
       final String? description,
+      final String? address,
       @JsonKey(name: 'reported_by') final String? reportedBy,
       final int upvotes,
       final int downvotes,
@@ -441,6 +460,8 @@ abstract class _IncidentSupabaseModel extends IncidentSupabaseModel {
   double get lng;
   @override // kinh độ
   String? get description;
+  @override
+  String? get address;
   @override
   @JsonKey(name: 'reported_by')
   String? get reportedBy;

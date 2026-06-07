@@ -7,7 +7,7 @@ part of 'report_incident_notifier.dart';
 // **************************************************************************
 
 String _$reportIncidentNotifierHash() =>
-    r'9963c391d691289081a3dac6a8e22590977bc868';
+    r'563bd87e214689326f57fe403030cc8bce0e6a14';
 
 /// See also [ReportIncidentNotifier].
 @ProviderFor(ReportIncidentNotifier)

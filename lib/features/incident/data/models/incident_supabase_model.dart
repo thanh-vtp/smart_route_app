@@ -16,6 +16,7 @@ class IncidentSupabaseModel with _$IncidentSupabaseModel {
     required double lat, // vĩ độ
     required double lng, // kinh độ
     String? description,
+    String? address,
     @JsonKey(name: 'reported_by') String? reportedBy,
     @Default(0) int upvotes,
     @Default(0) int downvotes,
@@ -42,6 +43,7 @@ class IncidentSupabaseModel with _$IncidentSupabaseModel {
       lat: entity.lat,
       lng: entity.lng,
       description: entity.description,
+      address: entity.address,
       reportedBy: entity.reportedBy,
       upvotes: entity.upvotes,
       downvotes: entity.downvotes,
@@ -62,6 +64,7 @@ class IncidentSupabaseModel with _$IncidentSupabaseModel {
       lat: lat,
       lng: lng,
       description: description,
+      address: address,
       reportedBy: reportedBy,
       upvotes: upvotes,
       downvotes: downvotes,

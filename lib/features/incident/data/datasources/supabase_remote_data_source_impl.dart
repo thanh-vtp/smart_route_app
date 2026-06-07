@@ -16,6 +16,8 @@ class SupabaseRemoteDataSourceImpl implements SupabaseRemoteDataSource {
     try {
       final data = incident.toJson();
 
+      data.removeWhere((key, value) => value == null);
+
       final currentUid = _supabase.auth.currentUser?.id;
       AppLogger.data(
         '1. UID của hệ thống Auth: $currentUid',
@@ -32,7 +34,7 @@ class SupabaseRemoteDataSourceImpl implements SupabaseRemoteDataSource {
       return IncidentSupabaseModel.fromJson(response);
     } catch (e, st) {
       AppLogger.error('Create Incident Failed', error: e, stackTrace: st);
-      throw UnimplementedError();
+      rethrow;
     }
   }
 
@@ -112,10 +114,14 @@ class SupabaseRemoteDataSourceImpl implements SupabaseRemoteDataSource {
         'severity': incident.severity,
         'description': incident.description,
         'status': incident.status,
+        'expires_at': incident.expiresAt?.toUtc().toIso8601String(),
         'lat': incident.lat,
         'lng': incident.lng,
         'updated_at': DateTime.now().toUtc().toIso8601String(),
       };
+
+      // Loại bỏ các trường có giá trị null để tránh ghi đè dữ liệu không mong muốn
+      updateData.removeWhere((key, value) => value == null);
 
       final response = await _supabase
           .from(_tableName)
@@ -127,7 +133,7 @@ class SupabaseRemoteDataSourceImpl implements SupabaseRemoteDataSource {
       return IncidentSupabaseModel.fromJson(response);
     } catch (e, st) {
       AppLogger.error('Update Incident Failed', error: e, stackTrace: st);
-      throw UnimplementedError();
+      rethrow;
     }
   }
 }
