@@ -58,35 +58,26 @@ class _AuthScreenState extends ConsumerState<AuthScreen> {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     // App Branding
-                    Container(
-                      width: 64,
-                      height: 64,
-                      decoration: BoxDecoration(
-                        color: cs.primaryContainer,
-                        shape: BoxShape.circle,
-                        boxShadow: [
-                          BoxShadow(
-                            color: Colors.black.withOpacity(0.1),
-                            blurRadius: 4,
-                            offset: const Offset(0, 2),
+                    Image.asset(
+                      'assets/icons/logo_full.png',
+                      height: 60, // Chiều cao hợp lý cho logo ngang
+                      fit: BoxFit.contain,
+                      // Xử lý lỗi nếu chưa có file ảnh thật khi chạy debug
+                      errorBuilder: (context, error, stackTrace) => Column(
+                        children: [
+                          Icon(Icons.location_on, size: 48, color: cs.primary),
+                          Text(
+                            'SmartRoute',
+                            style: textTheme.headlineMedium?.copyWith(
+                              color: cs.primary,
+                              fontWeight: FontWeight.bold,
+                            ),
                           ),
                         ],
                       ),
-                      child: Icon(
-                        Icons.location_on,
-                        size: 36,
-                        color: cs.onPrimaryContainer,
-                      ),
                     ),
-                    const SizedBox(height: 16),
-                    Text(
-                      'SmartRoute',
-                      style: textTheme.headlineMedium?.copyWith(
-                        fontWeight: FontWeight.bold,
-                        color: cs.onSurface,
-                      ),
-                    ),
-                    const SizedBox(height: 32),
+
+                    const SizedBox(height: 40),
 
                     // Login Card
                     Container(
@@ -98,9 +89,9 @@ class _AuthScreenState extends ConsumerState<AuthScreen> {
                         borderRadius: BorderRadius.circular(24.0), // rounded-xl
                         boxShadow: [
                           BoxShadow(
-                            color: Colors.black.withOpacity(0.1),
+                            color: Colors.black.withOpacity(0.08),
                             blurRadius: 12,
-                            offset: const Offset(0, 4), // MD3 Level 2 approx
+                            offset: const Offset(0, 8), // MD3 Level 2 approx
                           ),
                         ],
                       ),

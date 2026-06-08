@@ -1,15 +1,10 @@
+# Cấu hình tự động tạo Màn hình chờ (Splash Screen)
 flutter_native_splash:
-  # Màu nền #F8F9FA tương ứng với AppColors.background
-  color: "#F8F9FA" 
-  # image: "assets/logo.png"
-  
-  # Bật cho cả Android và iOS
-  android: true
-  ios: true
-  web: false
-
-  # Cấu hình bắt buộc cho Android 12+ (API 31+)
+  color: "#ffffff" # Màu nền màn hình chờ (Trắng)
+  image: "assets/icons/logo_full.png"
   android_12:
-    # image: "assets/logo.png"
-    color: "#F8F9FA"
-    # icon_background_color: "#F8F9FA" # Có thể bật nếu ảnh logo của bạn cần một nền vuông phía sau
+    color: "#ffffff"
+    image: "assets/icons/logo_icon.png"
+  ios: true
+  android: true
+  web: false
