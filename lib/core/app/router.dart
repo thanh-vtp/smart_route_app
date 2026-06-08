@@ -6,7 +6,6 @@ import 'package:smart_route_app/active_navigation_screen.dart';
 import 'package:smart_route_app/core/common/domain/entities/address_result.dart';
 import 'package:smart_route_app/features/analytics/presentation/screens/analytics_screen.dart';
 import 'package:smart_route_app/features/auth/presentation/screens/auth_screen.dart';
-import 'package:smart_route_app/core/app/message.dart';
 import 'package:smart_route_app/features/auth/domain/entities/app_user.dart';
 import 'package:smart_route_app/features/auth/presentation/auth_session_provider.dart';
 import 'package:smart_route_app/main_map_view.dart';
@@ -200,22 +199,6 @@ GoRouter router(Ref ref) {
             ],
           ),
         ],
-      ),
-
-      // Message Page
-      GoRoute(
-        path: '/message',
-        name: 'message',
-        parentNavigatorKey: _rootNavigatorKey,
-        builder: (context, state) {
-          final args = state.extra as MessageArguments?;
-          if (args == null) {
-            return Scaffold(
-              body: const Center(child: Text('Khong có dữ liệu message')),
-            );
-          }
-          return MessageView(args: args);
-        },
       ),
     ],
   );

@@ -1,18 +1,23 @@
+import 'dart:convert';
+import 'dart:ui';
+
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:smart_route_app/core/app/notification_provider.dart';
+import 'package:smart_route_app/core/utils/app_logger.dart';
 import 'package:smart_route_app/firebase_options.dart';
 
-// Xử lý tin nhắn khi app đang chạy ngầm (background)
+// Xử lý tin nhắn BACKGROUND (App đang chạy ngầm)
 @pragma('vm:entry-point')
 Future<void> firebaseMessagingBackgroundHandler(RemoteMessage message) async {
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
-  await setupFlutterNotifications();
-  showFlutterNotification(message);
-  // If you're going to use other Firebase services in the background, such as Firestore,
-  // make sure you call `initializeApp` before using other Firebase services.
-  print('Handling a background message ${message.messageId}');
+  AppLogger.debug(
+    'Handling a background message ${message.messageId}',
+    name: 'set_up_notification',
+  );
 }
 
 /// Create a [AndroidNotificationChannel] for heads up notifications
@@ -20,7 +25,7 @@ late AndroidNotificationChannel channel;
 
 bool isFlutterLocalNotificationsInitialized = false;
 
-Future<void> setupFlutterNotifications() async {
+Future<void> setupFlutterNotifications(ProviderContainer container) async {
   if (isFlutterLocalNotificationsInitialized) {
     return;
   }
@@ -51,13 +56,56 @@ Future<void> setupFlutterNotifications() async {
     badge: true,
     sound: true,
   );
+
+  // KHỐI NÀY: XỬ LÝ KHI NGƯỜI DÙNG BẤM VÀO THÔNG BÁO FOREGROUND
+  const AndroidInitializationSettings initializationSettingsAndroid =
+      AndroidInitializationSettings('ic_notification');
+  const InitializationSettings initializationSettings = InitializationSettings(
+    android: initializationSettingsAndroid,
+  );
+
+  // LẮNG NGHE SỰ KIỆN CLICK VÀO LOCAL NOTIFICATION
+  await flutterLocalNotificationsPlugin.initialize(
+    settings: initializationSettings,
+    onDidReceiveNotificationResponse: (NotificationResponse response) {
+      if (response.payload != null) {
+        AppLogger.debug(
+          'Local Notification Clicked with payload: ${response.payload}',
+        );
+        try {
+          // Parse cái string JSON lúc nãy truyền vào
+          final data = jsonDecode(response.payload!);
+
+          if (data['type'] == 'incident' && data['incident_id'] != null) {
+            final incidentId = data['incident_id'] as String;
+
+            // ID SỰ CỐ VÀO HỆ THỐNG
+            // MainMapView đang listen cái provider này sẽ tự động bật BottomSheet lên!
+            container
+                    .read(selectedIncidentIdFromNotificationProvider.notifier)
+                    .state =
+                incidentId;
+          }
+        } catch (e) {
+          AppLogger.error('Lỗi khi parse payload notification', error: e);
+        }
+      }
+    },
+  );
+  // KHỐI NÀY: XỬ LÝ KHI NGƯỜI DÙNG BẤM VÀO THÔNG BÁO FOREGROUND
+
   isFlutterLocalNotificationsInitialized = true;
 }
 
 void showFlutterNotification(RemoteMessage message) {
-  print('foreground message received: ${message.messageId}');
+  AppLogger.debug(
+    'foreground message received: ${message.messageId}',
+    name: 'set_up_notification',
+  );
+
   RemoteNotification? notification = message.notification;
   AndroidNotification? android = message.notification?.android;
+
   if (notification != null && android != null && !kIsWeb) {
     flutterLocalNotificationsPlugin.show(
       id: notification.hashCode,
@@ -70,9 +118,15 @@ void showFlutterNotification(RemoteMessage message) {
           channelDescription: channel.description,
           // TODO add a proper drawable resource to android, for now using
           //      one that already exists in example app.
-          icon: 'launch_background',
+          icon: 'ic_notification',
+          color: const Color(0xFF003265),
+          importance: Importance.max,
+          priority: Priority.high,
         ),
       ),
+
+      // DATA THÀNH JSON STRING ĐỂ TRUYỀN VÀO PAYLOAD
+      payload: jsonEncode(message.data),
     );
   }
 }

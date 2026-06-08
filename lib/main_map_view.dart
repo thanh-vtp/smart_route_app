@@ -2,6 +2,7 @@ import 'package:arcgis_maps/arcgis_maps.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:smart_route_app/core/app/notification_provider.dart';
 import 'package:smart_route_app/core/common/map/interactions/interaction_result.dart';
 import 'package:smart_route_app/core/common/map/providers/map_controller_bundle_provider.dart';
 import 'package:smart_route_app/core/common/map/providers/map_facade_provider.dart';
@@ -78,20 +79,20 @@ class _MainMapViewState extends ConsumerState<MainMapView> {
     ) async {
       final clusterResult = next.clusterResult;
 
-      AppLogger.debug(
-        'Cluster result updated: $clusterResult',
-        name: 'MainMapView',
-      );
+      // AppLogger.debug(
+      //   'Cluster result updated: $clusterResult',
+      //   name: 'MainMapView',
+      // );
 
       if (clusterResult != null) {
         await ref
             .read(mapUiProvider.notifier)
             .renderClusters(clusterResult.clusters);
 
-        AppLogger.debug(
-          'Cluster count = ${clusterResult.clusters.length}',
-          name: 'MainMapView',
-        );
+        // AppLogger.debug(
+        //   'Cluster count = ${clusterResult.clusters.length}',
+        //   name: 'MainMapView',
+        // );
       }
     });
 
@@ -117,6 +118,22 @@ class _MainMapViewState extends ConsumerState<MainMapView> {
     final hasRoute = routeState.routeResult != null;
 
     final isNavigating = mapUiState.isNavigating; // Trạng thái đang dẫn đường
+
+    ref.listen<String?>(selectedIncidentIdFromNotificationProvider, (
+      previous,
+      nextIncidentId,
+    ) {
+      if (nextIncidentId != null) {
+        // Mở BottomSheet Chi tiết sự cố
+        _showIncidentDetail(context, nextIncidentId);
+
+        // Reset lại Provider về null để lần sau user bấm thông báo khác nó còn chạy tiếp
+        Future.microtask(() {
+          ref.read(selectedIncidentIdFromNotificationProvider.notifier).state =
+              null;
+        });
+      }
+    });
 
     return Scaffold(
       backgroundColor: cs.surface,

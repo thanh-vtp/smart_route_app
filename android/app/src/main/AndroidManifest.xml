@@ -51,6 +51,13 @@
                 <action android:name="android.intent.action.MAIN"/>
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
+
+            <!-- KHỐI CONFIG ĐỂ BẤM THÔNG BÁO MỞ ĐƯỢC APP -->
+            <intent-filter>
+                <action android:name="FLUTTER_NOTIFICATION_CLICK" />
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+            <!-- KHỐI CONFIG ĐỂ BẤM THÔNG BÁO MỞ ĐƯỢC APP -->
         </activity>
         
         <!-- Callback activity for flutter_web_auth_2 -->
@@ -89,6 +96,11 @@
                 <action android:name="com.htc.intent.action.QUICKBOOT_POWERON"/>
             </intent-filter>
         </receiver>
+        <!-- Config Để báo cho Android biết hãy dùng Kênh ưu tiên cao làm mặc định -->
+        <meta-data
+            android:name="com.google.firebase.messaging.default_notification_channel_id"
+            android:value="high_importance_channel" />
+        <!-- Config Để báo cho Android biết hãy dùng Kênh ưu tiên cao làm mặc định -->
     </application>
     <!-- Required to query activities that can process text, see:
          https://developer.android.com/training/package-visibility and

@@ -12,8 +12,10 @@ class _SplashScreenState extends State<SplashScreen> {
   @override
   void initState() {
     super.initState();
-    // Tắt Native Splash Screen để nhường chỗ cho giao diện Flutter này
-    FlutterNativeSplash.remove();
+    // Đợi 1 chút để hiệu ứng chuyển cảnh mượt mà hơn rồi mới tắt Native Splash
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      FlutterNativeSplash.remove();
+    });
   }
 
   @override
@@ -28,38 +30,39 @@ class _SplashScreenState extends State<SplashScreen> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            // Logo Box - Copy y hệt từ LoginScreen để tạo sự đồng bộ
-            Container(
-              width: 140,
-              height: 140,
-              decoration: BoxDecoration(
-                color: colors.surface,
-                borderRadius: BorderRadius.circular(16),
-                border: Border.all(color: colors.outlineVariant),
-              ),
-              child: Center(
-                child: Icon(
-                  Icons.egg_alt_outlined,
-                  size: 64,
-                  color: colors.primary, // Màu xanh #00488D
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 40.0),
+              child: Image.asset(
+                'assets/icons/logo_full.png', // Ở Flutter thì dùng Full Logo thoải mái
+                height: 80,
+                width: MediaQuery.of(context).size.width * 0.7,
+                fit: BoxFit.contain, // Đảm bảo logo tự co giãn không bị cắt
+                errorBuilder: (context, error, stackTrace) => Column(
+                  children: [
+                    Icon(Icons.location_on, size: 64, color: colors.primary),
+                    const SizedBox(height: 16),
+                    Text(
+                      'SmartRoute',
+                      style: theme.textTheme.headlineLarge?.copyWith(
+                        color: colors.primary,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                  ],
                 ),
               ),
             ),
-            const SizedBox(height: 32),
 
-            // Tên App
-            Text(
-              'SmartHatch Enterprise',
-              style: theme.textTheme.headlineLarge?.copyWith(
+            const SizedBox(height: 64),
+
+            SizedBox(
+              width: 32,
+              height: 32,
+              child: CircularProgressIndicator(
                 color: colors.primary,
+                strokeWidth: 3,
               ),
-              textAlign: TextAlign.center,
             ),
-
-            const SizedBox(height: 48),
-
-            // Loading Indicator (Màu Primary)
-            CircularProgressIndicator(color: colors.primary),
           ],
         ),
       ),

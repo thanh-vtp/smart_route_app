@@ -29,15 +29,15 @@ class ClusterRemoteDataSourceImpl implements ClusterRemoteDataSource {
 
       final data = json.decode(response.body) as Map<String, dynamic>;
 
-      AppLogger.debug(
-        'Cluster data: $data',
-        name: 'ClusterRemoteDataSourceImpl',
-      );
+      // AppLogger.debug(
+      //   'Cluster data: $data',
+      //   name: 'ClusterRemoteDataSourceImpl',
+      // );
 
-      AppLogger.debug(
-        'Fields: ${data.keys.toList().toString()}',
-        name: 'ClusterRemoteDataSourceImpl',
-      );
+      // AppLogger.debug(
+      //   'Fields: ${data.keys.toList().toString()}',
+      //   name: 'ClusterRemoteDataSourceImpl',
+      // );
 
       if (data['status'] != 'success') {
         throw ServerFailure(data['message'] ?? 'Lỗi tính toán phân cụm');

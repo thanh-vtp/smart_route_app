@@ -120,32 +120,50 @@ Deno.serve(async (req: Request) => {
 function buildNotificationContent(
   incident: IncidentRecord,
 ): { title: string; body: string } {
-  const typeMap: Record<string, string> = {
-    "crash": "Tai nạn",
-    "traffic": "Kẹt xe",
-    "police": "Chốt CSGT",
-    "hazard": "Nguy hiểm",
-    "camera": "Camera",
-    "closure": "Đường cấm",
+  // 1. Map Dữ liệu chuẩn xác: Tên + Emoji + Tính chất cảnh báo
+  const typeMap: Record<
+    string,
+    { label: string; emoji: string; isAlert: boolean }
+  > = {
+    "crash": { label: "Tai nạn", emoji: "💥", isAlert: true },
+    "traffic": { label: "Kẹt xe", emoji: "🚦", isAlert: true },
+    "hazard": { label: "Nguy hiểm", emoji: "⚠️", isAlert: true },
+    "closure": { label: "Đường cấm", emoji: "⛔", isAlert: true },
+    "police": { label: "Chốt CSGT", emoji: "👮", isAlert: false },
+    "camera": { label: "Camera giao thông", emoji: "🎦", isAlert: false },
   };
-  const typeName = typeMap[incident.type] || "Sự cố";
 
-  const sevMap: Record<string, string> = {
-    "high": "nghiêm trọng",
-    "medium": "trung bình",
-    "low": "nhẹ",
-  };
-  const sevName = sevMap[incident.severity] || "";
+  const typeInfo = typeMap[incident.type] ||
+    { label: "Sự cố giao thông", emoji: "🔔", isAlert: false };
 
-  const title = `🚨 ${typeName} ${sevName}`.trim();
+  // 2. Xử lý Mức độ (Chỉ ghép chữ mức độ cho những loại sự cố mang tính chất Alert)
+  let severityText = "";
+  if (typeInfo.isAlert) {
+    if (incident.severity === "high") severityText = " nghiêm trọng";
+    else if (incident.severity === "medium") severityText = " đáng chú ý";
+    else if (incident.severity === "low") severityText = " nhẹ";
+  }
 
-  let body = `Tại: ${incident.address || "Khu vực gần bạn"}.`;
+  // 3. XÂY DỰNG TITLE (Tiêu đề)
+  // Phân loại "Cảnh báo" (cho tai nạn, kẹt xe) và "Thông báo" (cho Camera, CSGT)
+  const prefix = typeInfo.isAlert ? "Cảnh báo:" : "Thông báo:";
+  const title = `${typeInfo.emoji} ${prefix} ${typeInfo.label}${severityText}`;
 
+  // 4. XÂY DỰNG BODY (Nội dung)
+  const address = incident.address ? incident.address : "Khu vực gần bạn";
+  let body = `🌏 Vị trí: ${address}`;
+
+  // Cắt ngắn mô tả nếu có
   if (incident.description && incident.description.trim() !== "") {
-    const shortDesc = incident.description.length > 60
-      ? incident.description.substring(0, 60) + "..."
-      : incident.description;
-    body += `\nChi tiết: ${shortDesc}`;
+    const shortDesc = incident.description.length > 50
+      ? incident.description.substring(0, 50) + "..."
+      : incident.description.trim();
+    body += `\n📝 Chi tiết: ${shortDesc}`;
+  }
+
+  // Lời khuyên an toàn (Tùy chọn, tạo cảm giác app quan tâm user)
+  if (typeInfo.isAlert) {
+    body += `\nChú ý an toàn khi di chuyển qua đây!`;
   }
 
   return { title, body };
@@ -273,14 +291,16 @@ async function sendFCM(
               title: title,
               body: body,
             },
-            // android: {
-            //   notification: {
-            //     icon: "ic_notification",
-            //     color: "#003265",
-            //     sound: "default",
-            //     click_action: "FLUTTER_NOTIFICATION_CLICK",
-            //   },
-            // },
+            android: {
+              priority: "HIGH", // ĐÁNH THỨC APP KHI BỊ KILLED VÀ BẬT SÁNG MÀN HÌNH
+              notification: {
+                icon: "ic_notification",
+                color: "#003265",
+                sound: "default",
+                click_action: "FLUTTER_NOTIFICATION_CLICK",
+                channel_id: "high_importance_channel", // trùng với channel ID đã khai báo trong AndroidManifest.xml, ép buộc Android sử dụng kênh ưu tiên cao để hiển thị thông báo
+              },
+            },
             data: {
               type: "incident",
               incident_id: incidentId,
@@ -291,11 +311,11 @@ async function sendFCM(
       },
     );
 
-    // 🟢 BẢO VỆ 1: Đọc Dữ liệu ĐÚNG 1 LẦN DUY NHẤT dưới dạng chuỗi Text (Tránh lỗi Body consumed)
+    // BẢO VỆ 1: Đọc Dữ liệu ĐÚNG 1 LẦN DUY NHẤT dưới dạng chuỗi Text (Tránh lỗi Body consumed)
     const responseText = await res.text();
 
     if (!res.ok) {
-      // 🟢 BẢO VỆ 2: Khởi tạo biến với Interface chuẩn thay vì dùng 'any'
+      // BẢO VỆ 2: Khởi tạo biến với Interface chuẩn thay vì dùng 'any'
       let data: FcmErrorResponse = {};
 
       try {
@@ -329,7 +349,7 @@ async function sendFCM(
       }
     }
   } catch (err) {
-    // 🟢 BẢO VỆ 3: Xử lý Exception chặt chẽ theo chuẩn TS 6.x (ép kiểu err thành Error)
+    // BẢO VỆ 3: Xử lý Exception chặt chẽ theo chuẩn TS 6.x (ép kiểu err thành Error)
     const errorMessage = err instanceof Error ? err.message : String(err);
     console.error(
       `[FCM] Lỗi Fetch/Mạng khi gửi tới token ${token}:`,
