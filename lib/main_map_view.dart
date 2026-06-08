@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:smart_route_app/core/app/notification_provider.dart';
+import 'package:smart_route_app/core/app/router.dart';
 import 'package:smart_route_app/core/common/map/interactions/interaction_result.dart';
 import 'package:smart_route_app/core/common/map/providers/map_controller_bundle_provider.dart';
 import 'package:smart_route_app/core/common/map/providers/map_facade_provider.dart';
@@ -952,8 +953,8 @@ class _MainMapViewState extends ConsumerState<MainMapView> {
             // Notification Bell with Red Dot
             GestureDetector(
               onTap: () {
-                // TODO '/explore/notifications' is the route for NotificationScreen
-                context.push('/explore/notifications');
+                // TODO: Navigate to NotificationScreen
+                context.go(AppRoutes.notifications);
               },
               child: Stack(
                 clipBehavior: Clip.none,

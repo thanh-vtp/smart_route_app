@@ -6,21 +6,20 @@ part of 'repository_providers.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$userProfileRepositoryHash() =>
-    r'77b3aced2ba4cd75d704230204b3e6146bf71774';
+String _$profileRepositoryHash() => r'30cbeff5fa01aabd2170e2d305f9197003334883';
 
-/// See also [userProfileRepository].
-@ProviderFor(userProfileRepository)
-final userProfileRepositoryProvider = Provider<UserProfileRepository>.internal(
-  userProfileRepository,
-  name: r'userProfileRepositoryProvider',
+/// See also [profileRepository].
+@ProviderFor(profileRepository)
+final profileRepositoryProvider = Provider<ProfileRepository>.internal(
+  profileRepository,
+  name: r'profileRepositoryProvider',
   debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
       ? null
-      : _$userProfileRepositoryHash,
+      : _$profileRepositoryHash,
   dependencies: null,
   allTransitiveDependencies: null,
 );
 
-typedef UserProfileRepositoryRef = ProviderRef<UserProfileRepository>;
+typedef ProfileRepositoryRef = ProviderRef<ProfileRepository>;
 // ignore_for_file: type=lint
 // ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member

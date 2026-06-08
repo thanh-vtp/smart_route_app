@@ -121,9 +121,9 @@ class _MainScaffoldState extends ConsumerState<MainScaffold> {
             label: 'Reports',
           ),
           NavigationDestination(
-            icon: Icon(Icons.bookmark_outline),
-            selectedIcon: Icon(Icons.bookmark),
-            label: 'Saved',
+            icon: Icon(Icons.notifications_none_outlined),
+            selectedIcon: Icon(Icons.notifications),
+            label: 'Notifications',
           ),
         ],
       ),

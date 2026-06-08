@@ -4,15 +4,16 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:smart_route_app/active_navigation_screen.dart';
 import 'package:smart_route_app/core/common/domain/entities/address_result.dart';
+import 'package:smart_route_app/core/utils/app_logger.dart';
 import 'package:smart_route_app/features/analytics/presentation/screens/analytics_screen.dart';
 import 'package:smart_route_app/features/auth/presentation/screens/auth_screen.dart';
 import 'package:smart_route_app/features/auth/domain/entities/app_user.dart';
 import 'package:smart_route_app/features/auth/presentation/auth_session_provider.dart';
+import 'package:smart_route_app/features/profile/presentation/screens/account_management_screen.dart';
 import 'package:smart_route_app/main_map_view.dart';
 import 'package:smart_route_app/main_scaffold.dart';
 import 'package:smart_route_app/notification_screen.dart';
 import 'package:smart_route_app/route_setup_screen.dart';
-import 'package:smart_route_app/saved_places_screen.dart';
 import 'package:smart_route_app/search_screen.dart';
 import 'package:smart_route_app/splash_screen.dart';
 
@@ -23,23 +24,36 @@ class AppRoutes {
   static const String login = '/login';
   static const String explore = '/explore';
   static const String search = 'search';
-  static const String notifications = 'notifications';
+  static const String notifications = '/notifications';
   static const String reports = '/reports';
   static const String savedPlaces = '/saved-places';
+  static const String account = 'account';
 }
 
 final _rootNavigatorKey = GlobalKey<NavigatorState>(debugLabel: 'root');
 
 @riverpod
 GoRouter router(Ref ref) {
-  // Lắng nghe auth state để redirect
-  final authState = ref.watch(authSessionProvider);
+  // Tạo một ValueNotifier để lắng nghe sự thay đổi Auth mà không làm build lại Router
+  final authStateListener = ValueNotifier<AsyncValue<AppUser>>(
+    const AsyncData(AppUser(id: '', email: '')),
+  );
+
+  // Lắng nghe sự thay đổi của authSessionProvider và truyền vào listener
+  ref.listen<AsyncValue<AppUser>>(authSessionProvider, (previous, next) {
+    authStateListener.value = next;
+    AppLogger.debug('Auth state changed, new value: $next', name: 'Router');
+  });
 
   return GoRouter(
     debugLogDiagnostics: true,
     initialLocation: AppRoutes.explore, // '/explore',
     navigatorKey: _rootNavigatorKey,
+    refreshListenable:
+        authStateListener, // Router sẽ tự động gọi redirect khi authStateListener thay đổi
     redirect: (context, state) {
+      final authState = authStateListener.value;
+
       if (authState.isLoading) {
         return AppRoutes.splash; // '/splash';
       }
@@ -156,12 +170,6 @@ GoRouter router(Ref ref) {
                   ),
 
                   GoRoute(
-                    path: 'notifications',
-                    parentNavigatorKey: _rootNavigatorKey,
-                    builder: (context, state) => const NotificationScreen(),
-                  ),
-
-                  GoRoute(
                     path: 'route-setup',
                     parentNavigatorKey: _rootNavigatorKey,
                     name: 'go',
@@ -186,6 +194,14 @@ GoRouter router(Ref ref) {
               GoRoute(
                 path: AppRoutes.reports, // '/reports',
                 builder: (context, state) => const AnalyticsScreen(),
+                routes: [
+                  GoRoute(
+                    path: AppRoutes.account, // 'account'
+                    parentNavigatorKey: _rootNavigatorKey,
+                    builder: (context, state) =>
+                        const AccountManagementScreen(),
+                  ),
+                ],
               ),
             ],
           ),
@@ -193,11 +209,21 @@ GoRouter router(Ref ref) {
           StatefulShellBranch(
             routes: [
               GoRoute(
-                path: AppRoutes.savedPlaces, // '/saved-places',
-                builder: (context, state) => const SavedPlacesScreen(),
+                path: '/notifications',
+                builder: (context, state) => const NotificationScreen(),
               ),
             ],
           ),
+
+          // TODO: Sẽ phát triển thêm tính năng Lưu đại điểm trong tương lai
+          // StatefulShellBranch(
+          //   routes: [
+          //     GoRoute(
+          //       path: AppRoutes.savedPlaces, // '/saved-places',
+          //       builder: (context, state) => const SavedPlacesScreen(),
+          //     ),
+          //   ],
+          // ),
         ],
       ),
     ],

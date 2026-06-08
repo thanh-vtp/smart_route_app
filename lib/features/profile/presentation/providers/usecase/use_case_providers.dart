@@ -1,18 +1,28 @@
 import 'package:riverpod_annotation/riverpod_annotation.dart';
-import 'package:smart_route_app/features/profile/domain/usecases/get_info_usecase.dart';
-import 'package:smart_route_app/features/profile/domain/usecases/update_info_usecase.dart';
+import 'package:smart_route_app/features/profile/domain/usecases/get_profile_settings_usecase.dart';
+import 'package:smart_route_app/features/profile/domain/usecases/update_profile_name_usecase.dart';
+import 'package:smart_route_app/features/profile/domain/usecases/update_push_setting_usecase.dart';
 import 'package:smart_route_app/features/profile/presentation/providers/repositories/repository_providers.dart';
 
 part 'use_case_providers.g.dart';
 
-@riverpod
-GetInfoUseCase getInfoUseCase(GetInfoUseCaseRef ref) {
-  final repository = ref.watch(userProfileRepositoryProvider);
-  return GetInfoUseCase(repository);
+@Riverpod(keepAlive: true)
+UpdatePushSettingUseCase updatePushSettingUseCase(
+  UpdatePushSettingUseCaseRef ref,
+) {
+  return UpdatePushSettingUseCase(ref.watch(profileRepositoryProvider));
 }
 
-@riverpod
-UpdateInfoUseCase updateInfoUseCase(UpdateInfoUseCaseRef ref) {
-  final repository = ref.watch(userProfileRepositoryProvider);
-  return UpdateInfoUseCase(repository);
+@Riverpod(keepAlive: true)
+GetProfileSettingsUseCase getProfileSettingsUseCase(
+  GetProfileSettingsUseCaseRef ref,
+) {
+  return GetProfileSettingsUseCase(ref.watch(profileRepositoryProvider));
+}
+
+@Riverpod(keepAlive: true)
+UpdateProfileNameUseCase updateProfileNameUseCase(
+  UpdateProfileNameUseCaseRef ref,
+) {
+  return UpdateProfileNameUseCase(ref.watch(profileRepositoryProvider));
 }

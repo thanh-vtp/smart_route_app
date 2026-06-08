@@ -6,24 +6,22 @@ part of 'remote_datasource_providers.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$userProfileDatasourceHash() =>
-    r'9c03b7295b09f7c20dfcacac4f1f50503b40f0ee';
+String _$profileRemoteDataSourceHash() =>
+    r'7cdde6702c338d0bcd3068792ae44f628be0ca97';
 
-/// dùng Ref hoặc tự định nghĩa Ref type
-/// Quy tắc: name function + Ref
-///
-/// Copied from [userProfileDatasource].
-@ProviderFor(userProfileDatasource)
-final userProfileDatasourceProvider = Provider<UserProfileDatasource>.internal(
-  userProfileDatasource,
-  name: r'userProfileDatasourceProvider',
+/// See also [profileRemoteDataSource].
+@ProviderFor(profileRemoteDataSource)
+final profileRemoteDataSourceProvider =
+    Provider<ProfileRemoteDataSource>.internal(
+  profileRemoteDataSource,
+  name: r'profileRemoteDataSourceProvider',
   debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
       ? null
-      : _$userProfileDatasourceHash,
+      : _$profileRemoteDataSourceHash,
   dependencies: null,
   allTransitiveDependencies: null,
 );
 
-typedef UserProfileDatasourceRef = ProviderRef<UserProfileDatasource>;
+typedef ProfileRemoteDataSourceRef = ProviderRef<ProfileRemoteDataSource>;
 // ignore_for_file: type=lint
 // ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member

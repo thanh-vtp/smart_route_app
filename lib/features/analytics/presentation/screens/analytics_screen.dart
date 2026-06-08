@@ -1,7 +1,8 @@
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:smart_route_app/account_management_screen.dart';
+import 'package:smart_route_app/features/profile/presentation/screens/account_management_screen.dart';
 import 'package:smart_route_app/features/analytics/domain/entities/analytics_data.dart';
 import 'package:smart_route_app/features/analytics/presentation/states/analytics_notifier.dart';
 import 'package:smart_route_app/features/analytics/presentation/states/analytics_state.dart';
@@ -35,14 +36,8 @@ class AnalyticsScreen extends ConsumerWidget {
           IconButton(
             icon: const Icon(Icons.settings_outlined),
             onPressed: () {
-              // Dùng tính năng Push của Navigator để đẩy màn hình Account Management đè lên
-              Navigator.of(context).push(
-                MaterialPageRoute(
-                  builder: (context) => const AccountManagementScreen(),
-                ),
-              );
-
-              // Hoặc nếu dùng GoRouter: context.push('/account');
+              // TODO: Điều hướng đến trang quản lý tài khoản
+              context.push('/reports/account');
             },
           ),
         ],
