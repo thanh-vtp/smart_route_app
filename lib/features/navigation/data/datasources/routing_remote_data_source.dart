@@ -3,9 +3,11 @@ import 'package:smart_route_app/features/navigation/data/models/routing_model.da
 abstract class RoutingRemoteDataSource {
   /// Gọi API ArcGIS để tính toán tuyến đường
   /// [stops] là danh sách tọa độ (Kinh độ, Vĩ độ)
-  /// [avoidIncidents] Bật/Tắt tính năng thông minh né sự cố
+  /// [barriers] là danh sách tọa độ sự cố cần né (Tùy chọn)
+  /// [impedanceAttribute] Thuộc tính tối ưu: 'TravelTime' hoặc 'Kilometers'
   Future<RouteResponseModel> solveRoute({
     required List<Map<String, double>> stops,
-    bool avoidIncidents = true,
+    List<Map<String, double>>? barriers,
+    String? impedanceAttribute,
   });
 }

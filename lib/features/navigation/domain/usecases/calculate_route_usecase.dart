@@ -12,9 +12,11 @@ class CalculateRouteUseCase {
   /// Gọi hàm để tính toán tuyến đường
   /// [stops]: Danh sách các điểm cần đi qua (ít nhất 2 điểm: Bắt đầu và Kết thúc)
   /// [avoidIncidents]: Mặc định = true. Tự động bẻ lái né các sự cố đang diễn ra.
+  /// [impedanceAttribute]: Thuộc tính tối ưu ('TravelTime' hoặc 'Kilometers')
   Future<Either<Failure, RouteResult>> call({
     required List<RoutePoint> stops,
     bool avoidIncidents = true,
+    String? impedanceAttribute,
   }) async {
     // 1. Kiểm tra số lượng điểm dừng (Bắt buộc phải có điểm Đi và điểm Đến)
     if (stops.length < 2) {
@@ -42,6 +44,7 @@ class CalculateRouteUseCase {
     return await _repository.calculateRoute(
       stops: stops,
       avoidIncidents: avoidIncidents,
+      impedanceAttribute: impedanceAttribute,
     );
   }
 }

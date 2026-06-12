@@ -6,7 +6,7 @@ part of 'repository_providers.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$routingRepositoryHash() => r'1451f66b27511905210b960eb47650f11a6952b4';
+String _$routingRepositoryHash() => r'1da5f3d1683484150eea40145ab71ab81522150a';
 
 /// See also [routingRepository].
 @ProviderFor(routingRepository)

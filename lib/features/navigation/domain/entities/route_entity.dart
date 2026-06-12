@@ -93,7 +93,106 @@ class RouteDirection with _$RouteDirection {
 }
 
 // ====================================================================
-// 5. ENUM CHỈ ĐƯỜNG (Có sẵn Icon và Màu sắc cho UI)
+// 5. ROUTE STRATEGY (Chiến lược tìm đường)
+// ====================================================================
+enum RouteStrategy {
+  fastest, // Nhanh nhất (Tối ưu theo thời gian)
+  shortest, // Ngắn nhất (Tối ưu theo quãng đường)
+  balanced; // Cân bằng (Default - tránh sự cố)
+
+  String get name {
+    switch (this) {
+      case RouteStrategy.fastest:
+        return 'Nhanh nhất';
+      case RouteStrategy.shortest:
+        return 'Ngắn nhất';
+      case RouteStrategy.balanced:
+        return 'Cân bằng';
+    }
+  }
+
+  String get description {
+    switch (this) {
+      case RouteStrategy.fastest:
+        return 'Tối ưu thời gian di chuyển';
+      case RouteStrategy.shortest:
+        return 'Tối ưu quãng đường';
+      case RouteStrategy.balanced:
+        return 'Cân bằng thời gian và quãng đường, tránh sự cố';
+    }
+  }
+
+  String get impedanceAttribute {
+    switch (this) {
+      case RouteStrategy.fastest:
+        return 'TravelTime';
+      case RouteStrategy.shortest:
+        return 'Kilometers';
+      case RouteStrategy.balanced:
+        return 'TravelTime'; // Default with incident avoidance
+    }
+  }
+}
+
+// ====================================================================
+// 6. ALTERNATIVE ROUTES RESULT (Kết quả nhiều lộ trình)
+// ====================================================================
+@freezed
+class AlternativeRoutesResult with _$AlternativeRoutesResult {
+  const AlternativeRoutesResult._();
+
+  const factory AlternativeRoutesResult({
+    required RouteResult
+    recommendedRoute, // Route được đề xuất (thường là balanced)
+    required List<RouteAlternative> alternatives, // Các route thay thế
+  }) = _AlternativeRoutesResult;
+
+  // Tổng số routes có sẵn
+  int get totalRoutes => 1 + alternatives.length;
+}
+
+// ====================================================================
+// 7. ROUTE ALTERNATIVE (Mỗi lộ trình thay thế)
+// ====================================================================
+@freezed
+class RouteAlternative with _$RouteAlternative {
+  const RouteAlternative._();
+
+  const factory RouteAlternative({
+    required RouteStrategy strategy,
+    required RouteResult route,
+    String? comparisonNote, // So sánh với recommended route
+  }) = _RouteAlternative;
+
+  // So sánh với route chính
+  String getComparisonWith(RouteResult mainRoute) {
+    final timeDiff = route.totalTimeMinutes - mainRoute.totalTimeMinutes;
+    final distDiff = route.totalDistanceMeters - mainRoute.totalDistanceMeters;
+
+    if (timeDiff.abs() < 1 && distDiff.abs() < 100) {
+      return 'Tương đương';
+    }
+
+    final List<String> parts = [];
+
+    if (timeDiff > 0) {
+      parts.add('+${timeDiff.toStringAsFixed(0)} phút');
+    } else if (timeDiff < 0) {
+      parts.add('${timeDiff.toStringAsFixed(0)} phút');
+    }
+
+    if (distDiff > 0) {
+      parts.add('+${(distDiff / 1000).toStringAsFixed(1)} km');
+    } else if (distDiff < 0) {
+      parts.add('${(distDiff / 1000).toStringAsFixed(1)} km');
+    }
+
+    return parts.join(', ');
+  }
+}
+
+// ====================================================================
+// 8. ENUM CHỈ ĐƯỜNG (Có sẵn Icon và Màu sắc cho UI)
 // ====================================================================
 enum ManeuverType {
   depart,

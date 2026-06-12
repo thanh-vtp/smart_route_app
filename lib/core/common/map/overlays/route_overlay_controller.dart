@@ -25,6 +25,50 @@ class RouteOverlayController {
     await _drawStartEnd(route);
   }
 
+  /// Render multiple alternative routes with different visual styles
+  Future<void> renderAlternativeRoutes({
+    required route_entity.RouteResult recommendedRoute,
+    required List<route_entity.RouteAlternative> alternatives,
+    required route_entity.RouteStrategy selectedStrategy,
+  }) async {
+    clear();
+
+    // Tạo map tất cả routes với strategy
+    final allRoutes =
+        <
+          ({
+            route_entity.RouteStrategy strategy,
+            route_entity.RouteResult route,
+          })
+        >[
+          (
+            strategy: route_entity.RouteStrategy.balanced,
+            route: recommendedRoute,
+          ),
+          ...alternatives.map(
+            (alt) => (strategy: alt.strategy, route: alt.route),
+          ),
+        ];
+
+    // Vẽ tất cả routes
+    for (final item in allRoutes) {
+      if (item.route.polylinePoints.isEmpty) continue;
+
+      final polyline = _buildPolyline(item.route.polylinePoints);
+      final isSelected = item.strategy == selectedStrategy;
+
+      await _drawPolyline(
+        polyline,
+        color: isSelected ? Colors.blue : Colors.grey.withOpacity(0.6),
+        width: isSelected ? 6 : 4,
+        zIndex: isSelected ? 100 : 50,
+      );
+    }
+
+    // Vẽ start/end markers (highest z-index)
+    await _drawStartEnd(recommendedRoute);
+  }
+
   Polyline _buildPolyline(List<route_entity.RoutePoint> points) {
     final builder = PolylineBuilder(spatialReference: SpatialReference.wgs84);
     for (final point in points) {
@@ -34,16 +78,21 @@ class RouteOverlayController {
     return builder.toGeometry() as Polyline;
   }
 
-  Future<void> _drawPolyline(Polyline polyline) async {
+  Future<void> _drawPolyline(
+    Polyline polyline, {
+    Color color = Colors.blue,
+    double width = 6,
+    int zIndex = 100,
+  }) async {
     final symbol = SimpleLineSymbol(
       style: SimpleLineSymbolStyle.solid,
-      color: Colors.blue,
-      width: 6,
+      color: color,
+      width: width,
     );
 
     final graphic = Graphic(geometry: polyline, symbol: symbol);
 
-    graphic.zIndex = 100;
+    graphic.zIndex = zIndex;
 
     routeOverlay.graphics.add(graphic);
   }

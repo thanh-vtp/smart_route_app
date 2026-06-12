@@ -804,3 +804,348 @@ abstract class _RouteDirection extends RouteDirection {
   _$$RouteDirectionImplCopyWith<_$RouteDirectionImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }
+
+/// @nodoc
+mixin _$AlternativeRoutesResult {
+  RouteResult get recommendedRoute =>
+      throw _privateConstructorUsedError; // Route được đề xuất (thường là balanced)
+  List<RouteAlternative> get alternatives => throw _privateConstructorUsedError;
+
+  @JsonKey(ignore: true)
+  $AlternativeRoutesResultCopyWith<AlternativeRoutesResult> get copyWith =>
+      throw _privateConstructorUsedError;
+}
+
+/// @nodoc
+abstract class $AlternativeRoutesResultCopyWith<$Res> {
+  factory $AlternativeRoutesResultCopyWith(AlternativeRoutesResult value,
+          $Res Function(AlternativeRoutesResult) then) =
+      _$AlternativeRoutesResultCopyWithImpl<$Res, AlternativeRoutesResult>;
+  @useResult
+  $Res call(
+      {RouteResult recommendedRoute, List<RouteAlternative> alternatives});
+
+  $RouteResultCopyWith<$Res> get recommendedRoute;
+}
+
+/// @nodoc
+class _$AlternativeRoutesResultCopyWithImpl<$Res,
+        $Val extends AlternativeRoutesResult>
+    implements $AlternativeRoutesResultCopyWith<$Res> {
+  _$AlternativeRoutesResultCopyWithImpl(this._value, this._then);
+
+  // ignore: unused_field
+  final $Val _value;
+  // ignore: unused_field
+  final $Res Function($Val) _then;
+
+  @pragma('vm:prefer-inline')
+  @override
+  $Res call({
+    Object? recommendedRoute = null,
+    Object? alternatives = null,
+  }) {
+    return _then(_value.copyWith(
+      recommendedRoute: null == recommendedRoute
+          ? _value.recommendedRoute
+          : recommendedRoute // ignore: cast_nullable_to_non_nullable
+              as RouteResult,
+      alternatives: null == alternatives
+          ? _value.alternatives
+          : alternatives // ignore: cast_nullable_to_non_nullable
+              as List<RouteAlternative>,
+    ) as $Val);
+  }
+
+  @override
+  @pragma('vm:prefer-inline')
+  $RouteResultCopyWith<$Res> get recommendedRoute {
+    return $RouteResultCopyWith<$Res>(_value.recommendedRoute, (value) {
+      return _then(_value.copyWith(recommendedRoute: value) as $Val);
+    });
+  }
+}
+
+/// @nodoc
+abstract class _$$AlternativeRoutesResultImplCopyWith<$Res>
+    implements $AlternativeRoutesResultCopyWith<$Res> {
+  factory _$$AlternativeRoutesResultImplCopyWith(
+          _$AlternativeRoutesResultImpl value,
+          $Res Function(_$AlternativeRoutesResultImpl) then) =
+      __$$AlternativeRoutesResultImplCopyWithImpl<$Res>;
+  @override
+  @useResult
+  $Res call(
+      {RouteResult recommendedRoute, List<RouteAlternative> alternatives});
+
+  @override
+  $RouteResultCopyWith<$Res> get recommendedRoute;
+}
+
+/// @nodoc
+class __$$AlternativeRoutesResultImplCopyWithImpl<$Res>
+    extends _$AlternativeRoutesResultCopyWithImpl<$Res,
+        _$AlternativeRoutesResultImpl>
+    implements _$$AlternativeRoutesResultImplCopyWith<$Res> {
+  __$$AlternativeRoutesResultImplCopyWithImpl(
+      _$AlternativeRoutesResultImpl _value,
+      $Res Function(_$AlternativeRoutesResultImpl) _then)
+      : super(_value, _then);
+
+  @pragma('vm:prefer-inline')
+  @override
+  $Res call({
+    Object? recommendedRoute = null,
+    Object? alternatives = null,
+  }) {
+    return _then(_$AlternativeRoutesResultImpl(
+      recommendedRoute: null == recommendedRoute
+          ? _value.recommendedRoute
+          : recommendedRoute // ignore: cast_nullable_to_non_nullable
+              as RouteResult,
+      alternatives: null == alternatives
+          ? _value._alternatives
+          : alternatives // ignore: cast_nullable_to_non_nullable
+              as List<RouteAlternative>,
+    ));
+  }
+}
+
+/// @nodoc
+
+class _$AlternativeRoutesResultImpl extends _AlternativeRoutesResult {
+  const _$AlternativeRoutesResultImpl(
+      {required this.recommendedRoute,
+      required final List<RouteAlternative> alternatives})
+      : _alternatives = alternatives,
+        super._();
+
+  @override
+  final RouteResult recommendedRoute;
+// Route được đề xuất (thường là balanced)
+  final List<RouteAlternative> _alternatives;
+// Route được đề xuất (thường là balanced)
+  @override
+  List<RouteAlternative> get alternatives {
+    if (_alternatives is EqualUnmodifiableListView) return _alternatives;
+    // ignore: implicit_dynamic_type
+    return EqualUnmodifiableListView(_alternatives);
+  }
+
+  @override
+  String toString() {
+    return 'AlternativeRoutesResult(recommendedRoute: $recommendedRoute, alternatives: $alternatives)';
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType &&
+            other is _$AlternativeRoutesResultImpl &&
+            (identical(other.recommendedRoute, recommendedRoute) ||
+                other.recommendedRoute == recommendedRoute) &&
+            const DeepCollectionEquality()
+                .equals(other._alternatives, _alternatives));
+  }
+
+  @override
+  int get hashCode => Object.hash(runtimeType, recommendedRoute,
+      const DeepCollectionEquality().hash(_alternatives));
+
+  @JsonKey(ignore: true)
+  @override
+  @pragma('vm:prefer-inline')
+  _$$AlternativeRoutesResultImplCopyWith<_$AlternativeRoutesResultImpl>
+      get copyWith => __$$AlternativeRoutesResultImplCopyWithImpl<
+          _$AlternativeRoutesResultImpl>(this, _$identity);
+}
+
+abstract class _AlternativeRoutesResult extends AlternativeRoutesResult {
+  const factory _AlternativeRoutesResult(
+          {required final RouteResult recommendedRoute,
+          required final List<RouteAlternative> alternatives}) =
+      _$AlternativeRoutesResultImpl;
+  const _AlternativeRoutesResult._() : super._();
+
+  @override
+  RouteResult get recommendedRoute;
+  @override // Route được đề xuất (thường là balanced)
+  List<RouteAlternative> get alternatives;
+  @override
+  @JsonKey(ignore: true)
+  _$$AlternativeRoutesResultImplCopyWith<_$AlternativeRoutesResultImpl>
+      get copyWith => throw _privateConstructorUsedError;
+}
+
+/// @nodoc
+mixin _$RouteAlternative {
+  RouteStrategy get strategy => throw _privateConstructorUsedError;
+  RouteResult get route => throw _privateConstructorUsedError;
+  String? get comparisonNote => throw _privateConstructorUsedError;
+
+  @JsonKey(ignore: true)
+  $RouteAlternativeCopyWith<RouteAlternative> get copyWith =>
+      throw _privateConstructorUsedError;
+}
+
+/// @nodoc
+abstract class $RouteAlternativeCopyWith<$Res> {
+  factory $RouteAlternativeCopyWith(
+          RouteAlternative value, $Res Function(RouteAlternative) then) =
+      _$RouteAlternativeCopyWithImpl<$Res, RouteAlternative>;
+  @useResult
+  $Res call(
+      {RouteStrategy strategy, RouteResult route, String? comparisonNote});
+
+  $RouteResultCopyWith<$Res> get route;
+}
+
+/// @nodoc
+class _$RouteAlternativeCopyWithImpl<$Res, $Val extends RouteAlternative>
+    implements $RouteAlternativeCopyWith<$Res> {
+  _$RouteAlternativeCopyWithImpl(this._value, this._then);
+
+  // ignore: unused_field
+  final $Val _value;
+  // ignore: unused_field
+  final $Res Function($Val) _then;
+
+  @pragma('vm:prefer-inline')
+  @override
+  $Res call({
+    Object? strategy = null,
+    Object? route = null,
+    Object? comparisonNote = freezed,
+  }) {
+    return _then(_value.copyWith(
+      strategy: null == strategy
+          ? _value.strategy
+          : strategy // ignore: cast_nullable_to_non_nullable
+              as RouteStrategy,
+      route: null == route
+          ? _value.route
+          : route // ignore: cast_nullable_to_non_nullable
+              as RouteResult,
+      comparisonNote: freezed == comparisonNote
+          ? _value.comparisonNote
+          : comparisonNote // ignore: cast_nullable_to_non_nullable
+              as String?,
+    ) as $Val);
+  }
+
+  @override
+  @pragma('vm:prefer-inline')
+  $RouteResultCopyWith<$Res> get route {
+    return $RouteResultCopyWith<$Res>(_value.route, (value) {
+      return _then(_value.copyWith(route: value) as $Val);
+    });
+  }
+}
+
+/// @nodoc
+abstract class _$$RouteAlternativeImplCopyWith<$Res>
+    implements $RouteAlternativeCopyWith<$Res> {
+  factory _$$RouteAlternativeImplCopyWith(_$RouteAlternativeImpl value,
+          $Res Function(_$RouteAlternativeImpl) then) =
+      __$$RouteAlternativeImplCopyWithImpl<$Res>;
+  @override
+  @useResult
+  $Res call(
+      {RouteStrategy strategy, RouteResult route, String? comparisonNote});
+
+  @override
+  $RouteResultCopyWith<$Res> get route;
+}
+
+/// @nodoc
+class __$$RouteAlternativeImplCopyWithImpl<$Res>
+    extends _$RouteAlternativeCopyWithImpl<$Res, _$RouteAlternativeImpl>
+    implements _$$RouteAlternativeImplCopyWith<$Res> {
+  __$$RouteAlternativeImplCopyWithImpl(_$RouteAlternativeImpl _value,
+      $Res Function(_$RouteAlternativeImpl) _then)
+      : super(_value, _then);
+
+  @pragma('vm:prefer-inline')
+  @override
+  $Res call({
+    Object? strategy = null,
+    Object? route = null,
+    Object? comparisonNote = freezed,
+  }) {
+    return _then(_$RouteAlternativeImpl(
+      strategy: null == strategy
+          ? _value.strategy
+          : strategy // ignore: cast_nullable_to_non_nullable
+              as RouteStrategy,
+      route: null == route
+          ? _value.route
+          : route // ignore: cast_nullable_to_non_nullable
+              as RouteResult,
+      comparisonNote: freezed == comparisonNote
+          ? _value.comparisonNote
+          : comparisonNote // ignore: cast_nullable_to_non_nullable
+              as String?,
+    ));
+  }
+}
+
+/// @nodoc
+
+class _$RouteAlternativeImpl extends _RouteAlternative {
+  const _$RouteAlternativeImpl(
+      {required this.strategy, required this.route, this.comparisonNote})
+      : super._();
+
+  @override
+  final RouteStrategy strategy;
+  @override
+  final RouteResult route;
+  @override
+  final String? comparisonNote;
+
+  @override
+  String toString() {
+    return 'RouteAlternative(strategy: $strategy, route: $route, comparisonNote: $comparisonNote)';
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType &&
+            other is _$RouteAlternativeImpl &&
+            (identical(other.strategy, strategy) ||
+                other.strategy == strategy) &&
+            (identical(other.route, route) || other.route == route) &&
+            (identical(other.comparisonNote, comparisonNote) ||
+                other.comparisonNote == comparisonNote));
+  }
+
+  @override
+  int get hashCode => Object.hash(runtimeType, strategy, route, comparisonNote);
+
+  @JsonKey(ignore: true)
+  @override
+  @pragma('vm:prefer-inline')
+  _$$RouteAlternativeImplCopyWith<_$RouteAlternativeImpl> get copyWith =>
+      __$$RouteAlternativeImplCopyWithImpl<_$RouteAlternativeImpl>(
+          this, _$identity);
+}
+
+abstract class _RouteAlternative extends RouteAlternative {
+  const factory _RouteAlternative(
+      {required final RouteStrategy strategy,
+      required final RouteResult route,
+      final String? comparisonNote}) = _$RouteAlternativeImpl;
+  const _RouteAlternative._() : super._();
+
+  @override
+  RouteStrategy get strategy;
+  @override
+  RouteResult get route;
+  @override
+  String? get comparisonNote;
+  @override
+  @JsonKey(ignore: true)
+  _$$RouteAlternativeImplCopyWith<_$RouteAlternativeImpl> get copyWith =>
+      throw _privateConstructorUsedError;
+}

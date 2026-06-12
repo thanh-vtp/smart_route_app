@@ -43,6 +43,13 @@ abstract interface class MapFacade {
 
   Future<void> renderRoute(domain_route.RouteResult route);
 
+  /// Render multiple alternative routes with different styles
+  Future<void> renderAlternativeRoutes({
+    required domain_route.RouteResult recommendedRoute,
+    required List<domain_route.RouteAlternative> alternatives,
+    required domain_route.RouteStrategy selectedStrategy,
+  });
+
   void clearRoute();
 
   /// Recenter map smoothly to a specific point

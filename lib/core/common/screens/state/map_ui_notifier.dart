@@ -22,13 +22,20 @@ class MapUiNotifier extends Notifier<MapUiState> {
   MapUiState build() {
     ref.listen<RouteState>(routeNotifierProvider, (previous, next) async {
       final route = next.routeResult;
+      final alternatives = next.alternativeRoutesResult;
 
       if (route == null) {
         _clearRouteOnMap();
         return;
       }
 
-      await _showRouteOnMap(route);
+      // Nếu có alternatives, vẽ TẤT CẢ routes
+      if (alternatives != null && alternatives.alternatives.isNotEmpty) {
+        await _showAlternativeRoutesOnMap(alternatives, next.selectedStrategy);
+      } else {
+        // Không có alternatives, chỉ vẽ 1 route
+        await _showRouteOnMap(route);
+      }
     });
 
     return MapUiState.initial();
@@ -80,6 +87,24 @@ class MapUiNotifier extends Notifier<MapUiState> {
     final facade = ref.read(mapFacadeProvider);
 
     await facade.renderRoute(route);
+
+    state = state.copyWith(hasActiveRoute: true);
+  }
+
+  Future<void> _showAlternativeRoutesOnMap(
+    route_entity.AlternativeRoutesResult alternatives,
+    route_entity.RouteStrategy? selectedStrategy,
+  ) async {
+    final facade = ref.read(mapFacadeProvider);
+
+    // Sử dụng selectedStrategy hoặc mặc định là balanced
+    final strategy = selectedStrategy ?? route_entity.RouteStrategy.balanced;
+
+    await facade.renderAlternativeRoutes(
+      recommendedRoute: alternatives.recommendedRoute,
+      alternatives: alternatives.alternatives,
+      selectedStrategy: strategy,
+    );
 
     state = state.copyWith(hasActiveRoute: true);
   }

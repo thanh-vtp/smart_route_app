@@ -9,5 +9,9 @@ class RouteState with _$RouteState {
     @Default(false) bool isCalculating,
     RouteResult? routeResult,
     String? errorMessage,
+    // Alternative Routes
+    @Default(false) bool isCalculatingAlternatives,
+    AlternativeRoutesResult? alternativeRoutesResult,
+    RouteStrategy? selectedStrategy, // Strategy người dùng đang chọn
   }) = _RouteState;
 }

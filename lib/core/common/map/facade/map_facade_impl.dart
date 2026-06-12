@@ -172,6 +172,19 @@ class MapFacadeImpl implements MapFacade {
   }
 
   @override
+  Future<void> renderAlternativeRoutes({
+    required domain_route.RouteResult recommendedRoute,
+    required List<domain_route.RouteAlternative> alternatives,
+    required domain_route.RouteStrategy selectedStrategy,
+  }) async {
+    await deps.routeOverlayController.renderAlternativeRoutes(
+      recommendedRoute: recommendedRoute,
+      alternatives: alternatives,
+      selectedStrategy: selectedStrategy,
+    );
+  }
+
+  @override
   Future<void> recenterToPoint(ArcGISPoint point, {double? scale}) async {
     if (deps.engine.is3DMode) {
       // For 3D Scene - use simple viewpoint

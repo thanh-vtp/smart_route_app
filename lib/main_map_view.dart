@@ -18,6 +18,8 @@ import 'package:smart_route_app/features/navigation/domain/entities/route_entity
     as entity;
 import 'package:smart_route_app/features/navigation/domain/entities/route_entity.dart';
 import 'package:smart_route_app/features/navigation/presentation/state/route_notifier.dart';
+import 'package:smart_route_app/features/navigation/presentation/state/route_state.dart';
+import 'package:smart_route_app/features/navigation/presentation/widgets/alternative_routes_selector.dart';
 import 'package:smart_route_app/maneuver_indicator.dart';
 import 'reporting_bottom_sheet.dart';
 import 'incident_detail_bottom_sheet.dart';
@@ -33,24 +35,22 @@ class MainMapView extends ConsumerStatefulWidget {
 class _MainMapViewState extends ConsumerState<MainMapView> {
   bool _isMapInitialized = false;
 
-  // 1. KHAI BÁO CONTROLLER ĐỂ ĐIỀU KHIỂN BOTTOM SHEET
-  final DraggableScrollableController _sheetController =
+  // CONTROLLER CHO NAVIGATION BOTTOM SHEET (khi đang navigate)
+  final DraggableScrollableController _navSheetController =
       DraggableScrollableController();
 
-  // Các mốc kích thước của Bottom Sheet
-  final double _minChildSize = 0.16;
-  final double _maxChildSize = 0.6;
-  bool _isSheetExpanded = false; // Biến trạng thái để biết đang thu hay mở
+  final double _navMinChildSize = 0.16;
+  final double _navMaxChildSize = 0.6;
+  bool _isNavSheetExpanded = false;
 
-  // 2. HÀM XỬ LÝ SỰ KIỆN NHẤP VÀO HEADER
-  void _toggleSheet() {
+  // HÀM XỬ LÝ TOGGLE NAVIGATION SHEET
+  void _toggleNavSheet() {
     setState(() {
-      _isSheetExpanded = !_isSheetExpanded;
+      _isNavSheetExpanded = !_isNavSheetExpanded;
     });
 
-    // Chạy Animation phóng to hoặc thu nhỏ
-    _sheetController.animateTo(
-      _isSheetExpanded ? _maxChildSize : _minChildSize,
+    _navSheetController.animateTo(
+      _isNavSheetExpanded ? _navMaxChildSize : _navMinChildSize,
       duration: const Duration(milliseconds: 300),
       curve: Curves.easeInOut,
     );
@@ -102,7 +102,7 @@ class _MainMapViewState extends ConsumerState<MainMapView> {
 
   @override
   void dispose() {
-    _sheetController.dispose();
+    _navSheetController.dispose();
     // AppLogger.debug('MainMapView dispose ${identityHashCode(this)}');
 
     super.dispose();
@@ -138,6 +138,32 @@ class _MainMapViewState extends ConsumerState<MainMapView> {
           ref.read(selectedIncidentIdFromNotificationProvider.notifier).state =
               null;
         });
+      }
+    });
+
+    // Listen for route changes to recenter map
+    ref.listen<RouteState>(routeNotifierProvider, (previous, next) async {
+      // Khi có route mới được tính toán
+      if (next.routeResult != null && previous?.routeResult == null) {
+        final route = next.routeResult!;
+
+        // Recenter map để hiển thị toàn bộ route
+        if (route.polylinePoints.isNotEmpty) {
+          // Lấy điểm giữa route để recenter
+          final midPoint =
+              route.polylinePoints[route.polylinePoints.length ~/ 2];
+
+          await ref
+              .read(mapFacadeProvider)
+              .recenterToPoint(
+                ArcGISPoint(
+                  x: midPoint.lng,
+                  y: midPoint.lat,
+                  spatialReference: SpatialReference.wgs84,
+                ),
+                scale: 15000, // Zoom out để nhìn toàn bộ route
+              );
+        }
       }
     });
 
@@ -180,7 +206,7 @@ class _MainMapViewState extends ConsumerState<MainMapView> {
             _buildActiveReportButton(context, cs, textTheme),
 
             // D. Bảng trượt danh sách chỉ dẫn chi tiết (Draggable Bottom Sheet)
-            _buildDraggableBottomPanel(
+            _buildNavigationDraggableBottomPanel(
               context,
               cs,
               textTheme,
@@ -334,8 +360,8 @@ class _MainMapViewState extends ConsumerState<MainMapView> {
     );
   }
 
-  // --- D. BẢNG TRƯỢT DANH SÁCH CHỈ ĐƯỜNG (Thay thế Navigator.pop bằng dừng dẫn đường) ---
-  Widget _buildDraggableBottomPanel(
+  // --- D. BẢNG TRƯỢT DANH SÁCH CHỈ ĐƯỜNG KHI ĐANG NAVIGATE ---
+  Widget _buildNavigationDraggableBottomPanel(
     BuildContext context,
     ColorScheme cs,
     TextTheme textTheme,
@@ -343,10 +369,10 @@ class _MainMapViewState extends ConsumerState<MainMapView> {
     List<RouteDirection> directions,
   ) {
     return DraggableScrollableSheet(
-      controller: _sheetController,
-      initialChildSize: _minChildSize,
-      minChildSize: _minChildSize,
-      maxChildSize: _maxChildSize,
+      controller: _navSheetController,
+      initialChildSize: _navMinChildSize,
+      minChildSize: _navMinChildSize,
+      maxChildSize: _navMaxChildSize,
       builder: (BuildContext context, ScrollController scrollController) {
         return Container(
           decoration: BoxDecoration(
@@ -361,8 +387,8 @@ class _MainMapViewState extends ConsumerState<MainMapView> {
             ],
           ),
           child: GestureDetector(
-            onTap: _toggleSheet,
-            behavior: HitTestBehavior.opaque, // Giúp vùng chạm mượt mà hơn
+            onTap: _toggleNavSheet,
+            behavior: HitTestBehavior.opaque,
             child: Column(
               children: [
                 // Drag Handle & Summary Header
@@ -790,8 +816,13 @@ class _MainMapViewState extends ConsumerState<MainMapView> {
     BuildContext context,
     entity.RouteResult routeResult,
   ) {
+    // Lấy thông tin alternatives từ state
+    final routeState = ref.watch(routeNotifierProvider);
+    final alternatives = routeState.alternativeRoutesResult;
+    final selectedStrategy =
+        routeState.selectedStrategy ?? RouteStrategy.balanced;
+
     return Container(
-      // Bỏ margin ngoài để nó dính chặt vào đáy điện thoại
       padding: const EdgeInsets.fromLTRB(24, 12, 16, 32),
       decoration: BoxDecoration(
         color: cs.surfaceContainerLowest,
@@ -805,10 +836,10 @@ class _MainMapViewState extends ConsumerState<MainMapView> {
         ],
       ),
       child: Column(
-        mainAxisSize: MainAxisSize.min, // Tự co giãn ôm sát nội dung
+        mainAxisSize: MainAxisSize.min,
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
-          // Thanh Drag Handle xám nhỏ trên đỉnh sheet
+          // Thanh Drag Handle
           Center(
             child: Container(
               width: 40,
@@ -825,7 +856,9 @@ class _MainMapViewState extends ConsumerState<MainMapView> {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Text(
-                'Đã chọn lộ trình né sự cố',
+                alternatives != null
+                    ? 'Lựa chọn lộ trình'
+                    : 'Đã chọn lộ trình né sự cố',
                 style: textTheme.titleSmall?.copyWith(
                   color: cs.primary,
                   fontWeight: FontWeight.bold,
@@ -833,26 +866,46 @@ class _MainMapViewState extends ConsumerState<MainMapView> {
               ),
 
               // Button hủy Route
-              IconButton(
-                icon: Icon(Icons.close, color: cs.onSurfaceVariant),
-                onPressed: () {
-                  // Gọi hàm xóa lộ trình -> Bản đồ tự dọn đường, BottomSheet tự thụt xuống
+              GestureDetector(
+                onTap: () {
                   ref.read(routeNotifierProvider.notifier).clearRoute();
                 },
-                style: IconButton.styleFrom(
-                  padding: EdgeInsets.zero,
-                  tapTargetSize: MaterialTapTargetSize.shrinkWrap,
-                  backgroundColor: cs.surface,
-                  side: BorderSide(color: cs.outlineVariant),
-                  elevation: 2,
-                  shadowColor: Colors.black26,
-                  minimumSize: const Size(40, 40),
+                child: Container(
+                  width: 40,
+                  height: 40,
+                  decoration: BoxDecoration(
+                    color: cs.surface,
+                    shape: BoxShape.circle,
+                    border: Border.all(color: cs.outlineVariant),
+                    boxShadow: [
+                      BoxShadow(
+                        color: Colors.black.withOpacity(0.05),
+                        blurRadius: 4,
+                      ),
+                    ],
+                  ),
+                  child: Icon(
+                    Icons.close,
+                    color: cs.onSurfaceVariant,
+                    size: 20,
+                  ),
                 ),
               ),
             ],
           ),
 
-          const SizedBox(height: 8),
+          const SizedBox(height: 12),
+
+          // ALTERNATIVE ROUTES SELECTOR (nếu có)
+          if (alternatives != null && alternatives.alternatives.isNotEmpty) ...[
+            AlternativeRoutesSelector(
+              alternatives: alternatives,
+              selectedStrategy: selectedStrategy,
+            ),
+            const SizedBox(height: 16),
+          ],
+
+          // SELECTED ROUTE INFO
           Text(
             routeResult.formattedTime,
             style: textTheme.headlineMedium?.copyWith(

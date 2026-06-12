@@ -28,7 +28,8 @@ class RoutingRemoteDataSourceImpl implements RoutingRemoteDataSource {
   @override
   Future<RouteResponseModel> solveRoute({
     required List<Map<String, double>> stops,
-    bool avoidIncidents = true,
+    List<Map<String, double>>? barriers,
+    String? impedanceAttribute,
   }) async {
     if (stops.length < 2) {
       throw const ServerFailure('Cần ít nhất 2 điểm để chỉ đường');
@@ -51,22 +52,53 @@ class RoutingRemoteDataSourceImpl implements RoutingRemoteDataSource {
       'outSR': '4326', // Tọa độ WGS84
     };
 
-    // 3. VŨ KHÍ BÍ MẬT: NÉ SỰ CỐ TỰ ĐỘNG
-    if (avoidIncidents) {
-      // Truyền URL của Layer sự cố vào.
-      // Câu lệnh where: Chỉ né những sự cố đang 'active' và có mức độ 'medium' hoặc 'high'.
-      // (Những sự cố 'low' như ngập nhẹ thì vẫn cho phép xe chạy qua, hoặc bạn có thể bỏ phần severity đi để né toàn bộ).
-      final barriersJson = {
-        "url": Constants.serviceTFeatureTableUrl,
-        "where": "status = 'active' AND severity IN ('high', 'medium')",
-      };
+    // 2.5. IMPEDANCE ATTRIBUTE - Tối ưu theo thời gian hoặc quãng đường
+    if (impedanceAttribute != null) {
+      queryParameters['impedanceAttributeName'] = impedanceAttribute;
 
-      queryParameters['pointBarriers'] = json.encode(barriersJson);
+      AppLogger.data(
+        'Routing strategy: impedanceAttribute = $impedanceAttribute',
+        source: 'RoutingRemoteDataSource',
+      );
+    }
+
+    // 3. BARRIERS - Né sự cố bằng cách truyền tọa độ trực tiếp
+    if (barriers != null && barriers.isNotEmpty) {
+      final barriersString = barriers
+          .map((b) => '${b['lng']},${b['lat']}')
+          .join(';');
+
+      queryParameters['barriers'] = barriersString;
+
+      AppLogger.data(
+        '🚧 Avoid incidents enabled: ${barriers.length} barriers',
+        source: 'RoutingRemoteDataSource',
+      );
+
+      AppLogger.debugRaw(
+        'Barriers coordinates: $barriersString',
+        source: 'RoutingRemoteDataSource',
+      );
+    } else {
+      AppLogger.data(
+        'Avoid incidents DISABLED',
+        source: 'RoutingRemoteDataSource',
+      );
     }
 
     final uri = Uri.parse(
       '${Constants.arcgisRouteBaseUrl}${Constants.routeAndDirections}',
     ).replace(queryParameters: queryParameters);
+
+    // DEBUG: Log URL đầy đủ (ẩn token)
+    final debugUri = uri.toString().replaceAll(
+      RegExp(r'token=[^&]+'),
+      'token=***HIDDEN***',
+    );
+    AppLogger.debugRaw(
+      '🌐 API URL: $debugUri',
+      source: 'RoutingRemoteDataSource',
+    );
 
     // 4. Gọi API với Retry
     int retryCount = 0;
@@ -80,6 +112,13 @@ class RoutingRemoteDataSourceImpl implements RoutingRemoteDataSource {
         }
 
         final data = json.decode(response.body) as Map<String, dynamic>;
+
+        // Log raw response để debug
+        AppLogger.debugRaw(
+          'Route API Response: routes=${data['routes']?['features']?.length ?? 0}, '
+          'directions=${data['directions']?.length ?? 0}',
+          source: 'RoutingRemoteDataSource',
+        );
 
         // Bắt lỗi logic từ ArcGIS (VD: Không tìm thấy đường, đường bị chặn kín 2 đầu)
         if (data['error'] != null) {

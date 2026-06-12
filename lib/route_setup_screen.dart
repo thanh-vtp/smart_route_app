@@ -62,24 +62,15 @@ class _RouteSetupScreenState extends ConsumerState<RouteSetupScreen> {
       return; // Nếu thiếu điểm thì thoát im lặng
     }
 
-    // Nếu đã đủ điểm, gọi Notifier tính toán
+    // Gọi tính toán nhiều lộ trình thay thế
     ref
         .read(routeNotifierProvider.notifier)
-        .calculateRoute(
+        .calculateAlternativeRoutes(
           startLat: _startLocation!.lat,
           startLng: _startLocation!.lng,
           endLat: _endLocation!.lat,
           endLng: _endLocation!.lng,
-          avoidIncidents: true,
         );
-
-    // AppLogger.info(
-    //   'Tính toán route: '
-    //   'Start(${_startLocation!.lat}, ${_startLocation!.lng}), '
-    //   'End(${_endLocation!.lat}, ${_endLocation!.lng}), '
-    //   'Tránh trạm thu phí: $_avoidTolls, Tránh đường cao tốc: $_avoidHighways',
-    //   name: 'RouteSetupScreen',
-    // );
   }
 
   // --- HÀM MỞ MÀN HÌNH TÌM KIẾM ---
@@ -107,6 +98,7 @@ class _RouteSetupScreenState extends ConsumerState<RouteSetupScreen> {
     final routeState = ref.watch(routeNotifierProvider);
 
     ref.listen(routeNotifierProvider, (previous, next) {
+      // Tự động đóng screen khi có route và chuyển về map
       if (next.routeResult != null && previous?.routeResult == null) {
         context.pop();
       }
@@ -132,145 +124,158 @@ class _RouteSetupScreenState extends ConsumerState<RouteSetupScreen> {
           onPressed: () => context.pop(),
         ),
       ),
-      body: Column(
-        children: [
-          // Top Configuration Card
-          Container(
-            margin: const EdgeInsets.all(16.0),
-            padding: const EdgeInsets.all(16.0),
-            decoration: BoxDecoration(
-              color: cs.surfaceContainerLowest,
-              borderRadius: BorderRadius.circular(24.0),
-              boxShadow: [
-                BoxShadow(
-                  color: Colors.black.withOpacity(0.05),
-                  blurRadius: 8,
-                  offset: const Offset(0, 2),
-                ),
-              ],
-            ),
-            child: Column(
-              children: [
-                // Inputs
-                Stack(
-                  children: [
-                    Positioned(
-                      left: 19,
-                      top: 24,
-                      bottom: 24,
-                      child: Container(width: 2, color: cs.outlineVariant),
-                    ),
-                    Column(
-                      children: [
-                        // Điểm bắt đầu và điểm đến
-                        _buildLocationInput(
-                          context,
-                          icon: Icons.trip_origin,
-                          iconColor: cs.outline,
-                          value:
-                              _startLocation?.streetName ??
-                              _startLocation?.fullAddress ??
-                              'Chọn điểm xuất phát',
-                          cs: cs,
-                          textTheme: textTheme,
-                          isPlaceholder: _startLocation == null,
-                          onTap: () => _openSearchScreen(true),
-                        ),
-                        const SizedBox(height: 8),
-                        _buildLocationInput(
-                          context,
-                          icon: Icons.location_on,
-                          iconColor: cs.primaryContainer,
-                          value:
-                              _endLocation?.streetName ??
-                              _endLocation?.fullAddress ??
-                              'Chọn điểm đến',
-                          cs: cs,
-                          textTheme: textTheme,
-                          isPlaceholder: _endLocation == null,
-                          onTap: () => _openSearchScreen(false),
-                        ),
-                      ],
-                    ),
-                  ],
-                ),
-                const SizedBox(height: 16),
-
-                // Vehicle Tabs
-                Row(
-                  children: [
-                    _buildVehicleTab(context, 0, '🚗', 'Ô tô', cs, textTheme),
-                    const SizedBox(width: 8),
-                    _buildVehicleTab(context, 1, '🛵', 'Xe máy', cs, textTheme),
-                    const SizedBox(width: 8),
-                    _buildVehicleTab(context, 2, '🚕', 'Taxi', cs, textTheme),
-                  ],
-                ),
-                const SizedBox(height: 16),
-
-                // Toggles
-                _buildToggle(
-                  context,
-                  label: 'Tránh trạm thu phí',
-                  value: _avoidTolls,
-                  onChanged: (val) {
-                    setState(() => _avoidTolls = val);
-                  },
-                  cs: cs,
-                  textTheme: textTheme,
-                ),
-                const SizedBox(height: 8),
-                _buildToggle(
-                  context,
-                  label: 'Tránh đường cao tốc',
-                  value: _avoidHighways,
-                  onChanged: (val) {
-                    setState(() => _avoidHighways = val);
-                  },
-                  cs: cs,
-                  textTheme: textTheme,
-                ),
-              ],
-            ),
-          ),
-
-          const Spacer(),
-
-          Container(
-            width: double.infinity,
-            margin: const EdgeInsets.all(16.0),
-            child: FilledButton(
-              onPressed: routeState.isCalculating
-                  ? null
-                  : () => _calculateRoute(),
-              style: FilledButton.styleFrom(
-                backgroundColor: cs.primary,
-                foregroundColor: cs.onPrimary,
-                padding: const EdgeInsets.symmetric(vertical: 16),
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(9999),
-                ),
+      body: SingleChildScrollView(
+        child: Column(
+          children: [
+            // Top Configuration Card
+            Container(
+              margin: const EdgeInsets.all(16.0),
+              padding: const EdgeInsets.all(16.0),
+              decoration: BoxDecoration(
+                color: cs.surfaceContainerLowest,
+                borderRadius: BorderRadius.circular(24.0),
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.black.withOpacity(0.05),
+                    blurRadius: 8,
+                    offset: const Offset(0, 2),
+                  ),
+                ],
               ),
-              child: routeState.isCalculating
-                  ? const SizedBox(
-                      height: 24,
-                      width: 24,
-                      child: CircularProgressIndicator(
-                        color: Colors.white,
-                        strokeWidth: 2,
+              child: Column(
+                children: [
+                  // Inputs
+                  Stack(
+                    children: [
+                      Positioned(
+                        left: 19,
+                        top: 24,
+                        bottom: 24,
+                        child: Container(width: 2, color: cs.outlineVariant),
                       ),
-                    )
-                  : Text(
-                      'TÌM ĐƯỜNG',
-                      style: textTheme.labelLarge?.copyWith(
-                        fontWeight: FontWeight.bold,
-                        color: cs.onPrimary,
-                        letterSpacing: 1.2,
+                      Column(
+                        children: [
+                          // Điểm bắt đầu và điểm đến
+                          _buildLocationInput(
+                            context,
+                            icon: Icons.trip_origin,
+                            iconColor: cs.outline,
+                            value:
+                                _startLocation?.streetName ??
+                                _startLocation?.fullAddress ??
+                                'Chọn điểm xuất phát',
+                            cs: cs,
+                            textTheme: textTheme,
+                            isPlaceholder: _startLocation == null,
+                            onTap: () => _openSearchScreen(true),
+                          ),
+                          const SizedBox(height: 8),
+                          _buildLocationInput(
+                            context,
+                            icon: Icons.location_on,
+                            iconColor: cs.primaryContainer,
+                            value:
+                                _endLocation?.streetName ??
+                                _endLocation?.fullAddress ??
+                                'Chọn điểm đến',
+                            cs: cs,
+                            textTheme: textTheme,
+                            isPlaceholder: _endLocation == null,
+                            onTap: () => _openSearchScreen(false),
+                          ),
+                        ],
                       ),
-                    ),
+                    ],
+                  ),
+                  const SizedBox(height: 16),
+
+                  // Vehicle Tabs
+                  Row(
+                    children: [
+                      _buildVehicleTab(context, 0, '🚗', 'Ô tô', cs, textTheme),
+                      const SizedBox(width: 8),
+                      _buildVehicleTab(
+                        context,
+                        1,
+                        '🛵',
+                        'Xe máy',
+                        cs,
+                        textTheme,
+                      ),
+                      const SizedBox(width: 8),
+                      _buildVehicleTab(context, 2, '🚕', 'Taxi', cs, textTheme),
+                    ],
+                  ),
+                  const SizedBox(height: 16),
+
+                  // Toggles
+                  _buildToggle(
+                    context,
+                    label: 'Tránh trạm thu phí',
+                    value: _avoidTolls,
+                    onChanged: (val) {
+                      setState(() => _avoidTolls = val);
+                    },
+                    cs: cs,
+                    textTheme: textTheme,
+                  ),
+                  const SizedBox(height: 8),
+                  _buildToggle(
+                    context,
+                    label: 'Tránh đường cao tốc',
+                    value: _avoidHighways,
+                    onChanged: (val) {
+                      setState(() => _avoidHighways = val);
+                    },
+                    cs: cs,
+                    textTheme: textTheme,
+                  ),
+                ],
+              ),
             ),
-          ),
-        ],
+
+            const SizedBox(height: 80), // Space for button
+
+            Container(
+              width: double.infinity,
+              margin: const EdgeInsets.all(16.0),
+              child: FilledButton(
+                onPressed:
+                    (routeState.isCalculating ||
+                        routeState.isCalculatingAlternatives)
+                    ? null
+                    : () => _calculateRoute(),
+                style: FilledButton.styleFrom(
+                  backgroundColor: cs.primary,
+                  foregroundColor: cs.onPrimary,
+                  padding: const EdgeInsets.symmetric(vertical: 16),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(9999),
+                  ),
+                ),
+                child:
+                    (routeState.isCalculating ||
+                        routeState.isCalculatingAlternatives)
+                    ? const SizedBox(
+                        height: 24,
+                        width: 24,
+                        child: CircularProgressIndicator(
+                          color: Colors.white,
+                          strokeWidth: 2,
+                        ),
+                      )
+                    : Text(
+                        'TÌM ĐƯỜNG',
+                        style: textTheme.labelLarge?.copyWith(
+                          fontWeight: FontWeight.bold,
+                          color: cs.onPrimary,
+                          letterSpacing: 1.2,
+                        ),
+                      ),
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }

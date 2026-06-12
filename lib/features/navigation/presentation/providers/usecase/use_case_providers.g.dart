@@ -24,5 +24,23 @@ final calculateRouteUseCaseProvider =
 
 typedef CalculateRouteUseCaseRef
     = AutoDisposeProviderRef<CalculateRouteUseCase>;
+String _$calculateAlternativeRoutesUseCaseHash() =>
+    r'8397c559fcee28e8482ac200ea33c6c92dcff93f';
+
+/// See also [calculateAlternativeRoutesUseCase].
+@ProviderFor(calculateAlternativeRoutesUseCase)
+final calculateAlternativeRoutesUseCaseProvider =
+    AutoDisposeProvider<CalculateAlternativeRoutesUseCase>.internal(
+  calculateAlternativeRoutesUseCase,
+  name: r'calculateAlternativeRoutesUseCaseProvider',
+  debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
+      ? null
+      : _$calculateAlternativeRoutesUseCaseHash,
+  dependencies: null,
+  allTransitiveDependencies: null,
+);
+
+typedef CalculateAlternativeRoutesUseCaseRef
+    = AutoDisposeProviderRef<CalculateAlternativeRoutesUseCase>;
 // ignore_for_file: type=lint
 // ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member

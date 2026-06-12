@@ -1,4 +1,5 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
+import 'package:smart_route_app/core/utils/app_logger.dart';
 import '../../domain/entities/route_entity.dart';
 
 part 'routing_model.freezed.dart';
@@ -21,6 +22,15 @@ class RouteResponseModel with _$RouteResponseModel {
   RouteResult toEntity() {
     final routeFeature = routes.features.first;
     final attrs = routeFeature.attributes;
+
+    // Log raw attributes
+    AppLogger.debugRaw(
+      'Route attributes: '
+      'name=${attrs.name}, '
+      'totalKilometers=${attrs.totalKilometers}, '
+      'totalTravelTime=${attrs.totalTravelTime}',
+      source: 'RouteResponseModel',
+    );
 
     // 1. Bóc tách Polyline (Đường xanh trên Map)
     final routePoints = <RoutePoint>[];

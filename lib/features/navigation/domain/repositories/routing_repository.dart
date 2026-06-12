@@ -7,5 +7,12 @@ abstract class RoutingRepository {
   Future<Either<Failure, RouteResult>> calculateRoute({
     required List<RoutePoint> stops, // Dùng thẳng Entity của Domain
     bool avoidIncidents = true,
+    String? impedanceAttribute,
+  });
+
+  /// Tìm nhiều lộ trình thay thế (Alternative Routes)
+  /// Trả về recommended route + các alternatives với strategies khác nhau
+  Future<Either<Failure, AlternativeRoutesResult>> calculateAlternativeRoutes({
+    required List<RoutePoint> stops,
   });
 }
