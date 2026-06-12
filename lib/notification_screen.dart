@@ -220,13 +220,14 @@ class _NotificationScreenState extends ConsumerState<NotificationScreen> {
           ref.read(notificationNotifierProvider.notifier).markAsRead(notif.id);
         }
 
-        // 2. Nếu là thông báo sự cố -> Mở bản đồ lên
+        // 2. Nếu là thông báo sự cố -> Chuyển về tab Map và mở detail
         if (notif.type == 'incident' && notif.referenceIncidentId != null) {
           // Bắn ID vào Provider cầu nối (Giống y hệt cách làm của Push Notification)
           ref.read(selectedIncidentIdFromNotificationProvider.notifier).state =
               notif.referenceIncidentId;
-          // Pop màn hình Notification để lộ ra màn hình Map bên dưới
-          context.pop();
+
+          // Chuyển về tab Map (branch 0) và quay lại initial location của branch đó
+          context.go("/explore");
         }
       },
       borderRadius: BorderRadius.circular(16.0),

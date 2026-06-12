@@ -170,4 +170,48 @@ class MapFacadeImpl implements MapFacade {
   Future<void> renderRoute(domain_route.RouteResult route) async {
     await deps.routeOverlayController.renderRoute(route);
   }
+
+  @override
+  Future<void> recenterToPoint(ArcGISPoint point, {double? scale}) async {
+    if (deps.engine.is3DMode) {
+      // For 3D Scene - use simple viewpoint
+      final viewpoint = Viewpoint.fromCenter(point, scale: scale ?? 5000);
+
+      await deps.controllers.scene3D.setViewpointAnimated(
+        viewpoint,
+        duration: 1.5,
+      );
+    } else {
+      // For 2D Map - use animated transition with curve
+      final viewpoint = Viewpoint.fromCenter(
+        point,
+        scale: scale ?? 5000, // Default scale ~5km zoom level
+      );
+
+      await deps.controllers.map2D.setViewpointWithDurationAndCurve(
+        viewpoint: viewpoint,
+        durationSeconds: 1.5,
+        curve: AnimationCurve.easeInOutCubic,
+      );
+    }
+  }
+
+  @override
+  Future<void> recenterToIncident(String incidentId) async {
+    final graphic = deps.incidentOverlayController.getGraphicByIncidentId(
+      incidentId,
+    );
+
+    if (graphic?.geometry == null) {
+      AppLogger.warning(
+        'Không thể recenter đến sự cố, Graphic không tìm thấy: $incidentId',
+      );
+      return;
+    }
+
+    final point = graphic!.geometry as ArcGISPoint;
+
+    // Zoom closer for incident details (scale ~2km)
+    await recenterToPoint(point, scale: 2000);
+  }
 }

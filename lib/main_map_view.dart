@@ -123,8 +123,13 @@ class _MainMapViewState extends ConsumerState<MainMapView> {
     ref.listen<String?>(selectedIncidentIdFromNotificationProvider, (
       previous,
       nextIncidentId,
-    ) {
+    ) async {
       if (nextIncidentId != null) {
+        // Recenter map smoothly to the incident from notification
+        await ref.read(mapFacadeProvider).recenterToIncident(nextIncidentId);
+
+        if (!mounted) return;
+
         // Mở BottomSheet Chi tiết sự cố
         _showIncidentDetail(context, nextIncidentId);
 
@@ -569,6 +574,12 @@ class _MainMapViewState extends ConsumerState<MainMapView> {
                       await ref
                           .read(mapFacadeProvider)
                           .selectIncident(result.objectId!);
+
+                      // Recenter map smoothly to the incident
+                      await ref
+                          .read(mapFacadeProvider)
+                          .recenterToIncident(result.objectId!);
+
                       if (!mounted) return;
                       await _showIncidentDetail(this.context, result.objectId!);
                       ref
@@ -612,6 +623,11 @@ class _MainMapViewState extends ConsumerState<MainMapView> {
                       await ref
                           .read(mapFacadeProvider)
                           .selectIncident(result.objectId!);
+
+                      // Recenter scene smoothly to the incident
+                      await ref
+                          .read(mapFacadeProvider)
+                          .recenterToIncident(result.objectId!);
 
                       if (!mounted) return;
 

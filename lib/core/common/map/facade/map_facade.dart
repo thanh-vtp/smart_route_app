@@ -45,5 +45,11 @@ abstract interface class MapFacade {
 
   void clearRoute();
 
+  /// Recenter map smoothly to a specific point
+  Future<void> recenterToPoint(ArcGISPoint point, {double? scale});
+
+  /// Recenter map smoothly to an incident
+  Future<void> recenterToIncident(String incidentId);
+
   void dispose();
 }
