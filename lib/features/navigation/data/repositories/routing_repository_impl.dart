@@ -46,7 +46,7 @@ class RoutingRepositoryImpl implements RoutingRepository {
         incidentsResult.fold(
           (failure) {
             AppLogger.data(
-              '⚠️ Failed to fetch incidents: $failure',
+              'Failed to fetch incidents: $failure',
               source: 'RoutingRepository',
             );
             // Không throw error, chỉ log warning và tiếp tục không có barriers
@@ -65,7 +65,7 @@ class RoutingRepositoryImpl implements RoutingRepository {
               }).toList();
 
               AppLogger.data(
-                '🚧 Found ${barriers!.length} active high/medium incidents to avoid',
+                'Found ${barriers!.length} active high/medium incidents to avoid',
                 source: 'RoutingRepository',
               );
             } else {
@@ -124,7 +124,7 @@ class RoutingRepositoryImpl implements RoutingRepository {
     try {
       // 2. Tính toán 3 routes song song với strategies khác nhau
       AppLogger.data(
-        '🔄 Calculating alternative routes for ${stops.length} stops...',
+        'Calculating alternative routes for ${stops.length} stops...',
         source: 'RoutingRepository',
       );
 

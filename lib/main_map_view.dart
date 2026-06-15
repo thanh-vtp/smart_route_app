@@ -1,10 +1,12 @@
 import 'package:arcgis_maps/arcgis_maps.dart';
+import 'package:arcgis_maps_toolkit/arcgis_maps_toolkit.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:smart_route_app/core/app/notification_provider.dart';
 import 'package:smart_route_app/core/app/router.dart';
 import 'package:smart_route_app/core/common/map/interactions/interaction_result.dart';
+import 'package:smart_route_app/core/common/map/location/location_state.dart';
 import 'package:smart_route_app/core/common/map/providers/map_controller_bundle_provider.dart';
 import 'package:smart_route_app/core/common/map/providers/map_facade_provider.dart';
 import 'package:smart_route_app/core/common/screens/state/incidents_provider.dart';
@@ -17,13 +19,13 @@ import 'package:smart_route_app/features/cluster/presentation/states/cluster_sta
 import 'package:smart_route_app/features/navigation/domain/entities/route_entity.dart'
     as entity;
 import 'package:smart_route_app/features/navigation/domain/entities/route_entity.dart';
+import 'package:smart_route_app/features/navigation/presentation/state/navigation_notifier.dart';
 import 'package:smart_route_app/features/navigation/presentation/state/route_notifier.dart';
 import 'package:smart_route_app/features/navigation/presentation/state/route_state.dart';
 import 'package:smart_route_app/features/navigation/presentation/widgets/alternative_routes_selector.dart';
 import 'package:smart_route_app/maneuver_indicator.dart';
 import 'reporting_bottom_sheet.dart';
 import 'incident_detail_bottom_sheet.dart';
-import 'package:smart_route_app/core/common/map/location/device_location_status.dart';
 
 class MainMapView extends ConsumerStatefulWidget {
   const MainMapView({super.key});
@@ -199,13 +201,16 @@ class _MainMapViewState extends ConsumerState<MainMapView> {
               routeState.routeResult!,
             ),
 
-            // B. Đồng hồ tốc độ tròn (Góc dưới trái)
+            // B. Banner lệch tuyến / đang tính lại đường
+            _buildOffRouteBanner(context, cs, textTheme),
+
+            // C. Đồng hồ tốc độ tròn (Góc dưới trái)
             _buildSpeedometer(context, cs, textTheme),
 
-            // C. Nút Báo cáo sự cố khi đang lái xe (Góc dưới phải)
+            // D. Nút Báo cáo sự cố khi đang lái xe (Góc dưới phải)
             _buildActiveReportButton(context, cs, textTheme),
 
-            // D. Bảng trượt danh sách chỉ dẫn chi tiết (Draggable Bottom Sheet)
+            // E. Bảng trượt danh sách chỉ dẫn chi tiết (Draggable Bottom Sheet)
             _buildNavigationDraggableBottomPanel(
               context,
               cs,
@@ -226,9 +231,16 @@ class _MainMapViewState extends ConsumerState<MainMapView> {
     TextTheme textTheme,
     entity.RouteResult routeResult,
   ) {
-    final List<RouteDirection> directions = routeResult.directions;
-    final currentDirection = directions.isNotEmpty ? directions.first : null;
-    final nextDirection = directions.length > 1 ? directions[1] : null;
+    // Ưu tiên dùng NavigationSession để lấy bước hiện tại (real-time)
+    final navSession = ref.watch(navigationNotifierProvider).session;
+    final currentDirection =
+        navSession?.currentDirection ??
+        (routeResult.directions.isNotEmpty
+            ? routeResult.directions.first
+            : null);
+    final nextDirection =
+        navSession?.nextDirection ??
+        (routeResult.directions.length > 1 ? routeResult.directions[1] : null);
 
     if (currentDirection == null) return const SizedBox.shrink();
 
@@ -284,7 +296,80 @@ class _MainMapViewState extends ConsumerState<MainMapView> {
     );
   }
 
-  // --- B. ĐỒNG HỒ TỐC ĐỘ (GÓC DƯỚI TRÁI) ---
+  // --- B. BANNER LỆCH TUYẾN / ĐANG TÍNH LẠI ---
+  Widget _buildOffRouteBanner(
+    BuildContext context,
+    ColorScheme cs,
+    TextTheme textTheme,
+  ) {
+    final navState = ref.watch(navigationNotifierProvider);
+    final session = navState.session;
+
+    if (session == null) return const SizedBox.shrink();
+    if (!session.isOffRoute && !session.isRerouting) {
+      return const SizedBox.shrink();
+    }
+
+    return Positioned(
+      top: MediaQuery.of(context).size.height * 0.35,
+      left: 24,
+      right: 24,
+      child: Material(
+        color: Colors.transparent,
+        child: Container(
+          padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+          decoration: BoxDecoration(
+            color: session.isRerouting
+                ? cs.tertiaryContainer
+                : cs.errorContainer,
+            borderRadius: BorderRadius.circular(12),
+            boxShadow: [
+              BoxShadow(
+                color: Colors.black.withOpacity(0.12),
+                blurRadius: 12,
+                offset: const Offset(0, 4),
+              ),
+            ],
+          ),
+          child: Row(
+            children: [
+              if (session.isRerouting)
+                SizedBox(
+                  width: 20,
+                  height: 20,
+                  child: CircularProgressIndicator(
+                    strokeWidth: 2.5,
+                    color: cs.onTertiaryContainer,
+                  ),
+                )
+              else
+                Icon(
+                  Icons.warning_amber_rounded,
+                  color: cs.onErrorContainer,
+                  size: 20,
+                ),
+              const SizedBox(width: 12),
+              Expanded(
+                child: Text(
+                  session.isRerouting
+                      ? 'Đang tính lại đường...'
+                      : 'Bạn đã đi lệch tuyến đường',
+                  style: textTheme.titleSmall?.copyWith(
+                    fontWeight: FontWeight.bold,
+                    color: session.isRerouting
+                        ? cs.onTertiaryContainer
+                        : cs.onErrorContainer,
+                  ),
+                ),
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+
+  // --- C. ĐỒNG HỒ TỐC ĐỘ (GÓC DƯỚI TRÁI) ---
   Widget _buildSpeedometer(
     BuildContext context,
     ColorScheme cs,
@@ -412,42 +497,62 @@ class _MainMapViewState extends ConsumerState<MainMapView> {
                       child: Row(
                         children: [
                           Expanded(
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Row(
-                                  crossAxisAlignment: CrossAxisAlignment.end,
+                            child: Builder(
+                              builder: (context) {
+                                // Dùng session nếu đang điều hướng để hiện remaining
+                                final navSession = ref
+                                    .watch(navigationNotifierProvider)
+                                    .session;
+                                final eta =
+                                    navSession?.estimatedArrival ??
+                                    routeResult.estimatedArrival;
+                                final summary = navSession != null
+                                    ? '${navSession.formattedRemainingTime} • ${navSession.formattedRemainingDistance}'
+                                    : '${routeResult.formattedTime} • ${routeResult.formattedDistance}';
+
+                                return Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
-                                    Text(
-                                      routeResult.estimatedArrival,
-                                      style: textTheme.headlineLarge?.copyWith(
-                                        fontWeight: FontWeight.w900,
-                                        color: cs.primary,
-                                        fontSize: 36,
-                                        height: 1.0,
-                                      ),
-                                    ),
-                                    const SizedBox(width: 8),
-                                    Padding(
-                                      padding: const EdgeInsets.only(bottom: 4),
-                                      child: Text(
-                                        'Dự kiến',
-                                        style: textTheme.labelMedium?.copyWith(
-                                          color: cs.onSurfaceVariant,
+                                    Row(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.end,
+                                      children: [
+                                        Text(
+                                          eta,
+                                          style: textTheme.headlineLarge
+                                              ?.copyWith(
+                                                fontWeight: FontWeight.w900,
+                                                color: cs.primary,
+                                                fontSize: 36,
+                                                height: 1.0,
+                                              ),
                                         ),
+                                        const SizedBox(width: 8),
+                                        Padding(
+                                          padding: const EdgeInsets.only(
+                                            bottom: 4,
+                                          ),
+                                          child: Text(
+                                            'Dự kiến',
+                                            style: textTheme.labelMedium
+                                                ?.copyWith(
+                                                  color: cs.onSurfaceVariant,
+                                                ),
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                    const SizedBox(height: 4),
+                                    Text(
+                                      summary,
+                                      style: textTheme.titleMedium?.copyWith(
+                                        color: cs.onSurfaceVariant,
+                                        fontWeight: FontWeight.w600,
                                       ),
                                     ),
                                   ],
-                                ),
-                                const SizedBox(height: 4),
-                                Text(
-                                  '${routeResult.formattedTime} • ${routeResult.formattedDistance}',
-                                  style: textTheme.titleMedium?.copyWith(
-                                    color: cs.onSurfaceVariant,
-                                    fontWeight: FontWeight.w600,
-                                  ),
-                                ),
-                              ],
+                                );
+                              },
                             ),
                           ),
 
@@ -490,7 +595,18 @@ class _MainMapViewState extends ConsumerState<MainMapView> {
                     ),
                     itemBuilder: (context, index) {
                       final dir = directions[index];
-                      return _buildDirectionListItem(dir, textTheme, cs);
+                      final currentStepIndex =
+                          ref
+                              .watch(navigationNotifierProvider)
+                              .session
+                              ?.currentDirectionIndex ??
+                          0;
+                      return _buildDirectionListItem(
+                        dir,
+                        textTheme,
+                        cs,
+                        isActive: index == currentStepIndex,
+                      );
                     },
                   ),
                 ),
@@ -505,28 +621,33 @@ class _MainMapViewState extends ConsumerState<MainMapView> {
   ListTile _buildDirectionListItem(
     RouteDirection dir,
     TextTheme textTheme,
-    ColorScheme cs,
-  ) {
+    ColorScheme cs, {
+    bool isActive = false,
+  }) {
     return ListTile(
       contentPadding: const EdgeInsets.symmetric(horizontal: 24, vertical: 8),
+      tileColor: isActive ? cs.primaryContainer.withOpacity(0.25) : null,
       leading: Container(
         width: 40,
         height: 40,
         decoration: BoxDecoration(
-          color: dir.maneuverType.color.withOpacity(0.15),
+          color: (isActive ? cs.primary : dir.maneuverType.color).withOpacity(
+            0.15,
+          ),
           shape: BoxShape.circle,
+          border: isActive ? Border.all(color: cs.primary, width: 2) : null,
         ),
         child: Icon(
           dir.maneuverType.icon,
-          color: dir.maneuverType.color,
+          color: isActive ? cs.primary : dir.maneuverType.color,
           size: 24,
         ),
       ),
       title: Text(
         dir.instruction,
         style: textTheme.titleMedium?.copyWith(
-          fontWeight: FontWeight.w600,
-          color: cs.onSurface,
+          fontWeight: isActive ? FontWeight.w800 : FontWeight.w600,
+          color: isActive ? cs.primary : cs.onSurface,
         ),
       ),
       subtitle: dir.distanceMeters > 0
@@ -535,7 +656,7 @@ class _MainMapViewState extends ConsumerState<MainMapView> {
               child: Text(
                 dir.formattedDistance,
                 style: textTheme.bodyMedium?.copyWith(
-                  color: cs.outline,
+                  color: isActive ? cs.primary : cs.outline,
                   fontWeight: FontWeight.bold,
                 ),
               ),
@@ -556,122 +677,60 @@ class _MainMapViewState extends ConsumerState<MainMapView> {
 
     return Stack(
       children: [
-        // 1. Map Layer (Placeholder filling the screen)
+        // 1. ArcGISMapView — dùng cho cả Explore và Navigation
+        // Navigation mode: LocationDisplayAutoPanMode.navigation (tilt + compass)
+        // Explore mode: LocationDisplayAutoPanMode.recenter
         Positioned.fill(
-          child: IndexedStack(
-            index: isNavigating ? 1 : 0,
-            children: [
-              ArcGISMapView(
-                controllerProvider: () {
-                  final controller = ref
-                      .read(mapControllerBundleProvider)
-                      .map2D;
+          child: ArcGISMapView(
+            controllerProvider: () {
+              final controller = ref.read(mapControllerBundleProvider).map2D;
+              AppLogger.debug('MapController ${identityHashCode(controller)}');
+              return controller;
+            },
+            onMapViewReady: () async {
+              if (_isMapInitialized) return;
+              _isMapInitialized = true;
+              await ref.read(mapUiProvider.notifier).initialize();
 
-                  AppLogger.debug(
-                    'MapController ${identityHashCode(controller)}',
-                  );
-
-                  return controller;
-                },
-                onMapViewReady: () async {
-                  if (_isMapInitialized) return;
-                  _isMapInitialized = true;
-                  await ref.read(mapUiProvider.notifier).initialize();
-                },
-
-                onTap: (screenPoint) async {
-                  // Tap marker to Identify marker to Highlight marker to Show bottom sheet
-                  final result = await ref
-                      .read(mapFacadeProvider)
-                      .onTap(screenPoint);
-                  if (!mounted) return;
-                  switch (result.type) {
-                    case InteractionType.incident:
-                      if (result.objectId == null) {
-                        ScaffoldMessenger.of(this.context).showSnackBar(
-                          const SnackBar(
-                            content: Text(
-                              'Không thể xác định báo cáo. Thử lại sau.',
-                            ),
-                          ),
-                        );
-                        return;
-                      }
-                      await ref
-                          .read(mapFacadeProvider)
-                          .selectIncident(result.objectId!);
-
-                      // Recenter map smoothly to the incident
-                      await ref
-                          .read(mapFacadeProvider)
-                          .recenterToIncident(result.objectId!);
-
-                      if (!mounted) return;
-                      await _showIncidentDetail(this.context, result.objectId!);
-                      ref
-                          .read(mapFacadeProvider)
-                          .clearSelection(); // Clear highlight marker
-                      AppLogger.ui("Mở Báo Cáo: ${result.objectId!}");
-                      break;
-                    case InteractionType.none:
-                      ref.read(mapFacadeProvider).clearSelection();
-                      break;
-                    default:
-                      break;
+              // Tự động bật GPS + recenter sau khi map sẵn sàng
+              // Giống Google Maps: vào app là thấy vị trí ngay, không cần bấm nút
+              await ref.read(locationUiProvider.notifier).startLocation();
+            },
+            onTap: (screenPoint) async {
+              final result = await ref
+                  .read(mapFacadeProvider)
+                  .onTap(screenPoint);
+              if (!mounted) return;
+              switch (result.type) {
+                case InteractionType.incident:
+                  if (result.objectId == null) {
+                    ScaffoldMessenger.of(this.context).showSnackBar(
+                      const SnackBar(
+                        content: Text(
+                          'Không thể xác định báo cáo. Thử lại sau.',
+                        ),
+                      ),
+                    );
+                    return;
                   }
-                },
-              ),
-
-              ArcGISSceneView(
-                controllerProvider: () {
-                  final controller = ref
-                      .read(mapControllerBundleProvider)
-                      .scene3D;
-
-                  AppLogger.debug(
-                    'SceneController ${identityHashCode(controller)}',
-                  );
-
-                  return controller;
-                },
-
-                onTap: (screenPoint) async {
-                  final result = await ref
+                  await ref
                       .read(mapFacadeProvider)
-                      .onTap(screenPoint);
-
+                      .selectIncident(result.objectId!);
+                  await ref
+                      .read(mapFacadeProvider)
+                      .recenterToIncident(result.objectId!);
                   if (!mounted) return;
-
-                  switch (result.type) {
-                    case InteractionType.incident:
-                      if (result.objectId == null) return;
-
-                      await ref
-                          .read(mapFacadeProvider)
-                          .selectIncident(result.objectId!);
-
-                      // Recenter scene smoothly to the incident
-                      await ref
-                          .read(mapFacadeProvider)
-                          .recenterToIncident(result.objectId!);
-
-                      if (!mounted) return;
-
-                      await _showIncidentDetail(this.context, result.objectId!);
-
-                      ref.read(mapFacadeProvider).clearSelection();
-                      break;
-
-                    case InteractionType.none:
-                      ref.read(mapFacadeProvider).clearSelection();
-                      break;
-
-                    default:
-                      break;
-                  }
-                },
-              ),
-            ],
+                  await _showIncidentDetail(this.context, result.objectId!);
+                  ref.read(mapFacadeProvider).clearSelection();
+                  AppLogger.ui('Mở Báo Cáo: ${result.objectId!}');
+                  break;
+                case InteractionType.none:
+                  ref.read(mapFacadeProvider).clearSelection();
+                  break;
+                default:
+                  break;
+              }
+            },
           ),
         ),
 
@@ -732,30 +791,28 @@ class _MainMapViewState extends ConsumerState<MainMapView> {
               mainAxisSize: MainAxisSize.min,
               crossAxisAlignment: CrossAxisAlignment.end,
               children: [
-                // My Location Button
-                FloatingActionButton.small(
-                  heroTag: 'my_location',
-                  onPressed: () async {
-                    final notifier = ref.read(locationUiProvider.notifier);
-
-                    if (locationState.status != DeviceLocationStatus.running) {
-                      await notifier.startLocation();
-                      return;
-                    }
-
-                    notifier.recenter();
-                  },
-                  backgroundColor: cs.surfaceContainerLowest,
-                  foregroundColor: cs.onSurfaceVariant,
-                  elevation: 2,
-                  child: Icon(
-                    locationState.isFollowing
-                        ? Icons.my_location
-                        : Icons.location_searching,
-                  ),
+                // ── Compass (ArcGIS Toolkit) ──────────────────────────────
+                // Tự động ẩn khi map đang hướng Bắc (rotation = 0°)
+                // Bấm để reset về North-Up
+                Compass(
+                  controllerProvider: () =>
+                      ref.read(mapControllerBundleProvider).map2D,
+                  padding: EdgeInsets.all(0),
+                  automaticallyHides: false,
+                  size: 40,
                 ),
+
+                const SizedBox(height: 8),
+
+                // ── Location Button ────────────────────────────────────────
+                // OFF       → 📍 (xám)    : bấm để bắt đầu follow
+                // FOLLOW    → 📍 (xanh)   : map recenter theo vị trí
+                // NAVIGATION→ 🧭 (xanh đậm): map xoay theo hướng di chuyển
+                _buildLocationButton(cs, locationState),
+
                 const SizedBox(height: 16),
-                // Massive BÁO CÁO FAB
+
+                // ── Nút BÁO CÁO ───────────────────────────────────────────
                 FloatingActionButton.extended(
                   heroTag: 'report_incident',
                   onPressed: () {
@@ -966,6 +1023,44 @@ class _MainMapViewState extends ConsumerState<MainMapView> {
       isScrollControlled: true,
       backgroundColor: Colors.transparent,
       builder: (context) => IncidentDetailBottomSheet(incidentId: incidentId),
+    );
+  }
+
+  /// Location Button với 3 trạng thái: OFF → FOLLOW → NAVIGATION → OFF
+  ///
+  /// OFF       : icon xám, gợi ý bấm để bắt đầu
+  /// FOLLOW    : icon xanh, map đang recenter theo GPS
+  /// NAVIGATION: icon compass xanh đậm, map đang xoay theo heading
+  Widget _buildLocationButton(ColorScheme cs, LocationState locationState) {
+    final mode = locationState.trackingMode;
+
+    final (icon, color, bgColor) = switch (mode) {
+      LocationTrackingMode.off => (
+        Icons.location_searching,
+        cs.onSurfaceVariant,
+        cs.surfaceContainerLowest,
+      ),
+      LocationTrackingMode.follow => (
+        Icons.my_location,
+        cs.primary,
+        cs.primaryContainer,
+      ),
+      LocationTrackingMode.navigation => (
+        Icons.navigation,
+        cs.onPrimary,
+        cs.primary,
+      ),
+    };
+
+    return FloatingActionButton.small(
+      heroTag: 'my_location',
+      onPressed: () {
+        ref.read(locationUiProvider.notifier).cycleLocationMode();
+      },
+      backgroundColor: bgColor,
+      foregroundColor: color,
+      elevation: 2,
+      child: Icon(icon, color: color),
     );
   }
 

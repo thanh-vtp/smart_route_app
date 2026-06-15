@@ -138,9 +138,10 @@ class MapFacadeImpl implements MapFacade {
   }
 
   @override
-  Future<LocationState> stopLocation() async {
+  Future<LocationState> stopLocation({bool stopDataSource = true}) async {
     return await deps.locationController.stop(
       display: deps.controllers.map2D.locationDisplay,
+      stopDataSource: stopDataSource,
     );
   }
 
@@ -226,5 +227,30 @@ class MapFacadeImpl implements MapFacade {
 
     // Zoom closer for incident details (scale ~2km)
     await recenterToPoint(point, scale: 2000);
+  }
+
+  // ==========================================================================
+  // NAVIGATION MODE — 2D map với tilt + compass heading (giống Google Maps)
+  // ==========================================================================
+
+  @override
+  Future<void> startNavigationMode() async {
+    final display = deps.controllers.map2D.locationDisplay;
+
+    // NavigationPanMode: map xoay theo hướng di chuyển, tự đặt camera phía trước
+    display.autoPanMode = LocationDisplayAutoPanMode.navigation;
+
+    // Tăng opacity cho location dot khi navigate
+    display.showAccuracy = false;
+  }
+
+  @override
+  Future<void> stopNavigationMode() async {
+    final display = deps.controllers.map2D.locationDisplay;
+
+    // Quay về recenter thông thường
+    display.autoPanMode = LocationDisplayAutoPanMode.recenter;
+
+    display.showAccuracy = true;
   }
 }

@@ -23,13 +23,17 @@ class DeviceLocationController {
 
       display.autoPanMode = LocationConstants.defaultAutoPanMode;
 
+      // Đăng ký lắng nghe location (cancel cái cũ nếu có)
       _locationSubscription?.cancel();
-
       _locationSubscription = display.onLocationChanged.listen(
         onLocationChanged,
       );
 
-      await dataSource.start();
+      // Chỉ start nếu chưa chạy — tránh gọi start() 2 lần
+      if (dataSource.status != LocationDataSourceStatus.started &&
+          dataSource.status != LocationDataSourceStatus.starting) {
+        await dataSource.start();
+      }
 
       return LocationState(
         status: DeviceLocationStatus.running,
@@ -50,15 +54,28 @@ class DeviceLocationController {
     }
   }
 
-  Future<LocationState> stop({required LocationDisplay display}) async {
+  /// Dừng hiển thị location trên map.
+  /// [stopDataSource] = true: dừng hẳn GPS stream (dùng khi thoát app hoặc
+  ///   người dùng tắt GPS hoàn toàn).
+  /// [stopDataSource] = false (mặc định): chỉ tắt autopan, GPS vẫn chạy nền
+  ///   (dùng khi thoát navigation mode về explore mode).
+  Future<LocationState> stop({
+    required LocationDisplay display,
+    bool stopDataSource = true,
+  }) async {
     disableFollow(display);
-
     display.autoPanMode = LocationDisplayAutoPanMode.off;
 
-    await dataSource.stop();
+    if (stopDataSource &&
+        dataSource.status != LocationDataSourceStatus.stopped &&
+        dataSource.status != LocationDataSourceStatus.stopping) {
+      await dataSource.stop();
+    }
 
     return LocationState(
-      status: DeviceLocationStatus.stopped,
+      status: stopDataSource
+          ? DeviceLocationStatus.stopped
+          : DeviceLocationStatus.running,
       isFollowing: false,
     );
   }
@@ -85,7 +102,8 @@ class DeviceLocationController {
 
   void dispose() {
     _locationSubscription?.cancel();
-
-    dataSource.stop();
+    if (dataSource.status != LocationDataSourceStatus.stopped) {
+      dataSource.stop();
+    }
   }
 }

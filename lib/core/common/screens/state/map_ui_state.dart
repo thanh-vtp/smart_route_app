@@ -2,8 +2,8 @@ enum MapViewMode { map2D, scene3D }
 
 class MapUiState {
   final bool isLoading;
-  final bool hasActiveRoute; // state route
-  final bool isNavigating; // state navigation
+  final bool hasActiveRoute;
+  final bool isNavigating; // đang trong chế độ turn-by-turn
   final MapViewMode mode;
   final String? error;
 
@@ -20,7 +20,7 @@ class MapUiState {
       isLoading: true,
       hasActiveRoute: false,
       isNavigating: false,
-      mode: MapViewMode.map2D,
+      mode: MapViewMode.map2D, // Luôn dùng 2D map cho navigation
     );
   }
 

@@ -136,6 +136,16 @@ class RouteNotifier extends _$RouteNotifier {
     );
   }
 
+  /// Cập nhật route sau khi re-routing (từ NavigationNotifier)
+  /// Giữ nguyên các field khác, chỉ update routeResult mới
+  void updateRouteForNavigation(RouteResult newRoute) {
+    state = state.copyWith(
+      routeResult: newRoute,
+      isCalculating: false,
+      errorMessage: null,
+    );
+  }
+
   /// Hàm xóa tuyến đường hiện tại
   void clearRoute() {
     state = const RouteState();

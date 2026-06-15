@@ -70,18 +70,19 @@ class RoutingRemoteDataSourceImpl implements RoutingRemoteDataSource {
 
       queryParameters['barriers'] = barriersString;
 
+      // Bật chức năng tránh sự cố
       AppLogger.data(
-        '🚧 Avoid incidents enabled: ${barriers.length} barriers',
+        'Tránh incidents ENABLE: ${barriers.length} barriers',
         source: 'RoutingRemoteDataSource',
       );
 
       AppLogger.debugRaw(
-        'Barriers coordinates: $barriersString',
+        'Tọa độ Barriers: $barriersString',
         source: 'RoutingRemoteDataSource',
       );
     } else {
       AppLogger.data(
-        'Avoid incidents DISABLED',
+        'Tránh incidents DISABLED',
         source: 'RoutingRemoteDataSource',
       );
     }

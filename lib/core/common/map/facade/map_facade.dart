@@ -35,7 +35,11 @@ abstract interface class MapFacade {
     required void Function(ArcGISLocation location) onLocationChanged,
   });
 
-  Future<LocationState> stopLocation();
+  /// Dừng location display.
+  /// [stopDataSource] = false: chỉ tắt autopan, GPS stream vẫn chạy
+  ///   (dùng khi thoát navigation về explore).
+  /// [stopDataSource] = true (mặc định): dừng hẳn GPS stream.
+  Future<LocationState> stopLocation({bool stopDataSource = true});
 
   void recenterLocation();
 
@@ -57,6 +61,12 @@ abstract interface class MapFacade {
 
   /// Recenter map smoothly to an incident
   Future<void> recenterToIncident(String incidentId);
+
+  /// Bật chế độ Navigation: 2D map với tilt 45° + follow compass heading
+  Future<void> startNavigationMode();
+
+  /// Tắt chế độ Navigation: về autopan bình thường
+  Future<void> stopNavigationMode();
 
   void dispose();
 }

@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
-import 'package:smart_route_app/active_navigation_screen.dart';
 import 'package:smart_route_app/core/common/domain/entities/address_result.dart';
 import 'package:smart_route_app/core/utils/app_logger.dart';
 import 'package:smart_route_app/features/analytics/presentation/screens/analytics_screen.dart';
@@ -177,12 +176,6 @@ GoRouter router(Ref ref) {
                       final destination = state.extra as AddressResult?;
                       return RouteSetupScreen(initialDestination: destination);
                     },
-                  ),
-
-                  GoRoute(
-                    path: 'active-navigation',
-                    parentNavigatorKey: _rootNavigatorKey,
-                    builder: (context, state) => const ActiveNavigationScreen(),
                   ),
                 ],
               ),

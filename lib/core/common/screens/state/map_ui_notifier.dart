@@ -8,6 +8,7 @@ import 'package:smart_route_app/features/incident/domain/entities/incident.dart'
     as incident_entity;
 import 'package:smart_route_app/features/navigation/domain/entities/route_entity.dart'
     as route_entity;
+import 'package:smart_route_app/features/navigation/presentation/state/navigation_notifier.dart';
 import 'package:smart_route_app/features/navigation/presentation/state/route_notifier.dart';
 import 'package:smart_route_app/features/navigation/presentation/state/route_state.dart';
 
@@ -118,24 +119,57 @@ class MapUiNotifier extends Notifier<MapUiState> {
   Future<void> startNavigation() async {
     state = state.copyWith(isNavigating: true);
 
-    await switchTo3D();
+    // GIỮ 2D — không switch sang Scene3D
+    // Navigation dùng 2D map với LocationDisplayAutoPanMode.navigation
+    // (map tự xoay theo heading, tilt nhìn phía trước — giống Google Maps)
+    final facade = ref.read(mapFacadeProvider);
 
-    // Lấy tuyến đường hiện tại và vẽ lại lên giao diện 3D mới
+    // Bật GPS trước để có location data
+    await ref.read(locationUiProvider.notifier).startLocation();
+
+    // Bật navigation autopan mode (tilt + compass heading)
+    await facade.startNavigationMode();
+
+    // Sync trackingMode state
+    ref.read(locationUiProvider.notifier).setNavigationMode();
+
+    // Đảm bảo route vẫn hiển thị trên map
     final route = ref.read(routeNotifierProvider).routeResult;
     if (route != null) {
-      await _showRouteOnMap(route); // Vẽ lại đường Polyline lên viewport 3D
-    }
+      await _showRouteOnMap(route);
 
-    // 2. Kích hoạt GPS bám theo vị trí xe chạy (Nếu có)
-    ref.read(locationUiProvider.notifier).startLocation();
+      // Lấy điểm đến từ polyline cuối
+      final lastPoint = route.polylinePoints.last;
+      final destination = route_entity.RoutePoint(
+        lat: lastPoint.lat,
+        lng: lastPoint.lng,
+      );
+
+      // Khởi động NavigationNotifier — turn-by-turn tracking
+      ref
+          .read(navigationNotifierProvider.notifier)
+          .startNavigation(route: route, destination: destination);
+    }
   }
 
   Future<void> stopNavigation() async {
+    // Dừng navigation notifier
+    ref.read(navigationNotifierProvider.notifier).stopNavigation();
+
     state = state.copyWith(isNavigating: false);
 
-    await ref.read(locationUiProvider.notifier).stopLocation();
+    // Tắt navigation autopan mode
+    await ref.read(mapFacadeProvider).stopNavigationMode();
 
-    await switchTo2D();
+    // Không stop GPS — về FOLLOW mode bình thường (dot vẫn hiện trên map)
+    await ref
+        .read(locationUiProvider.notifier)
+        .stopLocation(stopDataSource: false);
+
+    // Sync trackingMode về follow
+    ref.read(locationUiProvider.notifier).setFollowMode();
+
+    // Xóa route
     ref.read(routeNotifierProvider.notifier).clearRoute();
   }
 }

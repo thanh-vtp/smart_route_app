@@ -93,6 +93,108 @@ class RouteDirection with _$RouteDirection {
 }
 
 // ====================================================================
+// 5. NAVIGATION SESSION (Trạng thái điều hướng thời gian thực)
+// ====================================================================
+class NavigationSession {
+  /// Route đang được dẫn đường
+  final RouteResult route;
+
+  /// Điểm đến cuối cùng (dùng khi re-route)
+  final RoutePoint destination;
+
+  /// Index bước chỉ đường hiện tại trong route.directions
+  final int currentDirectionIndex;
+
+  /// Khoảng cách còn lại đến đích (mét)
+  final double remainingDistanceMeters;
+
+  /// Thời gian còn lại (phút)
+  final double remainingTimeMinutes;
+
+  /// Người dùng có đang lệch tuyến không
+  final bool isOffRoute;
+
+  /// Đang tính lại route
+  final bool isRerouting;
+
+  const NavigationSession({
+    required this.route,
+    required this.destination,
+    this.currentDirectionIndex = 0,
+    this.remainingDistanceMeters = 0,
+    this.remainingTimeMinutes = 0,
+    this.isOffRoute = false,
+    this.isRerouting = false,
+  });
+
+  NavigationSession copyWith({
+    RouteResult? route,
+    RoutePoint? destination,
+    int? currentDirectionIndex,
+    double? remainingDistanceMeters,
+    double? remainingTimeMinutes,
+    bool? isOffRoute,
+    bool? isRerouting,
+  }) {
+    return NavigationSession(
+      route: route ?? this.route,
+      destination: destination ?? this.destination,
+      currentDirectionIndex:
+          currentDirectionIndex ?? this.currentDirectionIndex,
+      remainingDistanceMeters:
+          remainingDistanceMeters ?? this.remainingDistanceMeters,
+      remainingTimeMinutes: remainingTimeMinutes ?? this.remainingTimeMinutes,
+      isOffRoute: isOffRoute ?? this.isOffRoute,
+      isRerouting: isRerouting ?? this.isRerouting,
+    );
+  }
+
+  /// Bước chỉ đường hiện tại
+  RouteDirection? get currentDirection {
+    final dirs = route.directions;
+    if (currentDirectionIndex < dirs.length) {
+      return dirs[currentDirectionIndex];
+    }
+    return null;
+  }
+
+  /// Bước chỉ đường tiếp theo
+  RouteDirection? get nextDirection {
+    final dirs = route.directions;
+    final nextIndex = currentDirectionIndex + 1;
+    if (nextIndex < dirs.length) return dirs[nextIndex];
+    return null;
+  }
+
+  /// Format khoảng cách còn lại
+  String get formattedRemainingDistance {
+    if (remainingDistanceMeters < 1000) {
+      return '${remainingDistanceMeters.toStringAsFixed(0)} m';
+    }
+    return '${(remainingDistanceMeters / 1000).toStringAsFixed(1)} km';
+  }
+
+  /// Format thời gian còn lại
+  String get formattedRemainingTime {
+    if (remainingTimeMinutes < 1) return '< 1 phút';
+    if (remainingTimeMinutes < 60) {
+      return '${remainingTimeMinutes.toStringAsFixed(0)} phút';
+    }
+    final hours = (remainingTimeMinutes / 60).floor();
+    final mins = (remainingTimeMinutes % 60).round();
+    return mins == 0 ? '$hours giờ' : '$hours giờ $mins phút';
+  }
+
+  /// ETA dựa trên remainingTimeMinutes
+  String get estimatedArrival {
+    final arrival = DateTime.now().add(
+      Duration(minutes: remainingTimeMinutes.round()),
+    );
+    return '${arrival.hour.toString().padLeft(2, '0')}:${arrival.minute.toString().padLeft(2, '0')}';
+  }
+}
+
+// ====================================================================
 // 5. ROUTE STRATEGY (Chiến lược tìm đường)
 // ====================================================================
 enum RouteStrategy {
