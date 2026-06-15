@@ -96,10 +96,7 @@ class RoutingRemoteDataSourceImpl implements RoutingRemoteDataSource {
       RegExp(r'token=[^&]+'),
       'token=***HIDDEN***',
     );
-    AppLogger.debugRaw(
-      '🌐 API URL: $debugUri',
-      source: 'RoutingRemoteDataSource',
-    );
+    AppLogger.debugRaw('API URL: $debugUri', source: 'RoutingRemoteDataSource');
 
     // 4. Gọi API với Retry
     int retryCount = 0;

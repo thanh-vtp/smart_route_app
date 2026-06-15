@@ -3,7 +3,6 @@ import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:smart_route_app/core/common/domain/entities/address_result.dart';
-import 'package:smart_route_app/core/utils/app_logger.dart';
 import 'package:smart_route_app/features/analytics/presentation/screens/analytics_screen.dart';
 import 'package:smart_route_app/features/auth/presentation/screens/auth_screen.dart';
 import 'package:smart_route_app/features/auth/domain/entities/app_user.dart';
@@ -33,74 +32,71 @@ final _rootNavigatorKey = GlobalKey<NavigatorState>(debugLabel: 'root');
 
 @riverpod
 GoRouter router(Ref ref) {
-  // Tạo một ValueNotifier để lắng nghe sự thay đổi Auth mà không làm build lại Router
+  // Dùng ValueNotifier + refreshListenable thay vì ref.watch để tránh
+  // GoRouter bị recreate mỗi khi Riverpod rebuild (keyboard insets,
+  // MediaQuery, v.v.). GoRouter chỉ re-evaluate redirect khi login status
+  // thực sự thay đổi.
   final authStateListener = ValueNotifier<AsyncValue<AppUser>>(
-    const AsyncData(AppUser(id: '', email: '')),
+    ref.read(authSessionProvider),
   );
 
-  // Lắng nghe sự thay đổi của authSessionProvider và truyền vào listener
+  // Guard: chỉ notify GoRouter khi login/loading status thực sự thay đổi,
+  // không notify mỗi lần Supabase stream emit heartbeat/session refresh.
   ref.listen<AsyncValue<AppUser>>(authSessionProvider, (previous, next) {
-    authStateListener.value = next;
-    AppLogger.debug('Auth state changed, new value: $next', name: 'Router');
+    final prevUserId = previous?.asData?.value.id ?? '';
+    final nextUserId = next.asData?.value.id ?? '';
+    final prevLoading = previous?.isLoading ?? true;
+    final nextLoading = next.isLoading;
+    final prevHasError = previous?.hasError ?? false;
+    final nextHasError = next.hasError;
+
+    // Chỉ notify khi user id, loading, hoặc error state thực sự thay đổi
+    if (prevUserId != nextUserId ||
+        prevLoading != nextLoading ||
+        prevHasError != nextHasError) {
+      authStateListener.value = next;
+    }
   });
+
+  ref.onDispose(authStateListener.dispose);
 
   return GoRouter(
     debugLogDiagnostics: true,
-    initialLocation: AppRoutes.explore, // '/explore',
+    initialLocation: AppRoutes.explore,
     navigatorKey: _rootNavigatorKey,
-    refreshListenable:
-        authStateListener, // Router sẽ tự động gọi redirect khi authStateListener thay đổi
+    refreshListenable: authStateListener,
     redirect: (context, state) {
       final authState = authStateListener.value;
 
       if (authState.isLoading) {
-        return AppRoutes.splash; // '/splash';
+        return AppRoutes.splash;
       }
 
       if (authState.hasError) {
-        return AppRoutes.login; // '/login';
+        return AppRoutes.login;
       }
 
       final user = authState.asData?.value ?? AppUser.empty();
-
       final isLoggedIn = user.isNotEmpty;
 
-      // Current Route
-      final isGoingToLogin =
-          state.matchedLocation == AppRoutes.login; // '/login';
+      final isGoingToLogin = state.matchedLocation == AppRoutes.login;
+      final isGoingToSplash = state.matchedLocation == AppRoutes.splash;
 
-      final isGoingToSplash =
-          state.matchedLocation == AppRoutes.splash; // '/splash';
-
-      // Nếu chưa đăng nhập và không đang đi tới login -> redirect đến login
       if (!isLoggedIn) {
-        // cho phép vào login
-        if (isGoingToLogin) {
-          return null;
-        }
-        return AppRoutes.login; // '/login';
+        if (isGoingToLogin) return null;
+        return AppRoutes.login;
       }
 
-      // Nếu đã đăng nhập và đang ở login -> redirect về main
       if (isLoggedIn && (isGoingToLogin || isGoingToSplash)) {
-        return AppRoutes.explore; // '/explore';
+        return AppRoutes.explore;
       }
 
-      // Không redirect
       return null;
     },
     errorBuilder: (context, state) {
       debugPrint('========== GoRouter Error ==========');
       debugPrint('Location: ${state.uri}');
-      debugPrint('Matched Location: ${state.matchedLocation}');
-      debugPrint('Full Path: ${state.fullPath}');
-      debugPrint('Name: ${state.name}');
-      debugPrint('Path Parameters: ${state.pathParameters}');
-      debugPrint('Extra: ${state.extra}');
       debugPrint('Error: ${state.error}');
-      debugPrint(
-        'StackTrace: ${state.error is Error ? (state.error as Error).stackTrace : 'No stack trace'}',
-      );
       debugPrint('====================================');
       return Scaffold(
         backgroundColor: const Color(0xFF121212),
@@ -127,7 +123,7 @@ GoRouter router(Ref ref) {
               ),
               const SizedBox(height: 24),
               ElevatedButton(
-                onPressed: () => context.go(AppRoutes.explore), // '/explore',
+                onPressed: () => context.go(AppRoutes.explore),
                 child: const Text('Go Home'),
               ),
             ],
@@ -135,21 +131,20 @@ GoRouter router(Ref ref) {
         ),
       );
     },
-
     routes: [
       GoRoute(
-        path: AppRoutes.splash, // '/splash',
-        builder: (context, state) {
-          return const SplashScreen();
-        },
+        path: AppRoutes.splash,
+        builder: (context, state) => const SplashScreen(),
       ),
 
       GoRoute(
-        path: AppRoutes.login, // '/login',
+        path: AppRoutes.login,
         builder: (context, state) => const AuthScreen(),
       ),
 
-      // Sử dụng StatefulShellRoute để giữ trạng thái của MainMapView khi điều hướng đến SearchScreen hoặc NotificationScreen
+      // StatefulShellRoute giữ state của từng branch khi chuyển tab.
+      // Search và route-setup là modal sheet — không push route nữa,
+      // nên các route này chỉ là fallback (vd: deep link).
       StatefulShellRoute.indexedStack(
         builder: (context, state, navigationShell) {
           return MainScaffold(navigationShell: navigationShell);
@@ -158,18 +153,15 @@ GoRouter router(Ref ref) {
           StatefulShellBranch(
             routes: [
               GoRoute(
-                path: AppRoutes.explore, // '/explore',
+                path: AppRoutes.explore,
                 builder: (context, state) => const MainMapView(),
                 routes: [
-                  // Không dùng parentNavigatorKey: _rootNavigatorKey ở đây —
-                  // để các route con navigate trong shell navigator, giữ
-                  // ArcGISMapView (PlatformView) sống trong background,
-                  // tránh destroy/recreate gây nháy màn hình.
+                  // Không dùng parentNavigatorKey: _rootNavigatorKey —
+                  // giữ PlatformView (ArcGIS map) sống trong background.
                   GoRoute(
                     path: 'search',
                     builder: (context, state) => const SearchScreen(),
                   ),
-
                   GoRoute(
                     path: 'route-setup',
                     name: 'go',
@@ -186,11 +178,11 @@ GoRouter router(Ref ref) {
           StatefulShellBranch(
             routes: [
               GoRoute(
-                path: AppRoutes.reports, // '/reports',
+                path: AppRoutes.reports,
                 builder: (context, state) => const AnalyticsScreen(),
                 routes: [
                   GoRoute(
-                    path: AppRoutes.account, // 'account'
+                    path: AppRoutes.account,
                     parentNavigatorKey: _rootNavigatorKey,
                     builder: (context, state) =>
                         const AccountManagementScreen(),
@@ -208,16 +200,6 @@ GoRouter router(Ref ref) {
               ),
             ],
           ),
-
-          // TODO: Sẽ phát triển thêm tính năng Lưu đại điểm trong tương lai
-          // StatefulShellBranch(
-          //   routes: [
-          //     GoRoute(
-          //       path: AppRoutes.savedPlaces, // '/saved-places',
-          //       builder: (context, state) => const SavedPlacesScreen(),
-          //     ),
-          //   ],
-          // ),
         ],
       ),
     ],

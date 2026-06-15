@@ -159,7 +159,7 @@ class RoutingRepositoryImpl implements RoutingRepository {
       final shortestResult = results[2];
 
       AppLogger.data(
-        '✅ Alternative routes API calls completed',
+        'Alternative routes API calls completed',
         source: 'RoutingRepository',
       );
 
@@ -239,7 +239,7 @@ class RoutingRepositoryImpl implements RoutingRepository {
       );
 
       AppLogger.data(
-        '✅ Alternative routes result: '
+        'Alternative routes result: '
         'Recommended(${recommendedRoute.formattedTime}), '
         'Alternatives=${alternatives.length}',
         source: 'RoutingRepository',
