@@ -1,12 +1,15 @@
 /// Search bar nổi phía trên bản đồ — lối vào tìm kiếm địa điểm và lập lộ trình.
 ///
-/// Bấm vào mở màn hình route-setup.
+/// Bấm vào mở RouteSetupScreen dưới dạng modal bottom sheet.
+/// Dùng sheet thay vì push route để ArcGISMapView (PlatformView) không bị
+/// unmount/remount, tránh flicker và pop/restore cycle của StatefulShellRoute.
 /// Bên phải có chuông thông báo với red dot.
 library;
 
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:smart_route_app/core/app/router.dart';
+import 'package:smart_route_app/route_setup_screen.dart';
 
 /// Floating search bar hiển thị khi chưa có route active.
 class MapSearchBar extends StatelessWidget {
@@ -19,7 +22,7 @@ class MapSearchBar extends StatelessWidget {
     final textTheme = theme.textTheme;
 
     return GestureDetector(
-      onTap: () => context.push('/explore/route-setup'),
+      onTap: () => _openRouteSetup(context),
       child: Container(
         padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
         decoration: BoxDecoration(
@@ -88,6 +91,19 @@ class MapSearchBar extends StatelessWidget {
             ),
           ],
         ),
+      ),
+    );
+  }
+
+  void _openRouteSetup(BuildContext context) {
+    showModalBottomSheet<void>(
+      context: context,
+      isScrollControlled: true,
+      backgroundColor: Colors.transparent,
+      useSafeArea: true,
+      builder: (_) => ClipRRect(
+        borderRadius: const BorderRadius.vertical(top: Radius.circular(20)),
+        child: const RouteSetupScreen(),
       ),
     );
   }

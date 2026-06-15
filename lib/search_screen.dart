@@ -58,7 +58,7 @@ class _SearchScreenState extends ConsumerState<SearchScreen> {
                 children: [
                   IconButton(
                     icon: Icon(Icons.arrow_back, color: cs.onSurface),
-                    onPressed: () => Navigator.pop(context),
+                    onPressed: () => context.pop(),
                   ),
                   Expanded(
                     child: Container(

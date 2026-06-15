@@ -4,6 +4,7 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:smart_route_app/core/common/domain/entities/address_result.dart';
 import 'package:smart_route_app/core/common/screens/state/location_ui_notifier.dart';
 import 'package:smart_route_app/features/navigation/presentation/state/route_notifier.dart';
+import 'package:smart_route_app/search_screen.dart';
 
 class RouteSetupScreen extends ConsumerStatefulWidget {
   final AddressResult?
@@ -75,8 +76,18 @@ class _RouteSetupScreenState extends ConsumerState<RouteSetupScreen> {
 
   // --- HÀM MỞ MÀN HÌNH TÌM KIẾM ---
   Future<void> _openSearchScreen(bool isStartLocation) async {
-    // Gọi màn hình Search và chờ kết quả trả về
-    final result = await context.push<AddressResult>('/explore/search');
+    // Hiện SearchScreen dưới dạng modal bottom sheet thay vì push route,
+    // để tránh StatefulShellRoute pop/restore cycle gây flicker ArcGIS map.
+    final result = await showModalBottomSheet<AddressResult>(
+      context: context,
+      isScrollControlled: true,
+      useSafeArea: true,
+      backgroundColor: Colors.transparent,
+      builder: (_) => ClipRRect(
+        borderRadius: const BorderRadius.vertical(top: Radius.circular(20)),
+        child: const SearchScreen(),
+      ),
+    );
 
     if (result != null) {
       setState(() {

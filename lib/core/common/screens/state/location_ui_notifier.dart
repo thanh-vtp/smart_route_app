@@ -24,7 +24,8 @@ class LocationUiNotifier extends Notifier<LocationState> {
   }
 
   /// Khởi động GPS stream và lắng nghe autopan changes.
-  /// Gọi 1 lần khi map ready — idempotent (guard trong DeviceLocationController).
+  /// Gọi khi user bấm nút location lần đầu hoặc khi bắt đầu navigation.
+  /// Idempotent — guard chống gọi 2 lần trong DeviceLocationController.
   Future<void> startLocation() async {
     final facade = ref.read(mapFacadeProvider);
 

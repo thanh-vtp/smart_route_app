@@ -135,7 +135,8 @@ class _MainMapViewState extends ConsumerState<MainMapView> {
               if (_isMapInitialized) return;
               _isMapInitialized = true;
               await ref.read(mapUiProvider.notifier).initialize();
-              await ref.read(locationUiProvider.notifier).startLocation();
+              // Không tự động start location ở đây —
+              // để cycleLocationMode() xin permission khi user chủ động bấm nút.
             },
             onTap: _handleMapTap,
             mapUiState: mapUiState,
@@ -251,6 +252,7 @@ class _MapLayerState extends ConsumerState<_MapLayer> {
               return controller;
             },
             onMapViewReady: widget.onMapReady,
+
             onTap: widget.onTap,
           ),
         ),

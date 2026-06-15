@@ -161,16 +161,17 @@ GoRouter router(Ref ref) {
                 path: AppRoutes.explore, // '/explore',
                 builder: (context, state) => const MainMapView(),
                 routes: [
-                  // TODO: Trong GoRouter, route con (routes: []) KHÔNG được dùng full path.
+                  // Không dùng parentNavigatorKey: _rootNavigatorKey ở đây —
+                  // để các route con navigate trong shell navigator, giữ
+                  // ArcGISMapView (PlatformView) sống trong background,
+                  // tránh destroy/recreate gây nháy màn hình.
                   GoRoute(
                     path: 'search',
-                    parentNavigatorKey: _rootNavigatorKey,
                     builder: (context, state) => const SearchScreen(),
                   ),
 
                   GoRoute(
                     path: 'route-setup',
-                    parentNavigatorKey: _rootNavigatorKey,
                     name: 'go',
                     builder: (context, state) {
                       final destination = state.extra as AddressResult?;
