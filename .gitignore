@@ -92,3 +92,9 @@ node_modules/
 # Real data
 supabase/seed.sql
 
+# ========================
+# Bao cao chuyen de tot nghiep
+# ========================
+
+bao-cao-chuyen-de-tot-nghiep/
+

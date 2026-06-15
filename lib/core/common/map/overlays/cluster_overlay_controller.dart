@@ -42,7 +42,7 @@ class ClusterOverlayController {
       geometry: center,
       distance: cluster.displayRadiusM,
       distanceUnit: LinearUnit(unitId: LinearUnitId.meters),
-      maxDeviation: 64.0,
+      maxDeviation: 0.01, // vẽ hình tròn 0.01, hình đa giác 64.0
       curveType: GeodeticCurveType.geodesic,
     );
 
