@@ -13,6 +13,7 @@ import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:firebase_core/firebase_core.dart';
 
 Future<void> initApp(ProviderContainer container) async {
+
   /// Load env file
   await dotenv.load(fileName: ".env");
 
