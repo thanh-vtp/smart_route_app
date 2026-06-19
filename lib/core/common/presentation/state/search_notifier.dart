@@ -61,7 +61,7 @@ class SearchNotifier extends _$SearchNotifier {
     });
   }
 
-  /// Hàm gọi API thực sự
+  /// Hàm gọi API
   Future<void> _performSearch(String query) async {
     final geocodeUseCase = ref.read(geocodeAddressUseCaseProvider);
 

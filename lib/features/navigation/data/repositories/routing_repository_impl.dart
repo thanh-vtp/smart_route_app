@@ -156,7 +156,7 @@ class RoutingRepositoryImpl implements RoutingRepository {
       // 3. Xử lý kết quả
       final balancedResult = results[0];
       final fastestResult = results[1];
-      final shortestResult = results[2];
+      final shortestResult = results[2];  
 
       AppLogger.data(
         'Alternative routes API calls completed',
