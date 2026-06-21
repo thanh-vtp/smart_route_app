@@ -1,5 +1,5 @@
 
-import 'package:smart_route_app/core/utils/app_logger.dart';
+import 'package:smart_route_app/common/app_logger.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 abstract class SupabaseAuthDatasource {

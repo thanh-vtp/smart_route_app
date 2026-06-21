@@ -1,6 +1,6 @@
 import 'package:fpdart/fpdart.dart';
 import 'package:smart_route_app/core/errors/failures.dart';
-import 'package:smart_route_app/core/utils/app_logger.dart';
+import 'package:smart_route_app/common/app_logger.dart';
 import 'package:smart_route_app/features/auth/domain/repositories/auth_repository.dart';
 
 class SignInWithGoogleUsecase {

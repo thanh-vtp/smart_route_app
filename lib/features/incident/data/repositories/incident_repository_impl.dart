@@ -3,7 +3,7 @@ import 'dart:io';
 import 'package:arcgis_maps/arcgis_maps.dart' as arcgis;
 import 'package:fpdart/fpdart.dart';
 import 'package:smart_route_app/core/errors/failures.dart';
-import 'package:smart_route_app/core/utils/app_logger.dart';
+import 'package:smart_route_app/common/app_logger.dart';
 import 'package:smart_route_app/features/incident/data/datasources/arcgis_remote_data_source.dart';
 import 'package:smart_route_app/features/incident/data/datasources/supabase_remote_data_source.dart';
 import 'package:smart_route_app/features/incident/data/models/incident_supabase_model.dart';

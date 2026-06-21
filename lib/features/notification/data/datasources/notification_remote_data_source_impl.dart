@@ -1,5 +1,5 @@
-import 'package:smart_route_app/core/resources/lib/supabase.dart';
-import '../../../../core/utils/app_logger.dart';
+import 'package:smart_route_app/common/constants/supabase.dart';
+import '../../../../common/app_logger.dart';
 import '../models/notification_model.dart';
 import 'notification_remote_data_source.dart';
 

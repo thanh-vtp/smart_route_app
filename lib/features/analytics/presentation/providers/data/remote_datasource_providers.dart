@@ -1,5 +1,5 @@
 import 'package:riverpod_annotation/riverpod_annotation.dart';
-import 'package:smart_route_app/core/resources/lib/supabase.dart';
+import 'package:smart_route_app/common/constants/supabase.dart';
 import 'package:smart_route_app/features/analytics/data/datasources/analytics_remote_data_source.dart';
 import 'package:smart_route_app/features/analytics/data/datasources/analytics_remote_data_source_impl.dart';
 

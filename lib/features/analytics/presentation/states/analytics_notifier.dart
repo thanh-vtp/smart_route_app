@@ -1,5 +1,5 @@
 import 'package:riverpod_annotation/riverpod_annotation.dart';
-import 'package:smart_route_app/core/common/presentation/providers/usecases/use_case_providers.dart';
+import 'package:smart_route_app/features/search/presentation/providers/usecases/use_case_providers.dart';
 import 'package:smart_route_app/features/analytics/domain/entities/analytics_data.dart';
 import 'package:smart_route_app/features/analytics/presentation/providers/usecases/use_case_providers.dart';
 import 'package:smart_route_app/features/analytics/presentation/states/analytics_state.dart';

@@ -3,8 +3,8 @@ import 'dart:io';
 
 import 'package:device_info_plus/device_info_plus.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
-import 'package:smart_route_app/core/resources/lib/supabase.dart';
-import 'package:smart_route_app/core/utils/app_logger.dart';
+import 'package:smart_route_app/common/constants/supabase.dart';
+import 'package:smart_route_app/common/app_logger.dart';
 import 'package:smart_route_app/features/auth/data/datasources/user_device_datasource.dart';
 import 'package:smart_route_app/features/auth/presentation/providers/data/remote_datasource_providers.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';

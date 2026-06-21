@@ -1,4 +1,4 @@
-import 'package:smart_route_app/core/resources/lib/supabase.dart';
+import 'package:smart_route_app/common/constants/supabase.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 import 'profile_remote_data_source.dart';
 

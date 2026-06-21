@@ -3,8 +3,8 @@ import 'dart:convert';
 import 'dart:io';
 import 'package:http/http.dart' as http;
 import 'package:smart_route_app/core/errors/failures.dart';
-import 'package:smart_route_app/core/utils/app_logger.dart';
-import 'package:smart_route_app/core/utils/constants.dart';
+import 'package:smart_route_app/common/app_logger.dart';
+import 'package:smart_route_app/common/constants/app_constants.dart';
 import '../models/cluster_model.dart';
 import 'cluster_remote_data_source.dart';
 

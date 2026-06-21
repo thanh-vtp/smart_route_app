@@ -3,8 +3,8 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:smart_route_app/core/errors/failures.dart';
-import 'package:smart_route_app/core/utils/app_logger.dart';
-import 'package:smart_route_app/core/utils/constants.dart';
+import 'package:smart_route_app/common/app_logger.dart';
+import 'package:smart_route_app/common/constants/app_constants.dart';
 import 'package:smart_route_app/features/navigation/data/datasources/routing_remote_data_source.dart';
 import 'package:smart_route_app/features/navigation/data/models/routing_model.dart';
 import 'package:http/http.dart' as http;

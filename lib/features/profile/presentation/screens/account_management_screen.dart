@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:smart_route_app/core/common/provider/theme_provider.dart';
+import 'package:smart_route_app/common/theme/theme_provider.dart';
 import 'package:smart_route_app/features/auth/presentation/providers/uscases/use_case_providers.dart';
 import 'package:smart_route_app/features/profile/presentation/state/profile_notifier.dart';
 import 'package:smart_route_app/features/profile/presentation/state/profile_state.dart';

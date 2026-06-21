@@ -1,5 +1,5 @@
 import 'package:riverpod_annotation/riverpod_annotation.dart';
-import 'package:smart_route_app/core/utils/app_logger.dart';
+import 'package:smart_route_app/common/app_logger.dart';
 import 'package:smart_route_app/features/navigation/domain/entities/route_entity.dart';
 import 'package:smart_route_app/features/navigation/presentation/providers/usecase/use_case_providers.dart';
 import 'route_state.dart';

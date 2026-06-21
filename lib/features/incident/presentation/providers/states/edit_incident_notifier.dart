@@ -1,5 +1,5 @@
 import 'package:riverpod_annotation/riverpod_annotation.dart';
-import 'package:smart_route_app/core/common/screens/state/incidents_provider.dart';
+import 'package:smart_route_app/features/map_drawing/state/incidents_provider.dart';
 import 'package:smart_route_app/features/auth/domain/domain.dart';
 import 'package:smart_route_app/features/auth/presentation/providers/uscases/use_case_providers.dart';
 import 'package:smart_route_app/features/incident/domain/entities/incident.dart';

@@ -1,6 +1,6 @@
 
 import 'package:riverpod_annotation/riverpod_annotation.dart';
-import 'package:smart_route_app/core/resources/lib/supabase.dart';
+import 'package:smart_route_app/common/constants/supabase.dart';
 import 'package:smart_route_app/features/auth/data/datasources/google_auth_datasource.dart';
 import 'package:smart_route_app/features/auth/data/datasources/supabase_auth_datasource.dart';
 import 'package:smart_route_app/features/auth/data/datasources/user_device_datasource.dart';

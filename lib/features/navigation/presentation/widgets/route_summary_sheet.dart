@@ -9,7 +9,7 @@ library;
 
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:smart_route_app/core/common/screens/state/map_ui_notifier.dart';
+import 'package:smart_route_app/features/map_drawing/state/map_ui_notifier.dart';
 import 'package:smart_route_app/features/navigation/domain/entities/route_entity.dart';
 import 'package:smart_route_app/features/navigation/presentation/state/route_notifier.dart';
 import 'package:smart_route_app/features/navigation/presentation/widgets/alternative_routes_selector.dart';

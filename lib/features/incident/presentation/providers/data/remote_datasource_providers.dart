@@ -1,10 +1,10 @@
 import 'package:riverpod_annotation/riverpod_annotation.dart';
-import 'package:smart_route_app/core/resources/lib/supabase.dart';
+import 'package:smart_route_app/common/constants/supabase.dart';
 import 'package:smart_route_app/features/incident/data/datasources/arcgis_remote_data_source.dart';
 import 'package:smart_route_app/features/incident/data/datasources/arcgis_remote_data_source_impl.dart';
 import 'package:smart_route_app/features/incident/data/datasources/supabase_remote_data_source.dart';
 import 'package:smart_route_app/features/incident/data/datasources/supabase_remote_data_source_impl.dart';
-import 'package:smart_route_app/core/common/provider/incident_feature_layer_providers.dart';
+import 'package:smart_route_app/features/map_drawing/provider/incident_feature_layer_providers.dart';
 
 part 'remote_datasource_providers.g.dart';
 

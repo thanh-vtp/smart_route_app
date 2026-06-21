@@ -3,8 +3,8 @@ import 'dart:math' as math;
 
 import 'package:arcgis_maps/arcgis_maps.dart' hide RouteResult;
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:smart_route_app/core/common/screens/state/location_ui_notifier.dart';
-import 'package:smart_route_app/core/utils/app_logger.dart';
+import 'package:smart_route_app/features/map_drawing/state/location_ui_notifier.dart';
+import 'package:smart_route_app/common/app_logger.dart';
 import 'package:smart_route_app/features/navigation/domain/entities/route_entity.dart';
 import 'package:smart_route_app/features/navigation/presentation/providers/usecase/use_case_providers.dart';
 import 'package:smart_route_app/features/navigation/presentation/state/route_notifier.dart';

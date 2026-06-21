@@ -5,8 +5,8 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:smart_route_app/core/app/app.dart';
 import 'package:smart_route_app/core/app/init.dart';
-import 'package:smart_route_app/core/common/data/theme_repository.dart';
-import 'package:smart_route_app/core/common/provider/theme_provider.dart';
+import 'package:smart_route_app/common/theme/theme_repository.dart';
+import 'package:smart_route_app/common/theme/theme_provider.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();

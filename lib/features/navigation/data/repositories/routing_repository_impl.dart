@@ -1,7 +1,7 @@
 import 'package:fpdart/fpdart.dart';
 import 'package:smart_route_app/core/errors/failures.dart';
 import 'package:smart_route_app/core/network/network_info.dart';
-import 'package:smart_route_app/core/utils/app_logger.dart';
+import 'package:smart_route_app/common/app_logger.dart';
 import 'package:smart_route_app/features/incident/domain/repositories/incident_repository.dart';
 import 'package:smart_route_app/features/navigation/data/datasources/routing_remote_data_source.dart';
 import 'package:smart_route_app/features/navigation/domain/entities/route_entity.dart';

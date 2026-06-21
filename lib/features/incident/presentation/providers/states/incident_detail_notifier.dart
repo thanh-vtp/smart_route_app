@@ -1,7 +1,7 @@
 import 'package:riverpod_annotation/riverpod_annotation.dart';
-import 'package:smart_route_app/core/common/screens/state/incidents_provider.dart';
-import 'package:smart_route_app/core/resources/lib/supabase.dart';
-import 'package:smart_route_app/core/utils/app_logger.dart';
+import 'package:smart_route_app/features/map_drawing/state/incidents_provider.dart';
+import 'package:smart_route_app/common/constants/supabase.dart';
+import 'package:smart_route_app/common/app_logger.dart';
 import 'package:smart_route_app/features/auth/domain/entities/app_user.dart';
 import 'package:smart_route_app/features/auth/presentation/providers/uscases/use_case_providers.dart';
 import 'package:smart_route_app/features/incident/presentation/providers/usecases/use_case_providers.dart';

@@ -6,7 +6,7 @@ library;
 
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:smart_route_app/core/common/screens/state/location_ui_notifier.dart';
+import 'package:smart_route_app/features/map_drawing/state/location_ui_notifier.dart';
 
 /// Đồng hồ tốc độ góc dưới trái màn hình navigation.
 class NavigationSpeedometer extends ConsumerWidget {

@@ -1,9 +1,9 @@
 import 'dart:async';
 import 'dart:io';
 import 'package:arcgis_maps/arcgis_maps.dart';
-import 'package:smart_route_app/core/common/model/incident_arcgis_model.dart';
+import 'package:smart_route_app/features/map_drawing/model/incident_arcgis_model.dart';
 import 'package:smart_route_app/core/errors/exceptions.dart';
-import 'package:smart_route_app/core/utils/app_logger.dart';
+import 'package:smart_route_app/common/app_logger.dart';
 import 'package:smart_route_app/features/incident/data/datasources/arcgis_remote_data_source.dart';
 import 'package:http/http.dart' as http;
 

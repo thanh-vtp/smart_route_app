@@ -1,4 +1,4 @@
-import 'package:smart_route_app/core/utils/app_logger.dart';
+import 'package:smart_route_app/common/app_logger.dart';
 import 'package:smart_route_app/features/incident/data/datasources/supabase_remote_data_source.dart';
 import 'package:smart_route_app/features/incident/data/models/incident_supabase_model.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';

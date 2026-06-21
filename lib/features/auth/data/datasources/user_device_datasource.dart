@@ -1,6 +1,6 @@
 import 'dart:io';
 import 'package:device_info_plus/device_info_plus.dart';
-import 'package:smart_route_app/core/resources/lib/supabase.dart';
+import 'package:smart_route_app/common/constants/supabase.dart';
 
 abstract class UserDeviceDatasource {
   /// Save/update current device FCM token

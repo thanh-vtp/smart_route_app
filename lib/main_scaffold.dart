@@ -4,7 +4,7 @@ import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:smart_route_app/core/app/notification_provider.dart';
 import 'package:smart_route_app/core/app/set_up_notification.dart';
-import 'package:smart_route_app/core/utils/app_logger.dart';
+import 'package:smart_route_app/common/app_logger.dart';
 
   class MainScaffold extends ConsumerStatefulWidget {
     final StatefulNavigationShell navigationShell;

@@ -10,9 +10,9 @@ library;
 import 'package:arcgis_maps_toolkit/arcgis_maps_toolkit.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:smart_route_app/core/common/map/location/location_state.dart';
-import 'package:smart_route_app/core/common/map/providers/map_controller_bundle_provider.dart';
-import 'package:smart_route_app/core/common/screens/state/location_ui_notifier.dart';
+import 'package:smart_route_app/core/map_service/location/location_state.dart';
+import 'package:smart_route_app/core/map_service/providers/map_controller_bundle_provider.dart';
+import 'package:smart_route_app/features/map_drawing/state/location_ui_notifier.dart';
 
 /// Cụm floating controls bên phải: Compass + Location button + FAB báo cáo.
 class MapLocationControls extends ConsumerWidget {

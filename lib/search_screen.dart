@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:smart_route_app/core/common/domain/entities/address_result.dart';
-import 'package:smart_route_app/core/common/presentation/state/search_notifier.dart';
-import 'package:smart_route_app/core/common/presentation/state/search_state.dart';
+import 'package:smart_route_app/features/search/domain/entities/address_result.dart';
+import 'package:smart_route_app/features/search/presentation/state/search_notifier.dart';
+import 'package:smart_route_app/features/search/presentation/state/search_state.dart';
 
 class SearchScreen extends ConsumerStatefulWidget {
   const SearchScreen({super.key});

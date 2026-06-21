@@ -12,7 +12,7 @@ import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:smart_route_app/features/navigation/domain/entities/route_entity.dart';
 import 'package:smart_route_app/features/navigation/presentation/state/navigation_notifier.dart';
-import 'package:smart_route_app/core/common/screens/state/map_ui_notifier.dart';
+import 'package:smart_route_app/features/map_drawing/state/map_ui_notifier.dart';
 
 /// Draggable bottom panel danh sách chỉ đường + ETA khi đang navigation.
 ///

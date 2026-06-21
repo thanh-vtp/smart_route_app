@@ -5,15 +5,14 @@ import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:smart_route_app/common/constants/app_constants.dart';
 import 'package:smart_route_app/core/app/fcm_token_service.dart';
 import 'package:smart_route_app/core/app/set_up_notification.dart';
-import 'package:smart_route_app/core/core.dart';
 import 'package:smart_route_app/firebase_options.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:firebase_core/firebase_core.dart';
 
 Future<void> initApp(ProviderContainer container) async {
-
   /// Load env file
   await dotenv.load(fileName: ".env");
 
