@@ -8,6 +8,17 @@ abstract class GeocodingRepository {
     String address,
   );
 
+  /// Tìm kiếm địa chỉ theo cấu trúc (số nhà, đường, phường, quận, tỉnh)
+  Future<Either<Failure, List<AddressResult>>> findAddressCandidatesStructured({
+    String? houseNumber,
+    String? street,
+    String? ward,
+    String? district,
+    String? city,
+    String? province,
+    String? postalCode,
+  });
+
   /// Lấy địa chỉ dựa trên tọa độ (Nhấn trên map / Vị trí hiện tại)
   Future<Either<Failure, AddressResult>> reverseGeocode(double lat, double lng);
 }

@@ -9,8 +9,6 @@ part 'remote_datasource_providers.g.dart';
 
 /// Provider cho ArcGIS Geocoding Data Source
 @Riverpod(keepAlive: true)
-ArcGISGeocodingRemoteDataSource arcgisGeocodingRemoteDataSource(
-  ArcgisGeocodingRemoteDataSourceRef ref,
-) {
+ArcGISGeocodingRemoteDataSource arcgisGeocodingRemoteDataSource(Ref ref) {
   return ArcGISGeocodingRemoteDataSourceImpl();
 }

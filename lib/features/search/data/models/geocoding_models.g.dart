@@ -6,46 +6,39 @@ part of 'geocoding_models.dart';
 // JsonSerializableGenerator
 // **************************************************************************
 
-_$LocationPointImpl _$$LocationPointImplFromJson(Map<String, dynamic> json) =>
-    _$LocationPointImpl(
+_LocationPoint _$LocationPointFromJson(Map<String, dynamic> json) =>
+    _LocationPoint(
       lng: (json['x'] as num?)?.toDouble() ?? 0.0,
       lat: (json['y'] as num?)?.toDouble() ?? 0.0,
     );
 
-Map<String, dynamic> _$$LocationPointImplToJson(_$LocationPointImpl instance) =>
-    <String, dynamic>{
-      'x': instance.lng,
-      'y': instance.lat,
-    };
+Map<String, dynamic> _$LocationPointToJson(_LocationPoint instance) =>
+    <String, dynamic>{'x': instance.lng, 'y': instance.lat};
 
-_$GeocodeResponseImpl _$$GeocodeResponseImplFromJson(
-        Map<String, dynamic> json) =>
-    _$GeocodeResponseImpl(
-      candidates: (json['candidates'] as List<dynamic>?)
+_GeocodeResponse _$GeocodeResponseFromJson(Map<String, dynamic> json) =>
+    _GeocodeResponse(
+      candidates:
+          (json['candidates'] as List<dynamic>?)
               ?.map((e) => GeocodeCandidate.fromJson(e as Map<String, dynamic>))
               .toList() ??
           const [],
     );
 
-Map<String, dynamic> _$$GeocodeResponseImplToJson(
-        _$GeocodeResponseImpl instance) =>
-    <String, dynamic>{
-      'candidates': instance.candidates,
-    };
+Map<String, dynamic> _$GeocodeResponseToJson(_GeocodeResponse instance) =>
+    <String, dynamic>{'candidates': instance.candidates};
 
-_$GeocodeCandidateImpl _$$GeocodeCandidateImplFromJson(
-        Map<String, dynamic> json) =>
-    _$GeocodeCandidateImpl(
+_GeocodeCandidate _$GeocodeCandidateFromJson(Map<String, dynamic> json) =>
+    _GeocodeCandidate(
       address: json['address'] as String? ?? '',
-      location:
-          LocationPoint.fromJson(json['location'] as Map<String, dynamic>),
+      location: LocationPoint.fromJson(
+        json['location'] as Map<String, dynamic>,
+      ),
       score: (json['score'] as num?)?.toDouble() ?? 0.0,
       attributes: json['attributes'] as Map<String, dynamic>? ?? const {},
       extent: json['extent'] as Map<String, dynamic>?,
     );
 
-Map<String, dynamic> _$$GeocodeCandidateImplToJson(
-        _$GeocodeCandidateImpl instance) =>
+Map<String, dynamic> _$GeocodeCandidateToJson(_GeocodeCandidate instance) =>
     <String, dynamic>{
       'address': instance.address,
       'location': instance.location,
@@ -54,41 +47,51 @@ Map<String, dynamic> _$$GeocodeCandidateImplToJson(
       'extent': instance.extent,
     };
 
-_$ReverseGeocodeResponseImpl _$$ReverseGeocodeResponseImplFromJson(
-        Map<String, dynamic> json) =>
-    _$ReverseGeocodeResponseImpl(
-      address: AddressInfo.fromJson(json['address'] as Map<String, dynamic>),
-      location:
-          LocationPoint.fromJson(json['location'] as Map<String, dynamic>),
-    );
+_ReverseGeocodeResponse _$ReverseGeocodeResponseFromJson(
+  Map<String, dynamic> json,
+) => _ReverseGeocodeResponse(
+  address: AddressInfo.fromJson(json['address'] as Map<String, dynamic>),
+  location: LocationPoint.fromJson(json['location'] as Map<String, dynamic>),
+);
 
-Map<String, dynamic> _$$ReverseGeocodeResponseImplToJson(
-        _$ReverseGeocodeResponseImpl instance) =>
-    <String, dynamic>{
-      'address': instance.address,
-      'location': instance.location,
-    };
+Map<String, dynamic> _$ReverseGeocodeResponseToJson(
+  _ReverseGeocodeResponse instance,
+) => <String, dynamic>{
+  'address': instance.address,
+  'location': instance.location,
+};
 
-_$AddressInfoImpl _$$AddressInfoImplFromJson(Map<String, dynamic> json) =>
-    _$AddressInfoImpl(
-      fullAddress: json['Match_addr'] as String?,
-      streetName: json['Address'] as String?,
-      neighborhood: json['Neighborhood'] as String?,
-      district: json['District'] as String?,
-      city: json['City'] as String?,
-      region: json['Region'] as String?,
-      countryName: json['CntryName'] as String?,
-      postalCode: json['Postal'] as String?,
-    );
+_AddressInfo _$AddressInfoFromJson(Map<String, dynamic> json) => _AddressInfo(
+  fullAddress: json['Match_addr'] as String?,
+  longLabel: json['LongLabel'] as String?,
+  shortLabel: json['ShortLabel'] as String?,
+  houseNumber: json['AddNum'] as String?,
+  streetPrefix: json['StPreType'] as String?,
+  streetName: json['StName'] as String?,
+  ward: json['Nbrhd'] as String?,
+  district: json['District'] as String?,
+  city: json['City'] as String?,
+  province: json['Region'] as String?,
+  countryName: json['CntryName'] as String?,
+  postalCode: json['Postal'] as String?,
+  placeName: json['PlaceName'] as String?,
+  placeType: json['Type'] as String?,
+);
 
-Map<String, dynamic> _$$AddressInfoImplToJson(_$AddressInfoImpl instance) =>
+Map<String, dynamic> _$AddressInfoToJson(_AddressInfo instance) =>
     <String, dynamic>{
       'Match_addr': instance.fullAddress,
-      'Address': instance.streetName,
-      'Neighborhood': instance.neighborhood,
+      'LongLabel': instance.longLabel,
+      'ShortLabel': instance.shortLabel,
+      'AddNum': instance.houseNumber,
+      'StPreType': instance.streetPrefix,
+      'StName': instance.streetName,
+      'Nbrhd': instance.ward,
       'District': instance.district,
       'City': instance.city,
-      'Region': instance.region,
+      'Region': instance.province,
       'CntryName': instance.countryName,
       'Postal': instance.postalCode,
+      'PlaceName': instance.placeName,
+      'Type': instance.placeType,
     };

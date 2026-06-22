@@ -10,7 +10,7 @@ part 'repository_providers.g.dart';
 /// Sử dụng ArcGIS Geocoding Data Source
 /// Được dùng cho các use case liên quan đến geocoding
 @Riverpod(keepAlive: true)
-GeocodingRepository geocodingRepository(GeocodingRepositoryRef ref) {
+GeocodingRepository geocodingRepository(Ref ref) {
   final arcgisGeocodingDataSource = ref.watch(
     arcgisGeocodingRemoteDataSourceProvider,
   );

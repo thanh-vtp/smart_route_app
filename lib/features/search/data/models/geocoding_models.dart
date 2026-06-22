@@ -4,101 +4,9 @@ import 'package:smart_route_app/features/search/domain/entities/address_result.d
 part 'geocoding_models.freezed.dart';
 part 'geocoding_models.g.dart';
 
-// {
-//     "spatialReference": {
-//         "wkid": 4326,
-//         "latestWkid": 4326
-//     },
-//     "candidates": [
-//         {
-//             "address": "HTBV Internet Shop Calls Oversea",
-//             "location": {
-//                 "x": 109.1946844,
-//                 "y": 12.2385144
-//             },
-//             "score": 100,
-//             "attributes": {
-//                 "Loc_name": "World",
-//                 "Status": "T",
-//                 "Score": 100,
-//                 "Match_addr": "HTBV Internet Shop Calls Oversea",
-//                 "LongLabel": "HTBV Internet Shop Calls Oversea, 5 Đường Nguyễn Thị Minh Khai, Lộc Thọ, Nha Trang, Khánh Hòa, 57106, VNM",
-//                 "ShortLabel": "HTBV Internet Shop Calls Oversea",
-//                 "Addr_type": "POI",
-//                 "Type": "Coffee Shop",
-//                 "PlaceName": "HTBV Internet Shop Calls Oversea",
-//                 "Place_addr": "5 Đường Nguyễn Thị Minh Khai, Lộc Thọ, Nha Trang, Khánh Hòa, 57106",
-//                 "Phone": "+(84)-(258)-3521838",
-//                 "URL": "",
-//                 "Rank": 19,
-//                 "AddBldg": "",
-//                 "AddNum": "5",
-//                 "AddNumFrom": "",
-//                 "AddNumTo": "",
-//                 "AddRange": "",
-//                 "Side": "R",
-//                 "StPreDir": "",
-//                 "StPreType": "Đường",
-//                 "StName": "Nguyễn Thị Minh Khai",
-//                 "StType": "",
-//                 "StDir": "",
-//                 "BldgComp": "",
-//                 "BldgType": "",
-//                 "BldgName": "",
-//                 "LevelType": "",
-//                 "LevelName": "",
-//                 "UnitType": "",
-//                 "UnitName": "",
-//                 "RoomType": "",
-//                 "RoomName": "",
-//                 "WingType": "",
-//                 "WingName": "",
-//                 "SubAddr": "",
-//                 "StAddr": "5 Đường Nguyễn Thị Minh Khai",
-//                 "Block": "",
-//                 "Sector": "",
-//                 "Nbrhd": "Lộc Thọ",
-//                 "District": "Lộc Thọ",
-//                 "City": "Nha Trang",
-//                 "MetroArea": "",
-//                 "Subregion": "",
-//                 "Region": "Khánh Hòa",
-//                 "RegionAbbr": "",
-//                 "Territory": "",
-//                 "Zone": "",
-//                 "Postal": "57106",
-//                 "PostalExt": "",
-//                 "Country": "VNM",
-//                 "CntryName": "Việt Nam",
-//                 "LangCode": "VIE",
-//                 "Distance": 221.32141870613194,
-//                 "X": 109.194678448849,
-//                 "Y": 12.238605427468,
-//                 "DisplayX": 109.1946844,
-//                 "DisplayY": 12.2385144,
-//                 "Xmin": 109.1896844,
-//                 "Xmax": 109.1996844,
-//                 "Ymin": 12.2335144,
-//                 "Ymax": 12.2435144,
-//                 "ExInfo": "",
-//                 "MatchID": "AQ2qaQQAXo8BAJUBBLB4YL0OIEhUQlYgSU5URVJORVQgU0hPUCBDQUxMUyBPVkVSU0VBZgNWSUU",
-//                 "PotentialID": "",
-//                 "StrucType": "",
-//                 "StrucDet": ""
-//             },
-//             "extent": {
-//                 "xmin": 109.1896844,
-//                 "ymin": 12.2335144,
-//                 "xmax": 109.1996844,
-//                 "ymax": 12.2435144
-//             }
-//         }
-//     ]
-// }
-
 // Model dùng chung
 @freezed
-class LocationPoint with _$LocationPoint {
+abstract class LocationPoint with _$LocationPoint {
   const factory LocationPoint({
     @Default(0.0) @JsonKey(name: 'x') double lng, // Kinh độ
     @Default(0.0) @JsonKey(name: 'y') double lat, // Vĩ độ
@@ -110,7 +18,7 @@ class LocationPoint with _$LocationPoint {
 
 // Model Tìm kiếm địa điểm (Geocoding)
 @freezed
-class GeocodeResponse with _$GeocodeResponse {
+abstract class GeocodeResponse with _$GeocodeResponse {
   const factory GeocodeResponse({
     @Default([]) @JsonKey(name: 'candidates') List<GeocodeCandidate> candidates,
   }) = _GeocodeResponse;
@@ -120,7 +28,7 @@ class GeocodeResponse with _$GeocodeResponse {
 }
 
 @freezed
-class GeocodeCandidate with _$GeocodeCandidate {
+abstract class GeocodeCandidate with _$GeocodeCandidate {
   const GeocodeCandidate._(); // using private constructor for custom getters
   const factory GeocodeCandidate({
     @Default('') @JsonKey(name: 'address') String address,
@@ -134,25 +42,39 @@ class GeocodeCandidate with _$GeocodeCandidate {
       _$GeocodeCandidateFromJson(json);
 
   AddressResult toEntity() {
+    // Parse đầy đủ các trường từ ArcGIS attributes theo cấu trúc địa chỉ Việt Nam
+    final attrs = attributes;
+
     return AddressResult(
-      fullAddress: address,
+      // Thông tin cơ bản
+      fullAddress: (attrs['LongLabel'] as String?) ?? address,
       lat: location.lat,
       lng: location.lng,
       score: score,
-      streetName: attributes['Address'] as String?,
-      neighborhood: attributes['Neighborhood'] as String?,
-      district: attributes['District'] as String?,
-      city: attributes['City'] as String?,
-      region: attributes['Region'] as String?,
-      countryName: attributes['CntryName'] as String?,
-      postalCode: attributes['Postal'] as String?,
+
+      // Chi tiết địa chỉ Việt Nam
+      houseNumber: attrs['AddNum'] as String?, // Số nhà
+      streetPrefix: attrs['StPreType'] as String?, // Đường/Phố/...
+      streetName: attrs['StName'] as String?, // Tên đường
+      ward: attrs['Nbrhd'] as String?, // Phường/Xã
+      district: attrs['District'] as String?, // Quận/Huyện
+      city: attrs['City'] as String?, // Thành phố
+      province: attrs['Region'] as String?, // Tỉnh
+      countryName: attrs['CntryName'] as String?, // Quốc gia
+      postalCode: attrs['Postal'] as String?, // Mã bưu chính
+      // Thông tin bổ sung
+      placeName: attrs['PlaceName'] as String?, // Tên địa điểm
+      placeType: attrs['Type'] as String?, // Loại địa điểm
+      phoneNumber: attrs['Phone'] as String?, // Số điện thoại
+      longLabel: attrs['LongLabel'] as String?, // Nhãn đầy đủ
+      shortLabel: attrs['ShortLabel'] as String?, // Nhãn ngắn
     );
   }
 }
 
 // Model lấy thông tin địa chỉ từ tọa độ (Reverse Geocoding)
 @freezed
-class ReverseGeocodeResponse with _$ReverseGeocodeResponse {
+abstract class ReverseGeocodeResponse with _$ReverseGeocodeResponse {
   const ReverseGeocodeResponse._();
 
   const factory ReverseGeocodeResponse({
@@ -165,32 +87,50 @@ class ReverseGeocodeResponse with _$ReverseGeocodeResponse {
 
   AddressResult toEntity() {
     return AddressResult(
-      fullAddress: address.fullAddress ?? 'Không xác định',
+      fullAddress: address.longLabel ?? address.fullAddress ?? 'Không xác định',
       lat: location.lat,
       lng: location.lng,
       score: 100.0, // Reverse geocode độ chính xác mặc định là 100
+      // Chi tiết địa chỉ Việt Nam
+      houseNumber: address.houseNumber,
+      streetPrefix: address.streetPrefix,
       streetName: address.streetName,
-      neighborhood: address.neighborhood,
+      ward: address.ward,
       district: address.district,
       city: address.city,
-      region: address.region,
+      province: address.province,
       countryName: address.countryName,
       postalCode: address.postalCode,
+
+      // Thông tin bổ sung
+      placeName: address.placeName,
+      longLabel: address.longLabel,
+      shortLabel: address.shortLabel,
     );
   }
 }
 
 @freezed
-class AddressInfo with _$AddressInfo {
+abstract class AddressInfo with _$AddressInfo {
   const factory AddressInfo({
+    // Thông tin cơ bản
     @JsonKey(name: 'Match_addr') String? fullAddress,
-    @JsonKey(name: 'Address') String? streetName,
-    @JsonKey(name: 'Neighborhood') String? neighborhood,
-    @JsonKey(name: 'District') String? district,
-    @JsonKey(name: 'City') String? city,
-    @JsonKey(name: 'Region') String? region,
-    @JsonKey(name: 'CntryName') String? countryName,
-    @JsonKey(name: 'Postal') String? postalCode,
+    @JsonKey(name: 'LongLabel') String? longLabel,
+    @JsonKey(name: 'ShortLabel') String? shortLabel,
+
+    // Chi tiết địa chỉ Việt Nam
+    @JsonKey(name: 'AddNum') String? houseNumber, // Số nhà
+    @JsonKey(name: 'StPreType') String? streetPrefix, // Đường/Phố
+    @JsonKey(name: 'StName') String? streetName, // Tên đường
+    @JsonKey(name: 'Nbrhd') String? ward, // Phường/Xã
+    @JsonKey(name: 'District') String? district, // Quận/Huyện
+    @JsonKey(name: 'City') String? city, // Thành phố
+    @JsonKey(name: 'Region') String? province, // Tỉnh
+    @JsonKey(name: 'CntryName') String? countryName, // Quốc gia
+    @JsonKey(name: 'Postal') String? postalCode, // Mã bưu chính
+    // Thông tin bổ sung
+    @JsonKey(name: 'PlaceName') String? placeName, // Tên địa điểm
+    @JsonKey(name: 'Type') String? placeType, // Loại địa điểm
   }) = _AddressInfo;
 
   factory AddressInfo.fromJson(Map<String, dynamic> json) =>

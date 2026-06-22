@@ -15,20 +15,65 @@ class SearchScreen extends ConsumerStatefulWidget {
 class _SearchScreenState extends ConsumerState<SearchScreen> {
   final TextEditingController _searchController = TextEditingController();
 
+  // Controllers for structured search
+  final TextEditingController _houseNumberController = TextEditingController();
+  final TextEditingController _streetController = TextEditingController();
+  final TextEditingController _wardController = TextEditingController();
+  final TextEditingController _districtController = TextEditingController();
+  final TextEditingController _cityController = TextEditingController();
+  final TextEditingController _provinceController = TextEditingController();
+
   @override
   void initState() {
     super.initState();
-    // Bắt sự kiện gõ phím
+    // Bắt sự kiện gõ phím - simple search
     _searchController.addListener(() {
       ref
-          .read(searchNotifierProvider.notifier)
+          .read(searchProvider.notifier)
           .onSearchQueryChanged(_searchController.text);
+    });
+
+    // Structured search listeners
+    _houseNumberController.addListener(() {
+      ref
+          .read(searchProvider.notifier)
+          .updateHouseNumber(_houseNumberController.text);
+    });
+
+    _streetController.addListener(() {
+      ref.read(searchProvider.notifier).updateStreet(_streetController.text);
+    });
+
+    _wardController.addListener(() {
+      ref.read(searchProvider.notifier).updateWard(_wardController.text);
+    });
+
+    _districtController.addListener(() {
+      ref
+          .read(searchProvider.notifier)
+          .updateDistrict(_districtController.text);
+    });
+
+    _cityController.addListener(() {
+      ref.read(searchProvider.notifier).updateCity(_cityController.text);
+    });
+
+    _provinceController.addListener(() {
+      ref
+          .read(searchProvider.notifier)
+          .updateProvince(_provinceController.text);
     });
   }
 
   @override
   void dispose() {
     _searchController.dispose();
+    _houseNumberController.dispose();
+    _streetController.dispose();
+    _wardController.dispose();
+    _districtController.dispose();
+    _cityController.dispose();
+    _provinceController.dispose();
     super.dispose();
   }
 
@@ -38,10 +83,13 @@ class _SearchScreenState extends ConsumerState<SearchScreen> {
     final cs = theme.colorScheme;
     final textTheme = theme.textTheme;
 
-    final searchState = ref.watch(searchNotifierProvider);
+    final searchState = ref.watch(searchProvider);
 
     // Quyết định danh sách nào được hiển thị (Đang search hay Lịch sử)
-    final bool isSearching = searchState.query.trim().isNotEmpty;
+    final bool isSearching = searchState.searchMode == SearchMode.simple
+        ? searchState.query.trim().isNotEmpty
+        : _hasStructuredInput();
+
     final List<AddressResult> currentList = isSearching
         ? searchState.results
         : searchState.historyResults;
@@ -61,209 +109,33 @@ class _SearchScreenState extends ConsumerState<SearchScreen> {
                     onPressed: () => context.pop(),
                   ),
                   Expanded(
-                    child: Container(
-                      height: 48,
-                      decoration: BoxDecoration(
-                        color: cs.surfaceContainerHigh,
-                        borderRadius: BorderRadius.circular(24.0),
-                      ),
-                      child: Row(
-                        children: [
-                          const SizedBox(width: 16),
-                          Icon(Icons.search, color: cs.onSurfaceVariant),
-                          const SizedBox(width: 8),
-                          Expanded(
-                            child: TextField(
-                              controller: _searchController,
-                              style: textTheme.bodyLarge?.copyWith(
-                                color: cs.onSurface,
-                              ),
-                              decoration: InputDecoration(
-                                hintText: 'Bạn muốn đi đâu?',
-                                hintStyle: textTheme.bodyLarge?.copyWith(
-                                  color: cs.onSurfaceVariant,
-                                ),
-                                border: InputBorder.none,
-                                isDense: true,
-                                contentPadding: EdgeInsets.zero,
-                              ),
-                            ),
-                          ),
-
-                          if (_searchController.text.isNotEmpty)
-                            IconButton(
-                              icon: Icon(
-                                Icons.close,
-                                color: cs.onSurfaceVariant,
-                              ),
-                              onPressed: () {
-                                _searchController.clear();
-
-                                ref
-                                    .read(searchNotifierProvider.notifier)
-                                    .clearSearch();
-                              },
-                            ),
-                        ],
-                      ),
+                    child: searchState.searchMode == SearchMode.simple
+                        ? _buildSimpleSearchBar(cs, textTheme)
+                        : _buildStructuredSearchButton(cs, textTheme),
+                  ),
+                  // Toggle search mode button
+                  IconButton(
+                    icon: Icon(
+                      searchState.searchMode == SearchMode.simple
+                          ? Icons.tune
+                          : Icons.search,
+                      color: cs.onSurfaceVariant,
                     ),
+                    tooltip: searchState.searchMode == SearchMode.simple
+                        ? 'Tìm kiếm nâng cao'
+                        : 'Tìm kiếm đơn giản',
+                    onPressed: () {
+                      ref.read(searchProvider.notifier).toggleSearchMode();
+                      // Clear all controllers
+                      _searchController.clear();
+                      _clearStructuredControllers();
+                    },
                   ),
                 ],
               ),
             ),
 
             Divider(height: 1, color: cs.outlineVariant.withOpacity(0.5)),
-
-            // // 2. Quick Filters (Horizontal Scrollable)
-            // Padding(
-            //   padding: const EdgeInsets.symmetric(vertical: 16.0),
-            //   child: SingleChildScrollView(
-            //     scrollDirection: Axis.horizontal,
-            //     padding: const EdgeInsets.symmetric(horizontal: 16.0),
-            //     child: Row(
-            //       children: [
-            //         _buildQuickFilter(
-            //           context,
-            //           icon: Icons.local_gas_station,
-            //           label: 'Trạm xăng',
-            //           cs: cs,
-            //           textTheme: textTheme,
-            //         ),
-            //         const SizedBox(width: 12),
-            //         _buildQuickFilter(
-            //           context,
-            //           icon: Icons.local_parking,
-            //           label: 'Bãi đỗ xe',
-            //           cs: cs,
-            //           textTheme: textTheme,
-            //         ),
-            //         const SizedBox(width: 12),
-            //         _buildQuickFilter(
-            //           context,
-            //           icon: Icons.restaurant,
-            //           label: 'Quán ăn',
-            //           cs: cs,
-            //           textTheme: textTheme,
-            //         ),
-            //       ],
-            //     ),
-            //   ),
-            // ),
-
-            // Divider(height: 1, color: cs.outlineVariant.withOpacity(0.5)),
-
-            // // 3. Results List
-            // Expanded(
-            //   child: ListView(
-            //     children: [
-            //       _buildResultItem(
-            //         context,
-            //         icon: Icons.location_on,
-            //         iconColor: cs.primary,
-            //         iconBgColor: cs.primaryFixed,
-            //         title: 'Sân bay Quốc tế Tân Sơn Nhất',
-            //         subtitle: 'Đường Trường Sơn, Phường 2, Tân Bình, TP....',
-            //         distance: '5.2 km',
-            //       ),
-            //       Divider(height: 1, indent: 72, color: cs.surfaceVariant),
-            //       _buildResultItem(
-            //         context,
-            //         icon: Icons.schedule,
-            //         iconColor: cs.onSurfaceVariant,
-            //         iconBgColor: cs.surfaceContainerHigh,
-            //         title: 'Công ty (SmartRoute Office)',
-            //         subtitle: '123 Đường Điện Biên Phủ, Phường 15, Bình T...',
-            //         distance: '1.1 km',
-            //       ),
-            //       Divider(height: 1, indent: 72, color: cs.surfaceVariant),
-            //       _buildResultItem(
-            //         context,
-            //         icon: Icons.home,
-            //         iconColor: cs.onSurfaceVariant,
-            //         iconBgColor: cs.surfaceContainerHigh,
-            //         title: 'Nhà riêng',
-            //         subtitle: 'Đã lưu • 456 Lê Lợi, Quận 1, TP. HCM',
-            //         distance: '8.5 km',
-            //       ),
-            //       Divider(height: 1, indent: 72, color: cs.surfaceVariant),
-
-            //       // Decorative "Live Traffic" Map Card (Optional aesthetic from design)
-            //       Padding(
-            //         padding: const EdgeInsets.all(16.0),
-            //         child: Container(
-            //           height: 180,
-            //           decoration: BoxDecoration(
-            //             color: cs.surfaceContainerHigh,
-            //             borderRadius: BorderRadius.circular(16.0),
-            //             // Fallback background color if image isn't loaded
-            //           ),
-            //           child: Stack(
-            //             children: [
-            //               Positioned.fill(
-            //                 child: ClipRRect(
-            //                   borderRadius: BorderRadius.circular(16.0),
-            //                   child: Image.network(
-            //                     'https://lh3.googleusercontent.com/aida-public/AB6AXuCMkKtygbjWarW6nj1KkbpMjxxTBL9UlK9-_x6_vmmajIjy8xCtmiUmfYXSFlB01UHqVVhMKXbS7Cv3uosZAQb4Vz4MRwn1kJt2JUalqt8STw8swPhTx0IEXSQrE1ps8sfkduhSfjUGoXb5jrb-SRZQpdZy_k7ZnGTuIgaZlekYhsSA0ZH4h7C8XEDrriw4lWH8pD5rNXCRQup2-YQqVM99mwzHH8JeWTTiHtq471RiLPA6aXpc-oiodPv6eph7dKprF03YVG2BKfLM',
-            //                     fit: BoxFit.cover,
-            //                     color: Colors.black.withOpacity(0.5),
-            //                     colorBlendMode: BlendMode.darken,
-            //                   ),
-            //                 ),
-            //               ),
-            //               Positioned(
-            //                 bottom: 16,
-            //                 left: 16,
-            //                 child: Column(
-            //                   crossAxisAlignment: CrossAxisAlignment.start,
-            //                   children: [
-            //                     Container(
-            //                       padding: const EdgeInsets.symmetric(
-            //                         horizontal: 8,
-            //                         vertical: 4,
-            //                       ),
-            //                       decoration: BoxDecoration(
-            //                         color: cs.primaryContainer,
-            //                         borderRadius: BorderRadius.circular(4.0),
-            //                       ),
-            //                       child: Text(
-            //                         'TRỰC TIẾP',
-            //                         style: textTheme.labelSmall?.copyWith(
-            //                           color: cs.onPrimaryContainer,
-            //                           fontWeight: FontWeight.bold,
-            //                           letterSpacing: 0.5,
-            //                         ),
-            //                       ),
-            //                     ),
-            //                     const SizedBox(height: 8),
-            //                     Text(
-            //                       'Giao thông thông thoáng',
-            //                       style: textTheme.titleMedium?.copyWith(
-            //                         color: Colors.white,
-            //                         fontWeight: FontWeight.bold,
-            //                       ),
-            //                     ),
-            //                   ],
-            //                 ),
-            //               ),
-            //               Positioned(
-            //                 bottom: 16,
-            //                 right: 16,
-            //                 child: CircleAvatar(
-            //                   backgroundColor: cs.primary,
-            //                   child: const Icon(
-            //                     Icons.navigation,
-            //                     color: Colors.white,
-            //                     size: 20,
-            //                   ),
-            //                 ),
-            //               ),
-            //             ],
-            //           ),
-            //         ),
-            //       ),
-            //     ],
-            //   ),
-            // ),
 
             // 2. Trạng thái Loading / Lỗi / Kết quả
             Expanded(
@@ -277,6 +149,256 @@ class _SearchScreenState extends ConsumerState<SearchScreen> {
             ),
           ],
         ),
+      ),
+    );
+  }
+
+  bool _hasStructuredInput() {
+    return _houseNumberController.text.isNotEmpty ||
+        _streetController.text.isNotEmpty ||
+        _wardController.text.isNotEmpty ||
+        _districtController.text.isNotEmpty ||
+        _cityController.text.isNotEmpty ||
+        _provinceController.text.isNotEmpty;
+  }
+
+  void _clearStructuredControllers() {
+    _houseNumberController.clear();
+    _streetController.clear();
+    _wardController.clear();
+    _districtController.clear();
+    _cityController.clear();
+    _provinceController.clear();
+  }
+
+  Widget _buildSimpleSearchBar(ColorScheme cs, TextTheme textTheme) {
+    return Container(
+      height: 48,
+      decoration: BoxDecoration(
+        color: cs.surfaceContainerHigh,
+        borderRadius: BorderRadius.circular(24.0),
+      ),
+      child: Row(
+        children: [
+          const SizedBox(width: 16),
+          Icon(Icons.search, color: cs.onSurfaceVariant),
+          const SizedBox(width: 8),
+          Expanded(
+            child: TextField(
+              controller: _searchController,
+              style: textTheme.bodyLarge?.copyWith(color: cs.onSurface),
+              decoration: InputDecoration(
+                hintText: 'Bạn muốn đi đâu?',
+                hintStyle: textTheme.bodyLarge?.copyWith(
+                  color: cs.onSurfaceVariant,
+                ),
+                border: InputBorder.none,
+                isDense: true,
+                contentPadding: EdgeInsets.zero,
+              ),
+            ),
+          ),
+          if (_searchController.text.isNotEmpty)
+            IconButton(
+              icon: Icon(Icons.close, color: cs.onSurfaceVariant),
+              onPressed: () {
+                _searchController.clear();
+                ref.read(searchProvider.notifier).clearSearch();
+              },
+            ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildStructuredSearchButton(ColorScheme cs, TextTheme textTheme) {
+    return InkWell(
+      onTap: () => _showStructuredSearchDialog(cs, textTheme),
+      child: Container(
+        height: 48,
+        padding: const EdgeInsets.symmetric(horizontal: 16),
+        decoration: BoxDecoration(
+          color: cs.surfaceContainerHigh,
+          borderRadius: BorderRadius.circular(24.0),
+        ),
+        child: Row(
+          children: [
+            Icon(Icons.tune, color: cs.onSurfaceVariant),
+            const SizedBox(width: 12),
+            Expanded(
+              child: Text(
+                _getStructuredSearchSummary(),
+                style: textTheme.bodyLarge?.copyWith(
+                  color: _hasStructuredInput()
+                      ? cs.onSurface
+                      : cs.onSurfaceVariant,
+                ),
+                maxLines: 1,
+                overflow: TextOverflow.ellipsis,
+              ),
+            ),
+            if (_hasStructuredInput())
+              IconButton(
+                icon: Icon(Icons.close, color: cs.onSurfaceVariant),
+                onPressed: () {
+                  _clearStructuredControllers();
+                  ref.read(searchProvider.notifier).clearSearch();
+                },
+              ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  String _getStructuredSearchSummary() {
+    final parts = <String>[];
+    if (_houseNumberController.text.isNotEmpty) {
+      parts.add(_houseNumberController.text);
+    }
+    if (_streetController.text.isNotEmpty) {
+      parts.add(_streetController.text);
+    }
+    if (_wardController.text.isNotEmpty) {
+      parts.add(_wardController.text);
+    }
+    if (_districtController.text.isNotEmpty) {
+      parts.add(_districtController.text);
+    }
+    if (_cityController.text.isNotEmpty) {
+      parts.add(_cityController.text);
+    }
+    if (_provinceController.text.isNotEmpty) {
+      parts.add(_provinceController.text);
+    }
+
+    return parts.isEmpty ? 'Tìm kiếm theo địa chỉ chi tiết' : parts.join(', ');
+  }
+
+  void _showStructuredSearchDialog(ColorScheme cs, TextTheme textTheme) {
+    showModalBottomSheet(
+      context: context,
+      isScrollControlled: true,
+      backgroundColor: cs.surface,
+      shape: const RoundedRectangleBorder(
+        borderRadius: BorderRadius.vertical(top: Radius.circular(16)),
+      ),
+      builder: (context) => Padding(
+        padding: EdgeInsets.only(
+          bottom: MediaQuery.of(context).viewInsets.bottom,
+        ),
+        child: SingleChildScrollView(
+          padding: const EdgeInsets.all(24),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text(
+                    'Tìm kiếm chi tiết',
+                    style: textTheme.titleLarge?.copyWith(
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                  IconButton(
+                    icon: const Icon(Icons.close),
+                    onPressed: () => Navigator.pop(context),
+                  ),
+                ],
+              ),
+              const SizedBox(height: 16),
+              _buildStructuredField(
+                controller: _houseNumberController,
+                label: 'Số nhà',
+                hint: 'VD: 123, 45A',
+                icon: Icons.tag,
+                cs: cs,
+                textTheme: textTheme,
+              ),
+              const SizedBox(height: 12),
+              _buildStructuredField(
+                controller: _streetController,
+                label: 'Tên đường',
+                hint: 'VD: Nguyễn Huệ, Đường Lê Lợi',
+                icon: Icons.route,
+                cs: cs,
+                textTheme: textTheme,
+              ),
+              const SizedBox(height: 12),
+              _buildStructuredField(
+                controller: _wardController,
+                label: 'Phường/Xã',
+                hint: 'VD: Bến Nghé, Phường 1',
+                icon: Icons.location_city,
+                cs: cs,
+                textTheme: textTheme,
+              ),
+              const SizedBox(height: 12),
+              _buildStructuredField(
+                controller: _districtController,
+                label: 'Quận/Huyện',
+                hint: 'VD: Quận 1, Huyện Cam Lâm',
+                icon: Icons.map,
+                cs: cs,
+                textTheme: textTheme,
+              ),
+              const SizedBox(height: 12),
+              _buildStructuredField(
+                controller: _cityController,
+                label: 'Thành phố/Thị xã',
+                hint: 'VD: Nha Trang, TP. Hồ Chí Minh',
+                icon: Icons.apartment,
+                cs: cs,
+                textTheme: textTheme,
+              ),
+              const SizedBox(height: 12),
+              _buildStructuredField(
+                controller: _provinceController,
+                label: 'Tỉnh',
+                hint: 'VD: Khánh Hòa, TP. Hồ Chí Minh',
+                icon: Icons.public,
+                cs: cs,
+                textTheme: textTheme,
+              ),
+              const SizedBox(height: 24),
+              SizedBox(
+                width: double.infinity,
+                child: FilledButton.icon(
+                  onPressed: () => Navigator.pop(context),
+                  icon: const Icon(Icons.search),
+                  label: const Text('Tìm kiếm'),
+                  style: FilledButton.styleFrom(
+                    padding: const EdgeInsets.symmetric(vertical: 16),
+                  ),
+                ),
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget _buildStructuredField({
+    required TextEditingController controller,
+    required String label,
+    required String hint,
+    required IconData icon,
+    required ColorScheme cs,
+    required TextTheme textTheme,
+  }) {
+    return TextField(
+      controller: controller,
+      style: textTheme.bodyLarge,
+      decoration: InputDecoration(
+        labelText: label,
+        hintText: hint,
+        prefixIcon: Icon(icon, color: cs.primary),
+        border: OutlineInputBorder(borderRadius: BorderRadius.circular(12)),
+        filled: true,
+        fillColor: cs.surfaceContainerHighest,
       ),
     );
   }
@@ -362,30 +484,6 @@ class _SearchScreenState extends ConsumerState<SearchScreen> {
     );
   }
 
-  Widget _buildQuickFilter(
-    BuildContext context, {
-    required IconData icon,
-    required String label,
-    required ColorScheme cs,
-    required TextTheme textTheme,
-  }) {
-    return OutlinedButton.icon(
-      onPressed: () {},
-      icon: Icon(icon, size: 18, color: cs.onSurfaceVariant),
-      label: Text(
-        label,
-        style: textTheme.labelLarge?.copyWith(color: cs.onSurfaceVariant),
-      ),
-      style: OutlinedButton.styleFrom(
-        side: BorderSide(color: cs.outlineVariant),
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(24.0),
-        ),
-        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
-      ),
-    );
-  }
-
   Widget _buildResultItem(
     BuildContext context, {
     required AddressResult item,
@@ -398,16 +496,13 @@ class _SearchScreenState extends ConsumerState<SearchScreen> {
 
     return InkWell(
       onTap: () {
-        /// TODO: Chuyển tới StatefulShellBranch (RouteSetupScreen)
-        // context.goNamed('go');
-
         // Đóng màn hình Search và truyền kết quả (AddressResult) về cho màn Map
         context.pop(item);
       },
       child: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 16.0),
         child: Row(
-          crossAxisAlignment: CrossAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Container(
               width: 40,
@@ -423,34 +518,105 @@ class _SearchScreenState extends ConsumerState<SearchScreen> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
+                  // Tên địa điểm hoặc địa chỉ ngắn
                   Text(
-                    // Ưu tiên hiển thị tên đường ngắn gọn, nếu không có lấy fullAddress
-                    item.streetName ?? item.fullAddress.split(',').first,
+                    item.placeName ?? item.shortLabel ?? item.shortAddress,
                     style: textTheme.titleMedium?.copyWith(
                       fontWeight: FontWeight.bold,
                       color: cs.onSurface,
                     ),
-                  ),
-                  const SizedBox(height: 4),
-                  Text(
-                    item.fullAddress,
-                    style: textTheme.bodyMedium?.copyWith(
-                      color: cs.onSurfaceVariant,
-                    ),
                     maxLines: 1,
                     overflow: TextOverflow.ellipsis,
                   ),
+                  const SizedBox(height: 4),
+
+                  // Địa chỉ đầy đủ
+                  Text(
+                    item.formattedAddress,
+                    style: textTheme.bodyMedium?.copyWith(
+                      color: cs.onSurfaceVariant,
+                    ),
+                    maxLines: 2,
+                    overflow: TextOverflow.ellipsis,
+                  ),
+
+                  // Hiển thị thông tin chi tiết nếu có
+                  if (item.placeType != null || item.phoneNumber != null) ...[
+                    const SizedBox(height: 6),
+                    Wrap(
+                      spacing: 8,
+                      runSpacing: 4,
+                      children: [
+                        if (item.placeType != null)
+                          Container(
+                            padding: const EdgeInsets.symmetric(
+                              horizontal: 8,
+                              vertical: 4,
+                            ),
+                            decoration: BoxDecoration(
+                              color: cs.primaryContainer,
+                              borderRadius: BorderRadius.circular(12),
+                            ),
+                            child: Text(
+                              item.placeType!,
+                              style: textTheme.labelSmall?.copyWith(
+                                color: cs.onPrimaryContainer,
+                              ),
+                            ),
+                          ),
+                        if (item.phoneNumber != null)
+                          Row(
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              Icon(
+                                Icons.phone,
+                                size: 14,
+                                color: cs.onSurfaceVariant,
+                              ),
+                              const SizedBox(width: 4),
+                              Text(
+                                item.phoneNumber!,
+                                style: textTheme.labelSmall?.copyWith(
+                                  color: cs.onSurfaceVariant,
+                                ),
+                              ),
+                            ],
+                          ),
+                      ],
+                    ),
+                  ],
+
+                  // Score indicator
+                  if (item.score < 90) ...[
+                    const SizedBox(height: 6),
+                    Row(
+                      children: [
+                        Icon(Icons.info_outline, size: 14, color: cs.tertiary),
+                        const SizedBox(width: 4),
+                        Text(
+                          'Độ chính xác: ${item.score.toStringAsFixed(0)}%',
+                          style: textTheme.labelSmall?.copyWith(
+                            color: cs.tertiary,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ],
                 ],
               ),
             ),
             const SizedBox(width: 12),
-            Text(
-              // distance,
-              // Tạm thời chưa có GPS nên chưa tính distance. Có thể update sau
-              '--- km',
-              style: textTheme.labelMedium?.copyWith(
-                color: cs.onSurfaceVariant,
-              ),
+
+            // Distance placeholder
+            Column(
+              children: [
+                Text(
+                  '--- km',
+                  style: textTheme.labelMedium?.copyWith(
+                    color: cs.onSurfaceVariant,
+                  ),
+                ),
+              ],
             ),
           ],
         ),

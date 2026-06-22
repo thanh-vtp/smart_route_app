@@ -6,21 +6,57 @@ part of 'search_notifier.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$searchNotifierHash() => r'fbb14917fc6dd8d4fd6c259b8e4f49bf7637406f';
+// GENERATED CODE - DO NOT MODIFY BY HAND
+// ignore_for_file: type=lint, type=warning
 
-/// See also [SearchNotifier].
 @ProviderFor(SearchNotifier)
-final searchNotifierProvider =
-    AutoDisposeNotifierProvider<SearchNotifier, SearchState>.internal(
-  SearchNotifier.new,
-  name: r'searchNotifierProvider',
-  debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
-      ? null
-      : _$searchNotifierHash,
-  dependencies: null,
-  allTransitiveDependencies: null,
-);
+final searchProvider = SearchNotifierProvider._();
 
-typedef _$SearchNotifier = AutoDisposeNotifier<SearchState>;
-// ignore_for_file: type=lint
-// ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member
+final class SearchNotifierProvider
+    extends $NotifierProvider<SearchNotifier, SearchState> {
+  SearchNotifierProvider._()
+    : super(
+        from: null,
+        argument: null,
+        retry: null,
+        name: r'searchProvider',
+        isAutoDispose: true,
+        dependencies: null,
+        $allTransitiveDependencies: null,
+      );
+
+  @override
+  String debugGetCreateSourceHash() => _$searchNotifierHash();
+
+  @$internal
+  @override
+  SearchNotifier create() => SearchNotifier();
+
+  /// {@macro riverpod.override_with_value}
+  Override overrideWithValue(SearchState value) {
+    return $ProviderOverride(
+      origin: this,
+      providerOverride: $SyncValueProvider<SearchState>(value),
+    );
+  }
+}
+
+String _$searchNotifierHash() => r'9581871e2986c3450fda9af1dd0c60d4802a34b1';
+
+abstract class _$SearchNotifier extends $Notifier<SearchState> {
+  SearchState build();
+  @$mustCallSuper
+  @override
+  WhenComplete runBuild() {
+    final ref = this.ref as $Ref<SearchState, SearchState>;
+    final element =
+        ref.element
+            as $ClassProviderElement<
+              AnyNotifier<SearchState, SearchState>,
+              SearchState,
+              Object?,
+              Object?
+            >;
+    return element.handleCreate(ref, build);
+  }
+}
