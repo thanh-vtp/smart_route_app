@@ -9,7 +9,9 @@ part of 'use_case_providers.dart';
 String _$geocodeAddressUseCaseHash() =>
     r'c3f5976a4cc364ebd6ad793a175c2470d794b698';
 
-/// See also [geocodeAddressUseCase].
+/// Chuyển đổi địa chỉ thành tọa độ (geocoding)
+///
+/// Copied from [geocodeAddressUseCase].
 @ProviderFor(geocodeAddressUseCase)
 final geocodeAddressUseCaseProvider =
     AutoDisposeProvider<GeocodeAddressUseCase>.internal(
@@ -27,7 +29,9 @@ typedef GeocodeAddressUseCaseRef
 String _$reverseGeocodeUseCaseHash() =>
     r'df1cee879e72930b5a1d9336684b218a0054b42c';
 
-/// See also [reverseGeocodeUseCase].
+/// Chuyển đổi tọa độ thành địa chỉ (reverse geocoding)
+///
+/// Copied from [reverseGeocodeUseCase].
 @ProviderFor(reverseGeocodeUseCase)
 final reverseGeocodeUseCaseProvider =
     AutoDisposeProvider<ReverseGeocodeUseCase>.internal(

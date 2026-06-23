@@ -10,7 +10,7 @@ plugins {
 }
 
 android {
-    namespace = "com.example.smart_route_app"
+    namespace = "com.thanh.smartroutefindapplication"
     compileSdk = flutter.compileSdkVersion
     ndkVersion = flutter.ndkVersion
 
@@ -30,7 +30,7 @@ android {
 
     defaultConfig {
         // TODO: Specify your own unique Application ID (https://developer.android.com/studio/build/application-id.html).
-        applicationId = "com.example.smart_route_app"
+        applicationId = "com.thanh.smartroutefindapplication"
         // You can update the following values to match your application needs.
         // For more information, see: https://flutter.dev/to/review-gradle-config.
         minSdk = 28  // Required for arcgis_maps plugin

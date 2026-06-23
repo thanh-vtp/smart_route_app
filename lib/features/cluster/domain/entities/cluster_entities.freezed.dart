@@ -16,15 +16,22 @@ final _privateConstructorUsedError = UnsupportedError(
 
 /// @nodoc
 mixin _$ClusterResult {
+  /// Tổng số bản ghi sự cố được phân tích
   int get totalRecords => throw _privateConstructorUsedError;
+
+  /// Số lượng cluster được tìm thấy (không tính noise)
   int get nClusters => throw _privateConstructorUsedError;
+
+  /// Số lượng điểm nhiễu (outliers không thuộc cluster nào)
   int get nNoise => throw _privateConstructorUsedError;
+
+  /// Số lượng điểm lõi (core points)
   int get nCorePoints => throw _privateConstructorUsedError;
 
-  /// Các điểm sự cố gốc
+  /// Danh sách các điểm sự cố gốc đã được gán cluster
   List<ClusterItem> get items => throw _privateConstructorUsedError;
 
-  /// Các hotspot sau khi clustering
+  /// Danh sách các hotspot (vùng nguy hiểm) sau khi phân cụm
   List<ClusterHotspot> get clusters => throw _privateConstructorUsedError;
 
   @JsonKey(ignore: true)
@@ -173,19 +180,26 @@ class _$ClusterResultImpl implements _ClusterResult {
       : _items = items,
         _clusters = clusters;
 
+  /// Tổng số bản ghi sự cố được phân tích
   @override
   final int totalRecords;
+
+  /// Số lượng cluster được tìm thấy (không tính noise)
   @override
   final int nClusters;
+
+  /// Số lượng điểm nhiễu (outliers không thuộc cluster nào)
   @override
   final int nNoise;
+
+  /// Số lượng điểm lõi (core points)
   @override
   final int nCorePoints;
 
-  /// Các điểm sự cố gốc
+  /// Danh sách các điểm sự cố gốc đã được gán cluster
   final List<ClusterItem> _items;
 
-  /// Các điểm sự cố gốc
+  /// Danh sách các điểm sự cố gốc đã được gán cluster
   @override
   List<ClusterItem> get items {
     if (_items is EqualUnmodifiableListView) return _items;
@@ -193,10 +207,10 @@ class _$ClusterResultImpl implements _ClusterResult {
     return EqualUnmodifiableListView(_items);
   }
 
-  /// Các hotspot sau khi clustering
+  /// Danh sách các hotspot (vùng nguy hiểm) sau khi phân cụm
   final List<ClusterHotspot> _clusters;
 
-  /// Các hotspot sau khi clustering
+  /// Danh sách các hotspot (vùng nguy hiểm) sau khi phân cụm
   @override
   List<ClusterHotspot> get clusters {
     if (_clusters is EqualUnmodifiableListView) return _clusters;
@@ -252,20 +266,28 @@ abstract class _ClusterResult implements ClusterResult {
       required final List<ClusterHotspot> clusters}) = _$ClusterResultImpl;
 
   @override
+
+  /// Tổng số bản ghi sự cố được phân tích
   int get totalRecords;
   @override
+
+  /// Số lượng cluster được tìm thấy (không tính noise)
   int get nClusters;
   @override
+
+  /// Số lượng điểm nhiễu (outliers không thuộc cluster nào)
   int get nNoise;
   @override
+
+  /// Số lượng điểm lõi (core points)
   int get nCorePoints;
   @override
 
-  /// Các điểm sự cố gốc
+  /// Danh sách các điểm sự cố gốc đã được gán cluster
   List<ClusterItem> get items;
   @override
 
-  /// Các hotspot sau khi clustering
+  /// Danh sách các hotspot (vùng nguy hiểm) sau khi phân cụm
   List<ClusterHotspot> get clusters;
   @override
   @JsonKey(ignore: true)
@@ -275,10 +297,21 @@ abstract class _ClusterResult implements ClusterResult {
 
 /// @nodoc
 mixin _$ClusterItem {
+  /// ID duy nhất của điểm sự cố (dạng String)
   String get id => throw _privateConstructorUsedError;
+
+  /// Vĩ độ của điểm sự cố
   double get lat => throw _privateConstructorUsedError;
+
+  /// Kinh độ của điểm sự cố
   double get lng => throw _privateConstructorUsedError;
+
+  /// ID của cluster mà điểm này thuộc về
+  /// Giá trị -1 nghĩa là điểm nhiễu (noise/outlier)
   int get clusterId => throw _privateConstructorUsedError;
+
+  /// Đánh dấu điểm có phải là core point hay không
+  /// true = core point (có đủ láng giềng), false = border point hoặc noise
   bool get isCorePoint => throw _privateConstructorUsedError;
 
   @JsonKey(ignore: true)
@@ -404,14 +437,25 @@ class _$ClusterItemImpl implements _ClusterItem {
       required this.clusterId,
       required this.isCorePoint});
 
+  /// ID duy nhất của điểm sự cố (dạng String)
   @override
   final String id;
+
+  /// Vĩ độ của điểm sự cố
   @override
   final double lat;
+
+  /// Kinh độ của điểm sự cố
   @override
   final double lng;
+
+  /// ID của cluster mà điểm này thuộc về
+  /// Giá trị -1 nghĩa là điểm nhiễu (noise/outlier)
   @override
   final int clusterId;
+
+  /// Đánh dấu điểm có phải là core point hay không
+  /// true = core point (có đủ láng giềng), false = border point hoặc noise
   @override
   final bool isCorePoint;
 
@@ -454,14 +498,26 @@ abstract class _ClusterItem implements ClusterItem {
       required final bool isCorePoint}) = _$ClusterItemImpl;
 
   @override
+
+  /// ID duy nhất của điểm sự cố (dạng String)
   String get id;
   @override
+
+  /// Vĩ độ của điểm sự cố
   double get lat;
   @override
+
+  /// Kinh độ của điểm sự cố
   double get lng;
   @override
+
+  /// ID của cluster mà điểm này thuộc về
+  /// Giá trị -1 nghĩa là điểm nhiễu (noise/outlier)
   int get clusterId;
   @override
+
+  /// Đánh dấu điểm có phải là core point hay không
+  /// true = core point (có đủ láng giềng), false = border point hoặc noise
   bool get isCorePoint;
   @override
   @JsonKey(ignore: true)
@@ -471,29 +527,50 @@ abstract class _ClusterItem implements ClusterItem {
 
 /// @nodoc
 mixin _$ClusterHotspot {
+  /// ID của cluster hotspot
   int get clusterId => throw _privateConstructorUsedError;
+
+  /// Tổng số sự cố trong cluster này
   int get incidentCount => throw _privateConstructorUsedError;
+
+  /// Danh sách ID của các sự cố thuộc cluster
   List<int> get incidentObjectIds => throw _privateConstructorUsedError;
+
+  /// Vĩ độ tâm của cluster
   double get centerLat => throw _privateConstructorUsedError;
+
+  /// Kinh độ tâm của cluster
   double get centerLng => throw _privateConstructorUsedError;
 
-  /// Circle visualization
+  /// Bán kính hiển thị hình tròn trên bản đồ (đơn vị: mét)
+  /// Được tính từ khoảng cách xa nhất từ tâm đến các điểm
   double get displayRadiusM => throw _privateConstructorUsedError;
 
-  /// Reference only (không dùng routing)
+  /// Bán kính ảnh hưởng khuyến nghị (đơn vị: mét)
+  /// Chỉ dùng tham khảo, không dùng cho routing
   double get impactRadiusM => throw _privateConstructorUsedError;
 
-  /// Analytics
+  /// Bán kính trung bình từ tâm đến các điểm (đơn vị: mét)
+  /// Thể hiện độ phân tán của các sự cố trong cluster
   double get avgRadiusM => throw _privateConstructorUsedError;
+
+  /// Mật độ sự cố (số sự cố / km²)
   double get density => throw _privateConstructorUsedError;
+
+  /// Mức độ nguy hiểm: "high", "medium", "low"
   String get severity => throw _privateConstructorUsedError;
+
+  /// Loại cluster: "dense", "spread", "isolated"
   String get clusterType => throw _privateConstructorUsedError;
+
+  /// Hình chữ nhật bao quanh cluster
   ClusterBBox get bbox => throw _privateConstructorUsedError;
 
-  /// Hiển thị polygon khi user tap hotspot
+  /// Tọa độ polygon để hiển thị khi user tap vào hotspot
+  /// Mỗi phần tử là [lng, lat]
   List<List<double>> get polygon => throw _privateConstructorUsedError;
 
-  /// ArcGIS geometry
+  /// Thông tin hình học polygon theo chuẩn ArcGIS
   ClusterGeometry get geometry => throw _privateConstructorUsedError;
 
   @JsonKey(ignore: true)
@@ -770,11 +847,18 @@ class _$ClusterHotspotImpl implements _ClusterHotspot {
       : _incidentObjectIds = incidentObjectIds,
         _polygon = polygon;
 
+  /// ID của cluster hotspot
   @override
   final int clusterId;
+
+  /// Tổng số sự cố trong cluster này
   @override
   final int incidentCount;
+
+  /// Danh sách ID của các sự cố thuộc cluster
   final List<int> _incidentObjectIds;
+
+  /// Danh sách ID của các sự cố thuộc cluster
   @override
   List<int> get incidentObjectIds {
     if (_incidentObjectIds is EqualUnmodifiableListView)
@@ -783,35 +867,51 @@ class _$ClusterHotspotImpl implements _ClusterHotspot {
     return EqualUnmodifiableListView(_incidentObjectIds);
   }
 
+  /// Vĩ độ tâm của cluster
   @override
   final double centerLat;
+
+  /// Kinh độ tâm của cluster
   @override
   final double centerLng;
 
-  /// Circle visualization
+  /// Bán kính hiển thị hình tròn trên bản đồ (đơn vị: mét)
+  /// Được tính từ khoảng cách xa nhất từ tâm đến các điểm
   @override
   final double displayRadiusM;
 
-  /// Reference only (không dùng routing)
+  /// Bán kính ảnh hưởng khuyến nghị (đơn vị: mét)
+  /// Chỉ dùng tham khảo, không dùng cho routing
   @override
   final double impactRadiusM;
 
-  /// Analytics
+  /// Bán kính trung bình từ tâm đến các điểm (đơn vị: mét)
+  /// Thể hiện độ phân tán của các sự cố trong cluster
   @override
   final double avgRadiusM;
+
+  /// Mật độ sự cố (số sự cố / km²)
   @override
   final double density;
+
+  /// Mức độ nguy hiểm: "high", "medium", "low"
   @override
   final String severity;
+
+  /// Loại cluster: "dense", "spread", "isolated"
   @override
   final String clusterType;
+
+  /// Hình chữ nhật bao quanh cluster
   @override
   final ClusterBBox bbox;
 
-  /// Hiển thị polygon khi user tap hotspot
+  /// Tọa độ polygon để hiển thị khi user tap vào hotspot
+  /// Mỗi phần tử là [lng, lat]
   final List<List<double>> _polygon;
 
-  /// Hiển thị polygon khi user tap hotspot
+  /// Tọa độ polygon để hiển thị khi user tap vào hotspot
+  /// Mỗi phần tử là [lng, lat]
   @override
   List<List<double>> get polygon {
     if (_polygon is EqualUnmodifiableListView) return _polygon;
@@ -819,7 +919,7 @@ class _$ClusterHotspotImpl implements _ClusterHotspot {
     return EqualUnmodifiableListView(_polygon);
   }
 
-  /// ArcGIS geometry
+  /// Thông tin hình học polygon theo chuẩn ArcGIS
   @override
   final ClusterGeometry geometry;
 
@@ -904,42 +1004,64 @@ abstract class _ClusterHotspot implements ClusterHotspot {
       required final ClusterGeometry geometry}) = _$ClusterHotspotImpl;
 
   @override
+
+  /// ID của cluster hotspot
   int get clusterId;
   @override
+
+  /// Tổng số sự cố trong cluster này
   int get incidentCount;
   @override
+
+  /// Danh sách ID của các sự cố thuộc cluster
   List<int> get incidentObjectIds;
   @override
+
+  /// Vĩ độ tâm của cluster
   double get centerLat;
   @override
+
+  /// Kinh độ tâm của cluster
   double get centerLng;
   @override
 
-  /// Circle visualization
+  /// Bán kính hiển thị hình tròn trên bản đồ (đơn vị: mét)
+  /// Được tính từ khoảng cách xa nhất từ tâm đến các điểm
   double get displayRadiusM;
   @override
 
-  /// Reference only (không dùng routing)
+  /// Bán kính ảnh hưởng khuyến nghị (đơn vị: mét)
+  /// Chỉ dùng tham khảo, không dùng cho routing
   double get impactRadiusM;
   @override
 
-  /// Analytics
+  /// Bán kính trung bình từ tâm đến các điểm (đơn vị: mét)
+  /// Thể hiện độ phân tán của các sự cố trong cluster
   double get avgRadiusM;
   @override
+
+  /// Mật độ sự cố (số sự cố / km²)
   double get density;
   @override
+
+  /// Mức độ nguy hiểm: "high", "medium", "low"
   String get severity;
   @override
+
+  /// Loại cluster: "dense", "spread", "isolated"
   String get clusterType;
   @override
+
+  /// Hình chữ nhật bao quanh cluster
   ClusterBBox get bbox;
   @override
 
-  /// Hiển thị polygon khi user tap hotspot
+  /// Tọa độ polygon để hiển thị khi user tap vào hotspot
+  /// Mỗi phần tử là [lng, lat]
   List<List<double>> get polygon;
   @override
 
-  /// ArcGIS geometry
+  /// Thông tin hình học polygon theo chuẩn ArcGIS
   ClusterGeometry get geometry;
   @override
   @JsonKey(ignore: true)
@@ -949,9 +1071,16 @@ abstract class _ClusterHotspot implements ClusterHotspot {
 
 /// @nodoc
 mixin _$ClusterBBox {
+  /// Kinh độ nhỏ nhất (cạnh trái)
   double get xmin => throw _privateConstructorUsedError;
+
+  /// Vĩ độ nhỏ nhất (cạnh dưới)
   double get ymin => throw _privateConstructorUsedError;
+
+  /// Kinh độ lớn nhất (cạnh phải)
   double get xmax => throw _privateConstructorUsedError;
+
+  /// Vĩ độ lớn nhất (cạnh trên)
   double get ymax => throw _privateConstructorUsedError;
 
   @JsonKey(ignore: true)
@@ -1064,12 +1193,19 @@ class _$ClusterBBoxImpl implements _ClusterBBox {
       required this.xmax,
       required this.ymax});
 
+  /// Kinh độ nhỏ nhất (cạnh trái)
   @override
   final double xmin;
+
+  /// Vĩ độ nhỏ nhất (cạnh dưới)
   @override
   final double ymin;
+
+  /// Kinh độ lớn nhất (cạnh phải)
   @override
   final double xmax;
+
+  /// Vĩ độ lớn nhất (cạnh trên)
   @override
   final double ymax;
 
@@ -1107,12 +1243,20 @@ abstract class _ClusterBBox implements ClusterBBox {
       required final double ymax}) = _$ClusterBBoxImpl;
 
   @override
+
+  /// Kinh độ nhỏ nhất (cạnh trái)
   double get xmin;
   @override
+
+  /// Vĩ độ nhỏ nhất (cạnh dưới)
   double get ymin;
   @override
+
+  /// Kinh độ lớn nhất (cạnh phải)
   double get xmax;
   @override
+
+  /// Vĩ độ lớn nhất (cạnh trên)
   double get ymax;
   @override
   @JsonKey(ignore: true)
@@ -1122,7 +1266,13 @@ abstract class _ClusterBBox implements ClusterBBox {
 
 /// @nodoc
 mixin _$ClusterGeometry {
+  /// Danh sách các rings tạo thành polygon
+  /// Mỗi ring là một mảng các tọa độ [lng, lat]
+  /// Ring đầu tiên là outer ring, các ring sau (nếu có) là holes
   List<List<List<double>>> get rings => throw _privateConstructorUsedError;
+
+  /// Well-Known ID của hệ tọa độ không gian
+  /// Ví dụ: 4326 = WGS84, 3857 = Web Mercator
   int get wkid => throw _privateConstructorUsedError;
 
   @JsonKey(ignore: true)
@@ -1213,7 +1363,14 @@ class _$ClusterGeometryImpl implements _ClusterGeometry {
       {required final List<List<List<double>>> rings, required this.wkid})
       : _rings = rings;
 
+  /// Danh sách các rings tạo thành polygon
+  /// Mỗi ring là một mảng các tọa độ [lng, lat]
+  /// Ring đầu tiên là outer ring, các ring sau (nếu có) là holes
   final List<List<List<double>>> _rings;
+
+  /// Danh sách các rings tạo thành polygon
+  /// Mỗi ring là một mảng các tọa độ [lng, lat]
+  /// Ring đầu tiên là outer ring, các ring sau (nếu có) là holes
   @override
   List<List<List<double>>> get rings {
     if (_rings is EqualUnmodifiableListView) return _rings;
@@ -1221,6 +1378,8 @@ class _$ClusterGeometryImpl implements _ClusterGeometry {
     return EqualUnmodifiableListView(_rings);
   }
 
+  /// Well-Known ID của hệ tọa độ không gian
+  /// Ví dụ: 4326 = WGS84, 3857 = Web Mercator
   @override
   final int wkid;
 
@@ -1256,8 +1415,15 @@ abstract class _ClusterGeometry implements ClusterGeometry {
       required final int wkid}) = _$ClusterGeometryImpl;
 
   @override
+
+  /// Danh sách các rings tạo thành polygon
+  /// Mỗi ring là một mảng các tọa độ [lng, lat]
+  /// Ring đầu tiên là outer ring, các ring sau (nếu có) là holes
   List<List<List<double>>> get rings;
   @override
+
+  /// Well-Known ID của hệ tọa độ không gian
+  /// Ví dụ: 4326 = WGS84, 3857 = Web Mercator
   int get wkid;
   @override
   @JsonKey(ignore: true)

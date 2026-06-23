@@ -20,14 +20,25 @@ ClusterResponseModel _$ClusterResponseModelFromJson(Map<String, dynamic> json) {
 
 /// @nodoc
 mixin _$ClusterResponseModel {
+  /// Trạng thái response: "success" hoặc "error"
   String get status => throw _privateConstructorUsedError;
+
+  /// Thông báo mô tả kết quả
   String get message => throw _privateConstructorUsedError;
+
+  /// Tổng số bản ghi sự cố được phân tích
   @JsonKey(name: 'total_records')
   int get totalRecords => throw _privateConstructorUsedError;
+
+  /// Thông tin tổng quan về quá trình phân cụm
   @JsonKey(name: 'clustering_info')
   ClusteringInfoModel get clusteringInfo => throw _privateConstructorUsedError;
+
+  /// Danh sách các cluster/hotspot đã được phân cụm
   @JsonKey(name: 'clusters')
   List<ClusterHotspotModel> get clusters => throw _privateConstructorUsedError;
+
+  /// Danh sách các điểm sự cố gốc với thông tin cluster được gán
   @JsonKey(name: 'data')
   List<ClusterItemModel> get data => throw _privateConstructorUsedError;
 
@@ -197,17 +208,28 @@ class _$ClusterResponseModelImpl extends _ClusterResponseModel {
   factory _$ClusterResponseModelImpl.fromJson(Map<String, dynamic> json) =>
       _$$ClusterResponseModelImplFromJson(json);
 
+  /// Trạng thái response: "success" hoặc "error"
   @override
   final String status;
+
+  /// Thông báo mô tả kết quả
   @override
   final String message;
+
+  /// Tổng số bản ghi sự cố được phân tích
   @override
   @JsonKey(name: 'total_records')
   final int totalRecords;
+
+  /// Thông tin tổng quan về quá trình phân cụm
   @override
   @JsonKey(name: 'clustering_info')
   final ClusteringInfoModel clusteringInfo;
+
+  /// Danh sách các cluster/hotspot đã được phân cụm
   final List<ClusterHotspotModel> _clusters;
+
+  /// Danh sách các cluster/hotspot đã được phân cụm
   @override
   @JsonKey(name: 'clusters')
   List<ClusterHotspotModel> get clusters {
@@ -216,7 +238,10 @@ class _$ClusterResponseModelImpl extends _ClusterResponseModel {
     return EqualUnmodifiableListView(_clusters);
   }
 
+  /// Danh sách các điểm sự cố gốc với thông tin cluster được gán
   final List<ClusterItemModel> _data;
+
+  /// Danh sách các điểm sự cố gốc với thông tin cluster được gán
   @override
   @JsonKey(name: 'data')
   List<ClusterItemModel> get data {
@@ -289,19 +314,31 @@ abstract class _ClusterResponseModel extends ClusterResponseModel {
       _$ClusterResponseModelImpl.fromJson;
 
   @override
+
+  /// Trạng thái response: "success" hoặc "error"
   String get status;
   @override
+
+  /// Thông báo mô tả kết quả
   String get message;
   @override
+
+  /// Tổng số bản ghi sự cố được phân tích
   @JsonKey(name: 'total_records')
   int get totalRecords;
   @override
+
+  /// Thông tin tổng quan về quá trình phân cụm
   @JsonKey(name: 'clustering_info')
   ClusteringInfoModel get clusteringInfo;
   @override
+
+  /// Danh sách các cluster/hotspot đã được phân cụm
   @JsonKey(name: 'clusters')
   List<ClusterHotspotModel> get clusters;
   @override
+
+  /// Danh sách các điểm sự cố gốc với thông tin cluster được gán
   @JsonKey(name: 'data')
   List<ClusterItemModel> get data;
   @override
@@ -316,12 +353,22 @@ ClusteringInfoModel _$ClusteringInfoModelFromJson(Map<String, dynamic> json) {
 
 /// @nodoc
 mixin _$ClusteringInfoModel {
+  /// Thuật toán được sử dụng (ví dụ: "DBSCAN")
   String get algorithm => throw _privateConstructorUsedError;
+
+  /// Bán kính epsilon của thuật toán DBSCAN (đơn vị: mét)
+  /// Quyết định khoảng cách tối đa giữa 2 điểm để được coi là cùng cluster
   double get eps => throw _privateConstructorUsedError;
+
+  /// Số lượng cluster tìm được (không tính noise)
   @JsonKey(name: 'n_clusters')
   int get nClusters => throw _privateConstructorUsedError;
+
+  /// Số lượng điểm nhiễu (outliers không thuộc cluster nào)
   @JsonKey(name: 'n_noise')
   int get nNoise => throw _privateConstructorUsedError;
+
+  /// Số lượng điểm lõi (core points) - điểm có đủ láng giềng trong bán kính eps
   @JsonKey(name: 'n_core_points')
   int get nCorePoints => throw _privateConstructorUsedError;
 
@@ -460,16 +507,26 @@ class _$ClusteringInfoModelImpl implements _ClusteringInfoModel {
   factory _$ClusteringInfoModelImpl.fromJson(Map<String, dynamic> json) =>
       _$$ClusteringInfoModelImplFromJson(json);
 
+  /// Thuật toán được sử dụng (ví dụ: "DBSCAN")
   @override
   final String algorithm;
+
+  /// Bán kính epsilon của thuật toán DBSCAN (đơn vị: mét)
+  /// Quyết định khoảng cách tối đa giữa 2 điểm để được coi là cùng cluster
   @override
   final double eps;
+
+  /// Số lượng cluster tìm được (không tính noise)
   @override
   @JsonKey(name: 'n_clusters')
   final int nClusters;
+
+  /// Số lượng điểm nhiễu (outliers không thuộc cluster nào)
   @override
   @JsonKey(name: 'n_noise')
   final int nNoise;
+
+  /// Số lượng điểm lõi (core points) - điểm có đủ láng giềng trong bán kính eps
   @override
   @JsonKey(name: 'n_core_points')
   final int nCorePoints;
@@ -527,16 +584,27 @@ abstract class _ClusteringInfoModel implements ClusteringInfoModel {
       _$ClusteringInfoModelImpl.fromJson;
 
   @override
+
+  /// Thuật toán được sử dụng (ví dụ: "DBSCAN")
   String get algorithm;
   @override
+
+  /// Bán kính epsilon của thuật toán DBSCAN (đơn vị: mét)
+  /// Quyết định khoảng cách tối đa giữa 2 điểm để được coi là cùng cluster
   double get eps;
   @override
+
+  /// Số lượng cluster tìm được (không tính noise)
   @JsonKey(name: 'n_clusters')
   int get nClusters;
   @override
+
+  /// Số lượng điểm nhiễu (outliers không thuộc cluster nào)
   @JsonKey(name: 'n_noise')
   int get nNoise;
   @override
+
+  /// Số lượng điểm lõi (core points) - điểm có đủ láng giềng trong bán kính eps
   @JsonKey(name: 'n_core_points')
   int get nCorePoints;
   @override
@@ -551,12 +619,23 @@ ClusterItemModel _$ClusterItemModelFromJson(Map<String, dynamic> json) {
 
 /// @nodoc
 mixin _$ClusterItemModel {
+  /// ID duy nhất của điểm sự cố từ ArcGIS
   @JsonKey(name: 'OBJECTID')
   int get objectId => throw _privateConstructorUsedError;
+
+  /// Kinh độ của điểm sự cố
   double get longitude => throw _privateConstructorUsedError;
+
+  /// Vĩ độ của điểm sự cố
   double get latitude => throw _privateConstructorUsedError;
+
+  /// ID của cluster mà điểm này thuộc về
+  /// Giá trị -1 nghĩa là điểm nhiễu (noise/outlier)
   @JsonKey(name: 'Cluster_ID')
   int get clusterId => throw _privateConstructorUsedError;
+
+  /// Đánh dấu điểm có phải là core point hay không
+  /// 1 = core point (có đủ láng giềng), 0 = border point hoặc noise
   @JsonKey(name: 'Is_Core_Point')
   int get isCorePoint => throw _privateConstructorUsedError;
 
@@ -696,16 +775,27 @@ class _$ClusterItemModelImpl extends _ClusterItemModel {
   factory _$ClusterItemModelImpl.fromJson(Map<String, dynamic> json) =>
       _$$ClusterItemModelImplFromJson(json);
 
+  /// ID duy nhất của điểm sự cố từ ArcGIS
   @override
   @JsonKey(name: 'OBJECTID')
   final int objectId;
+
+  /// Kinh độ của điểm sự cố
   @override
   final double longitude;
+
+  /// Vĩ độ của điểm sự cố
   @override
   final double latitude;
+
+  /// ID của cluster mà điểm này thuộc về
+  /// Giá trị -1 nghĩa là điểm nhiễu (noise/outlier)
   @override
   @JsonKey(name: 'Cluster_ID')
   final int clusterId;
+
+  /// Đánh dấu điểm có phải là core point hay không
+  /// 1 = core point (có đủ láng giềng), 0 = border point hoặc noise
   @override
   @JsonKey(name: 'Is_Core_Point')
   final int isCorePoint;
@@ -766,16 +856,28 @@ abstract class _ClusterItemModel extends ClusterItemModel {
       _$ClusterItemModelImpl.fromJson;
 
   @override
+
+  /// ID duy nhất của điểm sự cố từ ArcGIS
   @JsonKey(name: 'OBJECTID')
   int get objectId;
   @override
+
+  /// Kinh độ của điểm sự cố
   double get longitude;
   @override
+
+  /// Vĩ độ của điểm sự cố
   double get latitude;
   @override
+
+  /// ID của cluster mà điểm này thuộc về
+  /// Giá trị -1 nghĩa là điểm nhiễu (noise/outlier)
   @JsonKey(name: 'Cluster_ID')
   int get clusterId;
   @override
+
+  /// Đánh dấu điểm có phải là core point hay không
+  /// 1 = core point (có đủ láng giềng), 0 = border point hoặc noise
   @JsonKey(name: 'Is_Core_Point')
   int get isCorePoint;
   @override
@@ -790,9 +892,16 @@ ClusterBBoxModel _$ClusterBBoxModelFromJson(Map<String, dynamic> json) {
 
 /// @nodoc
 mixin _$ClusterBBoxModel {
+  /// Kinh độ nhỏ nhất (cạnh trái)
   double get xmin => throw _privateConstructorUsedError;
+
+  /// Vĩ độ nhỏ nhất (cạnh dưới)
   double get ymin => throw _privateConstructorUsedError;
+
+  /// Kinh độ lớn nhất (cạnh phải)
   double get xmax => throw _privateConstructorUsedError;
+
+  /// Vĩ độ lớn nhất (cạnh trên)
   double get ymax => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
@@ -910,12 +1019,19 @@ class _$ClusterBBoxModelImpl extends _ClusterBBoxModel {
   factory _$ClusterBBoxModelImpl.fromJson(Map<String, dynamic> json) =>
       _$$ClusterBBoxModelImplFromJson(json);
 
+  /// Kinh độ nhỏ nhất (cạnh trái)
   @override
   final double xmin;
+
+  /// Vĩ độ nhỏ nhất (cạnh dưới)
   @override
   final double ymin;
+
+  /// Kinh độ lớn nhất (cạnh phải)
   @override
   final double xmax;
+
+  /// Vĩ độ lớn nhất (cạnh trên)
   @override
   final double ymax;
 
@@ -966,12 +1082,20 @@ abstract class _ClusterBBoxModel extends ClusterBBoxModel {
       _$ClusterBBoxModelImpl.fromJson;
 
   @override
+
+  /// Kinh độ nhỏ nhất (cạnh trái)
   double get xmin;
   @override
+
+  /// Vĩ độ nhỏ nhất (cạnh dưới)
   double get ymin;
   @override
+
+  /// Kinh độ lớn nhất (cạnh phải)
   double get xmax;
   @override
+
+  /// Vĩ độ lớn nhất (cạnh trên)
   double get ymax;
   @override
   @JsonKey(ignore: true)
@@ -985,7 +1109,10 @@ ClusterCentroidModel _$ClusterCentroidModelFromJson(Map<String, dynamic> json) {
 
 /// @nodoc
 mixin _$ClusterCentroidModel {
+  /// Vĩ độ của tâm cluster
   double get lat => throw _privateConstructorUsedError;
+
+  /// Kinh độ của tâm cluster
   double get lng => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
@@ -1079,8 +1206,11 @@ class _$ClusterCentroidModelImpl implements _ClusterCentroidModel {
   factory _$ClusterCentroidModelImpl.fromJson(Map<String, dynamic> json) =>
       _$$ClusterCentroidModelImplFromJson(json);
 
+  /// Vĩ độ của tâm cluster
   @override
   final double lat;
+
+  /// Kinh độ của tâm cluster
   @override
   final double lng;
 
@@ -1127,8 +1257,12 @@ abstract class _ClusterCentroidModel implements ClusterCentroidModel {
       _$ClusterCentroidModelImpl.fromJson;
 
   @override
+
+  /// Vĩ độ của tâm cluster
   double get lat;
   @override
+
+  /// Kinh độ của tâm cluster
   double get lng;
   @override
   @JsonKey(ignore: true)
@@ -1142,25 +1276,54 @@ ClusterHotspotModel _$ClusterHotspotModelFromJson(Map<String, dynamic> json) {
 
 /// @nodoc
 mixin _$ClusterHotspotModel {
+  /// ID của cluster hotspot
   @JsonKey(name: 'cluster_id')
   int get clusterId => throw _privateConstructorUsedError;
+
+  /// Tổng số sự cố trong cluster này
   @JsonKey(name: 'incident_count')
   int get incidentCount => throw _privateConstructorUsedError;
+
+  /// Danh sách OBJECTID của các sự cố thuộc cluster
   @JsonKey(name: 'incident_object_ids')
   List<int> get incidentObjectIds => throw _privateConstructorUsedError;
+
+  /// Tọa độ tâm của cluster
   ClusterCentroidModel get centroid => throw _privateConstructorUsedError;
+
+  /// Bán kính hiển thị trên bản đồ (đơn vị: mét)
+  /// Được tính từ khoảng cách xa nhất từ tâm đến các điểm trong cluster
   @JsonKey(name: 'display_radius_m')
   double get displayRadiusM => throw _privateConstructorUsedError;
+
+  /// Bán kính ảnh hưởng khuyến nghị (đơn vị: mét)
+  /// Dùng cho phân tích, không dùng cho routing
   @JsonKey(name: 'impact_radius_m')
   double get impactRadiusM => throw _privateConstructorUsedError;
+
+  /// Bán kính trung bình từ tâm đến các điểm (đơn vị: mét)
+  /// Thể hiện độ phân tán của các sự cố trong cluster
   @JsonKey(name: 'avg_radius_m')
   double get avgRadiusM => throw _privateConstructorUsedError;
+
+  /// Thông tin hình học polygon của cluster (chuẩn ArcGIS)
   ClusterGeometryModel get geometry => throw _privateConstructorUsedError;
+
+  /// Mật độ sự cố (số sự cố / km²)
   double get density => throw _privateConstructorUsedError;
+
+  /// Mức độ nguy hiểm: "high", "medium", "low"
   String get severity => throw _privateConstructorUsedError;
+
+  /// Loại cluster: "dense", "spread", "isolated"
   @JsonKey(name: 'cluster_type')
   String get clusterType => throw _privateConstructorUsedError;
+
+  /// Hình chữ nhật bao quanh cluster
   ClusterBBoxModel get bbox => throw _privateConstructorUsedError;
+
+  /// Tọa độ polygon đơn giản hóa để hiển thị trên map
+  /// Mỗi phần tử là [lng, lat]
   List<List<double>> get polygon => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
@@ -1441,13 +1604,20 @@ class _$ClusterHotspotModelImpl extends _ClusterHotspotModel {
   factory _$ClusterHotspotModelImpl.fromJson(Map<String, dynamic> json) =>
       _$$ClusterHotspotModelImplFromJson(json);
 
+  /// ID của cluster hotspot
   @override
   @JsonKey(name: 'cluster_id')
   final int clusterId;
+
+  /// Tổng số sự cố trong cluster này
   @override
   @JsonKey(name: 'incident_count')
   final int incidentCount;
+
+  /// Danh sách OBJECTID của các sự cố thuộc cluster
   final List<int> _incidentObjectIds;
+
+  /// Danh sách OBJECTID của các sự cố thuộc cluster
   @override
   @JsonKey(name: 'incident_object_ids')
   List<int> get incidentObjectIds {
@@ -1457,29 +1627,55 @@ class _$ClusterHotspotModelImpl extends _ClusterHotspotModel {
     return EqualUnmodifiableListView(_incidentObjectIds);
   }
 
+  /// Tọa độ tâm của cluster
   @override
   final ClusterCentroidModel centroid;
+
+  /// Bán kính hiển thị trên bản đồ (đơn vị: mét)
+  /// Được tính từ khoảng cách xa nhất từ tâm đến các điểm trong cluster
   @override
   @JsonKey(name: 'display_radius_m')
   final double displayRadiusM;
+
+  /// Bán kính ảnh hưởng khuyến nghị (đơn vị: mét)
+  /// Dùng cho phân tích, không dùng cho routing
   @override
   @JsonKey(name: 'impact_radius_m')
   final double impactRadiusM;
+
+  /// Bán kính trung bình từ tâm đến các điểm (đơn vị: mét)
+  /// Thể hiện độ phân tán của các sự cố trong cluster
   @override
   @JsonKey(name: 'avg_radius_m')
   final double avgRadiusM;
+
+  /// Thông tin hình học polygon của cluster (chuẩn ArcGIS)
   @override
   final ClusterGeometryModel geometry;
+
+  /// Mật độ sự cố (số sự cố / km²)
   @override
   final double density;
+
+  /// Mức độ nguy hiểm: "high", "medium", "low"
   @override
   final String severity;
+
+  /// Loại cluster: "dense", "spread", "isolated"
   @override
   @JsonKey(name: 'cluster_type')
   final String clusterType;
+
+  /// Hình chữ nhật bao quanh cluster
   @override
   final ClusterBBoxModel bbox;
+
+  /// Tọa độ polygon đơn giản hóa để hiển thị trên map
+  /// Mỗi phần tử là [lng, lat]
   final List<List<double>> _polygon;
+
+  /// Tọa độ polygon đơn giản hóa để hiển thị trên map
+  /// Mỗi phần tử là [lng, lat]
   @override
   List<List<double>> get polygon {
     if (_polygon is EqualUnmodifiableListView) return _polygon;
@@ -1577,37 +1773,67 @@ abstract class _ClusterHotspotModel extends ClusterHotspotModel {
       _$ClusterHotspotModelImpl.fromJson;
 
   @override
+
+  /// ID của cluster hotspot
   @JsonKey(name: 'cluster_id')
   int get clusterId;
   @override
+
+  /// Tổng số sự cố trong cluster này
   @JsonKey(name: 'incident_count')
   int get incidentCount;
   @override
+
+  /// Danh sách OBJECTID của các sự cố thuộc cluster
   @JsonKey(name: 'incident_object_ids')
   List<int> get incidentObjectIds;
   @override
+
+  /// Tọa độ tâm của cluster
   ClusterCentroidModel get centroid;
   @override
+
+  /// Bán kính hiển thị trên bản đồ (đơn vị: mét)
+  /// Được tính từ khoảng cách xa nhất từ tâm đến các điểm trong cluster
   @JsonKey(name: 'display_radius_m')
   double get displayRadiusM;
   @override
+
+  /// Bán kính ảnh hưởng khuyến nghị (đơn vị: mét)
+  /// Dùng cho phân tích, không dùng cho routing
   @JsonKey(name: 'impact_radius_m')
   double get impactRadiusM;
   @override
+
+  /// Bán kính trung bình từ tâm đến các điểm (đơn vị: mét)
+  /// Thể hiện độ phân tán của các sự cố trong cluster
   @JsonKey(name: 'avg_radius_m')
   double get avgRadiusM;
   @override
+
+  /// Thông tin hình học polygon của cluster (chuẩn ArcGIS)
   ClusterGeometryModel get geometry;
   @override
+
+  /// Mật độ sự cố (số sự cố / km²)
   double get density;
   @override
+
+  /// Mức độ nguy hiểm: "high", "medium", "low"
   String get severity;
   @override
+
+  /// Loại cluster: "dense", "spread", "isolated"
   @JsonKey(name: 'cluster_type')
   String get clusterType;
   @override
+
+  /// Hình chữ nhật bao quanh cluster
   ClusterBBoxModel get bbox;
   @override
+
+  /// Tọa độ polygon đơn giản hóa để hiển thị trên map
+  /// Mỗi phần tử là [lng, lat]
   List<List<double>> get polygon;
   @override
   @JsonKey(ignore: true)
@@ -1621,7 +1847,12 @@ ClusterGeometryModel _$ClusterGeometryModelFromJson(Map<String, dynamic> json) {
 
 /// @nodoc
 mixin _$ClusterGeometryModel {
+  /// Danh sách các rings tạo thành polygon
+  /// Mỗi ring là một mảng các tọa độ [lng, lat]
+  /// Ring đầu tiên là outer ring, các ring sau (nếu có) là holes
   List<List<List<double>>> get rings => throw _privateConstructorUsedError;
+
+  /// Hệ tọa độ không gian sử dụng
   SpatialReferenceModel get spatialReference =>
       throw _privateConstructorUsedError;
 
@@ -1736,7 +1967,14 @@ class _$ClusterGeometryModelImpl extends _ClusterGeometryModel {
   factory _$ClusterGeometryModelImpl.fromJson(Map<String, dynamic> json) =>
       _$$ClusterGeometryModelImplFromJson(json);
 
+  /// Danh sách các rings tạo thành polygon
+  /// Mỗi ring là một mảng các tọa độ [lng, lat]
+  /// Ring đầu tiên là outer ring, các ring sau (nếu có) là holes
   final List<List<List<double>>> _rings;
+
+  /// Danh sách các rings tạo thành polygon
+  /// Mỗi ring là một mảng các tọa độ [lng, lat]
+  /// Ring đầu tiên là outer ring, các ring sau (nếu có) là holes
   @override
   List<List<List<double>>> get rings {
     if (_rings is EqualUnmodifiableListView) return _rings;
@@ -1744,6 +1982,7 @@ class _$ClusterGeometryModelImpl extends _ClusterGeometryModel {
     return EqualUnmodifiableListView(_rings);
   }
 
+  /// Hệ tọa độ không gian sử dụng
   @override
   final SpatialReferenceModel spatialReference;
 
@@ -1794,8 +2033,14 @@ abstract class _ClusterGeometryModel extends ClusterGeometryModel {
       _$ClusterGeometryModelImpl.fromJson;
 
   @override
+
+  /// Danh sách các rings tạo thành polygon
+  /// Mỗi ring là một mảng các tọa độ [lng, lat]
+  /// Ring đầu tiên là outer ring, các ring sau (nếu có) là holes
   List<List<List<double>>> get rings;
   @override
+
+  /// Hệ tọa độ không gian sử dụng
   SpatialReferenceModel get spatialReference;
   @override
   @JsonKey(ignore: true)
@@ -1810,6 +2055,8 @@ SpatialReferenceModel _$SpatialReferenceModelFromJson(
 
 /// @nodoc
 mixin _$SpatialReferenceModel {
+  /// Well-Known ID của hệ tọa độ
+  /// Ví dụ: 4326 = WGS84 (latitude/longitude), 3857 = Web Mercator
   int get wkid => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
@@ -1895,6 +2142,8 @@ class _$SpatialReferenceModelImpl implements _SpatialReferenceModel {
   factory _$SpatialReferenceModelImpl.fromJson(Map<String, dynamic> json) =>
       _$$SpatialReferenceModelImplFromJson(json);
 
+  /// Well-Known ID của hệ tọa độ
+  /// Ví dụ: 4326 = WGS84 (latitude/longitude), 3857 = Web Mercator
   @override
   final int wkid;
 
@@ -1938,6 +2187,9 @@ abstract class _SpatialReferenceModel implements SpatialReferenceModel {
       _$SpatialReferenceModelImpl.fromJson;
 
   @override
+
+  /// Well-Known ID của hệ tọa độ
+  /// Ví dụ: 4326 = WGS84 (latitude/longitude), 3857 = Web Mercator
   int get wkid;
   @override
   @JsonKey(ignore: true)
