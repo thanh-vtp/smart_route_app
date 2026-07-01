@@ -6,141 +6,141 @@ part of 'routing_model.dart';
 // JsonSerializableGenerator
 // **************************************************************************
 
-_$RouteResponseModelImpl _$$RouteResponseModelImplFromJson(
-        Map<String, dynamic> json) =>
-    _$RouteResponseModelImpl(
+_RouteResponseModel _$RouteResponseModelFromJson(Map<String, dynamic> json) =>
+    _RouteResponseModel(
       routes: RouteFeaturesResultModel.fromJson(
-          json['routes'] as Map<String, dynamic>),
-      directions: (json['directions'] as List<dynamic>?)
-              ?.map((e) =>
-                  RouteDirectionSetModel.fromJson(e as Map<String, dynamic>))
+        json['routes'] as Map<String, dynamic>,
+      ),
+      directions:
+          (json['directions'] as List<dynamic>?)
+              ?.map(
+                (e) =>
+                    RouteDirectionSetModel.fromJson(e as Map<String, dynamic>),
+              )
               .toList() ??
           const [],
     );
 
-Map<String, dynamic> _$$RouteResponseModelImplToJson(
-        _$RouteResponseModelImpl instance) =>
+Map<String, dynamic> _$RouteResponseModelToJson(_RouteResponseModel instance) =>
     <String, dynamic>{
       'routes': instance.routes,
       'directions': instance.directions,
     };
 
-_$RouteFeaturesResultModelImpl _$$RouteFeaturesResultModelImplFromJson(
-        Map<String, dynamic> json) =>
-    _$RouteFeaturesResultModelImpl(
-      features: (json['features'] as List<dynamic>?)
-              ?.map(
-                  (e) => RouteFeatureModel.fromJson(e as Map<String, dynamic>))
-              .toList() ??
-          const [],
-    );
+_RouteFeaturesResultModel _$RouteFeaturesResultModelFromJson(
+  Map<String, dynamic> json,
+) => _RouteFeaturesResultModel(
+  features:
+      (json['features'] as List<dynamic>?)
+          ?.map((e) => RouteFeatureModel.fromJson(e as Map<String, dynamic>))
+          .toList() ??
+      const [],
+);
 
-Map<String, dynamic> _$$RouteFeaturesResultModelImplToJson(
-        _$RouteFeaturesResultModelImpl instance) =>
-    <String, dynamic>{
-      'features': instance.features,
-    };
+Map<String, dynamic> _$RouteFeaturesResultModelToJson(
+  _RouteFeaturesResultModel instance,
+) => <String, dynamic>{'features': instance.features};
 
-_$RouteFeatureModelImpl _$$RouteFeatureModelImplFromJson(
-        Map<String, dynamic> json) =>
-    _$RouteFeatureModelImpl(
+_RouteFeatureModel _$RouteFeatureModelFromJson(Map<String, dynamic> json) =>
+    _RouteFeatureModel(
       attributes: RouteAttributesModel.fromJson(
-          json['attributes'] as Map<String, dynamic>),
+        json['attributes'] as Map<String, dynamic>,
+      ),
       geometry: json['geometry'] == null
           ? null
           : RouteGeometryModel.fromJson(
-              json['geometry'] as Map<String, dynamic>),
+              json['geometry'] as Map<String, dynamic>,
+            ),
     );
 
-Map<String, dynamic> _$$RouteFeatureModelImplToJson(
-        _$RouteFeatureModelImpl instance) =>
+Map<String, dynamic> _$RouteFeatureModelToJson(_RouteFeatureModel instance) =>
     <String, dynamic>{
       'attributes': instance.attributes,
       'geometry': instance.geometry,
     };
 
-_$RouteAttributesModelImpl _$$RouteAttributesModelImplFromJson(
-        Map<String, dynamic> json) =>
-    _$RouteAttributesModelImpl(
-      name: json['Name'] as String?,
-      totalTravelTime: (json['Total_TravelTime'] as num?)?.toDouble(),
-      totalKilometers: (json['Total_Kilometers'] as num?)?.toDouble(),
-    );
+_RouteAttributesModel _$RouteAttributesModelFromJson(
+  Map<String, dynamic> json,
+) => _RouteAttributesModel(
+  name: json['Name'] as String?,
+  totalTravelTime: (json['Total_TravelTime'] as num?)?.toDouble(),
+  totalKilometers: (json['Total_Kilometers'] as num?)?.toDouble(),
+);
 
-Map<String, dynamic> _$$RouteAttributesModelImplToJson(
-        _$RouteAttributesModelImpl instance) =>
-    <String, dynamic>{
-      'Name': instance.name,
-      'Total_TravelTime': instance.totalTravelTime,
-      'Total_Kilometers': instance.totalKilometers,
-    };
+Map<String, dynamic> _$RouteAttributesModelToJson(
+  _RouteAttributesModel instance,
+) => <String, dynamic>{
+  'Name': instance.name,
+  'Total_TravelTime': instance.totalTravelTime,
+  'Total_Kilometers': instance.totalKilometers,
+};
 
-_$RouteGeometryModelImpl _$$RouteGeometryModelImplFromJson(
-        Map<String, dynamic> json) =>
-    _$RouteGeometryModelImpl(
-      paths: (json['paths'] as List<dynamic>?)
-              ?.map((e) => (e as List<dynamic>)
-                  .map((e) => (e as List<dynamic>)
-                      .map((e) => (e as num).toDouble())
-                      .toList())
-                  .toList())
+_RouteGeometryModel _$RouteGeometryModelFromJson(Map<String, dynamic> json) =>
+    _RouteGeometryModel(
+      paths:
+          (json['paths'] as List<dynamic>?)
+              ?.map(
+                (e) => (e as List<dynamic>)
+                    .map(
+                      (e) => (e as List<dynamic>)
+                          .map((e) => (e as num).toDouble())
+                          .toList(),
+                    )
+                    .toList(),
+              )
               .toList() ??
           const [],
     );
 
-Map<String, dynamic> _$$RouteGeometryModelImplToJson(
-        _$RouteGeometryModelImpl instance) =>
-    <String, dynamic>{
-      'paths': instance.paths,
-    };
+Map<String, dynamic> _$RouteGeometryModelToJson(_RouteGeometryModel instance) =>
+    <String, dynamic>{'paths': instance.paths};
 
-_$RouteDirectionSetModelImpl _$$RouteDirectionSetModelImplFromJson(
-        Map<String, dynamic> json) =>
-    _$RouteDirectionSetModelImpl(
-      summary: json['summary'] == null
-          ? null
-          : RouteDirectionSummaryModel.fromJson(
-              json['summary'] as Map<String, dynamic>),
-      features: (json['features'] as List<dynamic>?)
-              ?.map((e) => RouteDirectionFeatureModel.fromJson(
-                  e as Map<String, dynamic>))
-              .toList() ??
-          const [],
-    );
+_RouteDirectionSetModel _$RouteDirectionSetModelFromJson(
+  Map<String, dynamic> json,
+) => _RouteDirectionSetModel(
+  summary: json['summary'] == null
+      ? null
+      : RouteDirectionSummaryModel.fromJson(
+          json['summary'] as Map<String, dynamic>,
+        ),
+  features:
+      (json['features'] as List<dynamic>?)
+          ?.map(
+            (e) =>
+                RouteDirectionFeatureModel.fromJson(e as Map<String, dynamic>),
+          )
+          .toList() ??
+      const [],
+);
 
-Map<String, dynamic> _$$RouteDirectionSetModelImplToJson(
-        _$RouteDirectionSetModelImpl instance) =>
-    <String, dynamic>{
-      'summary': instance.summary,
-      'features': instance.features,
-    };
+Map<String, dynamic> _$RouteDirectionSetModelToJson(
+  _RouteDirectionSetModel instance,
+) => <String, dynamic>{
+  'summary': instance.summary,
+  'features': instance.features,
+};
 
-_$RouteDirectionSummaryModelImpl _$$RouteDirectionSummaryModelImplFromJson(
-        Map<String, dynamic> json) =>
-    _$RouteDirectionSummaryModelImpl(
-      envelope: json['envelope'] == null
-          ? null
-          : RouteEnvelopeModel.fromJson(
-              json['envelope'] as Map<String, dynamic>),
-    );
+_RouteDirectionSummaryModel _$RouteDirectionSummaryModelFromJson(
+  Map<String, dynamic> json,
+) => _RouteDirectionSummaryModel(
+  envelope: json['envelope'] == null
+      ? null
+      : RouteEnvelopeModel.fromJson(json['envelope'] as Map<String, dynamic>),
+);
 
-Map<String, dynamic> _$$RouteDirectionSummaryModelImplToJson(
-        _$RouteDirectionSummaryModelImpl instance) =>
-    <String, dynamic>{
-      'envelope': instance.envelope,
-    };
+Map<String, dynamic> _$RouteDirectionSummaryModelToJson(
+  _RouteDirectionSummaryModel instance,
+) => <String, dynamic>{'envelope': instance.envelope};
 
-_$RouteEnvelopeModelImpl _$$RouteEnvelopeModelImplFromJson(
-        Map<String, dynamic> json) =>
-    _$RouteEnvelopeModelImpl(
+_RouteEnvelopeModel _$RouteEnvelopeModelFromJson(Map<String, dynamic> json) =>
+    _RouteEnvelopeModel(
       xmin: (json['xmin'] as num?)?.toDouble(),
       ymin: (json['ymin'] as num?)?.toDouble(),
       xmax: (json['xmax'] as num?)?.toDouble(),
       ymax: (json['ymax'] as num?)?.toDouble(),
     );
 
-Map<String, dynamic> _$$RouteEnvelopeModelImplToJson(
-        _$RouteEnvelopeModelImpl instance) =>
+Map<String, dynamic> _$RouteEnvelopeModelToJson(_RouteEnvelopeModel instance) =>
     <String, dynamic>{
       'xmin': instance.xmin,
       'ymin': instance.ymin,
@@ -148,53 +148,57 @@ Map<String, dynamic> _$$RouteEnvelopeModelImplToJson(
       'ymax': instance.ymax,
     };
 
-_$RouteDirectionFeatureModelImpl _$$RouteDirectionFeatureModelImplFromJson(
-        Map<String, dynamic> json) =>
-    _$RouteDirectionFeatureModelImpl(
-      attributes: RouteDirectionAttributesModel.fromJson(
-          json['attributes'] as Map<String, dynamic>),
-      strings: (json['strings'] as List<dynamic>?)
-              ?.map((e) =>
-                  RouteDirectionStringModel.fromJson(e as Map<String, dynamic>))
-              .toList() ??
-          const [],
-    );
+_RouteDirectionFeatureModel _$RouteDirectionFeatureModelFromJson(
+  Map<String, dynamic> json,
+) => _RouteDirectionFeatureModel(
+  attributes: RouteDirectionAttributesModel.fromJson(
+    json['attributes'] as Map<String, dynamic>,
+  ),
+  strings:
+      (json['strings'] as List<dynamic>?)
+          ?.map(
+            (e) =>
+                RouteDirectionStringModel.fromJson(e as Map<String, dynamic>),
+          )
+          .toList() ??
+      const [],
+);
 
-Map<String, dynamic> _$$RouteDirectionFeatureModelImplToJson(
-        _$RouteDirectionFeatureModelImpl instance) =>
-    <String, dynamic>{
-      'attributes': instance.attributes,
-      'strings': instance.strings,
-    };
+Map<String, dynamic> _$RouteDirectionFeatureModelToJson(
+  _RouteDirectionFeatureModel instance,
+) => <String, dynamic>{
+  'attributes': instance.attributes,
+  'strings': instance.strings,
+};
 
-_$RouteDirectionAttributesModelImpl
-    _$$RouteDirectionAttributesModelImplFromJson(Map<String, dynamic> json) =>
-        _$RouteDirectionAttributesModelImpl(
-          length: (json['length'] as num?)?.toDouble() ?? 0,
-          time: (json['time'] as num?)?.toDouble() ?? 0,
-          text: json['text'] as String?,
-          maneuverType: json['maneuverType'] as String?,
-        );
+_RouteDirectionAttributesModel _$RouteDirectionAttributesModelFromJson(
+  Map<String, dynamic> json,
+) => _RouteDirectionAttributesModel(
+  length: (json['length'] as num?)?.toDouble() ?? 0,
+  time: (json['time'] as num?)?.toDouble() ?? 0,
+  text: json['text'] as String?,
+  maneuverType: json['maneuverType'] as String?,
+);
 
-Map<String, dynamic> _$$RouteDirectionAttributesModelImplToJson(
-        _$RouteDirectionAttributesModelImpl instance) =>
-    <String, dynamic>{
-      'length': instance.length,
-      'time': instance.time,
-      'text': instance.text,
-      'maneuverType': instance.maneuverType,
-    };
+Map<String, dynamic> _$RouteDirectionAttributesModelToJson(
+  _RouteDirectionAttributesModel instance,
+) => <String, dynamic>{
+  'length': instance.length,
+  'time': instance.time,
+  'text': instance.text,
+  'maneuverType': instance.maneuverType,
+};
 
-_$RouteDirectionStringModelImpl _$$RouteDirectionStringModelImplFromJson(
-        Map<String, dynamic> json) =>
-    _$RouteDirectionStringModelImpl(
-      string: json['string'] as String?,
-      stringType: json['stringType'] as String?,
-    );
+_RouteDirectionStringModel _$RouteDirectionStringModelFromJson(
+  Map<String, dynamic> json,
+) => _RouteDirectionStringModel(
+  string: json['string'] as String?,
+  stringType: json['stringType'] as String?,
+);
 
-Map<String, dynamic> _$$RouteDirectionStringModelImplToJson(
-        _$RouteDirectionStringModelImpl instance) =>
-    <String, dynamic>{
-      'string': instance.string,
-      'stringType': instance.stringType,
-    };
+Map<String, dynamic> _$RouteDirectionStringModelToJson(
+  _RouteDirectionStringModel instance,
+) => <String, dynamic>{
+  'string': instance.string,
+  'stringType': instance.stringType,
+};

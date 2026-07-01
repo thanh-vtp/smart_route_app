@@ -5,8 +5,6 @@ import 'package:smart_route_app/features/cluster/data/datasource/cluster_remote_
 part 'remote_datasource_providers.g.dart';
 
 @riverpod
-ClusterRemoteDataSource clusterRemoteDataSource(
-  ClusterRemoteDataSourceRef ref,
-) {
+ClusterRemoteDataSource clusterRemoteDataSource(Ref ref) {
   return ClusterRemoteDataSourceImpl();
 }

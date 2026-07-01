@@ -6,21 +6,52 @@ part of 'map_controller_provider.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$mapControllerHash() => r'9493a2504949c29f434a76288d3b5642d130b491';
+// GENERATED CODE - DO NOT MODIFY BY HAND
+// ignore_for_file: type=lint, type=warning
 
-/// See also [mapController].
 @ProviderFor(mapController)
-final mapControllerProvider =
-    AutoDisposeProvider<ArcGISMapViewController>.internal(
-  mapController,
-  name: r'mapControllerProvider',
-  debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
-      ? null
-      : _$mapControllerHash,
-  dependencies: null,
-  allTransitiveDependencies: null,
-);
+final mapControllerProvider = MapControllerProvider._();
 
-typedef MapControllerRef = AutoDisposeProviderRef<ArcGISMapViewController>;
-// ignore_for_file: type=lint
-// ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member
+final class MapControllerProvider
+    extends
+        $FunctionalProvider<
+          ArcGISMapViewController,
+          ArcGISMapViewController,
+          ArcGISMapViewController
+        >
+    with $Provider<ArcGISMapViewController> {
+  MapControllerProvider._()
+    : super(
+        from: null,
+        argument: null,
+        retry: null,
+        name: r'mapControllerProvider',
+        isAutoDispose: true,
+        dependencies: null,
+        $allTransitiveDependencies: null,
+      );
+
+  @override
+  String debugGetCreateSourceHash() => _$mapControllerHash();
+
+  @$internal
+  @override
+  $ProviderElement<ArcGISMapViewController> $createElement(
+    $ProviderPointer pointer,
+  ) => $ProviderElement(pointer);
+
+  @override
+  ArcGISMapViewController create(Ref ref) {
+    return mapController(ref);
+  }
+
+  /// {@macro riverpod.override_with_value}
+  Override overrideWithValue(ArcGISMapViewController value) {
+    return $ProviderOverride(
+      origin: this,
+      providerOverride: $SyncValueProvider<ArcGISMapViewController>(value),
+    );
+  }
+}
+
+String _$mapControllerHash() => r'3ca0981f1b393af68f88b120c1e58947b455ee24';

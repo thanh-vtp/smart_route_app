@@ -6,22 +6,51 @@ part of 'fcm_token_service.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$fcmTokenServiceHash() => r'9a92d3f3f1a296f0886df1a97c130152b1942452';
+// GENERATED CODE - DO NOT MODIFY BY HAND
+// ignore_for_file: type=lint, type=warning
+/// Provider cho FCM Token Service
+
+@ProviderFor(fcmTokenService)
+final fcmTokenServiceProvider = FcmTokenServiceProvider._();
 
 /// Provider cho FCM Token Service
-///
-/// Copied from [fcmTokenService].
-@ProviderFor(fcmTokenService)
-final fcmTokenServiceProvider = Provider<FCMTokenService>.internal(
-  fcmTokenService,
-  name: r'fcmTokenServiceProvider',
-  debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
-      ? null
-      : _$fcmTokenServiceHash,
-  dependencies: null,
-  allTransitiveDependencies: null,
-);
 
-typedef FcmTokenServiceRef = ProviderRef<FCMTokenService>;
-// ignore_for_file: type=lint
-// ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member
+final class FcmTokenServiceProvider
+    extends
+        $FunctionalProvider<FCMTokenService, FCMTokenService, FCMTokenService>
+    with $Provider<FCMTokenService> {
+  /// Provider cho FCM Token Service
+  FcmTokenServiceProvider._()
+    : super(
+        from: null,
+        argument: null,
+        retry: null,
+        name: r'fcmTokenServiceProvider',
+        isAutoDispose: false,
+        dependencies: null,
+        $allTransitiveDependencies: null,
+      );
+
+  @override
+  String debugGetCreateSourceHash() => _$fcmTokenServiceHash();
+
+  @$internal
+  @override
+  $ProviderElement<FCMTokenService> $createElement($ProviderPointer pointer) =>
+      $ProviderElement(pointer);
+
+  @override
+  FCMTokenService create(Ref ref) {
+    return fcmTokenService(ref);
+  }
+
+  /// {@macro riverpod.override_with_value}
+  Override overrideWithValue(FCMTokenService value) {
+    return $ProviderOverride(
+      origin: this,
+      providerOverride: $SyncValueProvider<FCMTokenService>(value),
+    );
+  }
+}
+
+String _$fcmTokenServiceHash() => r'c95e95ea333a65e978432dca05cb634a199f24ec';

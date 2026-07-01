@@ -6,23 +6,54 @@ part of 'remote_datasource_providers.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$notificationRemoteDataSourceHash() =>
-    r'0ad801ad99666f10fab261ccaf155c90a478cad9';
+// GENERATED CODE - DO NOT MODIFY BY HAND
+// ignore_for_file: type=lint, type=warning
 
-/// See also [notificationRemoteDataSource].
 @ProviderFor(notificationRemoteDataSource)
 final notificationRemoteDataSourceProvider =
-    Provider<NotificationRemoteDataSource>.internal(
-  notificationRemoteDataSource,
-  name: r'notificationRemoteDataSourceProvider',
-  debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
-      ? null
-      : _$notificationRemoteDataSourceHash,
-  dependencies: null,
-  allTransitiveDependencies: null,
-);
+    NotificationRemoteDataSourceProvider._();
 
-typedef NotificationRemoteDataSourceRef
-    = ProviderRef<NotificationRemoteDataSource>;
-// ignore_for_file: type=lint
-// ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member
+final class NotificationRemoteDataSourceProvider
+    extends
+        $FunctionalProvider<
+          NotificationRemoteDataSource,
+          NotificationRemoteDataSource,
+          NotificationRemoteDataSource
+        >
+    with $Provider<NotificationRemoteDataSource> {
+  NotificationRemoteDataSourceProvider._()
+    : super(
+        from: null,
+        argument: null,
+        retry: null,
+        name: r'notificationRemoteDataSourceProvider',
+        isAutoDispose: false,
+        dependencies: null,
+        $allTransitiveDependencies: null,
+      );
+
+  @override
+  String debugGetCreateSourceHash() => _$notificationRemoteDataSourceHash();
+
+  @$internal
+  @override
+  $ProviderElement<NotificationRemoteDataSource> $createElement(
+    $ProviderPointer pointer,
+  ) => $ProviderElement(pointer);
+
+  @override
+  NotificationRemoteDataSource create(Ref ref) {
+    return notificationRemoteDataSource(ref);
+  }
+
+  /// {@macro riverpod.override_with_value}
+  Override overrideWithValue(NotificationRemoteDataSource value) {
+    return $ProviderOverride(
+      origin: this,
+      providerOverride: $SyncValueProvider<NotificationRemoteDataSource>(value),
+    );
+  }
+}
+
+String _$notificationRemoteDataSourceHash() =>
+    r'a60cfe86f292e76ecf3e57913b643d75dee12d6b';

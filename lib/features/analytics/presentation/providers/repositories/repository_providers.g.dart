@@ -6,21 +6,53 @@ part of 'repository_providers.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$analyticsRepositoryHash() =>
-    r'f7bdc9164b9e7009e09a0f37d1a1054ca9a84acc';
+// GENERATED CODE - DO NOT MODIFY BY HAND
+// ignore_for_file: type=lint, type=warning
 
-/// See also [analyticsRepository].
 @ProviderFor(analyticsRepository)
-final analyticsRepositoryProvider = Provider<AnalyticsRepository>.internal(
-  analyticsRepository,
-  name: r'analyticsRepositoryProvider',
-  debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
-      ? null
-      : _$analyticsRepositoryHash,
-  dependencies: null,
-  allTransitiveDependencies: null,
-);
+final analyticsRepositoryProvider = AnalyticsRepositoryProvider._();
 
-typedef AnalyticsRepositoryRef = ProviderRef<AnalyticsRepository>;
-// ignore_for_file: type=lint
-// ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member
+final class AnalyticsRepositoryProvider
+    extends
+        $FunctionalProvider<
+          AnalyticsRepository,
+          AnalyticsRepository,
+          AnalyticsRepository
+        >
+    with $Provider<AnalyticsRepository> {
+  AnalyticsRepositoryProvider._()
+    : super(
+        from: null,
+        argument: null,
+        retry: null,
+        name: r'analyticsRepositoryProvider',
+        isAutoDispose: false,
+        dependencies: null,
+        $allTransitiveDependencies: null,
+      );
+
+  @override
+  String debugGetCreateSourceHash() => _$analyticsRepositoryHash();
+
+  @$internal
+  @override
+  $ProviderElement<AnalyticsRepository> $createElement(
+    $ProviderPointer pointer,
+  ) => $ProviderElement(pointer);
+
+  @override
+  AnalyticsRepository create(Ref ref) {
+    return analyticsRepository(ref);
+  }
+
+  /// {@macro riverpod.override_with_value}
+  Override overrideWithValue(AnalyticsRepository value) {
+    return $ProviderOverride(
+      origin: this,
+      providerOverride: $SyncValueProvider<AnalyticsRepository>(value),
+    );
+  }
+}
+
+String _$analyticsRepositoryHash() =>
+    r'308215f8e4c59735d0731c1033a74cc606c7ffe1';

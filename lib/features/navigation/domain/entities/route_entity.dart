@@ -7,7 +7,7 @@ part 'route_entity.freezed.dart';
 // 1. KẾT QUẢ TUYẾN ĐƯỜNG CHÍNH (Đưa thẳng lên UI)
 // ====================================================================
 @freezed
-class RouteResult with _$RouteResult {
+abstract class RouteResult with _$RouteResult {
   const RouteResult._(); // Private constructor để viết custom getters
 
   const factory RouteResult({
@@ -52,7 +52,7 @@ class RouteResult with _$RouteResult {
 // 2. TỌA ĐỘ TỪNG ĐIỂM (Dùng để vẽ Polyline)
 // ====================================================================
 @freezed
-class RoutePoint with _$RoutePoint {
+abstract class RoutePoint with _$RoutePoint {
   const factory RoutePoint({required double lat, required double lng}) =
       _RoutePoint;
 }
@@ -61,7 +61,7 @@ class RoutePoint with _$RoutePoint {
 // 3. KHUNG ZOOM BẢN ĐỒ
 // ====================================================================
 @freezed
-class RouteBoundingBox with _$RouteBoundingBox {
+abstract class RouteBoundingBox with _$RouteBoundingBox {
   const factory RouteBoundingBox({
     required double xMin,
     required double yMin,
@@ -74,7 +74,7 @@ class RouteBoundingBox with _$RouteBoundingBox {
 // 4. CHI TIẾT TỪNG BƯỚC RẼ (Navigation Instructions)
 // ====================================================================
 @freezed
-class RouteDirection with _$RouteDirection {
+abstract class RouteDirection with _$RouteDirection {
   const RouteDirection._();
 
   const factory RouteDirection({
@@ -240,7 +240,7 @@ enum RouteStrategy {
 // 6. ALTERNATIVE ROUTES RESULT (Kết quả nhiều lộ trình)
 // ====================================================================
 @freezed
-class AlternativeRoutesResult with _$AlternativeRoutesResult {
+abstract class AlternativeRoutesResult with _$AlternativeRoutesResult {
   const AlternativeRoutesResult._();
 
   const factory AlternativeRoutesResult({
@@ -257,7 +257,7 @@ class AlternativeRoutesResult with _$AlternativeRoutesResult {
 // 7. ROUTE ALTERNATIVE (Mỗi lộ trình thay thế)
 // ====================================================================
 @freezed
-class RouteAlternative with _$RouteAlternative {
+abstract class RouteAlternative with _$RouteAlternative {
   const RouteAlternative._();
 
   const factory RouteAlternative({

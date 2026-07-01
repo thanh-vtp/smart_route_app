@@ -6,8 +6,8 @@ part of 'analytics_model.dart';
 // JsonSerializableGenerator
 // **************************************************************************
 
-_$AnalyticsModelImpl _$$AnalyticsModelImplFromJson(Map<String, dynamic> json) =>
-    _$AnalyticsModelImpl(
+_AnalyticsModel _$AnalyticsModelFromJson(Map<String, dynamic> json) =>
+    _AnalyticsModel(
       reputationScore: (json['reputation_score'] as num?)?.toInt() ?? 0,
       totalReports: (json['total_reports'] as num?)?.toInt() ?? 0,
       reportsChangePercent:
@@ -20,20 +20,24 @@ _$AnalyticsModelImpl _$$AnalyticsModelImplFromJson(Map<String, dynamic> json) =>
       totalDownvotes: (json['total_downvotes'] as num?)?.toInt() ?? 0,
       confirmationRate: (json['confirmation_rate'] as num?)?.toDouble() ?? 0.0,
       distributionTotal: (json['distribution_total'] as num?)?.toInt() ?? 0,
-      distribution: (json['distribution'] as List<dynamic>?)
-              ?.map((e) =>
-                  IncidentChartDataModel.fromJson(e as Map<String, dynamic>))
+      distribution:
+          (json['distribution'] as List<dynamic>?)
+              ?.map(
+                (e) =>
+                    IncidentChartDataModel.fromJson(e as Map<String, dynamic>),
+              )
               .toList() ??
           const [],
-      recentActivities: (json['recent_activities'] as List<dynamic>?)
+      recentActivities:
+          (json['recent_activities'] as List<dynamic>?)
               ?.map(
-                  (e) => ActivityItemModel.fromJson(e as Map<String, dynamic>))
+                (e) => ActivityItemModel.fromJson(e as Map<String, dynamic>),
+              )
               .toList() ??
           const [],
     );
 
-Map<String, dynamic> _$$AnalyticsModelImplToJson(
-        _$AnalyticsModelImpl instance) =>
+Map<String, dynamic> _$AnalyticsModelToJson(_AnalyticsModel instance) =>
     <String, dynamic>{
       'reputation_score': instance.reputationScore,
       'total_reports': instance.totalReports,
@@ -49,23 +53,19 @@ Map<String, dynamic> _$$AnalyticsModelImplToJson(
       'recent_activities': instance.recentActivities,
     };
 
-_$IncidentChartDataModelImpl _$$IncidentChartDataModelImplFromJson(
-        Map<String, dynamic> json) =>
-    _$IncidentChartDataModelImpl(
-      type: json['type'] as String,
-      count: (json['count'] as num?)?.toInt() ?? 0,
-    );
+_IncidentChartDataModel _$IncidentChartDataModelFromJson(
+  Map<String, dynamic> json,
+) => _IncidentChartDataModel(
+  type: json['type'] as String,
+  count: (json['count'] as num?)?.toInt() ?? 0,
+);
 
-Map<String, dynamic> _$$IncidentChartDataModelImplToJson(
-        _$IncidentChartDataModelImpl instance) =>
-    <String, dynamic>{
-      'type': instance.type,
-      'count': instance.count,
-    };
+Map<String, dynamic> _$IncidentChartDataModelToJson(
+  _IncidentChartDataModel instance,
+) => <String, dynamic>{'type': instance.type, 'count': instance.count};
 
-_$ActivityItemModelImpl _$$ActivityItemModelImplFromJson(
-        Map<String, dynamic> json) =>
-    _$ActivityItemModelImpl(
+_ActivityItemModel _$ActivityItemModelFromJson(Map<String, dynamic> json) =>
+    _ActivityItemModel(
       id: json['id'] as String,
       actionType: json['action_type'] as String,
       severity: json['severity'] as String? ?? 'low',
@@ -79,8 +79,7 @@ _$ActivityItemModelImpl _$$ActivityItemModelImplFromJson(
       earnedPoints: (json['earned_points'] as num?)?.toInt() ?? 0,
     );
 
-Map<String, dynamic> _$$ActivityItemModelImplToJson(
-        _$ActivityItemModelImpl instance) =>
+Map<String, dynamic> _$ActivityItemModelToJson(_ActivityItemModel instance) =>
     <String, dynamic>{
       'id': instance.id,
       'action_type': instance.actionType,

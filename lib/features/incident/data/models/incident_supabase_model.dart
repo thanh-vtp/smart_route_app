@@ -5,7 +5,7 @@ part 'incident_supabase_model.freezed.dart';
 part 'incident_supabase_model.g.dart';
 
 @freezed
-class IncidentSupabaseModel with _$IncidentSupabaseModel {
+abstract class IncidentSupabaseModel with _$IncidentSupabaseModel {
   const IncidentSupabaseModel._(); // private constructor for create factory toEntity()
 
   const factory IncidentSupabaseModel({

@@ -6,7 +6,7 @@ part 'incident_detail_state.freezed.dart';
 enum UserVoteType { upvote, downvote, none }
 
 @freezed
-class IncidentDetailState with _$IncidentDetailState {
+abstract class IncidentDetailState with _$IncidentDetailState {
   const factory IncidentDetailState({
     @Default(true) bool isLoading,
     Incident? incident,

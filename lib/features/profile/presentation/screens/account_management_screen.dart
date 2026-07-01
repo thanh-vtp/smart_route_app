@@ -43,10 +43,10 @@ class AccountManagementScreen extends ConsumerWidget {
     // Lấy thông tin user hiện tại
     final currentUser = ref.watch(getCurrentUserUsecaseProvider).call();
 
-    final profileState = ref.watch(profileNotifierProvider);
-    final profileNotifier = ref.read(profileNotifierProvider.notifier);
+    final profileState = ref.watch(profileProvider);
+    final profileNotifier = ref.read(profileProvider.notifier);
 
-    ref.listen(profileNotifierProvider, (previous, next) {
+    ref.listen(profileProvider, (previous, next) {
       if (next.errorMessage != null &&
           next.errorMessage != previous?.errorMessage) {
         ScaffoldMessenger.of(context).showSnackBar(
@@ -321,8 +321,8 @@ class AccountManagementScreen extends ConsumerWidget {
           // Item 3: Theme Mode (Giao diện)
           Consumer(
             builder: (context, ref, child) {
-              final currentThemeMode = ref.watch(themeNotifierProvider);
-              final themeNotifier = ref.read(themeNotifierProvider.notifier);
+              final currentThemeMode = ref.watch(themeProvider);
+              final themeNotifier = ref.read(themeProvider.notifier);
 
               return ListTile(
                 contentPadding: const EdgeInsets.symmetric(
@@ -486,7 +486,7 @@ class AccountManagementScreen extends ConsumerWidget {
                 Consumer(
                   builder: (context, ref, child) {
                     final isUpdating = ref
-                        .watch(profileNotifierProvider)
+                        .watch(profileProvider)
                         .isUpdatingProfile;
                     return SizedBox(
                       width: double.infinity,
@@ -500,7 +500,7 @@ class AccountManagementScreen extends ConsumerWidget {
 
                                 // Gọi API
                                 await ref
-                                    .read(profileNotifierProvider.notifier)
+                                    .read(profileProvider.notifier)
                                     .updateName(newName);
                                 if (dialogContext.mounted) {
                                   Navigator.pop(dialogContext);

@@ -8,7 +8,7 @@ import 'package:smart_route_app/features/navigation/presentation/providers/data/
 part 'repository_providers.g.dart';
 
 @Riverpod(keepAlive: true)
-RoutingRepository routingRepository(RoutingRepositoryRef ref) {
+RoutingRepository routingRepository(Ref ref) {
   final routingRemoteDataSource = ref.watch(routingRemoteDataSourceProvider);
   final networkInfo = ref.watch(networkInfoProvider);
   final incidentRepository = ref.watch(incidentRepositoryProvider);

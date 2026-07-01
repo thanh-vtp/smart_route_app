@@ -1,5 +1,3 @@
-import 'dart:math';
-
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:smart_route_app/features/analytics/domain/entities/analytics_data.dart';
 
@@ -10,7 +8,7 @@ part 'analytics_model.g.dart';
 // 1. MODEL CHÍNH (ANALYTICS MODEL)
 // ====================================================================
 @freezed
-class AnalyticsModel with _$AnalyticsModel {
+abstract class AnalyticsModel with _$AnalyticsModel {
   const AnalyticsModel._();
 
   const factory AnalyticsModel({
@@ -74,7 +72,7 @@ class AnalyticsModel with _$AnalyticsModel {
 // 2. MODEL PHÂN BỔ SỰ CỐ (CHART DATA)
 // ====================================================================
 @freezed
-class IncidentChartDataModel with _$IncidentChartDataModel {
+abstract class IncidentChartDataModel with _$IncidentChartDataModel {
   const IncidentChartDataModel._();
 
   const factory IncidentChartDataModel({
@@ -94,7 +92,7 @@ class IncidentChartDataModel with _$IncidentChartDataModel {
 // 3. MODEL HOẠT ĐỘNG GẦN ĐÂY (ACTIVITY ITEM)
 // ====================================================================
 @freezed
-class ActivityItemModel with _$ActivityItemModel {
+abstract class ActivityItemModel with _$ActivityItemModel {
   const ActivityItemModel._();
 
   const factory ActivityItemModel({

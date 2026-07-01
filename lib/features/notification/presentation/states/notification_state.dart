@@ -4,7 +4,7 @@ import '../../domain/entities/notification_entity.dart';
 part 'notification_state.freezed.dart';
 
 @freezed
-class NotificationState with _$NotificationState {
+abstract class NotificationState with _$NotificationState {
   const factory NotificationState({
     @Default(true) bool isLoading,
     @Default(false) bool isFetchingMore, // Trạng thái khi cuộn xuống đáy

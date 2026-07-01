@@ -1,5 +1,5 @@
-// coverage:ignore-file
 // GENERATED CODE - DO NOT MODIFY BY HAND
+// coverage:ignore-file
 // ignore_for_file: type=lint
 // ignore_for_file: unused_element, deprecated_member_use, deprecated_member_use_from_same_package, use_function_type_syntax_for_parameters, unnecessary_const, avoid_init_to_null, invalid_override_different_default_values_named, prefer_expression_function_bodies, annotate_overrides, invalid_annotation_target, unnecessary_question_mark
 
@@ -9,260 +9,284 @@ part of 'notification_state.dart';
 // FreezedGenerator
 // **************************************************************************
 
+// dart format off
 T _$identity<T>(T value) => value;
-
-final _privateConstructorUsedError = UnsupportedError(
-    'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#adding-getters-and-methods-to-our-models');
-
 /// @nodoc
 mixin _$NotificationState {
-  bool get isLoading => throw _privateConstructorUsedError;
-  bool get isFetchingMore =>
-      throw _privateConstructorUsedError; // Trạng thái khi cuộn xuống đáy
-  bool get hasReachedMax =>
-      throw _privateConstructorUsedError; // Đánh dấu đã tải hết dữ liệu chưa
-  int get currentPage => throw _privateConstructorUsedError; // Trang hiện tại
-  List<AppNotification> get notifications => throw _privateConstructorUsedError;
-  String? get errorMessage => throw _privateConstructorUsedError;
 
-  @JsonKey(ignore: true)
-  $NotificationStateCopyWith<NotificationState> get copyWith =>
-      throw _privateConstructorUsedError;
+ bool get isLoading; bool get isFetchingMore; bool get hasReachedMax; int get currentPage; List<AppNotification> get notifications; String? get errorMessage;
+/// Create a copy of NotificationState
+/// with the given fields replaced by the non-null parameter values.
+@JsonKey(includeFromJson: false, includeToJson: false)
+@pragma('vm:prefer-inline')
+$NotificationStateCopyWith<NotificationState> get copyWith => _$NotificationStateCopyWithImpl<NotificationState>(this as NotificationState, _$identity);
+
+
+
+@override
+bool operator ==(Object other) {
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is NotificationState&&(identical(other.isLoading, isLoading) || other.isLoading == isLoading)&&(identical(other.isFetchingMore, isFetchingMore) || other.isFetchingMore == isFetchingMore)&&(identical(other.hasReachedMax, hasReachedMax) || other.hasReachedMax == hasReachedMax)&&(identical(other.currentPage, currentPage) || other.currentPage == currentPage)&&const DeepCollectionEquality().equals(other.notifications, notifications)&&(identical(other.errorMessage, errorMessage) || other.errorMessage == errorMessage));
+}
+
+
+@override
+int get hashCode => Object.hash(runtimeType,isLoading,isFetchingMore,hasReachedMax,currentPage,const DeepCollectionEquality().hash(notifications),errorMessage);
+
+@override
+String toString() {
+  return 'NotificationState(isLoading: $isLoading, isFetchingMore: $isFetchingMore, hasReachedMax: $hasReachedMax, currentPage: $currentPage, notifications: $notifications, errorMessage: $errorMessage)';
+}
+
+
 }
 
 /// @nodoc
-abstract class $NotificationStateCopyWith<$Res> {
-  factory $NotificationStateCopyWith(
-          NotificationState value, $Res Function(NotificationState) then) =
-      _$NotificationStateCopyWithImpl<$Res, NotificationState>;
-  @useResult
-  $Res call(
-      {bool isLoading,
-      bool isFetchingMore,
-      bool hasReachedMax,
-      int currentPage,
-      List<AppNotification> notifications,
-      String? errorMessage});
-}
+abstract mixin class $NotificationStateCopyWith<$Res>  {
+  factory $NotificationStateCopyWith(NotificationState value, $Res Function(NotificationState) _then) = _$NotificationStateCopyWithImpl;
+@useResult
+$Res call({
+ bool isLoading, bool isFetchingMore, bool hasReachedMax, int currentPage, List<AppNotification> notifications, String? errorMessage
+});
 
+
+
+
+}
 /// @nodoc
-class _$NotificationStateCopyWithImpl<$Res, $Val extends NotificationState>
+class _$NotificationStateCopyWithImpl<$Res>
     implements $NotificationStateCopyWith<$Res> {
-  _$NotificationStateCopyWithImpl(this._value, this._then);
+  _$NotificationStateCopyWithImpl(this._self, this._then);
 
-  // ignore: unused_field
-  final $Val _value;
-  // ignore: unused_field
-  final $Res Function($Val) _then;
+  final NotificationState _self;
+  final $Res Function(NotificationState) _then;
 
-  @pragma('vm:prefer-inline')
-  @override
-  $Res call({
-    Object? isLoading = null,
-    Object? isFetchingMore = null,
-    Object? hasReachedMax = null,
-    Object? currentPage = null,
-    Object? notifications = null,
-    Object? errorMessage = freezed,
-  }) {
-    return _then(_value.copyWith(
-      isLoading: null == isLoading
-          ? _value.isLoading
-          : isLoading // ignore: cast_nullable_to_non_nullable
-              as bool,
-      isFetchingMore: null == isFetchingMore
-          ? _value.isFetchingMore
-          : isFetchingMore // ignore: cast_nullable_to_non_nullable
-              as bool,
-      hasReachedMax: null == hasReachedMax
-          ? _value.hasReachedMax
-          : hasReachedMax // ignore: cast_nullable_to_non_nullable
-              as bool,
-      currentPage: null == currentPage
-          ? _value.currentPage
-          : currentPage // ignore: cast_nullable_to_non_nullable
-              as int,
-      notifications: null == notifications
-          ? _value.notifications
-          : notifications // ignore: cast_nullable_to_non_nullable
-              as List<AppNotification>,
-      errorMessage: freezed == errorMessage
-          ? _value.errorMessage
-          : errorMessage // ignore: cast_nullable_to_non_nullable
-              as String?,
-    ) as $Val);
-  }
+/// Create a copy of NotificationState
+/// with the given fields replaced by the non-null parameter values.
+@pragma('vm:prefer-inline') @override $Res call({Object? isLoading = null,Object? isFetchingMore = null,Object? hasReachedMax = null,Object? currentPage = null,Object? notifications = null,Object? errorMessage = freezed,}) {
+  return _then(_self.copyWith(
+isLoading: null == isLoading ? _self.isLoading : isLoading // ignore: cast_nullable_to_non_nullable
+as bool,isFetchingMore: null == isFetchingMore ? _self.isFetchingMore : isFetchingMore // ignore: cast_nullable_to_non_nullable
+as bool,hasReachedMax: null == hasReachedMax ? _self.hasReachedMax : hasReachedMax // ignore: cast_nullable_to_non_nullable
+as bool,currentPage: null == currentPage ? _self.currentPage : currentPage // ignore: cast_nullable_to_non_nullable
+as int,notifications: null == notifications ? _self.notifications : notifications // ignore: cast_nullable_to_non_nullable
+as List<AppNotification>,errorMessage: freezed == errorMessage ? _self.errorMessage : errorMessage // ignore: cast_nullable_to_non_nullable
+as String?,
+  ));
+}
+
+}
+
+
+/// Adds pattern-matching-related methods to [NotificationState].
+extension NotificationStatePatterns on NotificationState {
+/// A variant of `map` that fallback to returning `orElse`.
+///
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case final Subclass value:
+///     return ...;
+///   case _:
+///     return orElse();
+/// }
+/// ```
+
+@optionalTypeArgs TResult maybeMap<TResult extends Object?>(TResult Function( _NotificationState value)?  $default,{required TResult orElse(),}){
+final _that = this;
+switch (_that) {
+case _NotificationState() when $default != null:
+return $default(_that);case _:
+  return orElse();
+
+}
+}
+/// A `switch`-like method, using callbacks.
+///
+/// Callbacks receives the raw object, upcasted.
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case final Subclass value:
+///     return ...;
+///   case final Subclass2 value:
+///     return ...;
+/// }
+/// ```
+
+@optionalTypeArgs TResult map<TResult extends Object?>(TResult Function( _NotificationState value)  $default,){
+final _that = this;
+switch (_that) {
+case _NotificationState():
+return $default(_that);case _:
+  throw StateError('Unexpected subclass');
+
+}
+}
+/// A variant of `map` that fallback to returning `null`.
+///
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case final Subclass value:
+///     return ...;
+///   case _:
+///     return null;
+/// }
+/// ```
+
+@optionalTypeArgs TResult? mapOrNull<TResult extends Object?>(TResult? Function( _NotificationState value)?  $default,){
+final _that = this;
+switch (_that) {
+case _NotificationState() when $default != null:
+return $default(_that);case _:
+  return null;
+
+}
+}
+/// A variant of `when` that fallback to an `orElse` callback.
+///
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case Subclass(:final field):
+///     return ...;
+///   case _:
+///     return orElse();
+/// }
+/// ```
+
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( bool isLoading,  bool isFetchingMore,  bool hasReachedMax,  int currentPage,  List<AppNotification> notifications,  String? errorMessage)?  $default,{required TResult orElse(),}) {final _that = this;
+switch (_that) {
+case _NotificationState() when $default != null:
+return $default(_that.isLoading,_that.isFetchingMore,_that.hasReachedMax,_that.currentPage,_that.notifications,_that.errorMessage);case _:
+  return orElse();
+
+}
+}
+/// A `switch`-like method, using callbacks.
+///
+/// As opposed to `map`, this offers destructuring.
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case Subclass(:final field):
+///     return ...;
+///   case Subclass2(:final field2):
+///     return ...;
+/// }
+/// ```
+
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( bool isLoading,  bool isFetchingMore,  bool hasReachedMax,  int currentPage,  List<AppNotification> notifications,  String? errorMessage)  $default,) {final _that = this;
+switch (_that) {
+case _NotificationState():
+return $default(_that.isLoading,_that.isFetchingMore,_that.hasReachedMax,_that.currentPage,_that.notifications,_that.errorMessage);case _:
+  throw StateError('Unexpected subclass');
+
+}
+}
+/// A variant of `when` that fallback to returning `null`
+///
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case Subclass(:final field):
+///     return ...;
+///   case _:
+///     return null;
+/// }
+/// ```
+
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( bool isLoading,  bool isFetchingMore,  bool hasReachedMax,  int currentPage,  List<AppNotification> notifications,  String? errorMessage)?  $default,) {final _that = this;
+switch (_that) {
+case _NotificationState() when $default != null:
+return $default(_that.isLoading,_that.isFetchingMore,_that.hasReachedMax,_that.currentPage,_that.notifications,_that.errorMessage);case _:
+  return null;
+
+}
+}
+
 }
 
 /// @nodoc
-abstract class _$$NotificationStateImplCopyWith<$Res>
-    implements $NotificationStateCopyWith<$Res> {
-  factory _$$NotificationStateImplCopyWith(_$NotificationStateImpl value,
-          $Res Function(_$NotificationStateImpl) then) =
-      __$$NotificationStateImplCopyWithImpl<$Res>;
-  @override
-  @useResult
-  $Res call(
-      {bool isLoading,
-      bool isFetchingMore,
-      bool hasReachedMax,
-      int currentPage,
-      List<AppNotification> notifications,
-      String? errorMessage});
+
+
+class _NotificationState implements NotificationState {
+  const _NotificationState({this.isLoading = true, this.isFetchingMore = false, this.hasReachedMax = false, this.currentPage = 1, final  List<AppNotification> notifications = const [], this.errorMessage}): _notifications = notifications;
+  
+
+@override@JsonKey() final  bool isLoading;
+@override@JsonKey() final  bool isFetchingMore;
+@override@JsonKey() final  bool hasReachedMax;
+@override@JsonKey() final  int currentPage;
+ final  List<AppNotification> _notifications;
+@override@JsonKey() List<AppNotification> get notifications {
+  if (_notifications is EqualUnmodifiableListView) return _notifications;
+  // ignore: implicit_dynamic_type
+  return EqualUnmodifiableListView(_notifications);
+}
+
+@override final  String? errorMessage;
+
+/// Create a copy of NotificationState
+/// with the given fields replaced by the non-null parameter values.
+@override @JsonKey(includeFromJson: false, includeToJson: false)
+@pragma('vm:prefer-inline')
+_$NotificationStateCopyWith<_NotificationState> get copyWith => __$NotificationStateCopyWithImpl<_NotificationState>(this, _$identity);
+
+
+
+@override
+bool operator ==(Object other) {
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _NotificationState&&(identical(other.isLoading, isLoading) || other.isLoading == isLoading)&&(identical(other.isFetchingMore, isFetchingMore) || other.isFetchingMore == isFetchingMore)&&(identical(other.hasReachedMax, hasReachedMax) || other.hasReachedMax == hasReachedMax)&&(identical(other.currentPage, currentPage) || other.currentPage == currentPage)&&const DeepCollectionEquality().equals(other._notifications, _notifications)&&(identical(other.errorMessage, errorMessage) || other.errorMessage == errorMessage));
+}
+
+
+@override
+int get hashCode => Object.hash(runtimeType,isLoading,isFetchingMore,hasReachedMax,currentPage,const DeepCollectionEquality().hash(_notifications),errorMessage);
+
+@override
+String toString() {
+  return 'NotificationState(isLoading: $isLoading, isFetchingMore: $isFetchingMore, hasReachedMax: $hasReachedMax, currentPage: $currentPage, notifications: $notifications, errorMessage: $errorMessage)';
+}
+
+
 }
 
 /// @nodoc
-class __$$NotificationStateImplCopyWithImpl<$Res>
-    extends _$NotificationStateCopyWithImpl<$Res, _$NotificationStateImpl>
-    implements _$$NotificationStateImplCopyWith<$Res> {
-  __$$NotificationStateImplCopyWithImpl(_$NotificationStateImpl _value,
-      $Res Function(_$NotificationStateImpl) _then)
-      : super(_value, _then);
+abstract mixin class _$NotificationStateCopyWith<$Res> implements $NotificationStateCopyWith<$Res> {
+  factory _$NotificationStateCopyWith(_NotificationState value, $Res Function(_NotificationState) _then) = __$NotificationStateCopyWithImpl;
+@override @useResult
+$Res call({
+ bool isLoading, bool isFetchingMore, bool hasReachedMax, int currentPage, List<AppNotification> notifications, String? errorMessage
+});
 
-  @pragma('vm:prefer-inline')
-  @override
-  $Res call({
-    Object? isLoading = null,
-    Object? isFetchingMore = null,
-    Object? hasReachedMax = null,
-    Object? currentPage = null,
-    Object? notifications = null,
-    Object? errorMessage = freezed,
-  }) {
-    return _then(_$NotificationStateImpl(
-      isLoading: null == isLoading
-          ? _value.isLoading
-          : isLoading // ignore: cast_nullable_to_non_nullable
-              as bool,
-      isFetchingMore: null == isFetchingMore
-          ? _value.isFetchingMore
-          : isFetchingMore // ignore: cast_nullable_to_non_nullable
-              as bool,
-      hasReachedMax: null == hasReachedMax
-          ? _value.hasReachedMax
-          : hasReachedMax // ignore: cast_nullable_to_non_nullable
-              as bool,
-      currentPage: null == currentPage
-          ? _value.currentPage
-          : currentPage // ignore: cast_nullable_to_non_nullable
-              as int,
-      notifications: null == notifications
-          ? _value._notifications
-          : notifications // ignore: cast_nullable_to_non_nullable
-              as List<AppNotification>,
-      errorMessage: freezed == errorMessage
-          ? _value.errorMessage
-          : errorMessage // ignore: cast_nullable_to_non_nullable
-              as String?,
-    ));
-  }
+
+
+
 }
-
 /// @nodoc
+class __$NotificationStateCopyWithImpl<$Res>
+    implements _$NotificationStateCopyWith<$Res> {
+  __$NotificationStateCopyWithImpl(this._self, this._then);
 
-class _$NotificationStateImpl implements _NotificationState {
-  const _$NotificationStateImpl(
-      {this.isLoading = true,
-      this.isFetchingMore = false,
-      this.hasReachedMax = false,
-      this.currentPage = 1,
-      final List<AppNotification> notifications = const [],
-      this.errorMessage})
-      : _notifications = notifications;
+  final _NotificationState _self;
+  final $Res Function(_NotificationState) _then;
 
-  @override
-  @JsonKey()
-  final bool isLoading;
-  @override
-  @JsonKey()
-  final bool isFetchingMore;
-// Trạng thái khi cuộn xuống đáy
-  @override
-  @JsonKey()
-  final bool hasReachedMax;
-// Đánh dấu đã tải hết dữ liệu chưa
-  @override
-  @JsonKey()
-  final int currentPage;
-// Trang hiện tại
-  final List<AppNotification> _notifications;
-// Trang hiện tại
-  @override
-  @JsonKey()
-  List<AppNotification> get notifications {
-    if (_notifications is EqualUnmodifiableListView) return _notifications;
-    // ignore: implicit_dynamic_type
-    return EqualUnmodifiableListView(_notifications);
-  }
-
-  @override
-  final String? errorMessage;
-
-  @override
-  String toString() {
-    return 'NotificationState(isLoading: $isLoading, isFetchingMore: $isFetchingMore, hasReachedMax: $hasReachedMax, currentPage: $currentPage, notifications: $notifications, errorMessage: $errorMessage)';
-  }
-
-  @override
-  bool operator ==(Object other) {
-    return identical(this, other) ||
-        (other.runtimeType == runtimeType &&
-            other is _$NotificationStateImpl &&
-            (identical(other.isLoading, isLoading) ||
-                other.isLoading == isLoading) &&
-            (identical(other.isFetchingMore, isFetchingMore) ||
-                other.isFetchingMore == isFetchingMore) &&
-            (identical(other.hasReachedMax, hasReachedMax) ||
-                other.hasReachedMax == hasReachedMax) &&
-            (identical(other.currentPage, currentPage) ||
-                other.currentPage == currentPage) &&
-            const DeepCollectionEquality()
-                .equals(other._notifications, _notifications) &&
-            (identical(other.errorMessage, errorMessage) ||
-                other.errorMessage == errorMessage));
-  }
-
-  @override
-  int get hashCode => Object.hash(
-      runtimeType,
-      isLoading,
-      isFetchingMore,
-      hasReachedMax,
-      currentPage,
-      const DeepCollectionEquality().hash(_notifications),
-      errorMessage);
-
-  @JsonKey(ignore: true)
-  @override
-  @pragma('vm:prefer-inline')
-  _$$NotificationStateImplCopyWith<_$NotificationStateImpl> get copyWith =>
-      __$$NotificationStateImplCopyWithImpl<_$NotificationStateImpl>(
-          this, _$identity);
+/// Create a copy of NotificationState
+/// with the given fields replaced by the non-null parameter values.
+@override @pragma('vm:prefer-inline') $Res call({Object? isLoading = null,Object? isFetchingMore = null,Object? hasReachedMax = null,Object? currentPage = null,Object? notifications = null,Object? errorMessage = freezed,}) {
+  return _then(_NotificationState(
+isLoading: null == isLoading ? _self.isLoading : isLoading // ignore: cast_nullable_to_non_nullable
+as bool,isFetchingMore: null == isFetchingMore ? _self.isFetchingMore : isFetchingMore // ignore: cast_nullable_to_non_nullable
+as bool,hasReachedMax: null == hasReachedMax ? _self.hasReachedMax : hasReachedMax // ignore: cast_nullable_to_non_nullable
+as bool,currentPage: null == currentPage ? _self.currentPage : currentPage // ignore: cast_nullable_to_non_nullable
+as int,notifications: null == notifications ? _self._notifications : notifications // ignore: cast_nullable_to_non_nullable
+as List<AppNotification>,errorMessage: freezed == errorMessage ? _self.errorMessage : errorMessage // ignore: cast_nullable_to_non_nullable
+as String?,
+  ));
 }
 
-abstract class _NotificationState implements NotificationState {
-  const factory _NotificationState(
-      {final bool isLoading,
-      final bool isFetchingMore,
-      final bool hasReachedMax,
-      final int currentPage,
-      final List<AppNotification> notifications,
-      final String? errorMessage}) = _$NotificationStateImpl;
 
-  @override
-  bool get isLoading;
-  @override
-  bool get isFetchingMore;
-  @override // Trạng thái khi cuộn xuống đáy
-  bool get hasReachedMax;
-  @override // Đánh dấu đã tải hết dữ liệu chưa
-  int get currentPage;
-  @override // Trang hiện tại
-  List<AppNotification> get notifications;
-  @override
-  String? get errorMessage;
-  @override
-  @JsonKey(ignore: true)
-  _$$NotificationStateImplCopyWith<_$NotificationStateImpl> get copyWith =>
-      throw _privateConstructorUsedError;
 }
+
+// dart format on

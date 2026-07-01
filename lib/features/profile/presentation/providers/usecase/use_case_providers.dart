@@ -7,22 +7,16 @@ import 'package:smart_route_app/features/profile/presentation/providers/reposito
 part 'use_case_providers.g.dart';
 
 @Riverpod(keepAlive: true)
-UpdatePushSettingUseCase updatePushSettingUseCase(
-  UpdatePushSettingUseCaseRef ref,
-) {
+UpdatePushSettingUseCase updatePushSettingUseCase(Ref ref) {
   return UpdatePushSettingUseCase(ref.watch(profileRepositoryProvider));
 }
 
 @Riverpod(keepAlive: true)
-GetProfileSettingsUseCase getProfileSettingsUseCase(
-  GetProfileSettingsUseCaseRef ref,
-) {
+GetProfileSettingsUseCase getProfileSettingsUseCase(Ref ref) {
   return GetProfileSettingsUseCase(ref.watch(profileRepositoryProvider));
 }
 
 @Riverpod(keepAlive: true)
-UpdateProfileNameUseCase updateProfileNameUseCase(
-  UpdateProfileNameUseCaseRef ref,
-) {
+UpdateProfileNameUseCase updateProfileNameUseCase(Ref ref) {
   return UpdateProfileNameUseCase(ref.watch(profileRepositoryProvider));
 }

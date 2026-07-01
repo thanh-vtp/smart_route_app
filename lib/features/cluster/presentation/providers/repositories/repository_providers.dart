@@ -7,7 +7,7 @@ import 'package:smart_route_app/features/cluster/presentation/providers/data/rem
 part 'repository_providers.g.dart';
 
 @riverpod
-ClusterRepository clusterRepository(ClusterRepositoryRef ref) {
+ClusterRepository clusterRepository(Ref ref) {
   final remoteDataSource = ref.watch(clusterRemoteDataSourceProvider);
   final networkInfo = ref.watch(networkInfoProvider);
   return ClusterRepositoryImpl(remoteDataSource, networkInfo);

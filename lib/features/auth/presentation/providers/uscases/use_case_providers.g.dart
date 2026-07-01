@@ -6,70 +6,191 @@ part of 'use_case_providers.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$signInWithGoogleUsecaseHash() =>
-    r'49379f1d7896c7697ccd9671121703e2f39231ad';
+// GENERATED CODE - DO NOT MODIFY BY HAND
+// ignore_for_file: type=lint, type=warning
 
-/// See also [signInWithGoogleUsecase].
 @ProviderFor(signInWithGoogleUsecase)
-final signInWithGoogleUsecaseProvider =
-    Provider<SignInWithGoogleUsecase>.internal(
-  signInWithGoogleUsecase,
-  name: r'signInWithGoogleUsecaseProvider',
-  debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
-      ? null
-      : _$signInWithGoogleUsecaseHash,
-  dependencies: null,
-  allTransitiveDependencies: null,
-);
+final signInWithGoogleUsecaseProvider = SignInWithGoogleUsecaseProvider._();
 
-typedef SignInWithGoogleUsecaseRef = ProviderRef<SignInWithGoogleUsecase>;
-String _$signOutUsecaseHash() => r'03dd9a7395bfc1d4184e4a5533cf600f46581195';
+final class SignInWithGoogleUsecaseProvider
+    extends
+        $FunctionalProvider<
+          SignInWithGoogleUsecase,
+          SignInWithGoogleUsecase,
+          SignInWithGoogleUsecase
+        >
+    with $Provider<SignInWithGoogleUsecase> {
+  SignInWithGoogleUsecaseProvider._()
+    : super(
+        from: null,
+        argument: null,
+        retry: null,
+        name: r'signInWithGoogleUsecaseProvider',
+        isAutoDispose: false,
+        dependencies: null,
+        $allTransitiveDependencies: null,
+      );
 
-/// See also [signOutUsecase].
+  @override
+  String debugGetCreateSourceHash() => _$signInWithGoogleUsecaseHash();
+
+  @$internal
+  @override
+  $ProviderElement<SignInWithGoogleUsecase> $createElement(
+    $ProviderPointer pointer,
+  ) => $ProviderElement(pointer);
+
+  @override
+  SignInWithGoogleUsecase create(Ref ref) {
+    return signInWithGoogleUsecase(ref);
+  }
+
+  /// {@macro riverpod.override_with_value}
+  Override overrideWithValue(SignInWithGoogleUsecase value) {
+    return $ProviderOverride(
+      origin: this,
+      providerOverride: $SyncValueProvider<SignInWithGoogleUsecase>(value),
+    );
+  }
+}
+
+String _$signInWithGoogleUsecaseHash() =>
+    r'1f8ee2e7cf300ef90eefd11482560d1c18e9435d';
+
 @ProviderFor(signOutUsecase)
-final signOutUsecaseProvider = Provider<SignOutUsecase>.internal(
-  signOutUsecase,
-  name: r'signOutUsecaseProvider',
-  debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
-      ? null
-      : _$signOutUsecaseHash,
-  dependencies: null,
-  allTransitiveDependencies: null,
-);
+final signOutUsecaseProvider = SignOutUsecaseProvider._();
 
-typedef SignOutUsecaseRef = ProviderRef<SignOutUsecase>;
-String _$getAuthStateChangesUsecaseHash() =>
-    r'9e27c137cc2120ed58a66929bcd60a6d39c3a06b';
+final class SignOutUsecaseProvider
+    extends $FunctionalProvider<SignOutUsecase, SignOutUsecase, SignOutUsecase>
+    with $Provider<SignOutUsecase> {
+  SignOutUsecaseProvider._()
+    : super(
+        from: null,
+        argument: null,
+        retry: null,
+        name: r'signOutUsecaseProvider',
+        isAutoDispose: false,
+        dependencies: null,
+        $allTransitiveDependencies: null,
+      );
 
-/// See also [getAuthStateChangesUsecase].
+  @override
+  String debugGetCreateSourceHash() => _$signOutUsecaseHash();
+
+  @$internal
+  @override
+  $ProviderElement<SignOutUsecase> $createElement($ProviderPointer pointer) =>
+      $ProviderElement(pointer);
+
+  @override
+  SignOutUsecase create(Ref ref) {
+    return signOutUsecase(ref);
+  }
+
+  /// {@macro riverpod.override_with_value}
+  Override overrideWithValue(SignOutUsecase value) {
+    return $ProviderOverride(
+      origin: this,
+      providerOverride: $SyncValueProvider<SignOutUsecase>(value),
+    );
+  }
+}
+
+String _$signOutUsecaseHash() => r'207e9e27d03cf5fe30f249c4ad8272ca00e517f8';
+
 @ProviderFor(getAuthStateChangesUsecase)
 final getAuthStateChangesUsecaseProvider =
-    Provider<GetAuthStateChangesUsecase>.internal(
-  getAuthStateChangesUsecase,
-  name: r'getAuthStateChangesUsecaseProvider',
-  debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
-      ? null
-      : _$getAuthStateChangesUsecaseHash,
-  dependencies: null,
-  allTransitiveDependencies: null,
-);
+    GetAuthStateChangesUsecaseProvider._();
 
-typedef GetAuthStateChangesUsecaseRef = ProviderRef<GetAuthStateChangesUsecase>;
-String _$getCurrentUserUsecaseHash() =>
-    r'e75fd324d4d4d130d66ef04c12faab0d168632f0';
+final class GetAuthStateChangesUsecaseProvider
+    extends
+        $FunctionalProvider<
+          GetAuthStateChangesUsecase,
+          GetAuthStateChangesUsecase,
+          GetAuthStateChangesUsecase
+        >
+    with $Provider<GetAuthStateChangesUsecase> {
+  GetAuthStateChangesUsecaseProvider._()
+    : super(
+        from: null,
+        argument: null,
+        retry: null,
+        name: r'getAuthStateChangesUsecaseProvider',
+        isAutoDispose: false,
+        dependencies: null,
+        $allTransitiveDependencies: null,
+      );
 
-/// See also [getCurrentUserUsecase].
+  @override
+  String debugGetCreateSourceHash() => _$getAuthStateChangesUsecaseHash();
+
+  @$internal
+  @override
+  $ProviderElement<GetAuthStateChangesUsecase> $createElement(
+    $ProviderPointer pointer,
+  ) => $ProviderElement(pointer);
+
+  @override
+  GetAuthStateChangesUsecase create(Ref ref) {
+    return getAuthStateChangesUsecase(ref);
+  }
+
+  /// {@macro riverpod.override_with_value}
+  Override overrideWithValue(GetAuthStateChangesUsecase value) {
+    return $ProviderOverride(
+      origin: this,
+      providerOverride: $SyncValueProvider<GetAuthStateChangesUsecase>(value),
+    );
+  }
+}
+
+String _$getAuthStateChangesUsecaseHash() =>
+    r'6528f318b36d48342cc229d82e2cf72774df35f7';
+
 @ProviderFor(getCurrentUserUsecase)
-final getCurrentUserUsecaseProvider = Provider<GetCurrentUserUsecase>.internal(
-  getCurrentUserUsecase,
-  name: r'getCurrentUserUsecaseProvider',
-  debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
-      ? null
-      : _$getCurrentUserUsecaseHash,
-  dependencies: null,
-  allTransitiveDependencies: null,
-);
+final getCurrentUserUsecaseProvider = GetCurrentUserUsecaseProvider._();
 
-typedef GetCurrentUserUsecaseRef = ProviderRef<GetCurrentUserUsecase>;
-// ignore_for_file: type=lint
-// ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member
+final class GetCurrentUserUsecaseProvider
+    extends
+        $FunctionalProvider<
+          GetCurrentUserUsecase,
+          GetCurrentUserUsecase,
+          GetCurrentUserUsecase
+        >
+    with $Provider<GetCurrentUserUsecase> {
+  GetCurrentUserUsecaseProvider._()
+    : super(
+        from: null,
+        argument: null,
+        retry: null,
+        name: r'getCurrentUserUsecaseProvider',
+        isAutoDispose: false,
+        dependencies: null,
+        $allTransitiveDependencies: null,
+      );
+
+  @override
+  String debugGetCreateSourceHash() => _$getCurrentUserUsecaseHash();
+
+  @$internal
+  @override
+  $ProviderElement<GetCurrentUserUsecase> $createElement(
+    $ProviderPointer pointer,
+  ) => $ProviderElement(pointer);
+
+  @override
+  GetCurrentUserUsecase create(Ref ref) {
+    return getCurrentUserUsecase(ref);
+  }
+
+  /// {@macro riverpod.override_with_value}
+  Override overrideWithValue(GetCurrentUserUsecase value) {
+    return $ProviderOverride(
+      origin: this,
+      providerOverride: $SyncValueProvider<GetCurrentUserUsecase>(value),
+    );
+  }
+}
+
+String _$getCurrentUserUsecaseHash() =>
+    r'4d13aa920eae8a48a4e3e70cff35bf1753d3a63b';

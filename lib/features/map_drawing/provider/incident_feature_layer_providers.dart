@@ -7,7 +7,7 @@ import 'package:smart_route_app/common/constants/app_constants.dart';
 part 'incident_feature_layer_providers.g.dart';
 
 @Riverpod(keepAlive: true)
-FeatureLayer incidentFeatureLayer(IncidentFeatureLayerRef ref) {
+FeatureLayer incidentFeatureLayer(Ref ref) {
   if (kDebugMode) {
     AppLogger.info('Initialized ArcGIS API Key', name: 'ARCGIS_API_KEY');
   }

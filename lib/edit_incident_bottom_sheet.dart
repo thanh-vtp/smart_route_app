@@ -114,10 +114,10 @@ class _EditIncidentBottomSheetState
     final cs = theme.colorScheme;
     final textTheme = theme.textTheme;
 
-    final editState = ref.watch(editIncidentNotifierProvider);
+    final editState = ref.watch(editIncidentProvider);
 
     // Xử lý sự kiện Thành công / Thất bại
-    ref.listen(editIncidentNotifierProvider, (previous, next) {
+    ref.listen(editIncidentProvider, (previous, next) {
       if (next.isSuccess) {
         // Đóng màn hình Chỉnh sửa
         Navigator.pop(context);
@@ -127,7 +127,7 @@ class _EditIncidentBottomSheetState
 
         // Refresh lại dữ liệu ở màn hình Chi tiết bên dưới
         ref
-            .read(incidentDetailNotifierProvider(widget.incident.id).notifier)
+            .read(incidentDetailProvider(widget.incident.id).notifier)
             .fetchIncidentDetail();
       }
 
@@ -500,7 +500,7 @@ class _EditIncidentBottomSheetState
 
                 // 2. Gọi hàm xóa ở Notifier
                 ref
-                    .read(editIncidentNotifierProvider.notifier)
+                    .read(editIncidentProvider.notifier)
                     .deleteIncident(widget.incident.id);
               },
               style: FilledButton.styleFrom(
@@ -531,7 +531,7 @@ class _EditIncidentBottomSheetState
             : () {
                 // TODO: Cập nhật báo cáo
                 ref
-                    .read(editIncidentNotifierProvider.notifier)
+                    .read(editIncidentProvider.notifier)
                     .submitUpdate(
                       currentIncident: widget.incident,
                       severityIndex: _getSeverityIndex(_selectedSeverity),

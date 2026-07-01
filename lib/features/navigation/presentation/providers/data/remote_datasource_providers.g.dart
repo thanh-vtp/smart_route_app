@@ -6,22 +6,53 @@ part of 'remote_datasource_providers.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$routingRemoteDataSourceHash() =>
-    r'b8379c09155afbdcd8e0401406b73a1089e81e98';
+// GENERATED CODE - DO NOT MODIFY BY HAND
+// ignore_for_file: type=lint, type=warning
 
-/// See also [routingRemoteDataSource].
 @ProviderFor(routingRemoteDataSource)
-final routingRemoteDataSourceProvider =
-    Provider<RoutingRemoteDataSource>.internal(
-  routingRemoteDataSource,
-  name: r'routingRemoteDataSourceProvider',
-  debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
-      ? null
-      : _$routingRemoteDataSourceHash,
-  dependencies: null,
-  allTransitiveDependencies: null,
-);
+final routingRemoteDataSourceProvider = RoutingRemoteDataSourceProvider._();
 
-typedef RoutingRemoteDataSourceRef = ProviderRef<RoutingRemoteDataSource>;
-// ignore_for_file: type=lint
-// ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member
+final class RoutingRemoteDataSourceProvider
+    extends
+        $FunctionalProvider<
+          RoutingRemoteDataSource,
+          RoutingRemoteDataSource,
+          RoutingRemoteDataSource
+        >
+    with $Provider<RoutingRemoteDataSource> {
+  RoutingRemoteDataSourceProvider._()
+    : super(
+        from: null,
+        argument: null,
+        retry: null,
+        name: r'routingRemoteDataSourceProvider',
+        isAutoDispose: false,
+        dependencies: null,
+        $allTransitiveDependencies: null,
+      );
+
+  @override
+  String debugGetCreateSourceHash() => _$routingRemoteDataSourceHash();
+
+  @$internal
+  @override
+  $ProviderElement<RoutingRemoteDataSource> $createElement(
+    $ProviderPointer pointer,
+  ) => $ProviderElement(pointer);
+
+  @override
+  RoutingRemoteDataSource create(Ref ref) {
+    return routingRemoteDataSource(ref);
+  }
+
+  /// {@macro riverpod.override_with_value}
+  Override overrideWithValue(RoutingRemoteDataSource value) {
+    return $ProviderOverride(
+      origin: this,
+      providerOverride: $SyncValueProvider<RoutingRemoteDataSource>(value),
+    );
+  }
+}
+
+String _$routingRemoteDataSourceHash() =>
+    r'5fae67d01baa848e36df3bdac2538bc9dac65db7';

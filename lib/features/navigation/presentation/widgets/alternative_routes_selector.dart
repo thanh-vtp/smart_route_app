@@ -59,7 +59,7 @@ class AlternativeRoutesSelector extends ConsumerWidget {
               textTheme: textTheme,
               onTap: () {
                 ref
-                    .read(routeNotifierProvider.notifier)
+                    .read(routeProvider.notifier)
                     .selectAlternativeRoute(item.strategy);
               },
             ),

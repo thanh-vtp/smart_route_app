@@ -3,7 +3,7 @@ import 'package:freezed_annotation/freezed_annotation.dart';
 part 'analytics_data.freezed.dart';
 
 @freezed
-class AnalyticsData with _$AnalyticsData {
+abstract class AnalyticsData with _$AnalyticsData {
   const factory AnalyticsData({
     @Default(0) int reputationScore,
 
@@ -25,13 +25,13 @@ class AnalyticsData with _$AnalyticsData {
 }
 
 @freezed
-class IncidentChartData with _$IncidentChartData {
+abstract class IncidentChartData with _$IncidentChartData {
   const factory IncidentChartData({required String type, required int count}) =
       _IncidentChartData;
 }
 
 @freezed
-class ActivityItem with _$ActivityItem {
+abstract class ActivityItem with _$ActivityItem {
   const factory ActivityItem({
     required String id,
     required String actionType,

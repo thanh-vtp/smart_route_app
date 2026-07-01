@@ -6,22 +6,53 @@ part of 'use_case_providers.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$fetchClusterUseCaseHash() =>
-    r'b2cea5d653f76fe14e35173e2b2587f97ef02b81';
+// GENERATED CODE - DO NOT MODIFY BY HAND
+// ignore_for_file: type=lint, type=warning
 
-/// See also [fetchClusterUseCase].
 @ProviderFor(fetchClusterUseCase)
-final fetchClusterUseCaseProvider =
-    AutoDisposeProvider<FetchClusterUseCase>.internal(
-  fetchClusterUseCase,
-  name: r'fetchClusterUseCaseProvider',
-  debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
-      ? null
-      : _$fetchClusterUseCaseHash,
-  dependencies: null,
-  allTransitiveDependencies: null,
-);
+final fetchClusterUseCaseProvider = FetchClusterUseCaseProvider._();
 
-typedef FetchClusterUseCaseRef = AutoDisposeProviderRef<FetchClusterUseCase>;
-// ignore_for_file: type=lint
-// ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member
+final class FetchClusterUseCaseProvider
+    extends
+        $FunctionalProvider<
+          FetchClusterUseCase,
+          FetchClusterUseCase,
+          FetchClusterUseCase
+        >
+    with $Provider<FetchClusterUseCase> {
+  FetchClusterUseCaseProvider._()
+    : super(
+        from: null,
+        argument: null,
+        retry: null,
+        name: r'fetchClusterUseCaseProvider',
+        isAutoDispose: true,
+        dependencies: null,
+        $allTransitiveDependencies: null,
+      );
+
+  @override
+  String debugGetCreateSourceHash() => _$fetchClusterUseCaseHash();
+
+  @$internal
+  @override
+  $ProviderElement<FetchClusterUseCase> $createElement(
+    $ProviderPointer pointer,
+  ) => $ProviderElement(pointer);
+
+  @override
+  FetchClusterUseCase create(Ref ref) {
+    return fetchClusterUseCase(ref);
+  }
+
+  /// {@macro riverpod.override_with_value}
+  Override overrideWithValue(FetchClusterUseCase value) {
+    return $ProviderOverride(
+      origin: this,
+      providerOverride: $SyncValueProvider<FetchClusterUseCase>(value),
+    );
+  }
+}
+
+String _$fetchClusterUseCaseHash() =>
+    r'0981342c01ceb362c3a4a67bf73f11b830ef162a';

@@ -6,7 +6,7 @@ part 'routing_model.freezed.dart';
 part 'routing_model.g.dart';
 
 @freezed
-class RouteResponseModel with _$RouteResponseModel {
+abstract class RouteResponseModel with _$RouteResponseModel {
   const RouteResponseModel._();
 
   const factory RouteResponseModel({
@@ -151,7 +151,7 @@ class RouteResponseModel with _$RouteResponseModel {
 // --- CÁC CLASS MODEL PHỤ TRỢ (Để map JSON lồng nhau) ---
 
 @freezed
-class RouteFeaturesResultModel with _$RouteFeaturesResultModel {
+abstract class RouteFeaturesResultModel with _$RouteFeaturesResultModel {
   const factory RouteFeaturesResultModel({
     @JsonKey(name: 'features') @Default([]) List<RouteFeatureModel> features,
   }) = _RouteFeaturesResultModel;
@@ -160,7 +160,7 @@ class RouteFeaturesResultModel with _$RouteFeaturesResultModel {
 }
 
 @freezed
-class RouteFeatureModel with _$RouteFeatureModel {
+abstract class RouteFeatureModel with _$RouteFeatureModel {
   const factory RouteFeatureModel({
     @JsonKey(name: 'attributes') required RouteAttributesModel attributes,
     @JsonKey(name: 'geometry') RouteGeometryModel? geometry,
@@ -170,7 +170,7 @@ class RouteFeatureModel with _$RouteFeatureModel {
 }
 
 @freezed
-class RouteAttributesModel with _$RouteAttributesModel {
+abstract class RouteAttributesModel with _$RouteAttributesModel {
   const factory RouteAttributesModel({
     @JsonKey(name: 'Name') String? name,
     @JsonKey(name: 'Total_TravelTime') double? totalTravelTime,
@@ -181,7 +181,7 @@ class RouteAttributesModel with _$RouteAttributesModel {
 }
 
 @freezed
-class RouteGeometryModel with _$RouteGeometryModel {
+abstract class RouteGeometryModel with _$RouteGeometryModel {
   const factory RouteGeometryModel({
     // Type List<List<List<double>>> dùng để map cái mảng paths phức tạp của ArcGIS
     @JsonKey(name: 'paths') @Default([]) List<List<List<double>>> paths,
@@ -191,7 +191,7 @@ class RouteGeometryModel with _$RouteGeometryModel {
 }
 
 @freezed
-class RouteDirectionSetModel with _$RouteDirectionSetModel {
+abstract class RouteDirectionSetModel with _$RouteDirectionSetModel {
   const factory RouteDirectionSetModel({
     @JsonKey(name: 'summary') RouteDirectionSummaryModel? summary,
     @JsonKey(name: 'features')
@@ -203,7 +203,7 @@ class RouteDirectionSetModel with _$RouteDirectionSetModel {
 }
 
 @freezed
-class RouteDirectionSummaryModel with _$RouteDirectionSummaryModel {
+abstract class RouteDirectionSummaryModel with _$RouteDirectionSummaryModel {
   const factory RouteDirectionSummaryModel({
     @JsonKey(name: 'envelope') RouteEnvelopeModel? envelope,
   }) = _RouteDirectionSummaryModel;
@@ -212,7 +212,7 @@ class RouteDirectionSummaryModel with _$RouteDirectionSummaryModel {
 }
 
 @freezed
-class RouteEnvelopeModel with _$RouteEnvelopeModel {
+abstract class RouteEnvelopeModel with _$RouteEnvelopeModel {
   const factory RouteEnvelopeModel({
     double? xmin,
     double? ymin,
@@ -224,7 +224,7 @@ class RouteEnvelopeModel with _$RouteEnvelopeModel {
 }
 
 @freezed
-class RouteDirectionFeatureModel with _$RouteDirectionFeatureModel {
+abstract class RouteDirectionFeatureModel with _$RouteDirectionFeatureModel {
   const factory RouteDirectionFeatureModel({
     @JsonKey(name: 'attributes')
     required RouteDirectionAttributesModel attributes,
@@ -237,7 +237,8 @@ class RouteDirectionFeatureModel with _$RouteDirectionFeatureModel {
 }
 
 @freezed
-class RouteDirectionAttributesModel with _$RouteDirectionAttributesModel {
+abstract class RouteDirectionAttributesModel
+    with _$RouteDirectionAttributesModel {
   const factory RouteDirectionAttributesModel({
     @JsonKey(name: 'length') @Default(0) double length,
     @JsonKey(name: 'time') @Default(0) double time,
@@ -249,7 +250,7 @@ class RouteDirectionAttributesModel with _$RouteDirectionAttributesModel {
 }
 
 @freezed
-class RouteDirectionStringModel with _$RouteDirectionStringModel {
+abstract class RouteDirectionStringModel with _$RouteDirectionStringModel {
   const factory RouteDirectionStringModel({
     @JsonKey(name: 'string') String? string,
     @JsonKey(name: 'stringType') String? stringType,

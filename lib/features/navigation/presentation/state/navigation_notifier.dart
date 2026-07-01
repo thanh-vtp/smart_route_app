@@ -311,9 +311,7 @@ class NavigationNotifier extends Notifier<NavigationState> {
           );
 
           // Cập nhật route mới vào routeNotifier để map vẽ lại
-          ref
-              .read(routeNotifierProvider.notifier)
-              .updateRouteForNavigation(newRoute);
+          ref.read(routeProvider.notifier).updateRouteForNavigation(newRoute);
 
           // Cập nhật session với route mới
           _routePolyline = _buildPolyline(newRoute.polylinePoints);

@@ -5,8 +5,6 @@ import 'package:smart_route_app/features/notification/data/datasources/notificat
 part 'remote_datasource_providers.g.dart';
 
 @Riverpod(keepAlive: true)
-NotificationRemoteDataSource notificationRemoteDataSource(
-  NotificationRemoteDataSourceRef ref,
-) {
+NotificationRemoteDataSource notificationRemoteDataSource(Ref ref) {
   return NotificationRemoteDataSourceImpl();
 }

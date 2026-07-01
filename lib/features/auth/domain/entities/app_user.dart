@@ -8,7 +8,7 @@ part 'app_user.freezed.dart';
 // - check login
 
 @freezed
-class AppUser with _$AppUser {
+abstract class AppUser with _$AppUser {
   const AppUser._();
   const factory AppUser({
     required String id,

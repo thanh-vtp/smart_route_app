@@ -7,23 +7,17 @@ import 'package:smart_route_app/features/notification/presentation/providers/rep
 part 'use_case_providers.g.dart';
 
 @Riverpod(keepAlive: true)
-GetNotificationsUseCase getNotificationsUseCase(
-  GetNotificationsUseCaseRef ref,
-) {
+GetNotificationsUseCase getNotificationsUseCase(Ref ref) {
   return GetNotificationsUseCase(ref.watch(notificationRepositoryProvider));
 }
 
 @Riverpod(keepAlive: true)
-MarkNotificationReadUseCase markNotificationReadUseCase(
-  MarkNotificationReadUseCaseRef ref,
-) {
+MarkNotificationReadUseCase markNotificationReadUseCase(Ref ref) {
   return MarkNotificationReadUseCase(ref.watch(notificationRepositoryProvider));
 }
 
 @Riverpod(keepAlive: true)
-MarkAllNotificationsReadUseCase markAllNotificationsReadUseCase(
-  MarkAllNotificationsReadUseCaseRef ref,
-) {
+MarkAllNotificationsReadUseCase markAllNotificationsReadUseCase(Ref ref) {
   return MarkAllNotificationsReadUseCase(
     ref.watch(notificationRepositoryProvider),
   );

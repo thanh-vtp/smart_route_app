@@ -26,9 +26,7 @@ class _NotificationScreenState extends ConsumerState<NotificationScreen> {
       // Nếu cuộn gần tới đáy (cách đáy 200 pixel), tự động gọi API tải thêm
       if (_scrollController.position.pixels >=
           _scrollController.position.maxScrollExtent - 200) {
-        ref
-            .read(notificationNotifierProvider.notifier)
-            .fetchMoreNotifications();
+        ref.read(notificationProvider.notifier).fetchMoreNotifications();
       }
     });
   }
@@ -45,7 +43,7 @@ class _NotificationScreenState extends ConsumerState<NotificationScreen> {
     final cs = theme.colorScheme;
     final textTheme = theme.textTheme;
 
-    final state = ref.watch(notificationNotifierProvider);
+    final state = ref.watch(notificationProvider);
 
     // Kiểm tra nếu có thông báo chưa đọc nào
     final hasUnread = state.notifications.any((n) => !n.isRead);
@@ -62,9 +60,8 @@ class _NotificationScreenState extends ConsumerState<NotificationScreen> {
         actions: [
           if (hasUnread)
             TextButton(
-              onPressed: () => ref
-                  .read(notificationNotifierProvider.notifier)
-                  .markAllAsRead(),
+              onPressed: () =>
+                  ref.read(notificationProvider.notifier).markAllAsRead(),
               child: Text(
                 'Đánh dấu đã đọc',
                 style: textTheme.labelLarge?.copyWith(color: cs.primary),
@@ -102,7 +99,7 @@ class _NotificationScreenState extends ConsumerState<NotificationScreen> {
 
     return RefreshIndicator(
       onRefresh: () =>
-          ref.read(notificationNotifierProvider.notifier).fetchNotifications(),
+          ref.read(notificationProvider.notifier).fetchNotifications(),
       child: ListView.separated(
         controller: _scrollController,
         padding: const EdgeInsets.all(16.0),
@@ -217,7 +214,7 @@ class _NotificationScreenState extends ConsumerState<NotificationScreen> {
       onTap: () {
         // 1. Đánh dấu đã đọc
         if (!notif.isRead) {
-          ref.read(notificationNotifierProvider.notifier).markAsRead(notif.id);
+          ref.read(notificationProvider.notifier).markAsRead(notif.id);
         }
 
         // 2. Nếu là thông báo sự cố -> Chuyển về tab Map và mở detail

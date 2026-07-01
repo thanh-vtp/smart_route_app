@@ -70,9 +70,9 @@ class _ReportingBottomSheetState extends ConsumerState<ReportingBottomSheet> {
     final cs = theme.colorScheme;
     final textTheme = theme.textTheme;
 
-    final state = ref.watch(reportIncidentNotifierProvider);
+    final state = ref.watch(reportIncidentProvider);
 
-    ref.listen(reportIncidentNotifierProvider, (previous, next) {
+    ref.listen(reportIncidentProvider, (previous, next) {
       if (next.isSuccess) {
         Navigator.pop(context); // Đóng BottomSheet
         ScaffoldMessenger.of(context).showSnackBar(
@@ -425,7 +425,7 @@ class _ReportingBottomSheetState extends ConsumerState<ReportingBottomSheet> {
                       ? null
                       : () {
                           ref
-                              .read(reportIncidentNotifierProvider.notifier)
+                              .read(reportIncidentProvider.notifier)
                               .submitReport(
                                 type: _selectedType,
                                 severityIndex: _selectedSeverity,

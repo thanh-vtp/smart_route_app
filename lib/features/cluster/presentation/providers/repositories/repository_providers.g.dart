@@ -6,21 +6,52 @@ part of 'repository_providers.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$clusterRepositoryHash() => r'441fdfc727446d29da55f722615ccf4d3412bc3b';
+// GENERATED CODE - DO NOT MODIFY BY HAND
+// ignore_for_file: type=lint, type=warning
 
-/// See also [clusterRepository].
 @ProviderFor(clusterRepository)
-final clusterRepositoryProvider =
-    AutoDisposeProvider<ClusterRepository>.internal(
-  clusterRepository,
-  name: r'clusterRepositoryProvider',
-  debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
-      ? null
-      : _$clusterRepositoryHash,
-  dependencies: null,
-  allTransitiveDependencies: null,
-);
+final clusterRepositoryProvider = ClusterRepositoryProvider._();
 
-typedef ClusterRepositoryRef = AutoDisposeProviderRef<ClusterRepository>;
-// ignore_for_file: type=lint
-// ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member
+final class ClusterRepositoryProvider
+    extends
+        $FunctionalProvider<
+          ClusterRepository,
+          ClusterRepository,
+          ClusterRepository
+        >
+    with $Provider<ClusterRepository> {
+  ClusterRepositoryProvider._()
+    : super(
+        from: null,
+        argument: null,
+        retry: null,
+        name: r'clusterRepositoryProvider',
+        isAutoDispose: true,
+        dependencies: null,
+        $allTransitiveDependencies: null,
+      );
+
+  @override
+  String debugGetCreateSourceHash() => _$clusterRepositoryHash();
+
+  @$internal
+  @override
+  $ProviderElement<ClusterRepository> $createElement(
+    $ProviderPointer pointer,
+  ) => $ProviderElement(pointer);
+
+  @override
+  ClusterRepository create(Ref ref) {
+    return clusterRepository(ref);
+  }
+
+  /// {@macro riverpod.override_with_value}
+  Override overrideWithValue(ClusterRepository value) {
+    return $ProviderOverride(
+      origin: this,
+      providerOverride: $SyncValueProvider<ClusterRepository>(value),
+    );
+  }
+}
+
+String _$clusterRepositoryHash() => r'1a1a43f2f07ebc322865632cf5aca569649dd0c1';

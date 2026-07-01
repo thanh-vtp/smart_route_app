@@ -17,9 +17,9 @@ class IncidentDetailBottomSheet extends ConsumerWidget {
     final cs = theme.colorScheme;
     final textTheme = theme.textTheme;
 
-    final state = ref.watch(incidentDetailNotifierProvider(incidentId));
+    final state = ref.watch(incidentDetailProvider(incidentId));
 
-    ref.listen(incidentDetailNotifierProvider(incidentId), (previous, next) {
+    ref.listen(incidentDetailProvider(incidentId), (previous, next) {
       if (next.isResolveSuccess) {
         Navigator.pop(context);
         ScaffoldMessenger.of(context).showSnackBar(
@@ -37,7 +37,7 @@ class IncidentDetailBottomSheet extends ConsumerWidget {
       }
     });
 
-    ref.listen(editIncidentNotifierProvider, (previous, next) {
+    ref.listen(editIncidentProvider, (previous, next) {
       if (next.isDeleteSuccess) {
         Navigator.pop(context); // Đóng BottomSheet Chi tiết khi xóa xong
         ScaffoldMessenger.of(
@@ -481,9 +481,7 @@ class IncidentDetailBottomSheet extends ConsumerWidget {
                           // TODO: Upvote (đánh giá sự cố vẫn còn tồn tại)
                           ref
                               .read(
-                                incidentDetailNotifierProvider(
-                                  incident.id,
-                                ).notifier,
+                                incidentDetailProvider(incident.id).notifier,
                               )
                               .submitVote(UserVoteType.upvote);
                         },
@@ -518,9 +516,7 @@ class IncidentDetailBottomSheet extends ConsumerWidget {
                       : () {
                           ref
                               .read(
-                                incidentDetailNotifierProvider(
-                                  incident.id,
-                                ).notifier,
+                                incidentDetailProvider(incident.id).notifier,
                               )
                               .submitVote(UserVoteType.upvote);
                         },
@@ -561,11 +557,7 @@ class IncidentDetailBottomSheet extends ConsumerWidget {
                   onPressed: isActionDisabled
                       ? null
                       : () => ref
-                            .read(
-                              incidentDetailNotifierProvider(
-                                incident.id,
-                              ).notifier,
-                            )
+                            .read(incidentDetailProvider(incident.id).notifier)
                             .submitVote(UserVoteType.downvote),
                   style: FilledButton.styleFrom(
                     backgroundColor: cs.errorContainer,
@@ -595,9 +587,7 @@ class IncidentDetailBottomSheet extends ConsumerWidget {
                           // TODO: Downvote (đánh giá sự cố đã được giải quyết)
                           ref
                               .read(
-                                incidentDetailNotifierProvider(
-                                  incident.id,
-                                ).notifier,
+                                incidentDetailProvider(incident.id).notifier,
                               )
                               .submitVote(UserVoteType.downvote);
                         },
@@ -649,7 +639,7 @@ class IncidentDetailBottomSheet extends ConsumerWidget {
     // Nếu status = fake, chỉ hiển thị nút Xóa, không cho phép Edit hay Resolve nữa
     if (isFake) {
       // Tận dụng State của EditNotifier để lấy trạng thái Loading khi xóa
-      final editState = ref.watch(editIncidentNotifierProvider);
+      final editState = ref.watch(editIncidentProvider);
 
       return SizedBox(
         width: double.infinity,
@@ -737,9 +727,7 @@ class IncidentDetailBottomSheet extends ConsumerWidget {
                 ? null
                 : () {
                     ref
-                        .read(
-                          incidentDetailNotifierProvider(incidentId).notifier,
-                        )
+                        .read(incidentDetailProvider(incidentId).notifier)
                         .resolveIncident();
                   },
             style: FilledButton.styleFrom(
@@ -837,7 +825,7 @@ class IncidentDetailBottomSheet extends ConsumerWidget {
                 Navigator.pop(dialogContext); // Đóng dialog
                 // Gọi API xóa từ Edit Notifier
                 ref
-                    .read(editIncidentNotifierProvider.notifier)
+                    .read(editIncidentProvider.notifier)
                     .deleteIncident(incident.id);
               },
               style: FilledButton.styleFrom(

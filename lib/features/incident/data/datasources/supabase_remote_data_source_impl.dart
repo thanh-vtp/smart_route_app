@@ -81,7 +81,7 @@ class SupabaseRemoteDataSourceImpl implements SupabaseRemoteDataSource {
 
       return IncidentSupabaseModel.fromJson(response);
     } catch (e, st) {
-      // AppLogger.error('Get Incident Failed', error: e, stackTrace: st);
+      AppLogger.error('Get Incident Failed', error: e, stackTrace: st);
       throw UnimplementedError();
     }
   }
@@ -99,7 +99,7 @@ class SupabaseRemoteDataSourceImpl implements SupabaseRemoteDataSource {
           .map((json) => IncidentSupabaseModel.fromJson(json))
           .toList();
     } catch (e, st) {
-      // AppLogger.error('Get My Incidents Failed', error: e, stackTrace: st);
+      AppLogger.error('Get My Incidents Failed', error: e, stackTrace: st);
       throw UnimplementedError();
     }
   }

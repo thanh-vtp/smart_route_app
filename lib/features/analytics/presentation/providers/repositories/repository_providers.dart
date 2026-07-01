@@ -4,9 +4,8 @@ import 'package:smart_route_app/features/analytics/domain/repositories/analytics
 import 'package:smart_route_app/features/analytics/presentation/providers/data/remote_datasource_providers.dart';
 part 'repository_providers.g.dart';
 
-
 @Riverpod(keepAlive: true)
-AnalyticsRepository analyticsRepository(AnalyticsRepositoryRef ref) {
+AnalyticsRepository analyticsRepository(Ref ref) {
   final remoteDataSource = ref.watch(analyticsRemoteDataSourceProvider);
   return AnalyticsRepositoryImpl(remoteDataSource);
 }

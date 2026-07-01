@@ -5,8 +5,6 @@ import 'package:smart_route_app/features/profile/data/datasources/profile_remote
 part 'remote_datasource_providers.g.dart';
 
 @Riverpod(keepAlive: true)
-ProfileRemoteDataSource profileRemoteDataSource(
-  ProfileRemoteDataSourceRef ref,
-) {
+ProfileRemoteDataSource profileRemoteDataSource(Ref ref) {
   return ProfileRemoteDataSourceImpl();
 }

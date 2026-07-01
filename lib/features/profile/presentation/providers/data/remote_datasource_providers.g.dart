@@ -6,22 +6,53 @@ part of 'remote_datasource_providers.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$profileRemoteDataSourceHash() =>
-    r'7cdde6702c338d0bcd3068792ae44f628be0ca97';
+// GENERATED CODE - DO NOT MODIFY BY HAND
+// ignore_for_file: type=lint, type=warning
 
-/// See also [profileRemoteDataSource].
 @ProviderFor(profileRemoteDataSource)
-final profileRemoteDataSourceProvider =
-    Provider<ProfileRemoteDataSource>.internal(
-  profileRemoteDataSource,
-  name: r'profileRemoteDataSourceProvider',
-  debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
-      ? null
-      : _$profileRemoteDataSourceHash,
-  dependencies: null,
-  allTransitiveDependencies: null,
-);
+final profileRemoteDataSourceProvider = ProfileRemoteDataSourceProvider._();
 
-typedef ProfileRemoteDataSourceRef = ProviderRef<ProfileRemoteDataSource>;
-// ignore_for_file: type=lint
-// ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member
+final class ProfileRemoteDataSourceProvider
+    extends
+        $FunctionalProvider<
+          ProfileRemoteDataSource,
+          ProfileRemoteDataSource,
+          ProfileRemoteDataSource
+        >
+    with $Provider<ProfileRemoteDataSource> {
+  ProfileRemoteDataSourceProvider._()
+    : super(
+        from: null,
+        argument: null,
+        retry: null,
+        name: r'profileRemoteDataSourceProvider',
+        isAutoDispose: false,
+        dependencies: null,
+        $allTransitiveDependencies: null,
+      );
+
+  @override
+  String debugGetCreateSourceHash() => _$profileRemoteDataSourceHash();
+
+  @$internal
+  @override
+  $ProviderElement<ProfileRemoteDataSource> $createElement(
+    $ProviderPointer pointer,
+  ) => $ProviderElement(pointer);
+
+  @override
+  ProfileRemoteDataSource create(Ref ref) {
+    return profileRemoteDataSource(ref);
+  }
+
+  /// {@macro riverpod.override_with_value}
+  Override overrideWithValue(ProfileRemoteDataSource value) {
+    return $ProviderOverride(
+      origin: this,
+      providerOverride: $SyncValueProvider<ProfileRemoteDataSource>(value),
+    );
+  }
+}
+
+String _$profileRemoteDataSourceHash() =>
+    r'bc6508f5d3bb912437ae3705cf4c1084a0ed5131';

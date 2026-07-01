@@ -21,7 +21,7 @@ final mapUiProvider = NotifierProvider<MapUiNotifier, MapUiState>(
 class MapUiNotifier extends Notifier<MapUiState> {
   @override
   MapUiState build() {
-    ref.listen<RouteState>(routeNotifierProvider, (previous, next) async {
+    ref.listen<RouteState>(routeProvider, (previous, next) async {
       final route = next.routeResult;
       final alternatives = next.alternativeRoutesResult;
 
@@ -134,7 +134,7 @@ class MapUiNotifier extends Notifier<MapUiState> {
     ref.read(locationUiProvider.notifier).setNavigationMode();
 
     // Đảm bảo route vẫn hiển thị trên map
-    final route = ref.read(routeNotifierProvider).routeResult;
+    final route = ref.read(routeProvider).routeResult;
     if (route != null) {
       await _showRouteOnMap(route);
 
@@ -170,6 +170,6 @@ class MapUiNotifier extends Notifier<MapUiState> {
     ref.read(locationUiProvider.notifier).setFollowMode();
 
     // Xóa route
-    ref.read(routeNotifierProvider.notifier).clearRoute();
+    ref.read(routeProvider.notifier).clearRoute();
   }
 }

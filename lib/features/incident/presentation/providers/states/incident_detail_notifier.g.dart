@@ -6,173 +6,104 @@ part of 'incident_detail_notifier.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$incidentDetailNotifierHash() =>
-    r'391e6fa881a23c5da89be4ab612e381432da2beb';
+// GENERATED CODE - DO NOT MODIFY BY HAND
+// ignore_for_file: type=lint, type=warning
 
-/// Copied from Dart SDK
-class _SystemHash {
-  _SystemHash._();
-
-  static int combine(int hash, int value) {
-    // ignore: parameter_assignments
-    hash = 0x1fffffff & (hash + value);
-    // ignore: parameter_assignments
-    hash = 0x1fffffff & (hash + ((0x0007ffff & hash) << 10));
-    return hash ^ (hash >> 6);
-  }
-
-  static int finish(int hash) {
-    // ignore: parameter_assignments
-    hash = 0x1fffffff & (hash + ((0x03ffffff & hash) << 3));
-    // ignore: parameter_assignments
-    hash = hash ^ (hash >> 11);
-    return 0x1fffffff & (hash + ((0x00003fff & hash) << 15));
-  }
-}
-
-abstract class _$IncidentDetailNotifier
-    extends BuildlessAutoDisposeNotifier<IncidentDetailState> {
-  late final String incidentId;
-
-  IncidentDetailState build(
-    String incidentId,
-  );
-}
-
-/// See also [IncidentDetailNotifier].
 @ProviderFor(IncidentDetailNotifier)
-const incidentDetailNotifierProvider = IncidentDetailNotifierFamily();
+final incidentDetailProvider = IncidentDetailNotifierFamily._();
 
-/// See also [IncidentDetailNotifier].
-class IncidentDetailNotifierFamily extends Family<IncidentDetailState> {
-  /// See also [IncidentDetailNotifier].
-  const IncidentDetailNotifierFamily();
+final class IncidentDetailNotifierProvider
+    extends $NotifierProvider<IncidentDetailNotifier, IncidentDetailState> {
+  IncidentDetailNotifierProvider._({
+    required IncidentDetailNotifierFamily super.from,
+    required String super.argument,
+  }) : super(
+         retry: null,
+         name: r'incidentDetailProvider',
+         isAutoDispose: true,
+         dependencies: null,
+         $allTransitiveDependencies: null,
+       );
 
-  /// See also [IncidentDetailNotifier].
-  IncidentDetailNotifierProvider call(
-    String incidentId,
-  ) {
-    return IncidentDetailNotifierProvider(
-      incidentId,
-    );
+  @override
+  String debugGetCreateSourceHash() => _$incidentDetailNotifierHash();
+
+  @override
+  String toString() {
+    return r'incidentDetailProvider'
+        ''
+        '($argument)';
   }
 
+  @$internal
   @override
-  IncidentDetailNotifierProvider getProviderOverride(
-    covariant IncidentDetailNotifierProvider provider,
-  ) {
-    return call(
-      provider.incidentId,
-    );
-  }
+  IncidentDetailNotifier create() => IncidentDetailNotifier();
 
-  static const Iterable<ProviderOrFamily>? _dependencies = null;
-
-  @override
-  Iterable<ProviderOrFamily>? get dependencies => _dependencies;
-
-  static const Iterable<ProviderOrFamily>? _allTransitiveDependencies = null;
-
-  @override
-  Iterable<ProviderOrFamily>? get allTransitiveDependencies =>
-      _allTransitiveDependencies;
-
-  @override
-  String? get name => r'incidentDetailNotifierProvider';
-}
-
-/// See also [IncidentDetailNotifier].
-class IncidentDetailNotifierProvider extends AutoDisposeNotifierProviderImpl<
-    IncidentDetailNotifier, IncidentDetailState> {
-  /// See also [IncidentDetailNotifier].
-  IncidentDetailNotifierProvider(
-    String incidentId,
-  ) : this._internal(
-          () => IncidentDetailNotifier()..incidentId = incidentId,
-          from: incidentDetailNotifierProvider,
-          name: r'incidentDetailNotifierProvider',
-          debugGetCreateSourceHash:
-              const bool.fromEnvironment('dart.vm.product')
-                  ? null
-                  : _$incidentDetailNotifierHash,
-          dependencies: IncidentDetailNotifierFamily._dependencies,
-          allTransitiveDependencies:
-              IncidentDetailNotifierFamily._allTransitiveDependencies,
-          incidentId: incidentId,
-        );
-
-  IncidentDetailNotifierProvider._internal(
-    super._createNotifier, {
-    required super.name,
-    required super.dependencies,
-    required super.allTransitiveDependencies,
-    required super.debugGetCreateSourceHash,
-    required super.from,
-    required this.incidentId,
-  }) : super.internal();
-
-  final String incidentId;
-
-  @override
-  IncidentDetailState runNotifierBuild(
-    covariant IncidentDetailNotifier notifier,
-  ) {
-    return notifier.build(
-      incidentId,
-    );
-  }
-
-  @override
-  Override overrideWith(IncidentDetailNotifier Function() create) {
-    return ProviderOverride(
+  /// {@macro riverpod.override_with_value}
+  Override overrideWithValue(IncidentDetailState value) {
+    return $ProviderOverride(
       origin: this,
-      override: IncidentDetailNotifierProvider._internal(
-        () => create()..incidentId = incidentId,
-        from: from,
-        name: null,
-        dependencies: null,
-        allTransitiveDependencies: null,
-        debugGetCreateSourceHash: null,
-        incidentId: incidentId,
-      ),
+      providerOverride: $SyncValueProvider<IncidentDetailState>(value),
     );
-  }
-
-  @override
-  AutoDisposeNotifierProviderElement<IncidentDetailNotifier,
-      IncidentDetailState> createElement() {
-    return _IncidentDetailNotifierProviderElement(this);
   }
 
   @override
   bool operator ==(Object other) {
     return other is IncidentDetailNotifierProvider &&
-        other.incidentId == incidentId;
+        other.argument == argument;
   }
 
   @override
   int get hashCode {
-    var hash = _SystemHash.combine(0, runtimeType.hashCode);
-    hash = _SystemHash.combine(hash, incidentId.hashCode);
-
-    return _SystemHash.finish(hash);
+    return argument.hashCode;
   }
 }
 
-mixin IncidentDetailNotifierRef
-    on AutoDisposeNotifierProviderRef<IncidentDetailState> {
-  /// The parameter `incidentId` of this provider.
-  String get incidentId;
-}
+String _$incidentDetailNotifierHash() =>
+    r'262bdd1fb9d02c08c9a04c96fa0016d177ccbd31';
 
-class _IncidentDetailNotifierProviderElement
-    extends AutoDisposeNotifierProviderElement<IncidentDetailNotifier,
-        IncidentDetailState> with IncidentDetailNotifierRef {
-  _IncidentDetailNotifierProviderElement(super.provider);
+final class IncidentDetailNotifierFamily extends $Family
+    with
+        $ClassFamilyOverride<
+          IncidentDetailNotifier,
+          IncidentDetailState,
+          IncidentDetailState,
+          IncidentDetailState,
+          String
+        > {
+  IncidentDetailNotifierFamily._()
+    : super(
+        retry: null,
+        name: r'incidentDetailProvider',
+        dependencies: null,
+        $allTransitiveDependencies: null,
+        isAutoDispose: true,
+      );
+
+  IncidentDetailNotifierProvider call(String incidentId) =>
+      IncidentDetailNotifierProvider._(argument: incidentId, from: this);
 
   @override
-  String get incidentId =>
-      (origin as IncidentDetailNotifierProvider).incidentId;
+  String toString() => r'incidentDetailProvider';
 }
-// ignore_for_file: type=lint
-// ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member
+
+abstract class _$IncidentDetailNotifier extends $Notifier<IncidentDetailState> {
+  late final _$args = ref.$arg as String;
+  String get incidentId => _$args;
+
+  IncidentDetailState build(String incidentId);
+  @$mustCallSuper
+  @override
+  WhenComplete runBuild() {
+    final ref = this.ref as $Ref<IncidentDetailState, IncidentDetailState>;
+    final element =
+        ref.element
+            as $ClassProviderElement<
+              AnyNotifier<IncidentDetailState, IncidentDetailState>,
+              IncidentDetailState,
+              Object?,
+              Object?
+            >;
+    return element.handleCreate(ref, () => build(_$args));
+  }
+}

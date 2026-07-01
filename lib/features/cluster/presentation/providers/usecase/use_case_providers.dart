@@ -5,7 +5,7 @@ import 'package:smart_route_app/features/cluster/presentation/providers/reposito
 part 'use_case_providers.g.dart';
 
 @riverpod
-FetchClusterUseCase fetchClusterUseCase(FetchClusterUseCaseRef ref) {
+FetchClusterUseCase fetchClusterUseCase(Ref ref) {
   final repository = ref.watch(clusterRepositoryProvider);
   return FetchClusterUseCase(repository);
 }

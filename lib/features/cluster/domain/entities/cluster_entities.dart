@@ -5,7 +5,7 @@ part 'cluster_entities.freezed.dart';
 /// Entity cho kết quả phân cụm - đã được chuẩn hóa cho domain layer
 /// Chứa thông tin tổng quan và dữ liệu chi tiết của quá trình phân cụm
 @freezed
-class ClusterResult with _$ClusterResult {
+abstract class ClusterResult with _$ClusterResult {
   const factory ClusterResult({
     /// Tổng số bản ghi sự cố được phân tích
     required int totalRecords,
@@ -29,7 +29,7 @@ class ClusterResult with _$ClusterResult {
 
 /// Entity cho từng điểm sự cố đã được gán cluster
 @freezed
-class ClusterItem with _$ClusterItem {
+abstract class ClusterItem with _$ClusterItem {
   const factory ClusterItem({
     /// ID duy nhất của điểm sự cố (dạng String)
     required String id,
@@ -52,7 +52,7 @@ class ClusterItem with _$ClusterItem {
 
 /// Entity cho cluster hotspot - khu vực nguy hiểm có nhiều sự cố
 @freezed
-class ClusterHotspot with _$ClusterHotspot {
+abstract class ClusterHotspot with _$ClusterHotspot {
   const factory ClusterHotspot({
     /// ID của cluster hotspot
     required int clusterId,
@@ -104,7 +104,7 @@ class ClusterHotspot with _$ClusterHotspot {
 
 /// Entity cho bounding box (hình chữ nhật bao quanh) của cluster
 @freezed
-class ClusterBBox with _$ClusterBBox {
+abstract class ClusterBBox with _$ClusterBBox {
   const factory ClusterBBox({
     /// Kinh độ nhỏ nhất (cạnh trái)
     required double xmin,
@@ -122,7 +122,7 @@ class ClusterBBox with _$ClusterBBox {
 
 /// Entity cho hình học polygon theo chuẩn ArcGIS (đã đơn giản hóa)
 @freezed
-class ClusterGeometry with _$ClusterGeometry {
+abstract class ClusterGeometry with _$ClusterGeometry {
   const factory ClusterGeometry({
     /// Danh sách các rings tạo thành polygon
     /// Mỗi ring là một mảng các tọa độ [lng, lat]

@@ -127,22 +127,25 @@ class IncidentDetailNotifier extends _$IncidentDetailNotifier {
     // Nếu bấm trùng nút cũ -> Tự hiểu là HỦY VOTE
     if (state.currentVote == voteType) {
       newVoteState = UserVoteType.none;
-      if (voteType == UserVoteType.upvote)
+      if (voteType == UserVoteType.upvote) {
         newUpvotes--;
-      else
+      } else {
         newDownvotes--;
+      }
     }
     // Nếu đổi Vote hoặc Vote lần đầu
     else {
       newVoteState = voteType;
       if (voteType == UserVoteType.upvote) {
         newUpvotes++;
-        if (state.currentVote == UserVoteType.downvote)
+        if (state.currentVote == UserVoteType.downvote) {
           newDownvotes--; // Trừ cái cũ đi
+        }
       } else {
         newDownvotes++;
-        if (state.currentVote == UserVoteType.upvote)
+        if (state.currentVote == UserVoteType.upvote) {
           newUpvotes--; // Trừ cái cũ đi
+        }
       }
     }
 

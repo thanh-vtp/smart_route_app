@@ -5,11 +5,8 @@ abstract class Constants {
   static String get supabaseUrl => dotenv.env['SUPABASE_URL'] ?? '';
   static String get supabaseAnon => dotenv.env['SUPABASE_ANON_KEY'] ?? '';
   static String get arcgisApiKey => dotenv.env['ARCGIS_API_KEY'] ?? '';
-  static String get googleClientIdWeb =>
+  static String get googleWebClientId =>
       dotenv.env['GOOGLE_CLIENT_ID_WEB'] ?? '';
-  static String get androidClientId =>
-      dotenv.env['GOOGLE_CLIENT_ID_ANDROID'] ?? '';
-  static String get iosClientId => dotenv.env['GOOGLE_CLIENT_ID_IOS'] ?? '';
 
   // --- Feature Table URLs ---
   static const String serviceTFeatureTableUrl =

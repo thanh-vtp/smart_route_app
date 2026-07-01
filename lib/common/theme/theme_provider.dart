@@ -6,7 +6,7 @@ part 'theme_provider.g.dart';
 
 /// Provider cho ThemeRepository
 @riverpod
-ThemeRepository themeRepository(ThemeRepositoryRef ref) {
+ThemeRepository themeRepository(Ref ref) {
   // SharedPreferences sẽ được init từ main.dart
   throw UnimplementedError('ThemeRepository must be overridden in main.dart');
 }

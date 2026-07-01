@@ -6,7 +6,7 @@ part 'map_controller_provider.g.dart';
 // Provider để giữ Controller.
 // Dùng 'Provider' thay vì 'StateProvider' vì ta chỉ cần tạo 1 lần và giữ nguyên instance đó.
 @riverpod
-ArcGISMapViewController mapController(MapControllerRef ref) {
+ArcGISMapViewController mapController(Ref ref) {
   // Logic tạo controller chuyển từ initState vào đây
   final controller = ArcGISMapView.createController();
 

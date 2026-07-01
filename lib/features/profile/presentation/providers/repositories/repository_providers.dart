@@ -6,7 +6,7 @@ import 'package:smart_route_app/features/profile/presentation/providers/data/rem
 part 'repository_providers.g.dart';
 
 @Riverpod(keepAlive: true)
-ProfileRepository profileRepository(ProfileRepositoryRef ref) {
+ProfileRepository profileRepository(Ref ref) {
   final remoteDataSource = ref.watch(profileRemoteDataSourceProvider);
   return ProfileRepositoryImpl(remoteDataSource);
 }

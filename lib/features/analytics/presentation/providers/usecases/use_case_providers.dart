@@ -5,7 +5,7 @@ import 'package:smart_route_app/features/analytics/presentation/providers/reposi
 part 'use_case_providers.g.dart';
 
 @Riverpod(keepAlive: true)
-GetAnalyticsUsecase getAnalyticsUsecase(GetAnalyticsUsecaseRef ref) {
+GetAnalyticsUsecase getAnalyticsUsecase(Ref ref) {
   final repository = ref.watch(analyticsRepositoryProvider);
   return GetAnalyticsUsecase(repository);
 }

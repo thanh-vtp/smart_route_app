@@ -4,7 +4,7 @@ import 'package:riverpod_annotation/riverpod_annotation.dart';
 part 'scene_controller_provider.g.dart';
 
 @riverpod
-ArcGISSceneViewController sceneController(SceneControllerRef ref) {
+ArcGISSceneViewController sceneController(Ref ref) {
   final controller = ArcGISSceneView.createController();
 
   ref.onDispose(() {

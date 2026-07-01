@@ -6,21 +6,52 @@ part of 'scene_controller_provider.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$sceneControllerHash() => r'9aff0deba2de4e0b1232a467c4ca073e9c1c31e0';
+// GENERATED CODE - DO NOT MODIFY BY HAND
+// ignore_for_file: type=lint, type=warning
 
-/// See also [sceneController].
 @ProviderFor(sceneController)
-final sceneControllerProvider =
-    AutoDisposeProvider<ArcGISSceneViewController>.internal(
-  sceneController,
-  name: r'sceneControllerProvider',
-  debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
-      ? null
-      : _$sceneControllerHash,
-  dependencies: null,
-  allTransitiveDependencies: null,
-);
+final sceneControllerProvider = SceneControllerProvider._();
 
-typedef SceneControllerRef = AutoDisposeProviderRef<ArcGISSceneViewController>;
-// ignore_for_file: type=lint
-// ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member
+final class SceneControllerProvider
+    extends
+        $FunctionalProvider<
+          ArcGISSceneViewController,
+          ArcGISSceneViewController,
+          ArcGISSceneViewController
+        >
+    with $Provider<ArcGISSceneViewController> {
+  SceneControllerProvider._()
+    : super(
+        from: null,
+        argument: null,
+        retry: null,
+        name: r'sceneControllerProvider',
+        isAutoDispose: true,
+        dependencies: null,
+        $allTransitiveDependencies: null,
+      );
+
+  @override
+  String debugGetCreateSourceHash() => _$sceneControllerHash();
+
+  @$internal
+  @override
+  $ProviderElement<ArcGISSceneViewController> $createElement(
+    $ProviderPointer pointer,
+  ) => $ProviderElement(pointer);
+
+  @override
+  ArcGISSceneViewController create(Ref ref) {
+    return sceneController(ref);
+  }
+
+  /// {@macro riverpod.override_with_value}
+  Override overrideWithValue(ArcGISSceneViewController value) {
+    return $ProviderOverride(
+      origin: this,
+      providerOverride: $SyncValueProvider<ArcGISSceneViewController>(value),
+    );
+  }
+}
+
+String _$sceneControllerHash() => r'8dd422eba996631294623909faa9d2d96e64f5b5';

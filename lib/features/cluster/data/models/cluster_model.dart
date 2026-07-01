@@ -7,7 +7,7 @@ part 'cluster_model.g.dart';
 /// Model cho response từ API phân cụm
 /// Chứa toàn bộ thông tin kết quả phân cụm từ backend FastAPI
 @freezed
-class ClusterResponseModel with _$ClusterResponseModel {
+abstract class ClusterResponseModel with _$ClusterResponseModel {
   const ClusterResponseModel._();
 
   const factory ClusterResponseModel({
@@ -49,7 +49,7 @@ class ClusterResponseModel with _$ClusterResponseModel {
 
 /// Model chứa thông tin tổng quan về quá trình phân cụm
 @freezed
-class ClusteringInfoModel with _$ClusteringInfoModel {
+abstract class ClusteringInfoModel with _$ClusteringInfoModel {
   const factory ClusteringInfoModel({
     /// Thuật toán được sử dụng (ví dụ: "DBSCAN")
     required String algorithm,
@@ -74,7 +74,7 @@ class ClusteringInfoModel with _$ClusteringInfoModel {
 
 /// Model cho từng điểm sự cố đã được gán cluster
 @freezed
-class ClusterItemModel with _$ClusterItemModel {
+abstract class ClusterItemModel with _$ClusterItemModel {
   const ClusterItemModel._();
 
   const factory ClusterItemModel({
@@ -113,7 +113,7 @@ class ClusterItemModel with _$ClusterItemModel {
 
 /// Model cho bounding box (hình chữ nhật bao quanh) của cluster
 @freezed
-class ClusterBBoxModel with _$ClusterBBoxModel {
+abstract class ClusterBBoxModel with _$ClusterBBoxModel {
   const ClusterBBoxModel._();
 
   const factory ClusterBBoxModel({
@@ -140,7 +140,7 @@ class ClusterBBoxModel with _$ClusterBBoxModel {
 
 /// Model cho tâm (centroid) của cluster
 @freezed
-class ClusterCentroidModel with _$ClusterCentroidModel {
+abstract class ClusterCentroidModel with _$ClusterCentroidModel {
   const factory ClusterCentroidModel({
     /// Vĩ độ của tâm cluster
     required double lat,
@@ -155,7 +155,7 @@ class ClusterCentroidModel with _$ClusterCentroidModel {
 
 /// Model cho cluster hotspot - khu vực nguy hiểm có nhiều sự cố
 @freezed
-class ClusterHotspotModel with _$ClusterHotspotModel {
+abstract class ClusterHotspotModel with _$ClusterHotspotModel {
   const ClusterHotspotModel._();
 
   const factory ClusterHotspotModel({
@@ -233,7 +233,7 @@ class ClusterHotspotModel with _$ClusterHotspotModel {
 
 /// Model cho hình học polygon theo chuẩn ArcGIS
 @freezed
-class ClusterGeometryModel with _$ClusterGeometryModel {
+abstract class ClusterGeometryModel with _$ClusterGeometryModel {
   const ClusterGeometryModel._();
 
   const factory ClusterGeometryModel({
@@ -256,7 +256,7 @@ class ClusterGeometryModel with _$ClusterGeometryModel {
 
 /// Model cho hệ tọa độ không gian (Spatial Reference)
 @freezed
-class SpatialReferenceModel with _$SpatialReferenceModel {
+abstract class SpatialReferenceModel with _$SpatialReferenceModel {
   const factory SpatialReferenceModel({
     /// Well-Known ID của hệ tọa độ
     /// Ví dụ: 4326 = WGS84 (latitude/longitude), 3857 = Web Mercator

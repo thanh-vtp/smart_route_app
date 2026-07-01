@@ -1,12 +1,11 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:arcgis_maps/arcgis_maps.dart' as arcgis;
-import 'package:smart_route_app/common/app_logger.dart';
 import 'package:smart_route_app/features/incident/domain/entities/incident.dart';
 
 part 'incident_arcgis_model.freezed.dart';
 
 @freezed
-class IncidentArcgisModel with _$IncidentArcgisModel {
+abstract class IncidentArcgisModel with _$IncidentArcgisModel {
   const IncidentArcgisModel._(); // private constructor
   const factory IncidentArcgisModel({
     required String arcgisObjectId,

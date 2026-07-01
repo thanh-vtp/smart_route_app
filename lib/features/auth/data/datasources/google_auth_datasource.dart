@@ -2,7 +2,6 @@ import 'package:google_sign_in/google_sign_in.dart';
 import 'package:smart_route_app/common/app_logger.dart';
 import 'package:smart_route_app/common/constants/app_constants.dart';
 
-
 abstract class GoogleAuthDatasource {
   Future<GoogleSignInAccount> signIn();
 }
@@ -14,21 +13,16 @@ class GoogleAuthDatasourceImpl implements GoogleAuthDatasource {
       /// TODO: update the Web client ID with your own.
       ///
       /// Web Client ID that you registered with Google Cloud.
-      final webClientId = Constants.googleClientIdWeb;
+      final webClientId = Constants.googleWebClientId;
 
       /// TODO: update the iOS client ID with your own.
       ///
       /// iOS Client ID that you registered with Google Cloud.
       // const iosClientId = 'my-ios.apps.googleusercontent.com';
 
-      final androidClientId = Constants.androidClientId;
-
       final googleSignIn = GoogleSignIn.instance;
 
-      await googleSignIn.initialize(
-        serverClientId: webClientId,
-        clientId: androidClientId,
-      );
+      await googleSignIn.initialize(serverClientId: webClientId);
 
       final googleUser = await googleSignIn.authenticate();
       // or await googleSignIn.authenticate(); which will return a GoogleSignInAccount or throw an exception

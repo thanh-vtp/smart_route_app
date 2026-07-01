@@ -65,7 +65,7 @@ class _RouteSetupScreenState extends ConsumerState<RouteSetupScreen> {
 
     // Gọi tính toán nhiều lộ trình thay thế
     ref
-        .read(routeNotifierProvider.notifier)
+        .read(routeProvider.notifier)
         .calculateAlternativeRoutes(
           startLat: _startLocation!.lat,
           startLng: _startLocation!.lng,
@@ -106,9 +106,9 @@ class _RouteSetupScreenState extends ConsumerState<RouteSetupScreen> {
     final cs = theme.colorScheme;
     final textTheme = theme.textTheme;
 
-    final routeState = ref.watch(routeNotifierProvider);
+    final routeState = ref.watch(routeProvider);
 
-    ref.listen(routeNotifierProvider, (previous, next) {
+    ref.listen(routeProvider, (previous, next) {
       // Tự động đóng screen khi có route và chuyển về map
       if (next.routeResult != null && previous?.routeResult == null) {
         context.pop();

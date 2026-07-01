@@ -5,8 +5,6 @@ import 'package:smart_route_app/features/navigation/data/datasources/routing_rem
 part 'remote_datasource_providers.g.dart';
 
 @Riverpod(keepAlive: true)
-RoutingRemoteDataSource routingRemoteDataSource(
-  RoutingRemoteDataSourceRef ref,
-) {
+RoutingRemoteDataSource routingRemoteDataSource(Ref ref) {
   return RoutingRemoteDataSourceImpl();
 }

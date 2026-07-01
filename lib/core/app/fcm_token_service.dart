@@ -13,7 +13,7 @@ part 'fcm_token_service.g.dart';
 
 /// Provider cho FCM Token Service
 @Riverpod(keepAlive: true)
-FCMTokenService fcmTokenService(FcmTokenServiceRef ref) {
+FCMTokenService fcmTokenService(Ref ref) {
   final datasource = ref.watch(userDeviceDatasourceProvider);
 
   final service = FCMTokenService(datasource);

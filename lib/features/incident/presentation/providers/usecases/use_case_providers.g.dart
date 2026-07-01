@@ -6,103 +6,293 @@ part of 'use_case_providers.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$getIncidentsForMapUsecaseHash() =>
-    r'e4d9efcec6cb9b40544474e85eaa364223e98410';
+// GENERATED CODE - DO NOT MODIFY BY HAND
+// ignore_for_file: type=lint, type=warning
 
-/// See also [getIncidentsForMapUsecase].
 @ProviderFor(getIncidentsForMapUsecase)
-final getIncidentsForMapUsecaseProvider =
-    Provider<GetIncidentsForMapUsecase>.internal(
-  getIncidentsForMapUsecase,
-  name: r'getIncidentsForMapUsecaseProvider',
-  debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
-      ? null
-      : _$getIncidentsForMapUsecaseHash,
-  dependencies: null,
-  allTransitiveDependencies: null,
-);
+final getIncidentsForMapUsecaseProvider = GetIncidentsForMapUsecaseProvider._();
 
-typedef GetIncidentsForMapUsecaseRef = ProviderRef<GetIncidentsForMapUsecase>;
-String _$getIncidentDetailUsecaseHash() =>
-    r'29f273a050f95b6b5bea1ce4cb5f7035ecafe5fd';
+final class GetIncidentsForMapUsecaseProvider
+    extends
+        $FunctionalProvider<
+          GetIncidentsForMapUsecase,
+          GetIncidentsForMapUsecase,
+          GetIncidentsForMapUsecase
+        >
+    with $Provider<GetIncidentsForMapUsecase> {
+  GetIncidentsForMapUsecaseProvider._()
+    : super(
+        from: null,
+        argument: null,
+        retry: null,
+        name: r'getIncidentsForMapUsecaseProvider',
+        isAutoDispose: false,
+        dependencies: null,
+        $allTransitiveDependencies: null,
+      );
 
-/// See also [getIncidentDetailUsecase].
+  @override
+  String debugGetCreateSourceHash() => _$getIncidentsForMapUsecaseHash();
+
+  @$internal
+  @override
+  $ProviderElement<GetIncidentsForMapUsecase> $createElement(
+    $ProviderPointer pointer,
+  ) => $ProviderElement(pointer);
+
+  @override
+  GetIncidentsForMapUsecase create(Ref ref) {
+    return getIncidentsForMapUsecase(ref);
+  }
+
+  /// {@macro riverpod.override_with_value}
+  Override overrideWithValue(GetIncidentsForMapUsecase value) {
+    return $ProviderOverride(
+      origin: this,
+      providerOverride: $SyncValueProvider<GetIncidentsForMapUsecase>(value),
+    );
+  }
+}
+
+String _$getIncidentsForMapUsecaseHash() =>
+    r'a119c65705e056762b50bf1b4c1578b119be465d';
+
 @ProviderFor(getIncidentDetailUsecase)
-final getIncidentDetailUsecaseProvider =
-    Provider<GetIncidentDetailUsecase>.internal(
-  getIncidentDetailUsecase,
-  name: r'getIncidentDetailUsecaseProvider',
-  debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
-      ? null
-      : _$getIncidentDetailUsecaseHash,
-  dependencies: null,
-  allTransitiveDependencies: null,
-);
+final getIncidentDetailUsecaseProvider = GetIncidentDetailUsecaseProvider._();
 
-typedef GetIncidentDetailUsecaseRef = ProviderRef<GetIncidentDetailUsecase>;
-String _$getMyIncidentsUsecaseHash() =>
-    r'9e16580c94e681a1df78ded265f097357e409146';
+final class GetIncidentDetailUsecaseProvider
+    extends
+        $FunctionalProvider<
+          GetIncidentDetailUsecase,
+          GetIncidentDetailUsecase,
+          GetIncidentDetailUsecase
+        >
+    with $Provider<GetIncidentDetailUsecase> {
+  GetIncidentDetailUsecaseProvider._()
+    : super(
+        from: null,
+        argument: null,
+        retry: null,
+        name: r'getIncidentDetailUsecaseProvider',
+        isAutoDispose: false,
+        dependencies: null,
+        $allTransitiveDependencies: null,
+      );
 
-/// See also [getMyIncidentsUsecase].
+  @override
+  String debugGetCreateSourceHash() => _$getIncidentDetailUsecaseHash();
+
+  @$internal
+  @override
+  $ProviderElement<GetIncidentDetailUsecase> $createElement(
+    $ProviderPointer pointer,
+  ) => $ProviderElement(pointer);
+
+  @override
+  GetIncidentDetailUsecase create(Ref ref) {
+    return getIncidentDetailUsecase(ref);
+  }
+
+  /// {@macro riverpod.override_with_value}
+  Override overrideWithValue(GetIncidentDetailUsecase value) {
+    return $ProviderOverride(
+      origin: this,
+      providerOverride: $SyncValueProvider<GetIncidentDetailUsecase>(value),
+    );
+  }
+}
+
+String _$getIncidentDetailUsecaseHash() =>
+    r'0c371b0063f71adee17124c906a1369ba772f7ef';
+
 @ProviderFor(getMyIncidentsUsecase)
-final getMyIncidentsUsecaseProvider = Provider<GetMyIncidentsUsecase>.internal(
-  getMyIncidentsUsecase,
-  name: r'getMyIncidentsUsecaseProvider',
-  debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
-      ? null
-      : _$getMyIncidentsUsecaseHash,
-  dependencies: null,
-  allTransitiveDependencies: null,
-);
+final getMyIncidentsUsecaseProvider = GetMyIncidentsUsecaseProvider._();
 
-typedef GetMyIncidentsUsecaseRef = ProviderRef<GetMyIncidentsUsecase>;
-String _$addIncidentUsecaseHash() =>
-    r'1222278106e21203159a0f7ab4d3e3d1554370f2';
+final class GetMyIncidentsUsecaseProvider
+    extends
+        $FunctionalProvider<
+          GetMyIncidentsUsecase,
+          GetMyIncidentsUsecase,
+          GetMyIncidentsUsecase
+        >
+    with $Provider<GetMyIncidentsUsecase> {
+  GetMyIncidentsUsecaseProvider._()
+    : super(
+        from: null,
+        argument: null,
+        retry: null,
+        name: r'getMyIncidentsUsecaseProvider',
+        isAutoDispose: false,
+        dependencies: null,
+        $allTransitiveDependencies: null,
+      );
 
-/// See also [addIncidentUsecase].
+  @override
+  String debugGetCreateSourceHash() => _$getMyIncidentsUsecaseHash();
+
+  @$internal
+  @override
+  $ProviderElement<GetMyIncidentsUsecase> $createElement(
+    $ProviderPointer pointer,
+  ) => $ProviderElement(pointer);
+
+  @override
+  GetMyIncidentsUsecase create(Ref ref) {
+    return getMyIncidentsUsecase(ref);
+  }
+
+  /// {@macro riverpod.override_with_value}
+  Override overrideWithValue(GetMyIncidentsUsecase value) {
+    return $ProviderOverride(
+      origin: this,
+      providerOverride: $SyncValueProvider<GetMyIncidentsUsecase>(value),
+    );
+  }
+}
+
+String _$getMyIncidentsUsecaseHash() =>
+    r'1425894123977bca695b92573ec85903bbbfe3ae';
+
 @ProviderFor(addIncidentUsecase)
-final addIncidentUsecaseProvider = Provider<AddIncidentUsecase>.internal(
-  addIncidentUsecase,
-  name: r'addIncidentUsecaseProvider',
-  debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
-      ? null
-      : _$addIncidentUsecaseHash,
-  dependencies: null,
-  allTransitiveDependencies: null,
-);
+final addIncidentUsecaseProvider = AddIncidentUsecaseProvider._();
 
-typedef AddIncidentUsecaseRef = ProviderRef<AddIncidentUsecase>;
-String _$updateIncidentUsecaseHash() =>
-    r'e420ba11534eae4de1d3033dcec11125f69d66ca';
+final class AddIncidentUsecaseProvider
+    extends
+        $FunctionalProvider<
+          AddIncidentUsecase,
+          AddIncidentUsecase,
+          AddIncidentUsecase
+        >
+    with $Provider<AddIncidentUsecase> {
+  AddIncidentUsecaseProvider._()
+    : super(
+        from: null,
+        argument: null,
+        retry: null,
+        name: r'addIncidentUsecaseProvider',
+        isAutoDispose: false,
+        dependencies: null,
+        $allTransitiveDependencies: null,
+      );
 
-/// See also [updateIncidentUsecase].
+  @override
+  String debugGetCreateSourceHash() => _$addIncidentUsecaseHash();
+
+  @$internal
+  @override
+  $ProviderElement<AddIncidentUsecase> $createElement(
+    $ProviderPointer pointer,
+  ) => $ProviderElement(pointer);
+
+  @override
+  AddIncidentUsecase create(Ref ref) {
+    return addIncidentUsecase(ref);
+  }
+
+  /// {@macro riverpod.override_with_value}
+  Override overrideWithValue(AddIncidentUsecase value) {
+    return $ProviderOverride(
+      origin: this,
+      providerOverride: $SyncValueProvider<AddIncidentUsecase>(value),
+    );
+  }
+}
+
+String _$addIncidentUsecaseHash() =>
+    r'90df1daaaa52f1745615213e822e1fc7737f0410';
+
 @ProviderFor(updateIncidentUsecase)
-final updateIncidentUsecaseProvider = Provider<UpdateIncidentUsecase>.internal(
-  updateIncidentUsecase,
-  name: r'updateIncidentUsecaseProvider',
-  debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
-      ? null
-      : _$updateIncidentUsecaseHash,
-  dependencies: null,
-  allTransitiveDependencies: null,
-);
+final updateIncidentUsecaseProvider = UpdateIncidentUsecaseProvider._();
 
-typedef UpdateIncidentUsecaseRef = ProviderRef<UpdateIncidentUsecase>;
-String _$deleteIncidentUsecaseHash() =>
-    r'ee95e41361c208fbd0d3833268ccc4b46b9b0dcc';
+final class UpdateIncidentUsecaseProvider
+    extends
+        $FunctionalProvider<
+          UpdateIncidentUsecase,
+          UpdateIncidentUsecase,
+          UpdateIncidentUsecase
+        >
+    with $Provider<UpdateIncidentUsecase> {
+  UpdateIncidentUsecaseProvider._()
+    : super(
+        from: null,
+        argument: null,
+        retry: null,
+        name: r'updateIncidentUsecaseProvider',
+        isAutoDispose: false,
+        dependencies: null,
+        $allTransitiveDependencies: null,
+      );
 
-/// See also [deleteIncidentUsecase].
+  @override
+  String debugGetCreateSourceHash() => _$updateIncidentUsecaseHash();
+
+  @$internal
+  @override
+  $ProviderElement<UpdateIncidentUsecase> $createElement(
+    $ProviderPointer pointer,
+  ) => $ProviderElement(pointer);
+
+  @override
+  UpdateIncidentUsecase create(Ref ref) {
+    return updateIncidentUsecase(ref);
+  }
+
+  /// {@macro riverpod.override_with_value}
+  Override overrideWithValue(UpdateIncidentUsecase value) {
+    return $ProviderOverride(
+      origin: this,
+      providerOverride: $SyncValueProvider<UpdateIncidentUsecase>(value),
+    );
+  }
+}
+
+String _$updateIncidentUsecaseHash() =>
+    r'f61fd27794690fafa46657106f498cc03820d518';
+
 @ProviderFor(deleteIncidentUsecase)
-final deleteIncidentUsecaseProvider = Provider<DeleteIncidentUsecase>.internal(
-  deleteIncidentUsecase,
-  name: r'deleteIncidentUsecaseProvider',
-  debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
-      ? null
-      : _$deleteIncidentUsecaseHash,
-  dependencies: null,
-  allTransitiveDependencies: null,
-);
+final deleteIncidentUsecaseProvider = DeleteIncidentUsecaseProvider._();
 
-typedef DeleteIncidentUsecaseRef = ProviderRef<DeleteIncidentUsecase>;
-// ignore_for_file: type=lint
-// ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member
+final class DeleteIncidentUsecaseProvider
+    extends
+        $FunctionalProvider<
+          DeleteIncidentUsecase,
+          DeleteIncidentUsecase,
+          DeleteIncidentUsecase
+        >
+    with $Provider<DeleteIncidentUsecase> {
+  DeleteIncidentUsecaseProvider._()
+    : super(
+        from: null,
+        argument: null,
+        retry: null,
+        name: r'deleteIncidentUsecaseProvider',
+        isAutoDispose: false,
+        dependencies: null,
+        $allTransitiveDependencies: null,
+      );
+
+  @override
+  String debugGetCreateSourceHash() => _$deleteIncidentUsecaseHash();
+
+  @$internal
+  @override
+  $ProviderElement<DeleteIncidentUsecase> $createElement(
+    $ProviderPointer pointer,
+  ) => $ProviderElement(pointer);
+
+  @override
+  DeleteIncidentUsecase create(Ref ref) {
+    return deleteIncidentUsecase(ref);
+  }
+
+  /// {@macro riverpod.override_with_value}
+  Override overrideWithValue(DeleteIncidentUsecase value) {
+    return $ProviderOverride(
+      origin: this,
+      providerOverride: $SyncValueProvider<DeleteIncidentUsecase>(value),
+    );
+  }
+}
+
+String _$deleteIncidentUsecaseHash() =>
+    r'b8393d8477a31e5d7b114f72c6e80ee5db4c6f9d';

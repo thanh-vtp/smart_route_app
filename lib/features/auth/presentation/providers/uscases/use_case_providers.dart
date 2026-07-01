@@ -9,28 +9,24 @@ part 'use_case_providers.g.dart';
 
 // Đăng nhập bằng Google
 @Riverpod(keepAlive: true)
-SignInWithGoogleUsecase signInWithGoogleUsecase(
-  SignInWithGoogleUsecaseRef ref,
-) {
+SignInWithGoogleUsecase signInWithGoogleUsecase(Ref ref) {
   return SignInWithGoogleUsecase(ref.watch(authRepositoryProvider));
 }
 
 // Đăng xuất
 @Riverpod(keepAlive: true)
-SignOutUsecase signOutUsecase(SignOutUsecaseRef ref) {
+SignOutUsecase signOutUsecase(Ref ref) {
   return SignOutUsecase(ref.watch(authRepositoryProvider));
 }
 
 // Lấy stream thay đổi trạng thái xác thực
 @Riverpod(keepAlive: true)
-GetAuthStateChangesUsecase getAuthStateChangesUsecase(
-  GetAuthStateChangesUsecaseRef ref,
-) {
+GetAuthStateChangesUsecase getAuthStateChangesUsecase(Ref ref) {
   return GetAuthStateChangesUsecase(ref.watch(authRepositoryProvider));
 }
 
 // Lấy người dùng hiện tại
 @Riverpod(keepAlive: true)
-GetCurrentUserUsecase getCurrentUserUsecase(GetCurrentUserUsecaseRef ref) {
+GetCurrentUserUsecase getCurrentUserUsecase(Ref ref) {
   return GetCurrentUserUsecase(ref.watch(authRepositoryProvider));
 }

@@ -6,9 +6,7 @@ part 'network_info_providers.g.dart';
 
 // Provider để kiểm tra kết nối Internet
 @Riverpod(keepAlive: true)
-InternetConnectionChecker internetConnectionChecker(
-  InternetConnectionCheckerRef ref,
-) {
+InternetConnectionChecker internetConnectionChecker(Ref ref) {
   return InternetConnectionChecker.createInstance(
     checkInterval: const Duration(seconds: 5), // Kiểm tra mỗi 5s
     checkTimeout: const Duration(seconds: 3), // Timeout sau 3s
@@ -17,14 +15,14 @@ InternetConnectionChecker internetConnectionChecker(
 
 // Provider để cung cấp NetworkInfo
 @Riverpod(keepAlive: true)
-NetworkInfo networkInfo(NetworkInfoRef ref) {
+NetworkInfo networkInfo(Ref ref) {
   final checker = ref.watch(internetConnectionCheckerProvider);
   return NetworkInfoImpl(checker);
 }
 
 // Provider để cung cấp stream kết nối Internet
 @riverpod
-Stream<bool> internetConnectionStream(InternetConnectionStreamRef ref) {
+Stream<bool> internetConnectionStream(Ref ref) {
   final networkInfo = ref.watch(networkInfoProvider);
   return networkInfo.onStatusChange;
 }

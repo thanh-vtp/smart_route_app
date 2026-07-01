@@ -7,7 +7,7 @@ import 'package:smart_route_app/features/auth/presentation/providers/data/remote
 part 'repository_providers.g.dart';
 
 @Riverpod(keepAlive: true)
-AuthRepository authRepository(AuthRepositoryRef ref) {
+AuthRepository authRepository(Ref ref) {
   final googleAuth = ref.watch(googleAuthDatasourceProvider);
   final supabaseAuth = ref.watch(supabaseAuthDatasourceProvider);
   final tokenService = ref.watch(fcmTokenServiceProvider);

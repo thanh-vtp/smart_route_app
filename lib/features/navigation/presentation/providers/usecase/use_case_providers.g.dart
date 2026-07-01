@@ -6,41 +6,105 @@ part of 'use_case_providers.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$calculateRouteUseCaseHash() =>
-    r'c9b835e9bf648774b436b02a7cc15c352b686fc2';
+// GENERATED CODE - DO NOT MODIFY BY HAND
+// ignore_for_file: type=lint, type=warning
 
-/// See also [calculateRouteUseCase].
 @ProviderFor(calculateRouteUseCase)
-final calculateRouteUseCaseProvider =
-    AutoDisposeProvider<CalculateRouteUseCase>.internal(
-  calculateRouteUseCase,
-  name: r'calculateRouteUseCaseProvider',
-  debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
-      ? null
-      : _$calculateRouteUseCaseHash,
-  dependencies: null,
-  allTransitiveDependencies: null,
-);
+final calculateRouteUseCaseProvider = CalculateRouteUseCaseProvider._();
 
-typedef CalculateRouteUseCaseRef
-    = AutoDisposeProviderRef<CalculateRouteUseCase>;
-String _$calculateAlternativeRoutesUseCaseHash() =>
-    r'8397c559fcee28e8482ac200ea33c6c92dcff93f';
+final class CalculateRouteUseCaseProvider
+    extends
+        $FunctionalProvider<
+          CalculateRouteUseCase,
+          CalculateRouteUseCase,
+          CalculateRouteUseCase
+        >
+    with $Provider<CalculateRouteUseCase> {
+  CalculateRouteUseCaseProvider._()
+    : super(
+        from: null,
+        argument: null,
+        retry: null,
+        name: r'calculateRouteUseCaseProvider',
+        isAutoDispose: true,
+        dependencies: null,
+        $allTransitiveDependencies: null,
+      );
 
-/// See also [calculateAlternativeRoutesUseCase].
+  @override
+  String debugGetCreateSourceHash() => _$calculateRouteUseCaseHash();
+
+  @$internal
+  @override
+  $ProviderElement<CalculateRouteUseCase> $createElement(
+    $ProviderPointer pointer,
+  ) => $ProviderElement(pointer);
+
+  @override
+  CalculateRouteUseCase create(Ref ref) {
+    return calculateRouteUseCase(ref);
+  }
+
+  /// {@macro riverpod.override_with_value}
+  Override overrideWithValue(CalculateRouteUseCase value) {
+    return $ProviderOverride(
+      origin: this,
+      providerOverride: $SyncValueProvider<CalculateRouteUseCase>(value),
+    );
+  }
+}
+
+String _$calculateRouteUseCaseHash() =>
+    r'069206b9f442b638c0937d98afe5a27563e59eb7';
+
 @ProviderFor(calculateAlternativeRoutesUseCase)
 final calculateAlternativeRoutesUseCaseProvider =
-    AutoDisposeProvider<CalculateAlternativeRoutesUseCase>.internal(
-  calculateAlternativeRoutesUseCase,
-  name: r'calculateAlternativeRoutesUseCaseProvider',
-  debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
-      ? null
-      : _$calculateAlternativeRoutesUseCaseHash,
-  dependencies: null,
-  allTransitiveDependencies: null,
-);
+    CalculateAlternativeRoutesUseCaseProvider._();
 
-typedef CalculateAlternativeRoutesUseCaseRef
-    = AutoDisposeProviderRef<CalculateAlternativeRoutesUseCase>;
-// ignore_for_file: type=lint
-// ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member
+final class CalculateAlternativeRoutesUseCaseProvider
+    extends
+        $FunctionalProvider<
+          CalculateAlternativeRoutesUseCase,
+          CalculateAlternativeRoutesUseCase,
+          CalculateAlternativeRoutesUseCase
+        >
+    with $Provider<CalculateAlternativeRoutesUseCase> {
+  CalculateAlternativeRoutesUseCaseProvider._()
+    : super(
+        from: null,
+        argument: null,
+        retry: null,
+        name: r'calculateAlternativeRoutesUseCaseProvider',
+        isAutoDispose: true,
+        dependencies: null,
+        $allTransitiveDependencies: null,
+      );
+
+  @override
+  String debugGetCreateSourceHash() =>
+      _$calculateAlternativeRoutesUseCaseHash();
+
+  @$internal
+  @override
+  $ProviderElement<CalculateAlternativeRoutesUseCase> $createElement(
+    $ProviderPointer pointer,
+  ) => $ProviderElement(pointer);
+
+  @override
+  CalculateAlternativeRoutesUseCase create(Ref ref) {
+    return calculateAlternativeRoutesUseCase(ref);
+  }
+
+  /// {@macro riverpod.override_with_value}
+  Override overrideWithValue(CalculateAlternativeRoutesUseCase value) {
+    return $ProviderOverride(
+      origin: this,
+      providerOverride: $SyncValueProvider<CalculateAlternativeRoutesUseCase>(
+        value,
+      ),
+    );
+  }
+}
+
+String _$calculateAlternativeRoutesUseCaseHash() =>
+    r'41104a04bff004184312e1c2abc199a0a4fb6783';

@@ -6,23 +6,53 @@ part of 'remote_datasource_providers.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$clusterRemoteDataSourceHash() =>
-    r'0838dfd06013aee5d3c231e241178caa3c9d6485';
+// GENERATED CODE - DO NOT MODIFY BY HAND
+// ignore_for_file: type=lint, type=warning
 
-/// See also [clusterRemoteDataSource].
 @ProviderFor(clusterRemoteDataSource)
-final clusterRemoteDataSourceProvider =
-    AutoDisposeProvider<ClusterRemoteDataSource>.internal(
-  clusterRemoteDataSource,
-  name: r'clusterRemoteDataSourceProvider',
-  debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
-      ? null
-      : _$clusterRemoteDataSourceHash,
-  dependencies: null,
-  allTransitiveDependencies: null,
-);
+final clusterRemoteDataSourceProvider = ClusterRemoteDataSourceProvider._();
 
-typedef ClusterRemoteDataSourceRef
-    = AutoDisposeProviderRef<ClusterRemoteDataSource>;
-// ignore_for_file: type=lint
-// ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member
+final class ClusterRemoteDataSourceProvider
+    extends
+        $FunctionalProvider<
+          ClusterRemoteDataSource,
+          ClusterRemoteDataSource,
+          ClusterRemoteDataSource
+        >
+    with $Provider<ClusterRemoteDataSource> {
+  ClusterRemoteDataSourceProvider._()
+    : super(
+        from: null,
+        argument: null,
+        retry: null,
+        name: r'clusterRemoteDataSourceProvider',
+        isAutoDispose: true,
+        dependencies: null,
+        $allTransitiveDependencies: null,
+      );
+
+  @override
+  String debugGetCreateSourceHash() => _$clusterRemoteDataSourceHash();
+
+  @$internal
+  @override
+  $ProviderElement<ClusterRemoteDataSource> $createElement(
+    $ProviderPointer pointer,
+  ) => $ProviderElement(pointer);
+
+  @override
+  ClusterRemoteDataSource create(Ref ref) {
+    return clusterRemoteDataSource(ref);
+  }
+
+  /// {@macro riverpod.override_with_value}
+  Override overrideWithValue(ClusterRemoteDataSource value) {
+    return $ProviderOverride(
+      origin: this,
+      providerOverride: $SyncValueProvider<ClusterRemoteDataSource>(value),
+    );
+  }
+}
+
+String _$clusterRemoteDataSourceHash() =>
+    r'c6d7f6499621329ff6945ef7b3ed1ddcdef2d957';

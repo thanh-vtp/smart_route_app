@@ -25,9 +25,15 @@ class DefaultFirebaseOptions {
       case TargetPlatform.iOS:
         return ios;
       case TargetPlatform.macOS:
-        return macos;
+        throw UnsupportedError(
+          'DefaultFirebaseOptions have not been configured for macos - '
+          'you can reconfigure this by running the FlutterFire CLI again.',
+        );
       case TargetPlatform.windows:
-        return windows;
+        throw UnsupportedError(
+          'DefaultFirebaseOptions have not been configured for windows - '
+          'you can reconfigure this by running the FlutterFire CLI again.',
+        );
       case TargetPlatform.linux:
         throw UnsupportedError(
           'DefaultFirebaseOptions have not been configured for linux - '
@@ -41,8 +47,8 @@ class DefaultFirebaseOptions {
   }
 
   static const FirebaseOptions web = FirebaseOptions(
-    apiKey: 'AIzaSyAZ9Kq78XCGw6QvM2g7FXfTfjkCDhlHVbE',
-    appId: '1:1094897979700:web:bfb207b75b3f161a6fd561',
+    apiKey: 'AIzaSyDzudSybFI5pDT1wZ55HFluvcYk29TUFbA',
+    appId: '1:1094897979700:web:3f122c2e3f9dec3a6fd561',
     messagingSenderId: '1094897979700',
     projectId: 'smart-route-find-application',
     authDomain: 'smart-route-find-application.firebaseapp.com',
@@ -51,7 +57,7 @@ class DefaultFirebaseOptions {
 
   static const FirebaseOptions android = FirebaseOptions(
     apiKey: 'AIzaSyDZ9KpOdjXla4JkvD39rIUdR9jPgAbGNbM',
-    appId: '1:1094897979700:android:f8cbe6e7ddd58a9d6fd561',
+    appId: '1:1094897979700:android:2021c8b9b686e17a6fd561',
     messagingSenderId: '1094897979700',
     projectId: 'smart-route-find-application',
     storageBucket: 'smart-route-find-application.firebasestorage.app',
@@ -59,29 +65,10 @@ class DefaultFirebaseOptions {
 
   static const FirebaseOptions ios = FirebaseOptions(
     apiKey: 'AIzaSyAFjodm7ikkeoh96xy0EjbVEgV4Ogb5jpc',
-    appId: '1:1094897979700:ios:b3162307b7e007b76fd561',
+    appId: '1:1094897979700:ios:5fd5270a717420026fd561',
     messagingSenderId: '1094897979700',
     projectId: 'smart-route-find-application',
     storageBucket: 'smart-route-find-application.firebasestorage.app',
-    iosBundleId: 'com.example.smartRouteApp',
+    iosBundleId: 'com.thanh.smartroute',
   );
-
-  static const FirebaseOptions macos = FirebaseOptions(
-    apiKey: 'AIzaSyAFjodm7ikkeoh96xy0EjbVEgV4Ogb5jpc',
-    appId: '1:1094897979700:ios:b3162307b7e007b76fd561',
-    messagingSenderId: '1094897979700',
-    projectId: 'smart-route-find-application',
-    storageBucket: 'smart-route-find-application.firebasestorage.app',
-    iosBundleId: 'com.example.smartRouteApp',
-  );
-
-  static const FirebaseOptions windows = FirebaseOptions(
-    apiKey: 'AIzaSyAZ9Kq78XCGw6QvM2g7FXfTfjkCDhlHVbE',
-    appId: '1:1094897979700:web:ca1f37c8b61e49326fd561',
-    messagingSenderId: '1094897979700',
-    projectId: 'smart-route-find-application',
-    authDomain: 'smart-route-find-application.firebaseapp.com',
-    storageBucket: 'smart-route-find-application.firebasestorage.app',
-  );
-
 }

@@ -6,20 +6,52 @@ part of 'repository_providers.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$routingRepositoryHash() => r'1da5f3d1683484150eea40145ab71ab81522150a';
+// GENERATED CODE - DO NOT MODIFY BY HAND
+// ignore_for_file: type=lint, type=warning
 
-/// See also [routingRepository].
 @ProviderFor(routingRepository)
-final routingRepositoryProvider = Provider<RoutingRepository>.internal(
-  routingRepository,
-  name: r'routingRepositoryProvider',
-  debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
-      ? null
-      : _$routingRepositoryHash,
-  dependencies: null,
-  allTransitiveDependencies: null,
-);
+final routingRepositoryProvider = RoutingRepositoryProvider._();
 
-typedef RoutingRepositoryRef = ProviderRef<RoutingRepository>;
-// ignore_for_file: type=lint
-// ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member
+final class RoutingRepositoryProvider
+    extends
+        $FunctionalProvider<
+          RoutingRepository,
+          RoutingRepository,
+          RoutingRepository
+        >
+    with $Provider<RoutingRepository> {
+  RoutingRepositoryProvider._()
+    : super(
+        from: null,
+        argument: null,
+        retry: null,
+        name: r'routingRepositoryProvider',
+        isAutoDispose: false,
+        dependencies: null,
+        $allTransitiveDependencies: null,
+      );
+
+  @override
+  String debugGetCreateSourceHash() => _$routingRepositoryHash();
+
+  @$internal
+  @override
+  $ProviderElement<RoutingRepository> $createElement(
+    $ProviderPointer pointer,
+  ) => $ProviderElement(pointer);
+
+  @override
+  RoutingRepository create(Ref ref) {
+    return routingRepository(ref);
+  }
+
+  /// {@macro riverpod.override_with_value}
+  Override overrideWithValue(RoutingRepository value) {
+    return $ProviderOverride(
+      origin: this,
+      providerOverride: $SyncValueProvider<RoutingRepository>(value),
+    );
+  }
+}
+
+String _$routingRepositoryHash() => r'376e59a93d495e06c29fdb7e440c631e6b149f4f';

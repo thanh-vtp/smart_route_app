@@ -1,5 +1,5 @@
-// coverage:ignore-file
 // GENERATED CODE - DO NOT MODIFY BY HAND
+// coverage:ignore-file
 // ignore_for_file: type=lint
 // ignore_for_file: unused_element, deprecated_member_use, deprecated_member_use_from_same_package, use_function_type_syntax_for_parameters, unnecessary_const, avoid_init_to_null, invalid_override_different_default_values_named, prefer_expression_function_bodies, annotate_overrides, invalid_annotation_target, unnecessary_question_mark
 
@@ -9,2068 +9,3094 @@ part of 'routing_model.dart';
 // FreezedGenerator
 // **************************************************************************
 
+// dart format off
 T _$identity<T>(T value) => value;
-
-final _privateConstructorUsedError = UnsupportedError(
-    'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#adding-getters-and-methods-to-our-models');
-
-RouteResponseModel _$RouteResponseModelFromJson(Map<String, dynamic> json) {
-  return _RouteResponseModel.fromJson(json);
-}
 
 /// @nodoc
 mixin _$RouteResponseModel {
-  @JsonKey(name: 'routes')
-  RouteFeaturesResultModel get routes => throw _privateConstructorUsedError;
-  @JsonKey(name: 'directions')
-  List<RouteDirectionSetModel> get directions =>
-      throw _privateConstructorUsedError;
 
-  Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
-  @JsonKey(ignore: true)
-  $RouteResponseModelCopyWith<RouteResponseModel> get copyWith =>
-      throw _privateConstructorUsedError;
+@JsonKey(name: 'routes') RouteFeaturesResultModel get routes;@JsonKey(name: 'directions') List<RouteDirectionSetModel> get directions;
+/// Create a copy of RouteResponseModel
+/// with the given fields replaced by the non-null parameter values.
+@JsonKey(includeFromJson: false, includeToJson: false)
+@pragma('vm:prefer-inline')
+$RouteResponseModelCopyWith<RouteResponseModel> get copyWith => _$RouteResponseModelCopyWithImpl<RouteResponseModel>(this as RouteResponseModel, _$identity);
+
+  /// Serializes this RouteResponseModel to a JSON map.
+  Map<String, dynamic> toJson();
+
+
+@override
+bool operator ==(Object other) {
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is RouteResponseModel&&(identical(other.routes, routes) || other.routes == routes)&&const DeepCollectionEquality().equals(other.directions, directions));
+}
+
+@JsonKey(includeFromJson: false, includeToJson: false)
+@override
+int get hashCode => Object.hash(runtimeType,routes,const DeepCollectionEquality().hash(directions));
+
+@override
+String toString() {
+  return 'RouteResponseModel(routes: $routes, directions: $directions)';
+}
+
+
 }
 
 /// @nodoc
-abstract class $RouteResponseModelCopyWith<$Res> {
-  factory $RouteResponseModelCopyWith(
-          RouteResponseModel value, $Res Function(RouteResponseModel) then) =
-      _$RouteResponseModelCopyWithImpl<$Res, RouteResponseModel>;
-  @useResult
-  $Res call(
-      {@JsonKey(name: 'routes') RouteFeaturesResultModel routes,
-      @JsonKey(name: 'directions') List<RouteDirectionSetModel> directions});
+abstract mixin class $RouteResponseModelCopyWith<$Res>  {
+  factory $RouteResponseModelCopyWith(RouteResponseModel value, $Res Function(RouteResponseModel) _then) = _$RouteResponseModelCopyWithImpl;
+@useResult
+$Res call({
+@JsonKey(name: 'routes') RouteFeaturesResultModel routes,@JsonKey(name: 'directions') List<RouteDirectionSetModel> directions
+});
 
-  $RouteFeaturesResultModelCopyWith<$Res> get routes;
+
+$RouteFeaturesResultModelCopyWith<$Res> get routes;
+
 }
-
 /// @nodoc
-class _$RouteResponseModelCopyWithImpl<$Res, $Val extends RouteResponseModel>
+class _$RouteResponseModelCopyWithImpl<$Res>
     implements $RouteResponseModelCopyWith<$Res> {
-  _$RouteResponseModelCopyWithImpl(this._value, this._then);
+  _$RouteResponseModelCopyWithImpl(this._self, this._then);
 
-  // ignore: unused_field
-  final $Val _value;
-  // ignore: unused_field
-  final $Res Function($Val) _then;
+  final RouteResponseModel _self;
+  final $Res Function(RouteResponseModel) _then;
 
-  @pragma('vm:prefer-inline')
-  @override
-  $Res call({
-    Object? routes = null,
-    Object? directions = null,
-  }) {
-    return _then(_value.copyWith(
-      routes: null == routes
-          ? _value.routes
-          : routes // ignore: cast_nullable_to_non_nullable
-              as RouteFeaturesResultModel,
-      directions: null == directions
-          ? _value.directions
-          : directions // ignore: cast_nullable_to_non_nullable
-              as List<RouteDirectionSetModel>,
-    ) as $Val);
-  }
-
-  @override
-  @pragma('vm:prefer-inline')
-  $RouteFeaturesResultModelCopyWith<$Res> get routes {
-    return $RouteFeaturesResultModelCopyWith<$Res>(_value.routes, (value) {
-      return _then(_value.copyWith(routes: value) as $Val);
-    });
-  }
+/// Create a copy of RouteResponseModel
+/// with the given fields replaced by the non-null parameter values.
+@pragma('vm:prefer-inline') @override $Res call({Object? routes = null,Object? directions = null,}) {
+  return _then(_self.copyWith(
+routes: null == routes ? _self.routes : routes // ignore: cast_nullable_to_non_nullable
+as RouteFeaturesResultModel,directions: null == directions ? _self.directions : directions // ignore: cast_nullable_to_non_nullable
+as List<RouteDirectionSetModel>,
+  ));
+}
+/// Create a copy of RouteResponseModel
+/// with the given fields replaced by the non-null parameter values.
+@override
+@pragma('vm:prefer-inline')
+$RouteFeaturesResultModelCopyWith<$Res> get routes {
+  
+  return $RouteFeaturesResultModelCopyWith<$Res>(_self.routes, (value) {
+    return _then(_self.copyWith(routes: value));
+  });
+}
 }
 
-/// @nodoc
-abstract class _$$RouteResponseModelImplCopyWith<$Res>
-    implements $RouteResponseModelCopyWith<$Res> {
-  factory _$$RouteResponseModelImplCopyWith(_$RouteResponseModelImpl value,
-          $Res Function(_$RouteResponseModelImpl) then) =
-      __$$RouteResponseModelImplCopyWithImpl<$Res>;
-  @override
-  @useResult
-  $Res call(
-      {@JsonKey(name: 'routes') RouteFeaturesResultModel routes,
-      @JsonKey(name: 'directions') List<RouteDirectionSetModel> directions});
 
-  @override
-  $RouteFeaturesResultModelCopyWith<$Res> get routes;
+/// Adds pattern-matching-related methods to [RouteResponseModel].
+extension RouteResponseModelPatterns on RouteResponseModel {
+/// A variant of `map` that fallback to returning `orElse`.
+///
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case final Subclass value:
+///     return ...;
+///   case _:
+///     return orElse();
+/// }
+/// ```
+
+@optionalTypeArgs TResult maybeMap<TResult extends Object?>(TResult Function( _RouteResponseModel value)?  $default,{required TResult orElse(),}){
+final _that = this;
+switch (_that) {
+case _RouteResponseModel() when $default != null:
+return $default(_that);case _:
+  return orElse();
+
+}
+}
+/// A `switch`-like method, using callbacks.
+///
+/// Callbacks receives the raw object, upcasted.
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case final Subclass value:
+///     return ...;
+///   case final Subclass2 value:
+///     return ...;
+/// }
+/// ```
+
+@optionalTypeArgs TResult map<TResult extends Object?>(TResult Function( _RouteResponseModel value)  $default,){
+final _that = this;
+switch (_that) {
+case _RouteResponseModel():
+return $default(_that);case _:
+  throw StateError('Unexpected subclass');
+
+}
+}
+/// A variant of `map` that fallback to returning `null`.
+///
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case final Subclass value:
+///     return ...;
+///   case _:
+///     return null;
+/// }
+/// ```
+
+@optionalTypeArgs TResult? mapOrNull<TResult extends Object?>(TResult? Function( _RouteResponseModel value)?  $default,){
+final _that = this;
+switch (_that) {
+case _RouteResponseModel() when $default != null:
+return $default(_that);case _:
+  return null;
+
+}
+}
+/// A variant of `when` that fallback to an `orElse` callback.
+///
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case Subclass(:final field):
+///     return ...;
+///   case _:
+///     return orElse();
+/// }
+/// ```
+
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function(@JsonKey(name: 'routes')  RouteFeaturesResultModel routes, @JsonKey(name: 'directions')  List<RouteDirectionSetModel> directions)?  $default,{required TResult orElse(),}) {final _that = this;
+switch (_that) {
+case _RouteResponseModel() when $default != null:
+return $default(_that.routes,_that.directions);case _:
+  return orElse();
+
+}
+}
+/// A `switch`-like method, using callbacks.
+///
+/// As opposed to `map`, this offers destructuring.
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case Subclass(:final field):
+///     return ...;
+///   case Subclass2(:final field2):
+///     return ...;
+/// }
+/// ```
+
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function(@JsonKey(name: 'routes')  RouteFeaturesResultModel routes, @JsonKey(name: 'directions')  List<RouteDirectionSetModel> directions)  $default,) {final _that = this;
+switch (_that) {
+case _RouteResponseModel():
+return $default(_that.routes,_that.directions);case _:
+  throw StateError('Unexpected subclass');
+
+}
+}
+/// A variant of `when` that fallback to returning `null`
+///
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case Subclass(:final field):
+///     return ...;
+///   case _:
+///     return null;
+/// }
+/// ```
+
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function(@JsonKey(name: 'routes')  RouteFeaturesResultModel routes, @JsonKey(name: 'directions')  List<RouteDirectionSetModel> directions)?  $default,) {final _that = this;
+switch (_that) {
+case _RouteResponseModel() when $default != null:
+return $default(_that.routes,_that.directions);case _:
+  return null;
+
+}
 }
 
-/// @nodoc
-class __$$RouteResponseModelImplCopyWithImpl<$Res>
-    extends _$RouteResponseModelCopyWithImpl<$Res, _$RouteResponseModelImpl>
-    implements _$$RouteResponseModelImplCopyWith<$Res> {
-  __$$RouteResponseModelImplCopyWithImpl(_$RouteResponseModelImpl _value,
-      $Res Function(_$RouteResponseModelImpl) _then)
-      : super(_value, _then);
-
-  @pragma('vm:prefer-inline')
-  @override
-  $Res call({
-    Object? routes = null,
-    Object? directions = null,
-  }) {
-    return _then(_$RouteResponseModelImpl(
-      routes: null == routes
-          ? _value.routes
-          : routes // ignore: cast_nullable_to_non_nullable
-              as RouteFeaturesResultModel,
-      directions: null == directions
-          ? _value._directions
-          : directions // ignore: cast_nullable_to_non_nullable
-              as List<RouteDirectionSetModel>,
-    ));
-  }
 }
 
 /// @nodoc
 @JsonSerializable()
-class _$RouteResponseModelImpl extends _RouteResponseModel {
-  const _$RouteResponseModelImpl(
-      {@JsonKey(name: 'routes') required this.routes,
-      @JsonKey(name: 'directions')
-      final List<RouteDirectionSetModel> directions = const []})
-      : _directions = directions,
-        super._();
 
-  factory _$RouteResponseModelImpl.fromJson(Map<String, dynamic> json) =>
-      _$$RouteResponseModelImplFromJson(json);
+class _RouteResponseModel extends RouteResponseModel {
+  const _RouteResponseModel({@JsonKey(name: 'routes') required this.routes, @JsonKey(name: 'directions') final  List<RouteDirectionSetModel> directions = const []}): _directions = directions,super._();
+  factory _RouteResponseModel.fromJson(Map<String, dynamic> json) => _$RouteResponseModelFromJson(json);
 
-  @override
-  @JsonKey(name: 'routes')
-  final RouteFeaturesResultModel routes;
-  final List<RouteDirectionSetModel> _directions;
-  @override
-  @JsonKey(name: 'directions')
-  List<RouteDirectionSetModel> get directions {
-    if (_directions is EqualUnmodifiableListView) return _directions;
-    // ignore: implicit_dynamic_type
-    return EqualUnmodifiableListView(_directions);
-  }
-
-  @override
-  String toString() {
-    return 'RouteResponseModel(routes: $routes, directions: $directions)';
-  }
-
-  @override
-  bool operator ==(Object other) {
-    return identical(this, other) ||
-        (other.runtimeType == runtimeType &&
-            other is _$RouteResponseModelImpl &&
-            (identical(other.routes, routes) || other.routes == routes) &&
-            const DeepCollectionEquality()
-                .equals(other._directions, _directions));
-  }
-
-  @JsonKey(ignore: true)
-  @override
-  int get hashCode => Object.hash(
-      runtimeType, routes, const DeepCollectionEquality().hash(_directions));
-
-  @JsonKey(ignore: true)
-  @override
-  @pragma('vm:prefer-inline')
-  _$$RouteResponseModelImplCopyWith<_$RouteResponseModelImpl> get copyWith =>
-      __$$RouteResponseModelImplCopyWithImpl<_$RouteResponseModelImpl>(
-          this, _$identity);
-
-  @override
-  Map<String, dynamic> toJson() {
-    return _$$RouteResponseModelImplToJson(
-      this,
-    );
-  }
+@override@JsonKey(name: 'routes') final  RouteFeaturesResultModel routes;
+ final  List<RouteDirectionSetModel> _directions;
+@override@JsonKey(name: 'directions') List<RouteDirectionSetModel> get directions {
+  if (_directions is EqualUnmodifiableListView) return _directions;
+  // ignore: implicit_dynamic_type
+  return EqualUnmodifiableListView(_directions);
 }
 
-abstract class _RouteResponseModel extends RouteResponseModel {
-  const factory _RouteResponseModel(
-      {@JsonKey(name: 'routes') required final RouteFeaturesResultModel routes,
-      @JsonKey(name: 'directions')
-      final List<RouteDirectionSetModel>
-          directions}) = _$RouteResponseModelImpl;
-  const _RouteResponseModel._() : super._();
 
-  factory _RouteResponseModel.fromJson(Map<String, dynamic> json) =
-      _$RouteResponseModelImpl.fromJson;
+/// Create a copy of RouteResponseModel
+/// with the given fields replaced by the non-null parameter values.
+@override @JsonKey(includeFromJson: false, includeToJson: false)
+@pragma('vm:prefer-inline')
+_$RouteResponseModelCopyWith<_RouteResponseModel> get copyWith => __$RouteResponseModelCopyWithImpl<_RouteResponseModel>(this, _$identity);
 
-  @override
-  @JsonKey(name: 'routes')
-  RouteFeaturesResultModel get routes;
-  @override
-  @JsonKey(name: 'directions')
-  List<RouteDirectionSetModel> get directions;
-  @override
-  @JsonKey(ignore: true)
-  _$$RouteResponseModelImplCopyWith<_$RouteResponseModelImpl> get copyWith =>
-      throw _privateConstructorUsedError;
+@override
+Map<String, dynamic> toJson() {
+  return _$RouteResponseModelToJson(this, );
 }
 
-RouteFeaturesResultModel _$RouteFeaturesResultModelFromJson(
-    Map<String, dynamic> json) {
-  return _RouteFeaturesResultModel.fromJson(json);
+@override
+bool operator ==(Object other) {
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _RouteResponseModel&&(identical(other.routes, routes) || other.routes == routes)&&const DeepCollectionEquality().equals(other._directions, _directions));
 }
+
+@JsonKey(includeFromJson: false, includeToJson: false)
+@override
+int get hashCode => Object.hash(runtimeType,routes,const DeepCollectionEquality().hash(_directions));
+
+@override
+String toString() {
+  return 'RouteResponseModel(routes: $routes, directions: $directions)';
+}
+
+
+}
+
+/// @nodoc
+abstract mixin class _$RouteResponseModelCopyWith<$Res> implements $RouteResponseModelCopyWith<$Res> {
+  factory _$RouteResponseModelCopyWith(_RouteResponseModel value, $Res Function(_RouteResponseModel) _then) = __$RouteResponseModelCopyWithImpl;
+@override @useResult
+$Res call({
+@JsonKey(name: 'routes') RouteFeaturesResultModel routes,@JsonKey(name: 'directions') List<RouteDirectionSetModel> directions
+});
+
+
+@override $RouteFeaturesResultModelCopyWith<$Res> get routes;
+
+}
+/// @nodoc
+class __$RouteResponseModelCopyWithImpl<$Res>
+    implements _$RouteResponseModelCopyWith<$Res> {
+  __$RouteResponseModelCopyWithImpl(this._self, this._then);
+
+  final _RouteResponseModel _self;
+  final $Res Function(_RouteResponseModel) _then;
+
+/// Create a copy of RouteResponseModel
+/// with the given fields replaced by the non-null parameter values.
+@override @pragma('vm:prefer-inline') $Res call({Object? routes = null,Object? directions = null,}) {
+  return _then(_RouteResponseModel(
+routes: null == routes ? _self.routes : routes // ignore: cast_nullable_to_non_nullable
+as RouteFeaturesResultModel,directions: null == directions ? _self._directions : directions // ignore: cast_nullable_to_non_nullable
+as List<RouteDirectionSetModel>,
+  ));
+}
+
+/// Create a copy of RouteResponseModel
+/// with the given fields replaced by the non-null parameter values.
+@override
+@pragma('vm:prefer-inline')
+$RouteFeaturesResultModelCopyWith<$Res> get routes {
+  
+  return $RouteFeaturesResultModelCopyWith<$Res>(_self.routes, (value) {
+    return _then(_self.copyWith(routes: value));
+  });
+}
+}
+
 
 /// @nodoc
 mixin _$RouteFeaturesResultModel {
-  @JsonKey(name: 'features')
-  List<RouteFeatureModel> get features => throw _privateConstructorUsedError;
 
-  Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
-  @JsonKey(ignore: true)
-  $RouteFeaturesResultModelCopyWith<RouteFeaturesResultModel> get copyWith =>
-      throw _privateConstructorUsedError;
+@JsonKey(name: 'features') List<RouteFeatureModel> get features;
+/// Create a copy of RouteFeaturesResultModel
+/// with the given fields replaced by the non-null parameter values.
+@JsonKey(includeFromJson: false, includeToJson: false)
+@pragma('vm:prefer-inline')
+$RouteFeaturesResultModelCopyWith<RouteFeaturesResultModel> get copyWith => _$RouteFeaturesResultModelCopyWithImpl<RouteFeaturesResultModel>(this as RouteFeaturesResultModel, _$identity);
+
+  /// Serializes this RouteFeaturesResultModel to a JSON map.
+  Map<String, dynamic> toJson();
+
+
+@override
+bool operator ==(Object other) {
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is RouteFeaturesResultModel&&const DeepCollectionEquality().equals(other.features, features));
+}
+
+@JsonKey(includeFromJson: false, includeToJson: false)
+@override
+int get hashCode => Object.hash(runtimeType,const DeepCollectionEquality().hash(features));
+
+@override
+String toString() {
+  return 'RouteFeaturesResultModel(features: $features)';
+}
+
+
 }
 
 /// @nodoc
-abstract class $RouteFeaturesResultModelCopyWith<$Res> {
-  factory $RouteFeaturesResultModelCopyWith(RouteFeaturesResultModel value,
-          $Res Function(RouteFeaturesResultModel) then) =
-      _$RouteFeaturesResultModelCopyWithImpl<$Res, RouteFeaturesResultModel>;
-  @useResult
-  $Res call({@JsonKey(name: 'features') List<RouteFeatureModel> features});
-}
+abstract mixin class $RouteFeaturesResultModelCopyWith<$Res>  {
+  factory $RouteFeaturesResultModelCopyWith(RouteFeaturesResultModel value, $Res Function(RouteFeaturesResultModel) _then) = _$RouteFeaturesResultModelCopyWithImpl;
+@useResult
+$Res call({
+@JsonKey(name: 'features') List<RouteFeatureModel> features
+});
 
+
+
+
+}
 /// @nodoc
-class _$RouteFeaturesResultModelCopyWithImpl<$Res,
-        $Val extends RouteFeaturesResultModel>
+class _$RouteFeaturesResultModelCopyWithImpl<$Res>
     implements $RouteFeaturesResultModelCopyWith<$Res> {
-  _$RouteFeaturesResultModelCopyWithImpl(this._value, this._then);
+  _$RouteFeaturesResultModelCopyWithImpl(this._self, this._then);
 
-  // ignore: unused_field
-  final $Val _value;
-  // ignore: unused_field
-  final $Res Function($Val) _then;
+  final RouteFeaturesResultModel _self;
+  final $Res Function(RouteFeaturesResultModel) _then;
 
-  @pragma('vm:prefer-inline')
-  @override
-  $Res call({
-    Object? features = null,
-  }) {
-    return _then(_value.copyWith(
-      features: null == features
-          ? _value.features
-          : features // ignore: cast_nullable_to_non_nullable
-              as List<RouteFeatureModel>,
-    ) as $Val);
-  }
+/// Create a copy of RouteFeaturesResultModel
+/// with the given fields replaced by the non-null parameter values.
+@pragma('vm:prefer-inline') @override $Res call({Object? features = null,}) {
+  return _then(_self.copyWith(
+features: null == features ? _self.features : features // ignore: cast_nullable_to_non_nullable
+as List<RouteFeatureModel>,
+  ));
 }
 
-/// @nodoc
-abstract class _$$RouteFeaturesResultModelImplCopyWith<$Res>
-    implements $RouteFeaturesResultModelCopyWith<$Res> {
-  factory _$$RouteFeaturesResultModelImplCopyWith(
-          _$RouteFeaturesResultModelImpl value,
-          $Res Function(_$RouteFeaturesResultModelImpl) then) =
-      __$$RouteFeaturesResultModelImplCopyWithImpl<$Res>;
-  @override
-  @useResult
-  $Res call({@JsonKey(name: 'features') List<RouteFeatureModel> features});
 }
 
-/// @nodoc
-class __$$RouteFeaturesResultModelImplCopyWithImpl<$Res>
-    extends _$RouteFeaturesResultModelCopyWithImpl<$Res,
-        _$RouteFeaturesResultModelImpl>
-    implements _$$RouteFeaturesResultModelImplCopyWith<$Res> {
-  __$$RouteFeaturesResultModelImplCopyWithImpl(
-      _$RouteFeaturesResultModelImpl _value,
-      $Res Function(_$RouteFeaturesResultModelImpl) _then)
-      : super(_value, _then);
 
-  @pragma('vm:prefer-inline')
-  @override
-  $Res call({
-    Object? features = null,
-  }) {
-    return _then(_$RouteFeaturesResultModelImpl(
-      features: null == features
-          ? _value._features
-          : features // ignore: cast_nullable_to_non_nullable
-              as List<RouteFeatureModel>,
-    ));
-  }
+/// Adds pattern-matching-related methods to [RouteFeaturesResultModel].
+extension RouteFeaturesResultModelPatterns on RouteFeaturesResultModel {
+/// A variant of `map` that fallback to returning `orElse`.
+///
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case final Subclass value:
+///     return ...;
+///   case _:
+///     return orElse();
+/// }
+/// ```
+
+@optionalTypeArgs TResult maybeMap<TResult extends Object?>(TResult Function( _RouteFeaturesResultModel value)?  $default,{required TResult orElse(),}){
+final _that = this;
+switch (_that) {
+case _RouteFeaturesResultModel() when $default != null:
+return $default(_that);case _:
+  return orElse();
+
+}
+}
+/// A `switch`-like method, using callbacks.
+///
+/// Callbacks receives the raw object, upcasted.
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case final Subclass value:
+///     return ...;
+///   case final Subclass2 value:
+///     return ...;
+/// }
+/// ```
+
+@optionalTypeArgs TResult map<TResult extends Object?>(TResult Function( _RouteFeaturesResultModel value)  $default,){
+final _that = this;
+switch (_that) {
+case _RouteFeaturesResultModel():
+return $default(_that);case _:
+  throw StateError('Unexpected subclass');
+
+}
+}
+/// A variant of `map` that fallback to returning `null`.
+///
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case final Subclass value:
+///     return ...;
+///   case _:
+///     return null;
+/// }
+/// ```
+
+@optionalTypeArgs TResult? mapOrNull<TResult extends Object?>(TResult? Function( _RouteFeaturesResultModel value)?  $default,){
+final _that = this;
+switch (_that) {
+case _RouteFeaturesResultModel() when $default != null:
+return $default(_that);case _:
+  return null;
+
+}
+}
+/// A variant of `when` that fallback to an `orElse` callback.
+///
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case Subclass(:final field):
+///     return ...;
+///   case _:
+///     return orElse();
+/// }
+/// ```
+
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function(@JsonKey(name: 'features')  List<RouteFeatureModel> features)?  $default,{required TResult orElse(),}) {final _that = this;
+switch (_that) {
+case _RouteFeaturesResultModel() when $default != null:
+return $default(_that.features);case _:
+  return orElse();
+
+}
+}
+/// A `switch`-like method, using callbacks.
+///
+/// As opposed to `map`, this offers destructuring.
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case Subclass(:final field):
+///     return ...;
+///   case Subclass2(:final field2):
+///     return ...;
+/// }
+/// ```
+
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function(@JsonKey(name: 'features')  List<RouteFeatureModel> features)  $default,) {final _that = this;
+switch (_that) {
+case _RouteFeaturesResultModel():
+return $default(_that.features);case _:
+  throw StateError('Unexpected subclass');
+
+}
+}
+/// A variant of `when` that fallback to returning `null`
+///
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case Subclass(:final field):
+///     return ...;
+///   case _:
+///     return null;
+/// }
+/// ```
+
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function(@JsonKey(name: 'features')  List<RouteFeatureModel> features)?  $default,) {final _that = this;
+switch (_that) {
+case _RouteFeaturesResultModel() when $default != null:
+return $default(_that.features);case _:
+  return null;
+
+}
+}
+
 }
 
 /// @nodoc
 @JsonSerializable()
-class _$RouteFeaturesResultModelImpl implements _RouteFeaturesResultModel {
-  const _$RouteFeaturesResultModelImpl(
-      {@JsonKey(name: 'features')
-      final List<RouteFeatureModel> features = const []})
-      : _features = features;
 
-  factory _$RouteFeaturesResultModelImpl.fromJson(Map<String, dynamic> json) =>
-      _$$RouteFeaturesResultModelImplFromJson(json);
+class _RouteFeaturesResultModel implements RouteFeaturesResultModel {
+  const _RouteFeaturesResultModel({@JsonKey(name: 'features') final  List<RouteFeatureModel> features = const []}): _features = features;
+  factory _RouteFeaturesResultModel.fromJson(Map<String, dynamic> json) => _$RouteFeaturesResultModelFromJson(json);
 
-  final List<RouteFeatureModel> _features;
-  @override
-  @JsonKey(name: 'features')
-  List<RouteFeatureModel> get features {
-    if (_features is EqualUnmodifiableListView) return _features;
-    // ignore: implicit_dynamic_type
-    return EqualUnmodifiableListView(_features);
-  }
-
-  @override
-  String toString() {
-    return 'RouteFeaturesResultModel(features: $features)';
-  }
-
-  @override
-  bool operator ==(Object other) {
-    return identical(this, other) ||
-        (other.runtimeType == runtimeType &&
-            other is _$RouteFeaturesResultModelImpl &&
-            const DeepCollectionEquality().equals(other._features, _features));
-  }
-
-  @JsonKey(ignore: true)
-  @override
-  int get hashCode =>
-      Object.hash(runtimeType, const DeepCollectionEquality().hash(_features));
-
-  @JsonKey(ignore: true)
-  @override
-  @pragma('vm:prefer-inline')
-  _$$RouteFeaturesResultModelImplCopyWith<_$RouteFeaturesResultModelImpl>
-      get copyWith => __$$RouteFeaturesResultModelImplCopyWithImpl<
-          _$RouteFeaturesResultModelImpl>(this, _$identity);
-
-  @override
-  Map<String, dynamic> toJson() {
-    return _$$RouteFeaturesResultModelImplToJson(
-      this,
-    );
-  }
+ final  List<RouteFeatureModel> _features;
+@override@JsonKey(name: 'features') List<RouteFeatureModel> get features {
+  if (_features is EqualUnmodifiableListView) return _features;
+  // ignore: implicit_dynamic_type
+  return EqualUnmodifiableListView(_features);
 }
 
-abstract class _RouteFeaturesResultModel implements RouteFeaturesResultModel {
-  const factory _RouteFeaturesResultModel(
-          {@JsonKey(name: 'features') final List<RouteFeatureModel> features}) =
-      _$RouteFeaturesResultModelImpl;
 
-  factory _RouteFeaturesResultModel.fromJson(Map<String, dynamic> json) =
-      _$RouteFeaturesResultModelImpl.fromJson;
+/// Create a copy of RouteFeaturesResultModel
+/// with the given fields replaced by the non-null parameter values.
+@override @JsonKey(includeFromJson: false, includeToJson: false)
+@pragma('vm:prefer-inline')
+_$RouteFeaturesResultModelCopyWith<_RouteFeaturesResultModel> get copyWith => __$RouteFeaturesResultModelCopyWithImpl<_RouteFeaturesResultModel>(this, _$identity);
 
-  @override
-  @JsonKey(name: 'features')
-  List<RouteFeatureModel> get features;
-  @override
-  @JsonKey(ignore: true)
-  _$$RouteFeaturesResultModelImplCopyWith<_$RouteFeaturesResultModelImpl>
-      get copyWith => throw _privateConstructorUsedError;
+@override
+Map<String, dynamic> toJson() {
+  return _$RouteFeaturesResultModelToJson(this, );
 }
 
-RouteFeatureModel _$RouteFeatureModelFromJson(Map<String, dynamic> json) {
-  return _RouteFeatureModel.fromJson(json);
+@override
+bool operator ==(Object other) {
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _RouteFeaturesResultModel&&const DeepCollectionEquality().equals(other._features, _features));
 }
+
+@JsonKey(includeFromJson: false, includeToJson: false)
+@override
+int get hashCode => Object.hash(runtimeType,const DeepCollectionEquality().hash(_features));
+
+@override
+String toString() {
+  return 'RouteFeaturesResultModel(features: $features)';
+}
+
+
+}
+
+/// @nodoc
+abstract mixin class _$RouteFeaturesResultModelCopyWith<$Res> implements $RouteFeaturesResultModelCopyWith<$Res> {
+  factory _$RouteFeaturesResultModelCopyWith(_RouteFeaturesResultModel value, $Res Function(_RouteFeaturesResultModel) _then) = __$RouteFeaturesResultModelCopyWithImpl;
+@override @useResult
+$Res call({
+@JsonKey(name: 'features') List<RouteFeatureModel> features
+});
+
+
+
+
+}
+/// @nodoc
+class __$RouteFeaturesResultModelCopyWithImpl<$Res>
+    implements _$RouteFeaturesResultModelCopyWith<$Res> {
+  __$RouteFeaturesResultModelCopyWithImpl(this._self, this._then);
+
+  final _RouteFeaturesResultModel _self;
+  final $Res Function(_RouteFeaturesResultModel) _then;
+
+/// Create a copy of RouteFeaturesResultModel
+/// with the given fields replaced by the non-null parameter values.
+@override @pragma('vm:prefer-inline') $Res call({Object? features = null,}) {
+  return _then(_RouteFeaturesResultModel(
+features: null == features ? _self._features : features // ignore: cast_nullable_to_non_nullable
+as List<RouteFeatureModel>,
+  ));
+}
+
+
+}
+
 
 /// @nodoc
 mixin _$RouteFeatureModel {
-  @JsonKey(name: 'attributes')
-  RouteAttributesModel get attributes => throw _privateConstructorUsedError;
-  @JsonKey(name: 'geometry')
-  RouteGeometryModel? get geometry => throw _privateConstructorUsedError;
 
-  Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
-  @JsonKey(ignore: true)
-  $RouteFeatureModelCopyWith<RouteFeatureModel> get copyWith =>
-      throw _privateConstructorUsedError;
+@JsonKey(name: 'attributes') RouteAttributesModel get attributes;@JsonKey(name: 'geometry') RouteGeometryModel? get geometry;
+/// Create a copy of RouteFeatureModel
+/// with the given fields replaced by the non-null parameter values.
+@JsonKey(includeFromJson: false, includeToJson: false)
+@pragma('vm:prefer-inline')
+$RouteFeatureModelCopyWith<RouteFeatureModel> get copyWith => _$RouteFeatureModelCopyWithImpl<RouteFeatureModel>(this as RouteFeatureModel, _$identity);
+
+  /// Serializes this RouteFeatureModel to a JSON map.
+  Map<String, dynamic> toJson();
+
+
+@override
+bool operator ==(Object other) {
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is RouteFeatureModel&&(identical(other.attributes, attributes) || other.attributes == attributes)&&(identical(other.geometry, geometry) || other.geometry == geometry));
+}
+
+@JsonKey(includeFromJson: false, includeToJson: false)
+@override
+int get hashCode => Object.hash(runtimeType,attributes,geometry);
+
+@override
+String toString() {
+  return 'RouteFeatureModel(attributes: $attributes, geometry: $geometry)';
+}
+
+
 }
 
 /// @nodoc
-abstract class $RouteFeatureModelCopyWith<$Res> {
-  factory $RouteFeatureModelCopyWith(
-          RouteFeatureModel value, $Res Function(RouteFeatureModel) then) =
-      _$RouteFeatureModelCopyWithImpl<$Res, RouteFeatureModel>;
-  @useResult
-  $Res call(
-      {@JsonKey(name: 'attributes') RouteAttributesModel attributes,
-      @JsonKey(name: 'geometry') RouteGeometryModel? geometry});
+abstract mixin class $RouteFeatureModelCopyWith<$Res>  {
+  factory $RouteFeatureModelCopyWith(RouteFeatureModel value, $Res Function(RouteFeatureModel) _then) = _$RouteFeatureModelCopyWithImpl;
+@useResult
+$Res call({
+@JsonKey(name: 'attributes') RouteAttributesModel attributes,@JsonKey(name: 'geometry') RouteGeometryModel? geometry
+});
 
-  $RouteAttributesModelCopyWith<$Res> get attributes;
-  $RouteGeometryModelCopyWith<$Res>? get geometry;
+
+$RouteAttributesModelCopyWith<$Res> get attributes;$RouteGeometryModelCopyWith<$Res>? get geometry;
+
 }
-
 /// @nodoc
-class _$RouteFeatureModelCopyWithImpl<$Res, $Val extends RouteFeatureModel>
+class _$RouteFeatureModelCopyWithImpl<$Res>
     implements $RouteFeatureModelCopyWith<$Res> {
-  _$RouteFeatureModelCopyWithImpl(this._value, this._then);
+  _$RouteFeatureModelCopyWithImpl(this._self, this._then);
 
-  // ignore: unused_field
-  final $Val _value;
-  // ignore: unused_field
-  final $Res Function($Val) _then;
+  final RouteFeatureModel _self;
+  final $Res Function(RouteFeatureModel) _then;
 
-  @pragma('vm:prefer-inline')
-  @override
-  $Res call({
-    Object? attributes = null,
-    Object? geometry = freezed,
-  }) {
-    return _then(_value.copyWith(
-      attributes: null == attributes
-          ? _value.attributes
-          : attributes // ignore: cast_nullable_to_non_nullable
-              as RouteAttributesModel,
-      geometry: freezed == geometry
-          ? _value.geometry
-          : geometry // ignore: cast_nullable_to_non_nullable
-              as RouteGeometryModel?,
-    ) as $Val);
+/// Create a copy of RouteFeatureModel
+/// with the given fields replaced by the non-null parameter values.
+@pragma('vm:prefer-inline') @override $Res call({Object? attributes = null,Object? geometry = freezed,}) {
+  return _then(_self.copyWith(
+attributes: null == attributes ? _self.attributes : attributes // ignore: cast_nullable_to_non_nullable
+as RouteAttributesModel,geometry: freezed == geometry ? _self.geometry : geometry // ignore: cast_nullable_to_non_nullable
+as RouteGeometryModel?,
+  ));
+}
+/// Create a copy of RouteFeatureModel
+/// with the given fields replaced by the non-null parameter values.
+@override
+@pragma('vm:prefer-inline')
+$RouteAttributesModelCopyWith<$Res> get attributes {
+  
+  return $RouteAttributesModelCopyWith<$Res>(_self.attributes, (value) {
+    return _then(_self.copyWith(attributes: value));
+  });
+}/// Create a copy of RouteFeatureModel
+/// with the given fields replaced by the non-null parameter values.
+@override
+@pragma('vm:prefer-inline')
+$RouteGeometryModelCopyWith<$Res>? get geometry {
+    if (_self.geometry == null) {
+    return null;
   }
 
-  @override
-  @pragma('vm:prefer-inline')
-  $RouteAttributesModelCopyWith<$Res> get attributes {
-    return $RouteAttributesModelCopyWith<$Res>(_value.attributes, (value) {
-      return _then(_value.copyWith(attributes: value) as $Val);
-    });
-  }
-
-  @override
-  @pragma('vm:prefer-inline')
-  $RouteGeometryModelCopyWith<$Res>? get geometry {
-    if (_value.geometry == null) {
-      return null;
-    }
-
-    return $RouteGeometryModelCopyWith<$Res>(_value.geometry!, (value) {
-      return _then(_value.copyWith(geometry: value) as $Val);
-    });
-  }
+  return $RouteGeometryModelCopyWith<$Res>(_self.geometry!, (value) {
+    return _then(_self.copyWith(geometry: value));
+  });
+}
 }
 
-/// @nodoc
-abstract class _$$RouteFeatureModelImplCopyWith<$Res>
-    implements $RouteFeatureModelCopyWith<$Res> {
-  factory _$$RouteFeatureModelImplCopyWith(_$RouteFeatureModelImpl value,
-          $Res Function(_$RouteFeatureModelImpl) then) =
-      __$$RouteFeatureModelImplCopyWithImpl<$Res>;
-  @override
-  @useResult
-  $Res call(
-      {@JsonKey(name: 'attributes') RouteAttributesModel attributes,
-      @JsonKey(name: 'geometry') RouteGeometryModel? geometry});
 
-  @override
-  $RouteAttributesModelCopyWith<$Res> get attributes;
-  @override
-  $RouteGeometryModelCopyWith<$Res>? get geometry;
+/// Adds pattern-matching-related methods to [RouteFeatureModel].
+extension RouteFeatureModelPatterns on RouteFeatureModel {
+/// A variant of `map` that fallback to returning `orElse`.
+///
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case final Subclass value:
+///     return ...;
+///   case _:
+///     return orElse();
+/// }
+/// ```
+
+@optionalTypeArgs TResult maybeMap<TResult extends Object?>(TResult Function( _RouteFeatureModel value)?  $default,{required TResult orElse(),}){
+final _that = this;
+switch (_that) {
+case _RouteFeatureModel() when $default != null:
+return $default(_that);case _:
+  return orElse();
+
+}
+}
+/// A `switch`-like method, using callbacks.
+///
+/// Callbacks receives the raw object, upcasted.
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case final Subclass value:
+///     return ...;
+///   case final Subclass2 value:
+///     return ...;
+/// }
+/// ```
+
+@optionalTypeArgs TResult map<TResult extends Object?>(TResult Function( _RouteFeatureModel value)  $default,){
+final _that = this;
+switch (_that) {
+case _RouteFeatureModel():
+return $default(_that);case _:
+  throw StateError('Unexpected subclass');
+
+}
+}
+/// A variant of `map` that fallback to returning `null`.
+///
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case final Subclass value:
+///     return ...;
+///   case _:
+///     return null;
+/// }
+/// ```
+
+@optionalTypeArgs TResult? mapOrNull<TResult extends Object?>(TResult? Function( _RouteFeatureModel value)?  $default,){
+final _that = this;
+switch (_that) {
+case _RouteFeatureModel() when $default != null:
+return $default(_that);case _:
+  return null;
+
+}
+}
+/// A variant of `when` that fallback to an `orElse` callback.
+///
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case Subclass(:final field):
+///     return ...;
+///   case _:
+///     return orElse();
+/// }
+/// ```
+
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function(@JsonKey(name: 'attributes')  RouteAttributesModel attributes, @JsonKey(name: 'geometry')  RouteGeometryModel? geometry)?  $default,{required TResult orElse(),}) {final _that = this;
+switch (_that) {
+case _RouteFeatureModel() when $default != null:
+return $default(_that.attributes,_that.geometry);case _:
+  return orElse();
+
+}
+}
+/// A `switch`-like method, using callbacks.
+///
+/// As opposed to `map`, this offers destructuring.
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case Subclass(:final field):
+///     return ...;
+///   case Subclass2(:final field2):
+///     return ...;
+/// }
+/// ```
+
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function(@JsonKey(name: 'attributes')  RouteAttributesModel attributes, @JsonKey(name: 'geometry')  RouteGeometryModel? geometry)  $default,) {final _that = this;
+switch (_that) {
+case _RouteFeatureModel():
+return $default(_that.attributes,_that.geometry);case _:
+  throw StateError('Unexpected subclass');
+
+}
+}
+/// A variant of `when` that fallback to returning `null`
+///
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case Subclass(:final field):
+///     return ...;
+///   case _:
+///     return null;
+/// }
+/// ```
+
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function(@JsonKey(name: 'attributes')  RouteAttributesModel attributes, @JsonKey(name: 'geometry')  RouteGeometryModel? geometry)?  $default,) {final _that = this;
+switch (_that) {
+case _RouteFeatureModel() when $default != null:
+return $default(_that.attributes,_that.geometry);case _:
+  return null;
+
+}
 }
 
-/// @nodoc
-class __$$RouteFeatureModelImplCopyWithImpl<$Res>
-    extends _$RouteFeatureModelCopyWithImpl<$Res, _$RouteFeatureModelImpl>
-    implements _$$RouteFeatureModelImplCopyWith<$Res> {
-  __$$RouteFeatureModelImplCopyWithImpl(_$RouteFeatureModelImpl _value,
-      $Res Function(_$RouteFeatureModelImpl) _then)
-      : super(_value, _then);
-
-  @pragma('vm:prefer-inline')
-  @override
-  $Res call({
-    Object? attributes = null,
-    Object? geometry = freezed,
-  }) {
-    return _then(_$RouteFeatureModelImpl(
-      attributes: null == attributes
-          ? _value.attributes
-          : attributes // ignore: cast_nullable_to_non_nullable
-              as RouteAttributesModel,
-      geometry: freezed == geometry
-          ? _value.geometry
-          : geometry // ignore: cast_nullable_to_non_nullable
-              as RouteGeometryModel?,
-    ));
-  }
 }
 
 /// @nodoc
 @JsonSerializable()
-class _$RouteFeatureModelImpl implements _RouteFeatureModel {
-  const _$RouteFeatureModelImpl(
-      {@JsonKey(name: 'attributes') required this.attributes,
-      @JsonKey(name: 'geometry') this.geometry});
 
-  factory _$RouteFeatureModelImpl.fromJson(Map<String, dynamic> json) =>
-      _$$RouteFeatureModelImplFromJson(json);
+class _RouteFeatureModel implements RouteFeatureModel {
+  const _RouteFeatureModel({@JsonKey(name: 'attributes') required this.attributes, @JsonKey(name: 'geometry') this.geometry});
+  factory _RouteFeatureModel.fromJson(Map<String, dynamic> json) => _$RouteFeatureModelFromJson(json);
 
-  @override
-  @JsonKey(name: 'attributes')
-  final RouteAttributesModel attributes;
-  @override
-  @JsonKey(name: 'geometry')
-  final RouteGeometryModel? geometry;
+@override@JsonKey(name: 'attributes') final  RouteAttributesModel attributes;
+@override@JsonKey(name: 'geometry') final  RouteGeometryModel? geometry;
 
-  @override
-  String toString() {
-    return 'RouteFeatureModel(attributes: $attributes, geometry: $geometry)';
-  }
+/// Create a copy of RouteFeatureModel
+/// with the given fields replaced by the non-null parameter values.
+@override @JsonKey(includeFromJson: false, includeToJson: false)
+@pragma('vm:prefer-inline')
+_$RouteFeatureModelCopyWith<_RouteFeatureModel> get copyWith => __$RouteFeatureModelCopyWithImpl<_RouteFeatureModel>(this, _$identity);
 
-  @override
-  bool operator ==(Object other) {
-    return identical(this, other) ||
-        (other.runtimeType == runtimeType &&
-            other is _$RouteFeatureModelImpl &&
-            (identical(other.attributes, attributes) ||
-                other.attributes == attributes) &&
-            (identical(other.geometry, geometry) ||
-                other.geometry == geometry));
-  }
-
-  @JsonKey(ignore: true)
-  @override
-  int get hashCode => Object.hash(runtimeType, attributes, geometry);
-
-  @JsonKey(ignore: true)
-  @override
-  @pragma('vm:prefer-inline')
-  _$$RouteFeatureModelImplCopyWith<_$RouteFeatureModelImpl> get copyWith =>
-      __$$RouteFeatureModelImplCopyWithImpl<_$RouteFeatureModelImpl>(
-          this, _$identity);
-
-  @override
-  Map<String, dynamic> toJson() {
-    return _$$RouteFeatureModelImplToJson(
-      this,
-    );
-  }
+@override
+Map<String, dynamic> toJson() {
+  return _$RouteFeatureModelToJson(this, );
 }
 
-abstract class _RouteFeatureModel implements RouteFeatureModel {
-  const factory _RouteFeatureModel(
-          {@JsonKey(name: 'attributes')
-          required final RouteAttributesModel attributes,
-          @JsonKey(name: 'geometry') final RouteGeometryModel? geometry}) =
-      _$RouteFeatureModelImpl;
-
-  factory _RouteFeatureModel.fromJson(Map<String, dynamic> json) =
-      _$RouteFeatureModelImpl.fromJson;
-
-  @override
-  @JsonKey(name: 'attributes')
-  RouteAttributesModel get attributes;
-  @override
-  @JsonKey(name: 'geometry')
-  RouteGeometryModel? get geometry;
-  @override
-  @JsonKey(ignore: true)
-  _$$RouteFeatureModelImplCopyWith<_$RouteFeatureModelImpl> get copyWith =>
-      throw _privateConstructorUsedError;
+@override
+bool operator ==(Object other) {
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _RouteFeatureModel&&(identical(other.attributes, attributes) || other.attributes == attributes)&&(identical(other.geometry, geometry) || other.geometry == geometry));
 }
 
-RouteAttributesModel _$RouteAttributesModelFromJson(Map<String, dynamic> json) {
-  return _RouteAttributesModel.fromJson(json);
+@JsonKey(includeFromJson: false, includeToJson: false)
+@override
+int get hashCode => Object.hash(runtimeType,attributes,geometry);
+
+@override
+String toString() {
+  return 'RouteFeatureModel(attributes: $attributes, geometry: $geometry)';
 }
+
+
+}
+
+/// @nodoc
+abstract mixin class _$RouteFeatureModelCopyWith<$Res> implements $RouteFeatureModelCopyWith<$Res> {
+  factory _$RouteFeatureModelCopyWith(_RouteFeatureModel value, $Res Function(_RouteFeatureModel) _then) = __$RouteFeatureModelCopyWithImpl;
+@override @useResult
+$Res call({
+@JsonKey(name: 'attributes') RouteAttributesModel attributes,@JsonKey(name: 'geometry') RouteGeometryModel? geometry
+});
+
+
+@override $RouteAttributesModelCopyWith<$Res> get attributes;@override $RouteGeometryModelCopyWith<$Res>? get geometry;
+
+}
+/// @nodoc
+class __$RouteFeatureModelCopyWithImpl<$Res>
+    implements _$RouteFeatureModelCopyWith<$Res> {
+  __$RouteFeatureModelCopyWithImpl(this._self, this._then);
+
+  final _RouteFeatureModel _self;
+  final $Res Function(_RouteFeatureModel) _then;
+
+/// Create a copy of RouteFeatureModel
+/// with the given fields replaced by the non-null parameter values.
+@override @pragma('vm:prefer-inline') $Res call({Object? attributes = null,Object? geometry = freezed,}) {
+  return _then(_RouteFeatureModel(
+attributes: null == attributes ? _self.attributes : attributes // ignore: cast_nullable_to_non_nullable
+as RouteAttributesModel,geometry: freezed == geometry ? _self.geometry : geometry // ignore: cast_nullable_to_non_nullable
+as RouteGeometryModel?,
+  ));
+}
+
+/// Create a copy of RouteFeatureModel
+/// with the given fields replaced by the non-null parameter values.
+@override
+@pragma('vm:prefer-inline')
+$RouteAttributesModelCopyWith<$Res> get attributes {
+  
+  return $RouteAttributesModelCopyWith<$Res>(_self.attributes, (value) {
+    return _then(_self.copyWith(attributes: value));
+  });
+}/// Create a copy of RouteFeatureModel
+/// with the given fields replaced by the non-null parameter values.
+@override
+@pragma('vm:prefer-inline')
+$RouteGeometryModelCopyWith<$Res>? get geometry {
+    if (_self.geometry == null) {
+    return null;
+  }
+
+  return $RouteGeometryModelCopyWith<$Res>(_self.geometry!, (value) {
+    return _then(_self.copyWith(geometry: value));
+  });
+}
+}
+
 
 /// @nodoc
 mixin _$RouteAttributesModel {
-  @JsonKey(name: 'Name')
-  String? get name => throw _privateConstructorUsedError;
-  @JsonKey(name: 'Total_TravelTime')
-  double? get totalTravelTime => throw _privateConstructorUsedError;
-  @JsonKey(name: 'Total_Kilometers')
-  double? get totalKilometers => throw _privateConstructorUsedError;
 
-  Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
-  @JsonKey(ignore: true)
-  $RouteAttributesModelCopyWith<RouteAttributesModel> get copyWith =>
-      throw _privateConstructorUsedError;
+@JsonKey(name: 'Name') String? get name;@JsonKey(name: 'Total_TravelTime') double? get totalTravelTime;@JsonKey(name: 'Total_Kilometers') double? get totalKilometers;
+/// Create a copy of RouteAttributesModel
+/// with the given fields replaced by the non-null parameter values.
+@JsonKey(includeFromJson: false, includeToJson: false)
+@pragma('vm:prefer-inline')
+$RouteAttributesModelCopyWith<RouteAttributesModel> get copyWith => _$RouteAttributesModelCopyWithImpl<RouteAttributesModel>(this as RouteAttributesModel, _$identity);
+
+  /// Serializes this RouteAttributesModel to a JSON map.
+  Map<String, dynamic> toJson();
+
+
+@override
+bool operator ==(Object other) {
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is RouteAttributesModel&&(identical(other.name, name) || other.name == name)&&(identical(other.totalTravelTime, totalTravelTime) || other.totalTravelTime == totalTravelTime)&&(identical(other.totalKilometers, totalKilometers) || other.totalKilometers == totalKilometers));
+}
+
+@JsonKey(includeFromJson: false, includeToJson: false)
+@override
+int get hashCode => Object.hash(runtimeType,name,totalTravelTime,totalKilometers);
+
+@override
+String toString() {
+  return 'RouteAttributesModel(name: $name, totalTravelTime: $totalTravelTime, totalKilometers: $totalKilometers)';
+}
+
+
 }
 
 /// @nodoc
-abstract class $RouteAttributesModelCopyWith<$Res> {
-  factory $RouteAttributesModelCopyWith(RouteAttributesModel value,
-          $Res Function(RouteAttributesModel) then) =
-      _$RouteAttributesModelCopyWithImpl<$Res, RouteAttributesModel>;
-  @useResult
-  $Res call(
-      {@JsonKey(name: 'Name') String? name,
-      @JsonKey(name: 'Total_TravelTime') double? totalTravelTime,
-      @JsonKey(name: 'Total_Kilometers') double? totalKilometers});
-}
+abstract mixin class $RouteAttributesModelCopyWith<$Res>  {
+  factory $RouteAttributesModelCopyWith(RouteAttributesModel value, $Res Function(RouteAttributesModel) _then) = _$RouteAttributesModelCopyWithImpl;
+@useResult
+$Res call({
+@JsonKey(name: 'Name') String? name,@JsonKey(name: 'Total_TravelTime') double? totalTravelTime,@JsonKey(name: 'Total_Kilometers') double? totalKilometers
+});
 
+
+
+
+}
 /// @nodoc
-class _$RouteAttributesModelCopyWithImpl<$Res,
-        $Val extends RouteAttributesModel>
+class _$RouteAttributesModelCopyWithImpl<$Res>
     implements $RouteAttributesModelCopyWith<$Res> {
-  _$RouteAttributesModelCopyWithImpl(this._value, this._then);
+  _$RouteAttributesModelCopyWithImpl(this._self, this._then);
 
-  // ignore: unused_field
-  final $Val _value;
-  // ignore: unused_field
-  final $Res Function($Val) _then;
+  final RouteAttributesModel _self;
+  final $Res Function(RouteAttributesModel) _then;
 
-  @pragma('vm:prefer-inline')
-  @override
-  $Res call({
-    Object? name = freezed,
-    Object? totalTravelTime = freezed,
-    Object? totalKilometers = freezed,
-  }) {
-    return _then(_value.copyWith(
-      name: freezed == name
-          ? _value.name
-          : name // ignore: cast_nullable_to_non_nullable
-              as String?,
-      totalTravelTime: freezed == totalTravelTime
-          ? _value.totalTravelTime
-          : totalTravelTime // ignore: cast_nullable_to_non_nullable
-              as double?,
-      totalKilometers: freezed == totalKilometers
-          ? _value.totalKilometers
-          : totalKilometers // ignore: cast_nullable_to_non_nullable
-              as double?,
-    ) as $Val);
-  }
+/// Create a copy of RouteAttributesModel
+/// with the given fields replaced by the non-null parameter values.
+@pragma('vm:prefer-inline') @override $Res call({Object? name = freezed,Object? totalTravelTime = freezed,Object? totalKilometers = freezed,}) {
+  return _then(_self.copyWith(
+name: freezed == name ? _self.name : name // ignore: cast_nullable_to_non_nullable
+as String?,totalTravelTime: freezed == totalTravelTime ? _self.totalTravelTime : totalTravelTime // ignore: cast_nullable_to_non_nullable
+as double?,totalKilometers: freezed == totalKilometers ? _self.totalKilometers : totalKilometers // ignore: cast_nullable_to_non_nullable
+as double?,
+  ));
 }
 
-/// @nodoc
-abstract class _$$RouteAttributesModelImplCopyWith<$Res>
-    implements $RouteAttributesModelCopyWith<$Res> {
-  factory _$$RouteAttributesModelImplCopyWith(_$RouteAttributesModelImpl value,
-          $Res Function(_$RouteAttributesModelImpl) then) =
-      __$$RouteAttributesModelImplCopyWithImpl<$Res>;
-  @override
-  @useResult
-  $Res call(
-      {@JsonKey(name: 'Name') String? name,
-      @JsonKey(name: 'Total_TravelTime') double? totalTravelTime,
-      @JsonKey(name: 'Total_Kilometers') double? totalKilometers});
 }
 
-/// @nodoc
-class __$$RouteAttributesModelImplCopyWithImpl<$Res>
-    extends _$RouteAttributesModelCopyWithImpl<$Res, _$RouteAttributesModelImpl>
-    implements _$$RouteAttributesModelImplCopyWith<$Res> {
-  __$$RouteAttributesModelImplCopyWithImpl(_$RouteAttributesModelImpl _value,
-      $Res Function(_$RouteAttributesModelImpl) _then)
-      : super(_value, _then);
 
-  @pragma('vm:prefer-inline')
-  @override
-  $Res call({
-    Object? name = freezed,
-    Object? totalTravelTime = freezed,
-    Object? totalKilometers = freezed,
-  }) {
-    return _then(_$RouteAttributesModelImpl(
-      name: freezed == name
-          ? _value.name
-          : name // ignore: cast_nullable_to_non_nullable
-              as String?,
-      totalTravelTime: freezed == totalTravelTime
-          ? _value.totalTravelTime
-          : totalTravelTime // ignore: cast_nullable_to_non_nullable
-              as double?,
-      totalKilometers: freezed == totalKilometers
-          ? _value.totalKilometers
-          : totalKilometers // ignore: cast_nullable_to_non_nullable
-              as double?,
-    ));
-  }
+/// Adds pattern-matching-related methods to [RouteAttributesModel].
+extension RouteAttributesModelPatterns on RouteAttributesModel {
+/// A variant of `map` that fallback to returning `orElse`.
+///
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case final Subclass value:
+///     return ...;
+///   case _:
+///     return orElse();
+/// }
+/// ```
+
+@optionalTypeArgs TResult maybeMap<TResult extends Object?>(TResult Function( _RouteAttributesModel value)?  $default,{required TResult orElse(),}){
+final _that = this;
+switch (_that) {
+case _RouteAttributesModel() when $default != null:
+return $default(_that);case _:
+  return orElse();
+
+}
+}
+/// A `switch`-like method, using callbacks.
+///
+/// Callbacks receives the raw object, upcasted.
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case final Subclass value:
+///     return ...;
+///   case final Subclass2 value:
+///     return ...;
+/// }
+/// ```
+
+@optionalTypeArgs TResult map<TResult extends Object?>(TResult Function( _RouteAttributesModel value)  $default,){
+final _that = this;
+switch (_that) {
+case _RouteAttributesModel():
+return $default(_that);case _:
+  throw StateError('Unexpected subclass');
+
+}
+}
+/// A variant of `map` that fallback to returning `null`.
+///
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case final Subclass value:
+///     return ...;
+///   case _:
+///     return null;
+/// }
+/// ```
+
+@optionalTypeArgs TResult? mapOrNull<TResult extends Object?>(TResult? Function( _RouteAttributesModel value)?  $default,){
+final _that = this;
+switch (_that) {
+case _RouteAttributesModel() when $default != null:
+return $default(_that);case _:
+  return null;
+
+}
+}
+/// A variant of `when` that fallback to an `orElse` callback.
+///
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case Subclass(:final field):
+///     return ...;
+///   case _:
+///     return orElse();
+/// }
+/// ```
+
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function(@JsonKey(name: 'Name')  String? name, @JsonKey(name: 'Total_TravelTime')  double? totalTravelTime, @JsonKey(name: 'Total_Kilometers')  double? totalKilometers)?  $default,{required TResult orElse(),}) {final _that = this;
+switch (_that) {
+case _RouteAttributesModel() when $default != null:
+return $default(_that.name,_that.totalTravelTime,_that.totalKilometers);case _:
+  return orElse();
+
+}
+}
+/// A `switch`-like method, using callbacks.
+///
+/// As opposed to `map`, this offers destructuring.
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case Subclass(:final field):
+///     return ...;
+///   case Subclass2(:final field2):
+///     return ...;
+/// }
+/// ```
+
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function(@JsonKey(name: 'Name')  String? name, @JsonKey(name: 'Total_TravelTime')  double? totalTravelTime, @JsonKey(name: 'Total_Kilometers')  double? totalKilometers)  $default,) {final _that = this;
+switch (_that) {
+case _RouteAttributesModel():
+return $default(_that.name,_that.totalTravelTime,_that.totalKilometers);case _:
+  throw StateError('Unexpected subclass');
+
+}
+}
+/// A variant of `when` that fallback to returning `null`
+///
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case Subclass(:final field):
+///     return ...;
+///   case _:
+///     return null;
+/// }
+/// ```
+
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function(@JsonKey(name: 'Name')  String? name, @JsonKey(name: 'Total_TravelTime')  double? totalTravelTime, @JsonKey(name: 'Total_Kilometers')  double? totalKilometers)?  $default,) {final _that = this;
+switch (_that) {
+case _RouteAttributesModel() when $default != null:
+return $default(_that.name,_that.totalTravelTime,_that.totalKilometers);case _:
+  return null;
+
+}
+}
+
 }
 
 /// @nodoc
 @JsonSerializable()
-class _$RouteAttributesModelImpl implements _RouteAttributesModel {
-  const _$RouteAttributesModelImpl(
-      {@JsonKey(name: 'Name') this.name,
-      @JsonKey(name: 'Total_TravelTime') this.totalTravelTime,
-      @JsonKey(name: 'Total_Kilometers') this.totalKilometers});
 
-  factory _$RouteAttributesModelImpl.fromJson(Map<String, dynamic> json) =>
-      _$$RouteAttributesModelImplFromJson(json);
+class _RouteAttributesModel implements RouteAttributesModel {
+  const _RouteAttributesModel({@JsonKey(name: 'Name') this.name, @JsonKey(name: 'Total_TravelTime') this.totalTravelTime, @JsonKey(name: 'Total_Kilometers') this.totalKilometers});
+  factory _RouteAttributesModel.fromJson(Map<String, dynamic> json) => _$RouteAttributesModelFromJson(json);
 
-  @override
-  @JsonKey(name: 'Name')
-  final String? name;
-  @override
-  @JsonKey(name: 'Total_TravelTime')
-  final double? totalTravelTime;
-  @override
-  @JsonKey(name: 'Total_Kilometers')
-  final double? totalKilometers;
+@override@JsonKey(name: 'Name') final  String? name;
+@override@JsonKey(name: 'Total_TravelTime') final  double? totalTravelTime;
+@override@JsonKey(name: 'Total_Kilometers') final  double? totalKilometers;
 
-  @override
-  String toString() {
-    return 'RouteAttributesModel(name: $name, totalTravelTime: $totalTravelTime, totalKilometers: $totalKilometers)';
-  }
+/// Create a copy of RouteAttributesModel
+/// with the given fields replaced by the non-null parameter values.
+@override @JsonKey(includeFromJson: false, includeToJson: false)
+@pragma('vm:prefer-inline')
+_$RouteAttributesModelCopyWith<_RouteAttributesModel> get copyWith => __$RouteAttributesModelCopyWithImpl<_RouteAttributesModel>(this, _$identity);
 
-  @override
-  bool operator ==(Object other) {
-    return identical(this, other) ||
-        (other.runtimeType == runtimeType &&
-            other is _$RouteAttributesModelImpl &&
-            (identical(other.name, name) || other.name == name) &&
-            (identical(other.totalTravelTime, totalTravelTime) ||
-                other.totalTravelTime == totalTravelTime) &&
-            (identical(other.totalKilometers, totalKilometers) ||
-                other.totalKilometers == totalKilometers));
-  }
-
-  @JsonKey(ignore: true)
-  @override
-  int get hashCode =>
-      Object.hash(runtimeType, name, totalTravelTime, totalKilometers);
-
-  @JsonKey(ignore: true)
-  @override
-  @pragma('vm:prefer-inline')
-  _$$RouteAttributesModelImplCopyWith<_$RouteAttributesModelImpl>
-      get copyWith =>
-          __$$RouteAttributesModelImplCopyWithImpl<_$RouteAttributesModelImpl>(
-              this, _$identity);
-
-  @override
-  Map<String, dynamic> toJson() {
-    return _$$RouteAttributesModelImplToJson(
-      this,
-    );
-  }
+@override
+Map<String, dynamic> toJson() {
+  return _$RouteAttributesModelToJson(this, );
 }
 
-abstract class _RouteAttributesModel implements RouteAttributesModel {
-  const factory _RouteAttributesModel(
-          {@JsonKey(name: 'Name') final String? name,
-          @JsonKey(name: 'Total_TravelTime') final double? totalTravelTime,
-          @JsonKey(name: 'Total_Kilometers') final double? totalKilometers}) =
-      _$RouteAttributesModelImpl;
-
-  factory _RouteAttributesModel.fromJson(Map<String, dynamic> json) =
-      _$RouteAttributesModelImpl.fromJson;
-
-  @override
-  @JsonKey(name: 'Name')
-  String? get name;
-  @override
-  @JsonKey(name: 'Total_TravelTime')
-  double? get totalTravelTime;
-  @override
-  @JsonKey(name: 'Total_Kilometers')
-  double? get totalKilometers;
-  @override
-  @JsonKey(ignore: true)
-  _$$RouteAttributesModelImplCopyWith<_$RouteAttributesModelImpl>
-      get copyWith => throw _privateConstructorUsedError;
+@override
+bool operator ==(Object other) {
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _RouteAttributesModel&&(identical(other.name, name) || other.name == name)&&(identical(other.totalTravelTime, totalTravelTime) || other.totalTravelTime == totalTravelTime)&&(identical(other.totalKilometers, totalKilometers) || other.totalKilometers == totalKilometers));
 }
 
-RouteGeometryModel _$RouteGeometryModelFromJson(Map<String, dynamic> json) {
-  return _RouteGeometryModel.fromJson(json);
+@JsonKey(includeFromJson: false, includeToJson: false)
+@override
+int get hashCode => Object.hash(runtimeType,name,totalTravelTime,totalKilometers);
+
+@override
+String toString() {
+  return 'RouteAttributesModel(name: $name, totalTravelTime: $totalTravelTime, totalKilometers: $totalKilometers)';
 }
+
+
+}
+
+/// @nodoc
+abstract mixin class _$RouteAttributesModelCopyWith<$Res> implements $RouteAttributesModelCopyWith<$Res> {
+  factory _$RouteAttributesModelCopyWith(_RouteAttributesModel value, $Res Function(_RouteAttributesModel) _then) = __$RouteAttributesModelCopyWithImpl;
+@override @useResult
+$Res call({
+@JsonKey(name: 'Name') String? name,@JsonKey(name: 'Total_TravelTime') double? totalTravelTime,@JsonKey(name: 'Total_Kilometers') double? totalKilometers
+});
+
+
+
+
+}
+/// @nodoc
+class __$RouteAttributesModelCopyWithImpl<$Res>
+    implements _$RouteAttributesModelCopyWith<$Res> {
+  __$RouteAttributesModelCopyWithImpl(this._self, this._then);
+
+  final _RouteAttributesModel _self;
+  final $Res Function(_RouteAttributesModel) _then;
+
+/// Create a copy of RouteAttributesModel
+/// with the given fields replaced by the non-null parameter values.
+@override @pragma('vm:prefer-inline') $Res call({Object? name = freezed,Object? totalTravelTime = freezed,Object? totalKilometers = freezed,}) {
+  return _then(_RouteAttributesModel(
+name: freezed == name ? _self.name : name // ignore: cast_nullable_to_non_nullable
+as String?,totalTravelTime: freezed == totalTravelTime ? _self.totalTravelTime : totalTravelTime // ignore: cast_nullable_to_non_nullable
+as double?,totalKilometers: freezed == totalKilometers ? _self.totalKilometers : totalKilometers // ignore: cast_nullable_to_non_nullable
+as double?,
+  ));
+}
+
+
+}
+
 
 /// @nodoc
 mixin _$RouteGeometryModel {
-// Type List<List<List<double>>> dùng để map cái mảng paths phức tạp của ArcGIS
-  @JsonKey(name: 'paths')
-  List<List<List<double>>> get paths => throw _privateConstructorUsedError;
 
-  Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
-  @JsonKey(ignore: true)
-  $RouteGeometryModelCopyWith<RouteGeometryModel> get copyWith =>
-      throw _privateConstructorUsedError;
+@JsonKey(name: 'paths') List<List<List<double>>> get paths;
+/// Create a copy of RouteGeometryModel
+/// with the given fields replaced by the non-null parameter values.
+@JsonKey(includeFromJson: false, includeToJson: false)
+@pragma('vm:prefer-inline')
+$RouteGeometryModelCopyWith<RouteGeometryModel> get copyWith => _$RouteGeometryModelCopyWithImpl<RouteGeometryModel>(this as RouteGeometryModel, _$identity);
+
+  /// Serializes this RouteGeometryModel to a JSON map.
+  Map<String, dynamic> toJson();
+
+
+@override
+bool operator ==(Object other) {
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is RouteGeometryModel&&const DeepCollectionEquality().equals(other.paths, paths));
+}
+
+@JsonKey(includeFromJson: false, includeToJson: false)
+@override
+int get hashCode => Object.hash(runtimeType,const DeepCollectionEquality().hash(paths));
+
+@override
+String toString() {
+  return 'RouteGeometryModel(paths: $paths)';
+}
+
+
 }
 
 /// @nodoc
-abstract class $RouteGeometryModelCopyWith<$Res> {
-  factory $RouteGeometryModelCopyWith(
-          RouteGeometryModel value, $Res Function(RouteGeometryModel) then) =
-      _$RouteGeometryModelCopyWithImpl<$Res, RouteGeometryModel>;
-  @useResult
-  $Res call({@JsonKey(name: 'paths') List<List<List<double>>> paths});
-}
+abstract mixin class $RouteGeometryModelCopyWith<$Res>  {
+  factory $RouteGeometryModelCopyWith(RouteGeometryModel value, $Res Function(RouteGeometryModel) _then) = _$RouteGeometryModelCopyWithImpl;
+@useResult
+$Res call({
+@JsonKey(name: 'paths') List<List<List<double>>> paths
+});
 
+
+
+
+}
 /// @nodoc
-class _$RouteGeometryModelCopyWithImpl<$Res, $Val extends RouteGeometryModel>
+class _$RouteGeometryModelCopyWithImpl<$Res>
     implements $RouteGeometryModelCopyWith<$Res> {
-  _$RouteGeometryModelCopyWithImpl(this._value, this._then);
+  _$RouteGeometryModelCopyWithImpl(this._self, this._then);
 
-  // ignore: unused_field
-  final $Val _value;
-  // ignore: unused_field
-  final $Res Function($Val) _then;
+  final RouteGeometryModel _self;
+  final $Res Function(RouteGeometryModel) _then;
 
-  @pragma('vm:prefer-inline')
-  @override
-  $Res call({
-    Object? paths = null,
-  }) {
-    return _then(_value.copyWith(
-      paths: null == paths
-          ? _value.paths
-          : paths // ignore: cast_nullable_to_non_nullable
-              as List<List<List<double>>>,
-    ) as $Val);
-  }
+/// Create a copy of RouteGeometryModel
+/// with the given fields replaced by the non-null parameter values.
+@pragma('vm:prefer-inline') @override $Res call({Object? paths = null,}) {
+  return _then(_self.copyWith(
+paths: null == paths ? _self.paths : paths // ignore: cast_nullable_to_non_nullable
+as List<List<List<double>>>,
+  ));
 }
 
-/// @nodoc
-abstract class _$$RouteGeometryModelImplCopyWith<$Res>
-    implements $RouteGeometryModelCopyWith<$Res> {
-  factory _$$RouteGeometryModelImplCopyWith(_$RouteGeometryModelImpl value,
-          $Res Function(_$RouteGeometryModelImpl) then) =
-      __$$RouteGeometryModelImplCopyWithImpl<$Res>;
-  @override
-  @useResult
-  $Res call({@JsonKey(name: 'paths') List<List<List<double>>> paths});
 }
 
-/// @nodoc
-class __$$RouteGeometryModelImplCopyWithImpl<$Res>
-    extends _$RouteGeometryModelCopyWithImpl<$Res, _$RouteGeometryModelImpl>
-    implements _$$RouteGeometryModelImplCopyWith<$Res> {
-  __$$RouteGeometryModelImplCopyWithImpl(_$RouteGeometryModelImpl _value,
-      $Res Function(_$RouteGeometryModelImpl) _then)
-      : super(_value, _then);
 
-  @pragma('vm:prefer-inline')
-  @override
-  $Res call({
-    Object? paths = null,
-  }) {
-    return _then(_$RouteGeometryModelImpl(
-      paths: null == paths
-          ? _value._paths
-          : paths // ignore: cast_nullable_to_non_nullable
-              as List<List<List<double>>>,
-    ));
-  }
+/// Adds pattern-matching-related methods to [RouteGeometryModel].
+extension RouteGeometryModelPatterns on RouteGeometryModel {
+/// A variant of `map` that fallback to returning `orElse`.
+///
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case final Subclass value:
+///     return ...;
+///   case _:
+///     return orElse();
+/// }
+/// ```
+
+@optionalTypeArgs TResult maybeMap<TResult extends Object?>(TResult Function( _RouteGeometryModel value)?  $default,{required TResult orElse(),}){
+final _that = this;
+switch (_that) {
+case _RouteGeometryModel() when $default != null:
+return $default(_that);case _:
+  return orElse();
+
+}
+}
+/// A `switch`-like method, using callbacks.
+///
+/// Callbacks receives the raw object, upcasted.
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case final Subclass value:
+///     return ...;
+///   case final Subclass2 value:
+///     return ...;
+/// }
+/// ```
+
+@optionalTypeArgs TResult map<TResult extends Object?>(TResult Function( _RouteGeometryModel value)  $default,){
+final _that = this;
+switch (_that) {
+case _RouteGeometryModel():
+return $default(_that);case _:
+  throw StateError('Unexpected subclass');
+
+}
+}
+/// A variant of `map` that fallback to returning `null`.
+///
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case final Subclass value:
+///     return ...;
+///   case _:
+///     return null;
+/// }
+/// ```
+
+@optionalTypeArgs TResult? mapOrNull<TResult extends Object?>(TResult? Function( _RouteGeometryModel value)?  $default,){
+final _that = this;
+switch (_that) {
+case _RouteGeometryModel() when $default != null:
+return $default(_that);case _:
+  return null;
+
+}
+}
+/// A variant of `when` that fallback to an `orElse` callback.
+///
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case Subclass(:final field):
+///     return ...;
+///   case _:
+///     return orElse();
+/// }
+/// ```
+
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function(@JsonKey(name: 'paths')  List<List<List<double>>> paths)?  $default,{required TResult orElse(),}) {final _that = this;
+switch (_that) {
+case _RouteGeometryModel() when $default != null:
+return $default(_that.paths);case _:
+  return orElse();
+
+}
+}
+/// A `switch`-like method, using callbacks.
+///
+/// As opposed to `map`, this offers destructuring.
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case Subclass(:final field):
+///     return ...;
+///   case Subclass2(:final field2):
+///     return ...;
+/// }
+/// ```
+
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function(@JsonKey(name: 'paths')  List<List<List<double>>> paths)  $default,) {final _that = this;
+switch (_that) {
+case _RouteGeometryModel():
+return $default(_that.paths);case _:
+  throw StateError('Unexpected subclass');
+
+}
+}
+/// A variant of `when` that fallback to returning `null`
+///
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case Subclass(:final field):
+///     return ...;
+///   case _:
+///     return null;
+/// }
+/// ```
+
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function(@JsonKey(name: 'paths')  List<List<List<double>>> paths)?  $default,) {final _that = this;
+switch (_that) {
+case _RouteGeometryModel() when $default != null:
+return $default(_that.paths);case _:
+  return null;
+
+}
+}
+
 }
 
 /// @nodoc
 @JsonSerializable()
-class _$RouteGeometryModelImpl implements _RouteGeometryModel {
-  const _$RouteGeometryModelImpl(
-      {@JsonKey(name: 'paths') final List<List<List<double>>> paths = const []})
-      : _paths = paths;
 
-  factory _$RouteGeometryModelImpl.fromJson(Map<String, dynamic> json) =>
-      _$$RouteGeometryModelImplFromJson(json);
+class _RouteGeometryModel implements RouteGeometryModel {
+  const _RouteGeometryModel({@JsonKey(name: 'paths') final  List<List<List<double>>> paths = const []}): _paths = paths;
+  factory _RouteGeometryModel.fromJson(Map<String, dynamic> json) => _$RouteGeometryModelFromJson(json);
 
-// Type List<List<List<double>>> dùng để map cái mảng paths phức tạp của ArcGIS
-  final List<List<List<double>>> _paths;
-// Type List<List<List<double>>> dùng để map cái mảng paths phức tạp của ArcGIS
-  @override
-  @JsonKey(name: 'paths')
-  List<List<List<double>>> get paths {
-    if (_paths is EqualUnmodifiableListView) return _paths;
-    // ignore: implicit_dynamic_type
-    return EqualUnmodifiableListView(_paths);
-  }
-
-  @override
-  String toString() {
-    return 'RouteGeometryModel(paths: $paths)';
-  }
-
-  @override
-  bool operator ==(Object other) {
-    return identical(this, other) ||
-        (other.runtimeType == runtimeType &&
-            other is _$RouteGeometryModelImpl &&
-            const DeepCollectionEquality().equals(other._paths, _paths));
-  }
-
-  @JsonKey(ignore: true)
-  @override
-  int get hashCode =>
-      Object.hash(runtimeType, const DeepCollectionEquality().hash(_paths));
-
-  @JsonKey(ignore: true)
-  @override
-  @pragma('vm:prefer-inline')
-  _$$RouteGeometryModelImplCopyWith<_$RouteGeometryModelImpl> get copyWith =>
-      __$$RouteGeometryModelImplCopyWithImpl<_$RouteGeometryModelImpl>(
-          this, _$identity);
-
-  @override
-  Map<String, dynamic> toJson() {
-    return _$$RouteGeometryModelImplToJson(
-      this,
-    );
-  }
+ final  List<List<List<double>>> _paths;
+@override@JsonKey(name: 'paths') List<List<List<double>>> get paths {
+  if (_paths is EqualUnmodifiableListView) return _paths;
+  // ignore: implicit_dynamic_type
+  return EqualUnmodifiableListView(_paths);
 }
 
-abstract class _RouteGeometryModel implements RouteGeometryModel {
-  const factory _RouteGeometryModel(
-          {@JsonKey(name: 'paths') final List<List<List<double>>> paths}) =
-      _$RouteGeometryModelImpl;
 
-  factory _RouteGeometryModel.fromJson(Map<String, dynamic> json) =
-      _$RouteGeometryModelImpl.fromJson;
+/// Create a copy of RouteGeometryModel
+/// with the given fields replaced by the non-null parameter values.
+@override @JsonKey(includeFromJson: false, includeToJson: false)
+@pragma('vm:prefer-inline')
+_$RouteGeometryModelCopyWith<_RouteGeometryModel> get copyWith => __$RouteGeometryModelCopyWithImpl<_RouteGeometryModel>(this, _$identity);
 
-  @override // Type List<List<List<double>>> dùng để map cái mảng paths phức tạp của ArcGIS
-  @JsonKey(name: 'paths')
-  List<List<List<double>>> get paths;
-  @override
-  @JsonKey(ignore: true)
-  _$$RouteGeometryModelImplCopyWith<_$RouteGeometryModelImpl> get copyWith =>
-      throw _privateConstructorUsedError;
+@override
+Map<String, dynamic> toJson() {
+  return _$RouteGeometryModelToJson(this, );
 }
 
-RouteDirectionSetModel _$RouteDirectionSetModelFromJson(
-    Map<String, dynamic> json) {
-  return _RouteDirectionSetModel.fromJson(json);
+@override
+bool operator ==(Object other) {
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _RouteGeometryModel&&const DeepCollectionEquality().equals(other._paths, _paths));
 }
+
+@JsonKey(includeFromJson: false, includeToJson: false)
+@override
+int get hashCode => Object.hash(runtimeType,const DeepCollectionEquality().hash(_paths));
+
+@override
+String toString() {
+  return 'RouteGeometryModel(paths: $paths)';
+}
+
+
+}
+
+/// @nodoc
+abstract mixin class _$RouteGeometryModelCopyWith<$Res> implements $RouteGeometryModelCopyWith<$Res> {
+  factory _$RouteGeometryModelCopyWith(_RouteGeometryModel value, $Res Function(_RouteGeometryModel) _then) = __$RouteGeometryModelCopyWithImpl;
+@override @useResult
+$Res call({
+@JsonKey(name: 'paths') List<List<List<double>>> paths
+});
+
+
+
+
+}
+/// @nodoc
+class __$RouteGeometryModelCopyWithImpl<$Res>
+    implements _$RouteGeometryModelCopyWith<$Res> {
+  __$RouteGeometryModelCopyWithImpl(this._self, this._then);
+
+  final _RouteGeometryModel _self;
+  final $Res Function(_RouteGeometryModel) _then;
+
+/// Create a copy of RouteGeometryModel
+/// with the given fields replaced by the non-null parameter values.
+@override @pragma('vm:prefer-inline') $Res call({Object? paths = null,}) {
+  return _then(_RouteGeometryModel(
+paths: null == paths ? _self._paths : paths // ignore: cast_nullable_to_non_nullable
+as List<List<List<double>>>,
+  ));
+}
+
+
+}
+
 
 /// @nodoc
 mixin _$RouteDirectionSetModel {
-  @JsonKey(name: 'summary')
-  RouteDirectionSummaryModel? get summary => throw _privateConstructorUsedError;
-  @JsonKey(name: 'features')
-  List<RouteDirectionFeatureModel> get features =>
-      throw _privateConstructorUsedError;
 
-  Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
-  @JsonKey(ignore: true)
-  $RouteDirectionSetModelCopyWith<RouteDirectionSetModel> get copyWith =>
-      throw _privateConstructorUsedError;
+@JsonKey(name: 'summary') RouteDirectionSummaryModel? get summary;@JsonKey(name: 'features') List<RouteDirectionFeatureModel> get features;
+/// Create a copy of RouteDirectionSetModel
+/// with the given fields replaced by the non-null parameter values.
+@JsonKey(includeFromJson: false, includeToJson: false)
+@pragma('vm:prefer-inline')
+$RouteDirectionSetModelCopyWith<RouteDirectionSetModel> get copyWith => _$RouteDirectionSetModelCopyWithImpl<RouteDirectionSetModel>(this as RouteDirectionSetModel, _$identity);
+
+  /// Serializes this RouteDirectionSetModel to a JSON map.
+  Map<String, dynamic> toJson();
+
+
+@override
+bool operator ==(Object other) {
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is RouteDirectionSetModel&&(identical(other.summary, summary) || other.summary == summary)&&const DeepCollectionEquality().equals(other.features, features));
+}
+
+@JsonKey(includeFromJson: false, includeToJson: false)
+@override
+int get hashCode => Object.hash(runtimeType,summary,const DeepCollectionEquality().hash(features));
+
+@override
+String toString() {
+  return 'RouteDirectionSetModel(summary: $summary, features: $features)';
+}
+
+
 }
 
 /// @nodoc
-abstract class $RouteDirectionSetModelCopyWith<$Res> {
-  factory $RouteDirectionSetModelCopyWith(RouteDirectionSetModel value,
-          $Res Function(RouteDirectionSetModel) then) =
-      _$RouteDirectionSetModelCopyWithImpl<$Res, RouteDirectionSetModel>;
-  @useResult
-  $Res call(
-      {@JsonKey(name: 'summary') RouteDirectionSummaryModel? summary,
-      @JsonKey(name: 'features') List<RouteDirectionFeatureModel> features});
+abstract mixin class $RouteDirectionSetModelCopyWith<$Res>  {
+  factory $RouteDirectionSetModelCopyWith(RouteDirectionSetModel value, $Res Function(RouteDirectionSetModel) _then) = _$RouteDirectionSetModelCopyWithImpl;
+@useResult
+$Res call({
+@JsonKey(name: 'summary') RouteDirectionSummaryModel? summary,@JsonKey(name: 'features') List<RouteDirectionFeatureModel> features
+});
 
-  $RouteDirectionSummaryModelCopyWith<$Res>? get summary;
+
+$RouteDirectionSummaryModelCopyWith<$Res>? get summary;
+
 }
-
 /// @nodoc
-class _$RouteDirectionSetModelCopyWithImpl<$Res,
-        $Val extends RouteDirectionSetModel>
+class _$RouteDirectionSetModelCopyWithImpl<$Res>
     implements $RouteDirectionSetModelCopyWith<$Res> {
-  _$RouteDirectionSetModelCopyWithImpl(this._value, this._then);
+  _$RouteDirectionSetModelCopyWithImpl(this._self, this._then);
 
-  // ignore: unused_field
-  final $Val _value;
-  // ignore: unused_field
-  final $Res Function($Val) _then;
+  final RouteDirectionSetModel _self;
+  final $Res Function(RouteDirectionSetModel) _then;
 
-  @pragma('vm:prefer-inline')
-  @override
-  $Res call({
-    Object? summary = freezed,
-    Object? features = null,
-  }) {
-    return _then(_value.copyWith(
-      summary: freezed == summary
-          ? _value.summary
-          : summary // ignore: cast_nullable_to_non_nullable
-              as RouteDirectionSummaryModel?,
-      features: null == features
-          ? _value.features
-          : features // ignore: cast_nullable_to_non_nullable
-              as List<RouteDirectionFeatureModel>,
-    ) as $Val);
+/// Create a copy of RouteDirectionSetModel
+/// with the given fields replaced by the non-null parameter values.
+@pragma('vm:prefer-inline') @override $Res call({Object? summary = freezed,Object? features = null,}) {
+  return _then(_self.copyWith(
+summary: freezed == summary ? _self.summary : summary // ignore: cast_nullable_to_non_nullable
+as RouteDirectionSummaryModel?,features: null == features ? _self.features : features // ignore: cast_nullable_to_non_nullable
+as List<RouteDirectionFeatureModel>,
+  ));
+}
+/// Create a copy of RouteDirectionSetModel
+/// with the given fields replaced by the non-null parameter values.
+@override
+@pragma('vm:prefer-inline')
+$RouteDirectionSummaryModelCopyWith<$Res>? get summary {
+    if (_self.summary == null) {
+    return null;
   }
 
-  @override
-  @pragma('vm:prefer-inline')
-  $RouteDirectionSummaryModelCopyWith<$Res>? get summary {
-    if (_value.summary == null) {
-      return null;
-    }
-
-    return $RouteDirectionSummaryModelCopyWith<$Res>(_value.summary!, (value) {
-      return _then(_value.copyWith(summary: value) as $Val);
-    });
-  }
+  return $RouteDirectionSummaryModelCopyWith<$Res>(_self.summary!, (value) {
+    return _then(_self.copyWith(summary: value));
+  });
+}
 }
 
-/// @nodoc
-abstract class _$$RouteDirectionSetModelImplCopyWith<$Res>
-    implements $RouteDirectionSetModelCopyWith<$Res> {
-  factory _$$RouteDirectionSetModelImplCopyWith(
-          _$RouteDirectionSetModelImpl value,
-          $Res Function(_$RouteDirectionSetModelImpl) then) =
-      __$$RouteDirectionSetModelImplCopyWithImpl<$Res>;
-  @override
-  @useResult
-  $Res call(
-      {@JsonKey(name: 'summary') RouteDirectionSummaryModel? summary,
-      @JsonKey(name: 'features') List<RouteDirectionFeatureModel> features});
 
-  @override
-  $RouteDirectionSummaryModelCopyWith<$Res>? get summary;
+/// Adds pattern-matching-related methods to [RouteDirectionSetModel].
+extension RouteDirectionSetModelPatterns on RouteDirectionSetModel {
+/// A variant of `map` that fallback to returning `orElse`.
+///
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case final Subclass value:
+///     return ...;
+///   case _:
+///     return orElse();
+/// }
+/// ```
+
+@optionalTypeArgs TResult maybeMap<TResult extends Object?>(TResult Function( _RouteDirectionSetModel value)?  $default,{required TResult orElse(),}){
+final _that = this;
+switch (_that) {
+case _RouteDirectionSetModel() when $default != null:
+return $default(_that);case _:
+  return orElse();
+
+}
+}
+/// A `switch`-like method, using callbacks.
+///
+/// Callbacks receives the raw object, upcasted.
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case final Subclass value:
+///     return ...;
+///   case final Subclass2 value:
+///     return ...;
+/// }
+/// ```
+
+@optionalTypeArgs TResult map<TResult extends Object?>(TResult Function( _RouteDirectionSetModel value)  $default,){
+final _that = this;
+switch (_that) {
+case _RouteDirectionSetModel():
+return $default(_that);case _:
+  throw StateError('Unexpected subclass');
+
+}
+}
+/// A variant of `map` that fallback to returning `null`.
+///
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case final Subclass value:
+///     return ...;
+///   case _:
+///     return null;
+/// }
+/// ```
+
+@optionalTypeArgs TResult? mapOrNull<TResult extends Object?>(TResult? Function( _RouteDirectionSetModel value)?  $default,){
+final _that = this;
+switch (_that) {
+case _RouteDirectionSetModel() when $default != null:
+return $default(_that);case _:
+  return null;
+
+}
+}
+/// A variant of `when` that fallback to an `orElse` callback.
+///
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case Subclass(:final field):
+///     return ...;
+///   case _:
+///     return orElse();
+/// }
+/// ```
+
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function(@JsonKey(name: 'summary')  RouteDirectionSummaryModel? summary, @JsonKey(name: 'features')  List<RouteDirectionFeatureModel> features)?  $default,{required TResult orElse(),}) {final _that = this;
+switch (_that) {
+case _RouteDirectionSetModel() when $default != null:
+return $default(_that.summary,_that.features);case _:
+  return orElse();
+
+}
+}
+/// A `switch`-like method, using callbacks.
+///
+/// As opposed to `map`, this offers destructuring.
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case Subclass(:final field):
+///     return ...;
+///   case Subclass2(:final field2):
+///     return ...;
+/// }
+/// ```
+
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function(@JsonKey(name: 'summary')  RouteDirectionSummaryModel? summary, @JsonKey(name: 'features')  List<RouteDirectionFeatureModel> features)  $default,) {final _that = this;
+switch (_that) {
+case _RouteDirectionSetModel():
+return $default(_that.summary,_that.features);case _:
+  throw StateError('Unexpected subclass');
+
+}
+}
+/// A variant of `when` that fallback to returning `null`
+///
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case Subclass(:final field):
+///     return ...;
+///   case _:
+///     return null;
+/// }
+/// ```
+
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function(@JsonKey(name: 'summary')  RouteDirectionSummaryModel? summary, @JsonKey(name: 'features')  List<RouteDirectionFeatureModel> features)?  $default,) {final _that = this;
+switch (_that) {
+case _RouteDirectionSetModel() when $default != null:
+return $default(_that.summary,_that.features);case _:
+  return null;
+
+}
 }
 
-/// @nodoc
-class __$$RouteDirectionSetModelImplCopyWithImpl<$Res>
-    extends _$RouteDirectionSetModelCopyWithImpl<$Res,
-        _$RouteDirectionSetModelImpl>
-    implements _$$RouteDirectionSetModelImplCopyWith<$Res> {
-  __$$RouteDirectionSetModelImplCopyWithImpl(
-      _$RouteDirectionSetModelImpl _value,
-      $Res Function(_$RouteDirectionSetModelImpl) _then)
-      : super(_value, _then);
-
-  @pragma('vm:prefer-inline')
-  @override
-  $Res call({
-    Object? summary = freezed,
-    Object? features = null,
-  }) {
-    return _then(_$RouteDirectionSetModelImpl(
-      summary: freezed == summary
-          ? _value.summary
-          : summary // ignore: cast_nullable_to_non_nullable
-              as RouteDirectionSummaryModel?,
-      features: null == features
-          ? _value._features
-          : features // ignore: cast_nullable_to_non_nullable
-              as List<RouteDirectionFeatureModel>,
-    ));
-  }
 }
 
 /// @nodoc
 @JsonSerializable()
-class _$RouteDirectionSetModelImpl implements _RouteDirectionSetModel {
-  const _$RouteDirectionSetModelImpl(
-      {@JsonKey(name: 'summary') this.summary,
-      @JsonKey(name: 'features')
-      final List<RouteDirectionFeatureModel> features = const []})
-      : _features = features;
 
-  factory _$RouteDirectionSetModelImpl.fromJson(Map<String, dynamic> json) =>
-      _$$RouteDirectionSetModelImplFromJson(json);
+class _RouteDirectionSetModel implements RouteDirectionSetModel {
+  const _RouteDirectionSetModel({@JsonKey(name: 'summary') this.summary, @JsonKey(name: 'features') final  List<RouteDirectionFeatureModel> features = const []}): _features = features;
+  factory _RouteDirectionSetModel.fromJson(Map<String, dynamic> json) => _$RouteDirectionSetModelFromJson(json);
 
-  @override
-  @JsonKey(name: 'summary')
-  final RouteDirectionSummaryModel? summary;
-  final List<RouteDirectionFeatureModel> _features;
-  @override
-  @JsonKey(name: 'features')
-  List<RouteDirectionFeatureModel> get features {
-    if (_features is EqualUnmodifiableListView) return _features;
-    // ignore: implicit_dynamic_type
-    return EqualUnmodifiableListView(_features);
-  }
-
-  @override
-  String toString() {
-    return 'RouteDirectionSetModel(summary: $summary, features: $features)';
-  }
-
-  @override
-  bool operator ==(Object other) {
-    return identical(this, other) ||
-        (other.runtimeType == runtimeType &&
-            other is _$RouteDirectionSetModelImpl &&
-            (identical(other.summary, summary) || other.summary == summary) &&
-            const DeepCollectionEquality().equals(other._features, _features));
-  }
-
-  @JsonKey(ignore: true)
-  @override
-  int get hashCode => Object.hash(
-      runtimeType, summary, const DeepCollectionEquality().hash(_features));
-
-  @JsonKey(ignore: true)
-  @override
-  @pragma('vm:prefer-inline')
-  _$$RouteDirectionSetModelImplCopyWith<_$RouteDirectionSetModelImpl>
-      get copyWith => __$$RouteDirectionSetModelImplCopyWithImpl<
-          _$RouteDirectionSetModelImpl>(this, _$identity);
-
-  @override
-  Map<String, dynamic> toJson() {
-    return _$$RouteDirectionSetModelImplToJson(
-      this,
-    );
-  }
+@override@JsonKey(name: 'summary') final  RouteDirectionSummaryModel? summary;
+ final  List<RouteDirectionFeatureModel> _features;
+@override@JsonKey(name: 'features') List<RouteDirectionFeatureModel> get features {
+  if (_features is EqualUnmodifiableListView) return _features;
+  // ignore: implicit_dynamic_type
+  return EqualUnmodifiableListView(_features);
 }
 
-abstract class _RouteDirectionSetModel implements RouteDirectionSetModel {
-  const factory _RouteDirectionSetModel(
-          {@JsonKey(name: 'summary') final RouteDirectionSummaryModel? summary,
-          @JsonKey(name: 'features')
-          final List<RouteDirectionFeatureModel> features}) =
-      _$RouteDirectionSetModelImpl;
 
-  factory _RouteDirectionSetModel.fromJson(Map<String, dynamic> json) =
-      _$RouteDirectionSetModelImpl.fromJson;
+/// Create a copy of RouteDirectionSetModel
+/// with the given fields replaced by the non-null parameter values.
+@override @JsonKey(includeFromJson: false, includeToJson: false)
+@pragma('vm:prefer-inline')
+_$RouteDirectionSetModelCopyWith<_RouteDirectionSetModel> get copyWith => __$RouteDirectionSetModelCopyWithImpl<_RouteDirectionSetModel>(this, _$identity);
 
-  @override
-  @JsonKey(name: 'summary')
-  RouteDirectionSummaryModel? get summary;
-  @override
-  @JsonKey(name: 'features')
-  List<RouteDirectionFeatureModel> get features;
-  @override
-  @JsonKey(ignore: true)
-  _$$RouteDirectionSetModelImplCopyWith<_$RouteDirectionSetModelImpl>
-      get copyWith => throw _privateConstructorUsedError;
+@override
+Map<String, dynamic> toJson() {
+  return _$RouteDirectionSetModelToJson(this, );
 }
 
-RouteDirectionSummaryModel _$RouteDirectionSummaryModelFromJson(
-    Map<String, dynamic> json) {
-  return _RouteDirectionSummaryModel.fromJson(json);
+@override
+bool operator ==(Object other) {
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _RouteDirectionSetModel&&(identical(other.summary, summary) || other.summary == summary)&&const DeepCollectionEquality().equals(other._features, _features));
 }
+
+@JsonKey(includeFromJson: false, includeToJson: false)
+@override
+int get hashCode => Object.hash(runtimeType,summary,const DeepCollectionEquality().hash(_features));
+
+@override
+String toString() {
+  return 'RouteDirectionSetModel(summary: $summary, features: $features)';
+}
+
+
+}
+
+/// @nodoc
+abstract mixin class _$RouteDirectionSetModelCopyWith<$Res> implements $RouteDirectionSetModelCopyWith<$Res> {
+  factory _$RouteDirectionSetModelCopyWith(_RouteDirectionSetModel value, $Res Function(_RouteDirectionSetModel) _then) = __$RouteDirectionSetModelCopyWithImpl;
+@override @useResult
+$Res call({
+@JsonKey(name: 'summary') RouteDirectionSummaryModel? summary,@JsonKey(name: 'features') List<RouteDirectionFeatureModel> features
+});
+
+
+@override $RouteDirectionSummaryModelCopyWith<$Res>? get summary;
+
+}
+/// @nodoc
+class __$RouteDirectionSetModelCopyWithImpl<$Res>
+    implements _$RouteDirectionSetModelCopyWith<$Res> {
+  __$RouteDirectionSetModelCopyWithImpl(this._self, this._then);
+
+  final _RouteDirectionSetModel _self;
+  final $Res Function(_RouteDirectionSetModel) _then;
+
+/// Create a copy of RouteDirectionSetModel
+/// with the given fields replaced by the non-null parameter values.
+@override @pragma('vm:prefer-inline') $Res call({Object? summary = freezed,Object? features = null,}) {
+  return _then(_RouteDirectionSetModel(
+summary: freezed == summary ? _self.summary : summary // ignore: cast_nullable_to_non_nullable
+as RouteDirectionSummaryModel?,features: null == features ? _self._features : features // ignore: cast_nullable_to_non_nullable
+as List<RouteDirectionFeatureModel>,
+  ));
+}
+
+/// Create a copy of RouteDirectionSetModel
+/// with the given fields replaced by the non-null parameter values.
+@override
+@pragma('vm:prefer-inline')
+$RouteDirectionSummaryModelCopyWith<$Res>? get summary {
+    if (_self.summary == null) {
+    return null;
+  }
+
+  return $RouteDirectionSummaryModelCopyWith<$Res>(_self.summary!, (value) {
+    return _then(_self.copyWith(summary: value));
+  });
+}
+}
+
 
 /// @nodoc
 mixin _$RouteDirectionSummaryModel {
-  @JsonKey(name: 'envelope')
-  RouteEnvelopeModel? get envelope => throw _privateConstructorUsedError;
 
-  Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
-  @JsonKey(ignore: true)
-  $RouteDirectionSummaryModelCopyWith<RouteDirectionSummaryModel>
-      get copyWith => throw _privateConstructorUsedError;
+@JsonKey(name: 'envelope') RouteEnvelopeModel? get envelope;
+/// Create a copy of RouteDirectionSummaryModel
+/// with the given fields replaced by the non-null parameter values.
+@JsonKey(includeFromJson: false, includeToJson: false)
+@pragma('vm:prefer-inline')
+$RouteDirectionSummaryModelCopyWith<RouteDirectionSummaryModel> get copyWith => _$RouteDirectionSummaryModelCopyWithImpl<RouteDirectionSummaryModel>(this as RouteDirectionSummaryModel, _$identity);
+
+  /// Serializes this RouteDirectionSummaryModel to a JSON map.
+  Map<String, dynamic> toJson();
+
+
+@override
+bool operator ==(Object other) {
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is RouteDirectionSummaryModel&&(identical(other.envelope, envelope) || other.envelope == envelope));
+}
+
+@JsonKey(includeFromJson: false, includeToJson: false)
+@override
+int get hashCode => Object.hash(runtimeType,envelope);
+
+@override
+String toString() {
+  return 'RouteDirectionSummaryModel(envelope: $envelope)';
+}
+
+
 }
 
 /// @nodoc
-abstract class $RouteDirectionSummaryModelCopyWith<$Res> {
-  factory $RouteDirectionSummaryModelCopyWith(RouteDirectionSummaryModel value,
-          $Res Function(RouteDirectionSummaryModel) then) =
-      _$RouteDirectionSummaryModelCopyWithImpl<$Res,
-          RouteDirectionSummaryModel>;
-  @useResult
-  $Res call({@JsonKey(name: 'envelope') RouteEnvelopeModel? envelope});
+abstract mixin class $RouteDirectionSummaryModelCopyWith<$Res>  {
+  factory $RouteDirectionSummaryModelCopyWith(RouteDirectionSummaryModel value, $Res Function(RouteDirectionSummaryModel) _then) = _$RouteDirectionSummaryModelCopyWithImpl;
+@useResult
+$Res call({
+@JsonKey(name: 'envelope') RouteEnvelopeModel? envelope
+});
 
-  $RouteEnvelopeModelCopyWith<$Res>? get envelope;
+
+$RouteEnvelopeModelCopyWith<$Res>? get envelope;
+
 }
-
 /// @nodoc
-class _$RouteDirectionSummaryModelCopyWithImpl<$Res,
-        $Val extends RouteDirectionSummaryModel>
+class _$RouteDirectionSummaryModelCopyWithImpl<$Res>
     implements $RouteDirectionSummaryModelCopyWith<$Res> {
-  _$RouteDirectionSummaryModelCopyWithImpl(this._value, this._then);
+  _$RouteDirectionSummaryModelCopyWithImpl(this._self, this._then);
 
-  // ignore: unused_field
-  final $Val _value;
-  // ignore: unused_field
-  final $Res Function($Val) _then;
+  final RouteDirectionSummaryModel _self;
+  final $Res Function(RouteDirectionSummaryModel) _then;
 
-  @pragma('vm:prefer-inline')
-  @override
-  $Res call({
-    Object? envelope = freezed,
-  }) {
-    return _then(_value.copyWith(
-      envelope: freezed == envelope
-          ? _value.envelope
-          : envelope // ignore: cast_nullable_to_non_nullable
-              as RouteEnvelopeModel?,
-    ) as $Val);
+/// Create a copy of RouteDirectionSummaryModel
+/// with the given fields replaced by the non-null parameter values.
+@pragma('vm:prefer-inline') @override $Res call({Object? envelope = freezed,}) {
+  return _then(_self.copyWith(
+envelope: freezed == envelope ? _self.envelope : envelope // ignore: cast_nullable_to_non_nullable
+as RouteEnvelopeModel?,
+  ));
+}
+/// Create a copy of RouteDirectionSummaryModel
+/// with the given fields replaced by the non-null parameter values.
+@override
+@pragma('vm:prefer-inline')
+$RouteEnvelopeModelCopyWith<$Res>? get envelope {
+    if (_self.envelope == null) {
+    return null;
   }
 
-  @override
-  @pragma('vm:prefer-inline')
-  $RouteEnvelopeModelCopyWith<$Res>? get envelope {
-    if (_value.envelope == null) {
-      return null;
-    }
-
-    return $RouteEnvelopeModelCopyWith<$Res>(_value.envelope!, (value) {
-      return _then(_value.copyWith(envelope: value) as $Val);
-    });
-  }
+  return $RouteEnvelopeModelCopyWith<$Res>(_self.envelope!, (value) {
+    return _then(_self.copyWith(envelope: value));
+  });
+}
 }
 
-/// @nodoc
-abstract class _$$RouteDirectionSummaryModelImplCopyWith<$Res>
-    implements $RouteDirectionSummaryModelCopyWith<$Res> {
-  factory _$$RouteDirectionSummaryModelImplCopyWith(
-          _$RouteDirectionSummaryModelImpl value,
-          $Res Function(_$RouteDirectionSummaryModelImpl) then) =
-      __$$RouteDirectionSummaryModelImplCopyWithImpl<$Res>;
-  @override
-  @useResult
-  $Res call({@JsonKey(name: 'envelope') RouteEnvelopeModel? envelope});
 
-  @override
-  $RouteEnvelopeModelCopyWith<$Res>? get envelope;
+/// Adds pattern-matching-related methods to [RouteDirectionSummaryModel].
+extension RouteDirectionSummaryModelPatterns on RouteDirectionSummaryModel {
+/// A variant of `map` that fallback to returning `orElse`.
+///
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case final Subclass value:
+///     return ...;
+///   case _:
+///     return orElse();
+/// }
+/// ```
+
+@optionalTypeArgs TResult maybeMap<TResult extends Object?>(TResult Function( _RouteDirectionSummaryModel value)?  $default,{required TResult orElse(),}){
+final _that = this;
+switch (_that) {
+case _RouteDirectionSummaryModel() when $default != null:
+return $default(_that);case _:
+  return orElse();
+
+}
+}
+/// A `switch`-like method, using callbacks.
+///
+/// Callbacks receives the raw object, upcasted.
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case final Subclass value:
+///     return ...;
+///   case final Subclass2 value:
+///     return ...;
+/// }
+/// ```
+
+@optionalTypeArgs TResult map<TResult extends Object?>(TResult Function( _RouteDirectionSummaryModel value)  $default,){
+final _that = this;
+switch (_that) {
+case _RouteDirectionSummaryModel():
+return $default(_that);case _:
+  throw StateError('Unexpected subclass');
+
+}
+}
+/// A variant of `map` that fallback to returning `null`.
+///
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case final Subclass value:
+///     return ...;
+///   case _:
+///     return null;
+/// }
+/// ```
+
+@optionalTypeArgs TResult? mapOrNull<TResult extends Object?>(TResult? Function( _RouteDirectionSummaryModel value)?  $default,){
+final _that = this;
+switch (_that) {
+case _RouteDirectionSummaryModel() when $default != null:
+return $default(_that);case _:
+  return null;
+
+}
+}
+/// A variant of `when` that fallback to an `orElse` callback.
+///
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case Subclass(:final field):
+///     return ...;
+///   case _:
+///     return orElse();
+/// }
+/// ```
+
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function(@JsonKey(name: 'envelope')  RouteEnvelopeModel? envelope)?  $default,{required TResult orElse(),}) {final _that = this;
+switch (_that) {
+case _RouteDirectionSummaryModel() when $default != null:
+return $default(_that.envelope);case _:
+  return orElse();
+
+}
+}
+/// A `switch`-like method, using callbacks.
+///
+/// As opposed to `map`, this offers destructuring.
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case Subclass(:final field):
+///     return ...;
+///   case Subclass2(:final field2):
+///     return ...;
+/// }
+/// ```
+
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function(@JsonKey(name: 'envelope')  RouteEnvelopeModel? envelope)  $default,) {final _that = this;
+switch (_that) {
+case _RouteDirectionSummaryModel():
+return $default(_that.envelope);case _:
+  throw StateError('Unexpected subclass');
+
+}
+}
+/// A variant of `when` that fallback to returning `null`
+///
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case Subclass(:final field):
+///     return ...;
+///   case _:
+///     return null;
+/// }
+/// ```
+
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function(@JsonKey(name: 'envelope')  RouteEnvelopeModel? envelope)?  $default,) {final _that = this;
+switch (_that) {
+case _RouteDirectionSummaryModel() when $default != null:
+return $default(_that.envelope);case _:
+  return null;
+
+}
 }
 
-/// @nodoc
-class __$$RouteDirectionSummaryModelImplCopyWithImpl<$Res>
-    extends _$RouteDirectionSummaryModelCopyWithImpl<$Res,
-        _$RouteDirectionSummaryModelImpl>
-    implements _$$RouteDirectionSummaryModelImplCopyWith<$Res> {
-  __$$RouteDirectionSummaryModelImplCopyWithImpl(
-      _$RouteDirectionSummaryModelImpl _value,
-      $Res Function(_$RouteDirectionSummaryModelImpl) _then)
-      : super(_value, _then);
-
-  @pragma('vm:prefer-inline')
-  @override
-  $Res call({
-    Object? envelope = freezed,
-  }) {
-    return _then(_$RouteDirectionSummaryModelImpl(
-      envelope: freezed == envelope
-          ? _value.envelope
-          : envelope // ignore: cast_nullable_to_non_nullable
-              as RouteEnvelopeModel?,
-    ));
-  }
 }
 
 /// @nodoc
 @JsonSerializable()
-class _$RouteDirectionSummaryModelImpl implements _RouteDirectionSummaryModel {
-  const _$RouteDirectionSummaryModelImpl(
-      {@JsonKey(name: 'envelope') this.envelope});
 
-  factory _$RouteDirectionSummaryModelImpl.fromJson(
-          Map<String, dynamic> json) =>
-      _$$RouteDirectionSummaryModelImplFromJson(json);
+class _RouteDirectionSummaryModel implements RouteDirectionSummaryModel {
+  const _RouteDirectionSummaryModel({@JsonKey(name: 'envelope') this.envelope});
+  factory _RouteDirectionSummaryModel.fromJson(Map<String, dynamic> json) => _$RouteDirectionSummaryModelFromJson(json);
 
-  @override
-  @JsonKey(name: 'envelope')
-  final RouteEnvelopeModel? envelope;
+@override@JsonKey(name: 'envelope') final  RouteEnvelopeModel? envelope;
 
-  @override
-  String toString() {
-    return 'RouteDirectionSummaryModel(envelope: $envelope)';
-  }
+/// Create a copy of RouteDirectionSummaryModel
+/// with the given fields replaced by the non-null parameter values.
+@override @JsonKey(includeFromJson: false, includeToJson: false)
+@pragma('vm:prefer-inline')
+_$RouteDirectionSummaryModelCopyWith<_RouteDirectionSummaryModel> get copyWith => __$RouteDirectionSummaryModelCopyWithImpl<_RouteDirectionSummaryModel>(this, _$identity);
 
-  @override
-  bool operator ==(Object other) {
-    return identical(this, other) ||
-        (other.runtimeType == runtimeType &&
-            other is _$RouteDirectionSummaryModelImpl &&
-            (identical(other.envelope, envelope) ||
-                other.envelope == envelope));
-  }
-
-  @JsonKey(ignore: true)
-  @override
-  int get hashCode => Object.hash(runtimeType, envelope);
-
-  @JsonKey(ignore: true)
-  @override
-  @pragma('vm:prefer-inline')
-  _$$RouteDirectionSummaryModelImplCopyWith<_$RouteDirectionSummaryModelImpl>
-      get copyWith => __$$RouteDirectionSummaryModelImplCopyWithImpl<
-          _$RouteDirectionSummaryModelImpl>(this, _$identity);
-
-  @override
-  Map<String, dynamic> toJson() {
-    return _$$RouteDirectionSummaryModelImplToJson(
-      this,
-    );
-  }
+@override
+Map<String, dynamic> toJson() {
+  return _$RouteDirectionSummaryModelToJson(this, );
 }
 
-abstract class _RouteDirectionSummaryModel
-    implements RouteDirectionSummaryModel {
-  const factory _RouteDirectionSummaryModel(
-          {@JsonKey(name: 'envelope') final RouteEnvelopeModel? envelope}) =
-      _$RouteDirectionSummaryModelImpl;
-
-  factory _RouteDirectionSummaryModel.fromJson(Map<String, dynamic> json) =
-      _$RouteDirectionSummaryModelImpl.fromJson;
-
-  @override
-  @JsonKey(name: 'envelope')
-  RouteEnvelopeModel? get envelope;
-  @override
-  @JsonKey(ignore: true)
-  _$$RouteDirectionSummaryModelImplCopyWith<_$RouteDirectionSummaryModelImpl>
-      get copyWith => throw _privateConstructorUsedError;
+@override
+bool operator ==(Object other) {
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _RouteDirectionSummaryModel&&(identical(other.envelope, envelope) || other.envelope == envelope));
 }
 
-RouteEnvelopeModel _$RouteEnvelopeModelFromJson(Map<String, dynamic> json) {
-  return _RouteEnvelopeModel.fromJson(json);
+@JsonKey(includeFromJson: false, includeToJson: false)
+@override
+int get hashCode => Object.hash(runtimeType,envelope);
+
+@override
+String toString() {
+  return 'RouteDirectionSummaryModel(envelope: $envelope)';
 }
+
+
+}
+
+/// @nodoc
+abstract mixin class _$RouteDirectionSummaryModelCopyWith<$Res> implements $RouteDirectionSummaryModelCopyWith<$Res> {
+  factory _$RouteDirectionSummaryModelCopyWith(_RouteDirectionSummaryModel value, $Res Function(_RouteDirectionSummaryModel) _then) = __$RouteDirectionSummaryModelCopyWithImpl;
+@override @useResult
+$Res call({
+@JsonKey(name: 'envelope') RouteEnvelopeModel? envelope
+});
+
+
+@override $RouteEnvelopeModelCopyWith<$Res>? get envelope;
+
+}
+/// @nodoc
+class __$RouteDirectionSummaryModelCopyWithImpl<$Res>
+    implements _$RouteDirectionSummaryModelCopyWith<$Res> {
+  __$RouteDirectionSummaryModelCopyWithImpl(this._self, this._then);
+
+  final _RouteDirectionSummaryModel _self;
+  final $Res Function(_RouteDirectionSummaryModel) _then;
+
+/// Create a copy of RouteDirectionSummaryModel
+/// with the given fields replaced by the non-null parameter values.
+@override @pragma('vm:prefer-inline') $Res call({Object? envelope = freezed,}) {
+  return _then(_RouteDirectionSummaryModel(
+envelope: freezed == envelope ? _self.envelope : envelope // ignore: cast_nullable_to_non_nullable
+as RouteEnvelopeModel?,
+  ));
+}
+
+/// Create a copy of RouteDirectionSummaryModel
+/// with the given fields replaced by the non-null parameter values.
+@override
+@pragma('vm:prefer-inline')
+$RouteEnvelopeModelCopyWith<$Res>? get envelope {
+    if (_self.envelope == null) {
+    return null;
+  }
+
+  return $RouteEnvelopeModelCopyWith<$Res>(_self.envelope!, (value) {
+    return _then(_self.copyWith(envelope: value));
+  });
+}
+}
+
 
 /// @nodoc
 mixin _$RouteEnvelopeModel {
-  double? get xmin => throw _privateConstructorUsedError;
-  double? get ymin => throw _privateConstructorUsedError;
-  double? get xmax => throw _privateConstructorUsedError;
-  double? get ymax => throw _privateConstructorUsedError;
 
-  Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
-  @JsonKey(ignore: true)
-  $RouteEnvelopeModelCopyWith<RouteEnvelopeModel> get copyWith =>
-      throw _privateConstructorUsedError;
+ double? get xmin; double? get ymin; double? get xmax; double? get ymax;
+/// Create a copy of RouteEnvelopeModel
+/// with the given fields replaced by the non-null parameter values.
+@JsonKey(includeFromJson: false, includeToJson: false)
+@pragma('vm:prefer-inline')
+$RouteEnvelopeModelCopyWith<RouteEnvelopeModel> get copyWith => _$RouteEnvelopeModelCopyWithImpl<RouteEnvelopeModel>(this as RouteEnvelopeModel, _$identity);
+
+  /// Serializes this RouteEnvelopeModel to a JSON map.
+  Map<String, dynamic> toJson();
+
+
+@override
+bool operator ==(Object other) {
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is RouteEnvelopeModel&&(identical(other.xmin, xmin) || other.xmin == xmin)&&(identical(other.ymin, ymin) || other.ymin == ymin)&&(identical(other.xmax, xmax) || other.xmax == xmax)&&(identical(other.ymax, ymax) || other.ymax == ymax));
+}
+
+@JsonKey(includeFromJson: false, includeToJson: false)
+@override
+int get hashCode => Object.hash(runtimeType,xmin,ymin,xmax,ymax);
+
+@override
+String toString() {
+  return 'RouteEnvelopeModel(xmin: $xmin, ymin: $ymin, xmax: $xmax, ymax: $ymax)';
+}
+
+
 }
 
 /// @nodoc
-abstract class $RouteEnvelopeModelCopyWith<$Res> {
-  factory $RouteEnvelopeModelCopyWith(
-          RouteEnvelopeModel value, $Res Function(RouteEnvelopeModel) then) =
-      _$RouteEnvelopeModelCopyWithImpl<$Res, RouteEnvelopeModel>;
-  @useResult
-  $Res call({double? xmin, double? ymin, double? xmax, double? ymax});
-}
+abstract mixin class $RouteEnvelopeModelCopyWith<$Res>  {
+  factory $RouteEnvelopeModelCopyWith(RouteEnvelopeModel value, $Res Function(RouteEnvelopeModel) _then) = _$RouteEnvelopeModelCopyWithImpl;
+@useResult
+$Res call({
+ double? xmin, double? ymin, double? xmax, double? ymax
+});
 
+
+
+
+}
 /// @nodoc
-class _$RouteEnvelopeModelCopyWithImpl<$Res, $Val extends RouteEnvelopeModel>
+class _$RouteEnvelopeModelCopyWithImpl<$Res>
     implements $RouteEnvelopeModelCopyWith<$Res> {
-  _$RouteEnvelopeModelCopyWithImpl(this._value, this._then);
+  _$RouteEnvelopeModelCopyWithImpl(this._self, this._then);
 
-  // ignore: unused_field
-  final $Val _value;
-  // ignore: unused_field
-  final $Res Function($Val) _then;
+  final RouteEnvelopeModel _self;
+  final $Res Function(RouteEnvelopeModel) _then;
 
-  @pragma('vm:prefer-inline')
-  @override
-  $Res call({
-    Object? xmin = freezed,
-    Object? ymin = freezed,
-    Object? xmax = freezed,
-    Object? ymax = freezed,
-  }) {
-    return _then(_value.copyWith(
-      xmin: freezed == xmin
-          ? _value.xmin
-          : xmin // ignore: cast_nullable_to_non_nullable
-              as double?,
-      ymin: freezed == ymin
-          ? _value.ymin
-          : ymin // ignore: cast_nullable_to_non_nullable
-              as double?,
-      xmax: freezed == xmax
-          ? _value.xmax
-          : xmax // ignore: cast_nullable_to_non_nullable
-              as double?,
-      ymax: freezed == ymax
-          ? _value.ymax
-          : ymax // ignore: cast_nullable_to_non_nullable
-              as double?,
-    ) as $Val);
-  }
+/// Create a copy of RouteEnvelopeModel
+/// with the given fields replaced by the non-null parameter values.
+@pragma('vm:prefer-inline') @override $Res call({Object? xmin = freezed,Object? ymin = freezed,Object? xmax = freezed,Object? ymax = freezed,}) {
+  return _then(_self.copyWith(
+xmin: freezed == xmin ? _self.xmin : xmin // ignore: cast_nullable_to_non_nullable
+as double?,ymin: freezed == ymin ? _self.ymin : ymin // ignore: cast_nullable_to_non_nullable
+as double?,xmax: freezed == xmax ? _self.xmax : xmax // ignore: cast_nullable_to_non_nullable
+as double?,ymax: freezed == ymax ? _self.ymax : ymax // ignore: cast_nullable_to_non_nullable
+as double?,
+  ));
 }
 
-/// @nodoc
-abstract class _$$RouteEnvelopeModelImplCopyWith<$Res>
-    implements $RouteEnvelopeModelCopyWith<$Res> {
-  factory _$$RouteEnvelopeModelImplCopyWith(_$RouteEnvelopeModelImpl value,
-          $Res Function(_$RouteEnvelopeModelImpl) then) =
-      __$$RouteEnvelopeModelImplCopyWithImpl<$Res>;
-  @override
-  @useResult
-  $Res call({double? xmin, double? ymin, double? xmax, double? ymax});
 }
 
-/// @nodoc
-class __$$RouteEnvelopeModelImplCopyWithImpl<$Res>
-    extends _$RouteEnvelopeModelCopyWithImpl<$Res, _$RouteEnvelopeModelImpl>
-    implements _$$RouteEnvelopeModelImplCopyWith<$Res> {
-  __$$RouteEnvelopeModelImplCopyWithImpl(_$RouteEnvelopeModelImpl _value,
-      $Res Function(_$RouteEnvelopeModelImpl) _then)
-      : super(_value, _then);
 
-  @pragma('vm:prefer-inline')
-  @override
-  $Res call({
-    Object? xmin = freezed,
-    Object? ymin = freezed,
-    Object? xmax = freezed,
-    Object? ymax = freezed,
-  }) {
-    return _then(_$RouteEnvelopeModelImpl(
-      xmin: freezed == xmin
-          ? _value.xmin
-          : xmin // ignore: cast_nullable_to_non_nullable
-              as double?,
-      ymin: freezed == ymin
-          ? _value.ymin
-          : ymin // ignore: cast_nullable_to_non_nullable
-              as double?,
-      xmax: freezed == xmax
-          ? _value.xmax
-          : xmax // ignore: cast_nullable_to_non_nullable
-              as double?,
-      ymax: freezed == ymax
-          ? _value.ymax
-          : ymax // ignore: cast_nullable_to_non_nullable
-              as double?,
-    ));
-  }
+/// Adds pattern-matching-related methods to [RouteEnvelopeModel].
+extension RouteEnvelopeModelPatterns on RouteEnvelopeModel {
+/// A variant of `map` that fallback to returning `orElse`.
+///
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case final Subclass value:
+///     return ...;
+///   case _:
+///     return orElse();
+/// }
+/// ```
+
+@optionalTypeArgs TResult maybeMap<TResult extends Object?>(TResult Function( _RouteEnvelopeModel value)?  $default,{required TResult orElse(),}){
+final _that = this;
+switch (_that) {
+case _RouteEnvelopeModel() when $default != null:
+return $default(_that);case _:
+  return orElse();
+
+}
+}
+/// A `switch`-like method, using callbacks.
+///
+/// Callbacks receives the raw object, upcasted.
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case final Subclass value:
+///     return ...;
+///   case final Subclass2 value:
+///     return ...;
+/// }
+/// ```
+
+@optionalTypeArgs TResult map<TResult extends Object?>(TResult Function( _RouteEnvelopeModel value)  $default,){
+final _that = this;
+switch (_that) {
+case _RouteEnvelopeModel():
+return $default(_that);case _:
+  throw StateError('Unexpected subclass');
+
+}
+}
+/// A variant of `map` that fallback to returning `null`.
+///
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case final Subclass value:
+///     return ...;
+///   case _:
+///     return null;
+/// }
+/// ```
+
+@optionalTypeArgs TResult? mapOrNull<TResult extends Object?>(TResult? Function( _RouteEnvelopeModel value)?  $default,){
+final _that = this;
+switch (_that) {
+case _RouteEnvelopeModel() when $default != null:
+return $default(_that);case _:
+  return null;
+
+}
+}
+/// A variant of `when` that fallback to an `orElse` callback.
+///
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case Subclass(:final field):
+///     return ...;
+///   case _:
+///     return orElse();
+/// }
+/// ```
+
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( double? xmin,  double? ymin,  double? xmax,  double? ymax)?  $default,{required TResult orElse(),}) {final _that = this;
+switch (_that) {
+case _RouteEnvelopeModel() when $default != null:
+return $default(_that.xmin,_that.ymin,_that.xmax,_that.ymax);case _:
+  return orElse();
+
+}
+}
+/// A `switch`-like method, using callbacks.
+///
+/// As opposed to `map`, this offers destructuring.
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case Subclass(:final field):
+///     return ...;
+///   case Subclass2(:final field2):
+///     return ...;
+/// }
+/// ```
+
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( double? xmin,  double? ymin,  double? xmax,  double? ymax)  $default,) {final _that = this;
+switch (_that) {
+case _RouteEnvelopeModel():
+return $default(_that.xmin,_that.ymin,_that.xmax,_that.ymax);case _:
+  throw StateError('Unexpected subclass');
+
+}
+}
+/// A variant of `when` that fallback to returning `null`
+///
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case Subclass(:final field):
+///     return ...;
+///   case _:
+///     return null;
+/// }
+/// ```
+
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( double? xmin,  double? ymin,  double? xmax,  double? ymax)?  $default,) {final _that = this;
+switch (_that) {
+case _RouteEnvelopeModel() when $default != null:
+return $default(_that.xmin,_that.ymin,_that.xmax,_that.ymax);case _:
+  return null;
+
+}
+}
+
 }
 
 /// @nodoc
 @JsonSerializable()
-class _$RouteEnvelopeModelImpl implements _RouteEnvelopeModel {
-  const _$RouteEnvelopeModelImpl({this.xmin, this.ymin, this.xmax, this.ymax});
 
-  factory _$RouteEnvelopeModelImpl.fromJson(Map<String, dynamic> json) =>
-      _$$RouteEnvelopeModelImplFromJson(json);
+class _RouteEnvelopeModel implements RouteEnvelopeModel {
+  const _RouteEnvelopeModel({this.xmin, this.ymin, this.xmax, this.ymax});
+  factory _RouteEnvelopeModel.fromJson(Map<String, dynamic> json) => _$RouteEnvelopeModelFromJson(json);
 
-  @override
-  final double? xmin;
-  @override
-  final double? ymin;
-  @override
-  final double? xmax;
-  @override
-  final double? ymax;
+@override final  double? xmin;
+@override final  double? ymin;
+@override final  double? xmax;
+@override final  double? ymax;
 
-  @override
-  String toString() {
-    return 'RouteEnvelopeModel(xmin: $xmin, ymin: $ymin, xmax: $xmax, ymax: $ymax)';
-  }
+/// Create a copy of RouteEnvelopeModel
+/// with the given fields replaced by the non-null parameter values.
+@override @JsonKey(includeFromJson: false, includeToJson: false)
+@pragma('vm:prefer-inline')
+_$RouteEnvelopeModelCopyWith<_RouteEnvelopeModel> get copyWith => __$RouteEnvelopeModelCopyWithImpl<_RouteEnvelopeModel>(this, _$identity);
 
-  @override
-  bool operator ==(Object other) {
-    return identical(this, other) ||
-        (other.runtimeType == runtimeType &&
-            other is _$RouteEnvelopeModelImpl &&
-            (identical(other.xmin, xmin) || other.xmin == xmin) &&
-            (identical(other.ymin, ymin) || other.ymin == ymin) &&
-            (identical(other.xmax, xmax) || other.xmax == xmax) &&
-            (identical(other.ymax, ymax) || other.ymax == ymax));
-  }
-
-  @JsonKey(ignore: true)
-  @override
-  int get hashCode => Object.hash(runtimeType, xmin, ymin, xmax, ymax);
-
-  @JsonKey(ignore: true)
-  @override
-  @pragma('vm:prefer-inline')
-  _$$RouteEnvelopeModelImplCopyWith<_$RouteEnvelopeModelImpl> get copyWith =>
-      __$$RouteEnvelopeModelImplCopyWithImpl<_$RouteEnvelopeModelImpl>(
-          this, _$identity);
-
-  @override
-  Map<String, dynamic> toJson() {
-    return _$$RouteEnvelopeModelImplToJson(
-      this,
-    );
-  }
+@override
+Map<String, dynamic> toJson() {
+  return _$RouteEnvelopeModelToJson(this, );
 }
 
-abstract class _RouteEnvelopeModel implements RouteEnvelopeModel {
-  const factory _RouteEnvelopeModel(
-      {final double? xmin,
-      final double? ymin,
-      final double? xmax,
-      final double? ymax}) = _$RouteEnvelopeModelImpl;
-
-  factory _RouteEnvelopeModel.fromJson(Map<String, dynamic> json) =
-      _$RouteEnvelopeModelImpl.fromJson;
-
-  @override
-  double? get xmin;
-  @override
-  double? get ymin;
-  @override
-  double? get xmax;
-  @override
-  double? get ymax;
-  @override
-  @JsonKey(ignore: true)
-  _$$RouteEnvelopeModelImplCopyWith<_$RouteEnvelopeModelImpl> get copyWith =>
-      throw _privateConstructorUsedError;
+@override
+bool operator ==(Object other) {
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _RouteEnvelopeModel&&(identical(other.xmin, xmin) || other.xmin == xmin)&&(identical(other.ymin, ymin) || other.ymin == ymin)&&(identical(other.xmax, xmax) || other.xmax == xmax)&&(identical(other.ymax, ymax) || other.ymax == ymax));
 }
 
-RouteDirectionFeatureModel _$RouteDirectionFeatureModelFromJson(
-    Map<String, dynamic> json) {
-  return _RouteDirectionFeatureModel.fromJson(json);
+@JsonKey(includeFromJson: false, includeToJson: false)
+@override
+int get hashCode => Object.hash(runtimeType,xmin,ymin,xmax,ymax);
+
+@override
+String toString() {
+  return 'RouteEnvelopeModel(xmin: $xmin, ymin: $ymin, xmax: $xmax, ymax: $ymax)';
 }
+
+
+}
+
+/// @nodoc
+abstract mixin class _$RouteEnvelopeModelCopyWith<$Res> implements $RouteEnvelopeModelCopyWith<$Res> {
+  factory _$RouteEnvelopeModelCopyWith(_RouteEnvelopeModel value, $Res Function(_RouteEnvelopeModel) _then) = __$RouteEnvelopeModelCopyWithImpl;
+@override @useResult
+$Res call({
+ double? xmin, double? ymin, double? xmax, double? ymax
+});
+
+
+
+
+}
+/// @nodoc
+class __$RouteEnvelopeModelCopyWithImpl<$Res>
+    implements _$RouteEnvelopeModelCopyWith<$Res> {
+  __$RouteEnvelopeModelCopyWithImpl(this._self, this._then);
+
+  final _RouteEnvelopeModel _self;
+  final $Res Function(_RouteEnvelopeModel) _then;
+
+/// Create a copy of RouteEnvelopeModel
+/// with the given fields replaced by the non-null parameter values.
+@override @pragma('vm:prefer-inline') $Res call({Object? xmin = freezed,Object? ymin = freezed,Object? xmax = freezed,Object? ymax = freezed,}) {
+  return _then(_RouteEnvelopeModel(
+xmin: freezed == xmin ? _self.xmin : xmin // ignore: cast_nullable_to_non_nullable
+as double?,ymin: freezed == ymin ? _self.ymin : ymin // ignore: cast_nullable_to_non_nullable
+as double?,xmax: freezed == xmax ? _self.xmax : xmax // ignore: cast_nullable_to_non_nullable
+as double?,ymax: freezed == ymax ? _self.ymax : ymax // ignore: cast_nullable_to_non_nullable
+as double?,
+  ));
+}
+
+
+}
+
 
 /// @nodoc
 mixin _$RouteDirectionFeatureModel {
-  @JsonKey(name: 'attributes')
-  RouteDirectionAttributesModel get attributes =>
-      throw _privateConstructorUsedError;
-  @JsonKey(name: 'strings')
-  List<RouteDirectionStringModel> get strings =>
-      throw _privateConstructorUsedError;
 
-  Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
-  @JsonKey(ignore: true)
-  $RouteDirectionFeatureModelCopyWith<RouteDirectionFeatureModel>
-      get copyWith => throw _privateConstructorUsedError;
+@JsonKey(name: 'attributes') RouteDirectionAttributesModel get attributes;@JsonKey(name: 'strings') List<RouteDirectionStringModel> get strings;
+/// Create a copy of RouteDirectionFeatureModel
+/// with the given fields replaced by the non-null parameter values.
+@JsonKey(includeFromJson: false, includeToJson: false)
+@pragma('vm:prefer-inline')
+$RouteDirectionFeatureModelCopyWith<RouteDirectionFeatureModel> get copyWith => _$RouteDirectionFeatureModelCopyWithImpl<RouteDirectionFeatureModel>(this as RouteDirectionFeatureModel, _$identity);
+
+  /// Serializes this RouteDirectionFeatureModel to a JSON map.
+  Map<String, dynamic> toJson();
+
+
+@override
+bool operator ==(Object other) {
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is RouteDirectionFeatureModel&&(identical(other.attributes, attributes) || other.attributes == attributes)&&const DeepCollectionEquality().equals(other.strings, strings));
+}
+
+@JsonKey(includeFromJson: false, includeToJson: false)
+@override
+int get hashCode => Object.hash(runtimeType,attributes,const DeepCollectionEquality().hash(strings));
+
+@override
+String toString() {
+  return 'RouteDirectionFeatureModel(attributes: $attributes, strings: $strings)';
+}
+
+
 }
 
 /// @nodoc
-abstract class $RouteDirectionFeatureModelCopyWith<$Res> {
-  factory $RouteDirectionFeatureModelCopyWith(RouteDirectionFeatureModel value,
-          $Res Function(RouteDirectionFeatureModel) then) =
-      _$RouteDirectionFeatureModelCopyWithImpl<$Res,
-          RouteDirectionFeatureModel>;
-  @useResult
-  $Res call(
-      {@JsonKey(name: 'attributes') RouteDirectionAttributesModel attributes,
-      @JsonKey(name: 'strings') List<RouteDirectionStringModel> strings});
+abstract mixin class $RouteDirectionFeatureModelCopyWith<$Res>  {
+  factory $RouteDirectionFeatureModelCopyWith(RouteDirectionFeatureModel value, $Res Function(RouteDirectionFeatureModel) _then) = _$RouteDirectionFeatureModelCopyWithImpl;
+@useResult
+$Res call({
+@JsonKey(name: 'attributes') RouteDirectionAttributesModel attributes,@JsonKey(name: 'strings') List<RouteDirectionStringModel> strings
+});
 
-  $RouteDirectionAttributesModelCopyWith<$Res> get attributes;
+
+$RouteDirectionAttributesModelCopyWith<$Res> get attributes;
+
 }
-
 /// @nodoc
-class _$RouteDirectionFeatureModelCopyWithImpl<$Res,
-        $Val extends RouteDirectionFeatureModel>
+class _$RouteDirectionFeatureModelCopyWithImpl<$Res>
     implements $RouteDirectionFeatureModelCopyWith<$Res> {
-  _$RouteDirectionFeatureModelCopyWithImpl(this._value, this._then);
+  _$RouteDirectionFeatureModelCopyWithImpl(this._self, this._then);
 
-  // ignore: unused_field
-  final $Val _value;
-  // ignore: unused_field
-  final $Res Function($Val) _then;
+  final RouteDirectionFeatureModel _self;
+  final $Res Function(RouteDirectionFeatureModel) _then;
 
-  @pragma('vm:prefer-inline')
-  @override
-  $Res call({
-    Object? attributes = null,
-    Object? strings = null,
-  }) {
-    return _then(_value.copyWith(
-      attributes: null == attributes
-          ? _value.attributes
-          : attributes // ignore: cast_nullable_to_non_nullable
-              as RouteDirectionAttributesModel,
-      strings: null == strings
-          ? _value.strings
-          : strings // ignore: cast_nullable_to_non_nullable
-              as List<RouteDirectionStringModel>,
-    ) as $Val);
-  }
-
-  @override
-  @pragma('vm:prefer-inline')
-  $RouteDirectionAttributesModelCopyWith<$Res> get attributes {
-    return $RouteDirectionAttributesModelCopyWith<$Res>(_value.attributes,
-        (value) {
-      return _then(_value.copyWith(attributes: value) as $Val);
-    });
-  }
+/// Create a copy of RouteDirectionFeatureModel
+/// with the given fields replaced by the non-null parameter values.
+@pragma('vm:prefer-inline') @override $Res call({Object? attributes = null,Object? strings = null,}) {
+  return _then(_self.copyWith(
+attributes: null == attributes ? _self.attributes : attributes // ignore: cast_nullable_to_non_nullable
+as RouteDirectionAttributesModel,strings: null == strings ? _self.strings : strings // ignore: cast_nullable_to_non_nullable
+as List<RouteDirectionStringModel>,
+  ));
+}
+/// Create a copy of RouteDirectionFeatureModel
+/// with the given fields replaced by the non-null parameter values.
+@override
+@pragma('vm:prefer-inline')
+$RouteDirectionAttributesModelCopyWith<$Res> get attributes {
+  
+  return $RouteDirectionAttributesModelCopyWith<$Res>(_self.attributes, (value) {
+    return _then(_self.copyWith(attributes: value));
+  });
+}
 }
 
-/// @nodoc
-abstract class _$$RouteDirectionFeatureModelImplCopyWith<$Res>
-    implements $RouteDirectionFeatureModelCopyWith<$Res> {
-  factory _$$RouteDirectionFeatureModelImplCopyWith(
-          _$RouteDirectionFeatureModelImpl value,
-          $Res Function(_$RouteDirectionFeatureModelImpl) then) =
-      __$$RouteDirectionFeatureModelImplCopyWithImpl<$Res>;
-  @override
-  @useResult
-  $Res call(
-      {@JsonKey(name: 'attributes') RouteDirectionAttributesModel attributes,
-      @JsonKey(name: 'strings') List<RouteDirectionStringModel> strings});
 
-  @override
-  $RouteDirectionAttributesModelCopyWith<$Res> get attributes;
+/// Adds pattern-matching-related methods to [RouteDirectionFeatureModel].
+extension RouteDirectionFeatureModelPatterns on RouteDirectionFeatureModel {
+/// A variant of `map` that fallback to returning `orElse`.
+///
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case final Subclass value:
+///     return ...;
+///   case _:
+///     return orElse();
+/// }
+/// ```
+
+@optionalTypeArgs TResult maybeMap<TResult extends Object?>(TResult Function( _RouteDirectionFeatureModel value)?  $default,{required TResult orElse(),}){
+final _that = this;
+switch (_that) {
+case _RouteDirectionFeatureModel() when $default != null:
+return $default(_that);case _:
+  return orElse();
+
+}
+}
+/// A `switch`-like method, using callbacks.
+///
+/// Callbacks receives the raw object, upcasted.
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case final Subclass value:
+///     return ...;
+///   case final Subclass2 value:
+///     return ...;
+/// }
+/// ```
+
+@optionalTypeArgs TResult map<TResult extends Object?>(TResult Function( _RouteDirectionFeatureModel value)  $default,){
+final _that = this;
+switch (_that) {
+case _RouteDirectionFeatureModel():
+return $default(_that);case _:
+  throw StateError('Unexpected subclass');
+
+}
+}
+/// A variant of `map` that fallback to returning `null`.
+///
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case final Subclass value:
+///     return ...;
+///   case _:
+///     return null;
+/// }
+/// ```
+
+@optionalTypeArgs TResult? mapOrNull<TResult extends Object?>(TResult? Function( _RouteDirectionFeatureModel value)?  $default,){
+final _that = this;
+switch (_that) {
+case _RouteDirectionFeatureModel() when $default != null:
+return $default(_that);case _:
+  return null;
+
+}
+}
+/// A variant of `when` that fallback to an `orElse` callback.
+///
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case Subclass(:final field):
+///     return ...;
+///   case _:
+///     return orElse();
+/// }
+/// ```
+
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function(@JsonKey(name: 'attributes')  RouteDirectionAttributesModel attributes, @JsonKey(name: 'strings')  List<RouteDirectionStringModel> strings)?  $default,{required TResult orElse(),}) {final _that = this;
+switch (_that) {
+case _RouteDirectionFeatureModel() when $default != null:
+return $default(_that.attributes,_that.strings);case _:
+  return orElse();
+
+}
+}
+/// A `switch`-like method, using callbacks.
+///
+/// As opposed to `map`, this offers destructuring.
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case Subclass(:final field):
+///     return ...;
+///   case Subclass2(:final field2):
+///     return ...;
+/// }
+/// ```
+
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function(@JsonKey(name: 'attributes')  RouteDirectionAttributesModel attributes, @JsonKey(name: 'strings')  List<RouteDirectionStringModel> strings)  $default,) {final _that = this;
+switch (_that) {
+case _RouteDirectionFeatureModel():
+return $default(_that.attributes,_that.strings);case _:
+  throw StateError('Unexpected subclass');
+
+}
+}
+/// A variant of `when` that fallback to returning `null`
+///
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case Subclass(:final field):
+///     return ...;
+///   case _:
+///     return null;
+/// }
+/// ```
+
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function(@JsonKey(name: 'attributes')  RouteDirectionAttributesModel attributes, @JsonKey(name: 'strings')  List<RouteDirectionStringModel> strings)?  $default,) {final _that = this;
+switch (_that) {
+case _RouteDirectionFeatureModel() when $default != null:
+return $default(_that.attributes,_that.strings);case _:
+  return null;
+
+}
 }
 
-/// @nodoc
-class __$$RouteDirectionFeatureModelImplCopyWithImpl<$Res>
-    extends _$RouteDirectionFeatureModelCopyWithImpl<$Res,
-        _$RouteDirectionFeatureModelImpl>
-    implements _$$RouteDirectionFeatureModelImplCopyWith<$Res> {
-  __$$RouteDirectionFeatureModelImplCopyWithImpl(
-      _$RouteDirectionFeatureModelImpl _value,
-      $Res Function(_$RouteDirectionFeatureModelImpl) _then)
-      : super(_value, _then);
-
-  @pragma('vm:prefer-inline')
-  @override
-  $Res call({
-    Object? attributes = null,
-    Object? strings = null,
-  }) {
-    return _then(_$RouteDirectionFeatureModelImpl(
-      attributes: null == attributes
-          ? _value.attributes
-          : attributes // ignore: cast_nullable_to_non_nullable
-              as RouteDirectionAttributesModel,
-      strings: null == strings
-          ? _value._strings
-          : strings // ignore: cast_nullable_to_non_nullable
-              as List<RouteDirectionStringModel>,
-    ));
-  }
 }
 
 /// @nodoc
 @JsonSerializable()
-class _$RouteDirectionFeatureModelImpl implements _RouteDirectionFeatureModel {
-  const _$RouteDirectionFeatureModelImpl(
-      {@JsonKey(name: 'attributes') required this.attributes,
-      @JsonKey(name: 'strings')
-      final List<RouteDirectionStringModel> strings = const []})
-      : _strings = strings;
 
-  factory _$RouteDirectionFeatureModelImpl.fromJson(
-          Map<String, dynamic> json) =>
-      _$$RouteDirectionFeatureModelImplFromJson(json);
+class _RouteDirectionFeatureModel implements RouteDirectionFeatureModel {
+  const _RouteDirectionFeatureModel({@JsonKey(name: 'attributes') required this.attributes, @JsonKey(name: 'strings') final  List<RouteDirectionStringModel> strings = const []}): _strings = strings;
+  factory _RouteDirectionFeatureModel.fromJson(Map<String, dynamic> json) => _$RouteDirectionFeatureModelFromJson(json);
 
-  @override
-  @JsonKey(name: 'attributes')
-  final RouteDirectionAttributesModel attributes;
-  final List<RouteDirectionStringModel> _strings;
-  @override
-  @JsonKey(name: 'strings')
-  List<RouteDirectionStringModel> get strings {
-    if (_strings is EqualUnmodifiableListView) return _strings;
-    // ignore: implicit_dynamic_type
-    return EqualUnmodifiableListView(_strings);
-  }
-
-  @override
-  String toString() {
-    return 'RouteDirectionFeatureModel(attributes: $attributes, strings: $strings)';
-  }
-
-  @override
-  bool operator ==(Object other) {
-    return identical(this, other) ||
-        (other.runtimeType == runtimeType &&
-            other is _$RouteDirectionFeatureModelImpl &&
-            (identical(other.attributes, attributes) ||
-                other.attributes == attributes) &&
-            const DeepCollectionEquality().equals(other._strings, _strings));
-  }
-
-  @JsonKey(ignore: true)
-  @override
-  int get hashCode => Object.hash(
-      runtimeType, attributes, const DeepCollectionEquality().hash(_strings));
-
-  @JsonKey(ignore: true)
-  @override
-  @pragma('vm:prefer-inline')
-  _$$RouteDirectionFeatureModelImplCopyWith<_$RouteDirectionFeatureModelImpl>
-      get copyWith => __$$RouteDirectionFeatureModelImplCopyWithImpl<
-          _$RouteDirectionFeatureModelImpl>(this, _$identity);
-
-  @override
-  Map<String, dynamic> toJson() {
-    return _$$RouteDirectionFeatureModelImplToJson(
-      this,
-    );
-  }
+@override@JsonKey(name: 'attributes') final  RouteDirectionAttributesModel attributes;
+ final  List<RouteDirectionStringModel> _strings;
+@override@JsonKey(name: 'strings') List<RouteDirectionStringModel> get strings {
+  if (_strings is EqualUnmodifiableListView) return _strings;
+  // ignore: implicit_dynamic_type
+  return EqualUnmodifiableListView(_strings);
 }
 
-abstract class _RouteDirectionFeatureModel
-    implements RouteDirectionFeatureModel {
-  const factory _RouteDirectionFeatureModel(
-          {@JsonKey(name: 'attributes')
-          required final RouteDirectionAttributesModel attributes,
-          @JsonKey(name: 'strings')
-          final List<RouteDirectionStringModel> strings}) =
-      _$RouteDirectionFeatureModelImpl;
 
-  factory _RouteDirectionFeatureModel.fromJson(Map<String, dynamic> json) =
-      _$RouteDirectionFeatureModelImpl.fromJson;
+/// Create a copy of RouteDirectionFeatureModel
+/// with the given fields replaced by the non-null parameter values.
+@override @JsonKey(includeFromJson: false, includeToJson: false)
+@pragma('vm:prefer-inline')
+_$RouteDirectionFeatureModelCopyWith<_RouteDirectionFeatureModel> get copyWith => __$RouteDirectionFeatureModelCopyWithImpl<_RouteDirectionFeatureModel>(this, _$identity);
 
-  @override
-  @JsonKey(name: 'attributes')
-  RouteDirectionAttributesModel get attributes;
-  @override
-  @JsonKey(name: 'strings')
-  List<RouteDirectionStringModel> get strings;
-  @override
-  @JsonKey(ignore: true)
-  _$$RouteDirectionFeatureModelImplCopyWith<_$RouteDirectionFeatureModelImpl>
-      get copyWith => throw _privateConstructorUsedError;
+@override
+Map<String, dynamic> toJson() {
+  return _$RouteDirectionFeatureModelToJson(this, );
 }
 
-RouteDirectionAttributesModel _$RouteDirectionAttributesModelFromJson(
-    Map<String, dynamic> json) {
-  return _RouteDirectionAttributesModel.fromJson(json);
+@override
+bool operator ==(Object other) {
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _RouteDirectionFeatureModel&&(identical(other.attributes, attributes) || other.attributes == attributes)&&const DeepCollectionEquality().equals(other._strings, _strings));
 }
+
+@JsonKey(includeFromJson: false, includeToJson: false)
+@override
+int get hashCode => Object.hash(runtimeType,attributes,const DeepCollectionEquality().hash(_strings));
+
+@override
+String toString() {
+  return 'RouteDirectionFeatureModel(attributes: $attributes, strings: $strings)';
+}
+
+
+}
+
+/// @nodoc
+abstract mixin class _$RouteDirectionFeatureModelCopyWith<$Res> implements $RouteDirectionFeatureModelCopyWith<$Res> {
+  factory _$RouteDirectionFeatureModelCopyWith(_RouteDirectionFeatureModel value, $Res Function(_RouteDirectionFeatureModel) _then) = __$RouteDirectionFeatureModelCopyWithImpl;
+@override @useResult
+$Res call({
+@JsonKey(name: 'attributes') RouteDirectionAttributesModel attributes,@JsonKey(name: 'strings') List<RouteDirectionStringModel> strings
+});
+
+
+@override $RouteDirectionAttributesModelCopyWith<$Res> get attributes;
+
+}
+/// @nodoc
+class __$RouteDirectionFeatureModelCopyWithImpl<$Res>
+    implements _$RouteDirectionFeatureModelCopyWith<$Res> {
+  __$RouteDirectionFeatureModelCopyWithImpl(this._self, this._then);
+
+  final _RouteDirectionFeatureModel _self;
+  final $Res Function(_RouteDirectionFeatureModel) _then;
+
+/// Create a copy of RouteDirectionFeatureModel
+/// with the given fields replaced by the non-null parameter values.
+@override @pragma('vm:prefer-inline') $Res call({Object? attributes = null,Object? strings = null,}) {
+  return _then(_RouteDirectionFeatureModel(
+attributes: null == attributes ? _self.attributes : attributes // ignore: cast_nullable_to_non_nullable
+as RouteDirectionAttributesModel,strings: null == strings ? _self._strings : strings // ignore: cast_nullable_to_non_nullable
+as List<RouteDirectionStringModel>,
+  ));
+}
+
+/// Create a copy of RouteDirectionFeatureModel
+/// with the given fields replaced by the non-null parameter values.
+@override
+@pragma('vm:prefer-inline')
+$RouteDirectionAttributesModelCopyWith<$Res> get attributes {
+  
+  return $RouteDirectionAttributesModelCopyWith<$Res>(_self.attributes, (value) {
+    return _then(_self.copyWith(attributes: value));
+  });
+}
+}
+
 
 /// @nodoc
 mixin _$RouteDirectionAttributesModel {
-  @JsonKey(name: 'length')
-  double get length => throw _privateConstructorUsedError;
-  @JsonKey(name: 'time')
-  double get time => throw _privateConstructorUsedError;
-  @JsonKey(name: 'text')
-  String? get text => throw _privateConstructorUsedError;
-  @JsonKey(name: 'maneuverType')
-  String? get maneuverType => throw _privateConstructorUsedError;
 
-  Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
-  @JsonKey(ignore: true)
-  $RouteDirectionAttributesModelCopyWith<RouteDirectionAttributesModel>
-      get copyWith => throw _privateConstructorUsedError;
+@JsonKey(name: 'length') double get length;@JsonKey(name: 'time') double get time;@JsonKey(name: 'text') String? get text;@JsonKey(name: 'maneuverType') String? get maneuverType;
+/// Create a copy of RouteDirectionAttributesModel
+/// with the given fields replaced by the non-null parameter values.
+@JsonKey(includeFromJson: false, includeToJson: false)
+@pragma('vm:prefer-inline')
+$RouteDirectionAttributesModelCopyWith<RouteDirectionAttributesModel> get copyWith => _$RouteDirectionAttributesModelCopyWithImpl<RouteDirectionAttributesModel>(this as RouteDirectionAttributesModel, _$identity);
+
+  /// Serializes this RouteDirectionAttributesModel to a JSON map.
+  Map<String, dynamic> toJson();
+
+
+@override
+bool operator ==(Object other) {
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is RouteDirectionAttributesModel&&(identical(other.length, length) || other.length == length)&&(identical(other.time, time) || other.time == time)&&(identical(other.text, text) || other.text == text)&&(identical(other.maneuverType, maneuverType) || other.maneuverType == maneuverType));
+}
+
+@JsonKey(includeFromJson: false, includeToJson: false)
+@override
+int get hashCode => Object.hash(runtimeType,length,time,text,maneuverType);
+
+@override
+String toString() {
+  return 'RouteDirectionAttributesModel(length: $length, time: $time, text: $text, maneuverType: $maneuverType)';
+}
+
+
 }
 
 /// @nodoc
-abstract class $RouteDirectionAttributesModelCopyWith<$Res> {
-  factory $RouteDirectionAttributesModelCopyWith(
-          RouteDirectionAttributesModel value,
-          $Res Function(RouteDirectionAttributesModel) then) =
-      _$RouteDirectionAttributesModelCopyWithImpl<$Res,
-          RouteDirectionAttributesModel>;
-  @useResult
-  $Res call(
-      {@JsonKey(name: 'length') double length,
-      @JsonKey(name: 'time') double time,
-      @JsonKey(name: 'text') String? text,
-      @JsonKey(name: 'maneuverType') String? maneuverType});
-}
+abstract mixin class $RouteDirectionAttributesModelCopyWith<$Res>  {
+  factory $RouteDirectionAttributesModelCopyWith(RouteDirectionAttributesModel value, $Res Function(RouteDirectionAttributesModel) _then) = _$RouteDirectionAttributesModelCopyWithImpl;
+@useResult
+$Res call({
+@JsonKey(name: 'length') double length,@JsonKey(name: 'time') double time,@JsonKey(name: 'text') String? text,@JsonKey(name: 'maneuverType') String? maneuverType
+});
 
+
+
+
+}
 /// @nodoc
-class _$RouteDirectionAttributesModelCopyWithImpl<$Res,
-        $Val extends RouteDirectionAttributesModel>
+class _$RouteDirectionAttributesModelCopyWithImpl<$Res>
     implements $RouteDirectionAttributesModelCopyWith<$Res> {
-  _$RouteDirectionAttributesModelCopyWithImpl(this._value, this._then);
+  _$RouteDirectionAttributesModelCopyWithImpl(this._self, this._then);
 
-  // ignore: unused_field
-  final $Val _value;
-  // ignore: unused_field
-  final $Res Function($Val) _then;
+  final RouteDirectionAttributesModel _self;
+  final $Res Function(RouteDirectionAttributesModel) _then;
 
-  @pragma('vm:prefer-inline')
-  @override
-  $Res call({
-    Object? length = null,
-    Object? time = null,
-    Object? text = freezed,
-    Object? maneuverType = freezed,
-  }) {
-    return _then(_value.copyWith(
-      length: null == length
-          ? _value.length
-          : length // ignore: cast_nullable_to_non_nullable
-              as double,
-      time: null == time
-          ? _value.time
-          : time // ignore: cast_nullable_to_non_nullable
-              as double,
-      text: freezed == text
-          ? _value.text
-          : text // ignore: cast_nullable_to_non_nullable
-              as String?,
-      maneuverType: freezed == maneuverType
-          ? _value.maneuverType
-          : maneuverType // ignore: cast_nullable_to_non_nullable
-              as String?,
-    ) as $Val);
-  }
+/// Create a copy of RouteDirectionAttributesModel
+/// with the given fields replaced by the non-null parameter values.
+@pragma('vm:prefer-inline') @override $Res call({Object? length = null,Object? time = null,Object? text = freezed,Object? maneuverType = freezed,}) {
+  return _then(_self.copyWith(
+length: null == length ? _self.length : length // ignore: cast_nullable_to_non_nullable
+as double,time: null == time ? _self.time : time // ignore: cast_nullable_to_non_nullable
+as double,text: freezed == text ? _self.text : text // ignore: cast_nullable_to_non_nullable
+as String?,maneuverType: freezed == maneuverType ? _self.maneuverType : maneuverType // ignore: cast_nullable_to_non_nullable
+as String?,
+  ));
 }
 
-/// @nodoc
-abstract class _$$RouteDirectionAttributesModelImplCopyWith<$Res>
-    implements $RouteDirectionAttributesModelCopyWith<$Res> {
-  factory _$$RouteDirectionAttributesModelImplCopyWith(
-          _$RouteDirectionAttributesModelImpl value,
-          $Res Function(_$RouteDirectionAttributesModelImpl) then) =
-      __$$RouteDirectionAttributesModelImplCopyWithImpl<$Res>;
-  @override
-  @useResult
-  $Res call(
-      {@JsonKey(name: 'length') double length,
-      @JsonKey(name: 'time') double time,
-      @JsonKey(name: 'text') String? text,
-      @JsonKey(name: 'maneuverType') String? maneuverType});
 }
 
-/// @nodoc
-class __$$RouteDirectionAttributesModelImplCopyWithImpl<$Res>
-    extends _$RouteDirectionAttributesModelCopyWithImpl<$Res,
-        _$RouteDirectionAttributesModelImpl>
-    implements _$$RouteDirectionAttributesModelImplCopyWith<$Res> {
-  __$$RouteDirectionAttributesModelImplCopyWithImpl(
-      _$RouteDirectionAttributesModelImpl _value,
-      $Res Function(_$RouteDirectionAttributesModelImpl) _then)
-      : super(_value, _then);
 
-  @pragma('vm:prefer-inline')
-  @override
-  $Res call({
-    Object? length = null,
-    Object? time = null,
-    Object? text = freezed,
-    Object? maneuverType = freezed,
-  }) {
-    return _then(_$RouteDirectionAttributesModelImpl(
-      length: null == length
-          ? _value.length
-          : length // ignore: cast_nullable_to_non_nullable
-              as double,
-      time: null == time
-          ? _value.time
-          : time // ignore: cast_nullable_to_non_nullable
-              as double,
-      text: freezed == text
-          ? _value.text
-          : text // ignore: cast_nullable_to_non_nullable
-              as String?,
-      maneuverType: freezed == maneuverType
-          ? _value.maneuverType
-          : maneuverType // ignore: cast_nullable_to_non_nullable
-              as String?,
-    ));
-  }
+/// Adds pattern-matching-related methods to [RouteDirectionAttributesModel].
+extension RouteDirectionAttributesModelPatterns on RouteDirectionAttributesModel {
+/// A variant of `map` that fallback to returning `orElse`.
+///
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case final Subclass value:
+///     return ...;
+///   case _:
+///     return orElse();
+/// }
+/// ```
+
+@optionalTypeArgs TResult maybeMap<TResult extends Object?>(TResult Function( _RouteDirectionAttributesModel value)?  $default,{required TResult orElse(),}){
+final _that = this;
+switch (_that) {
+case _RouteDirectionAttributesModel() when $default != null:
+return $default(_that);case _:
+  return orElse();
+
+}
+}
+/// A `switch`-like method, using callbacks.
+///
+/// Callbacks receives the raw object, upcasted.
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case final Subclass value:
+///     return ...;
+///   case final Subclass2 value:
+///     return ...;
+/// }
+/// ```
+
+@optionalTypeArgs TResult map<TResult extends Object?>(TResult Function( _RouteDirectionAttributesModel value)  $default,){
+final _that = this;
+switch (_that) {
+case _RouteDirectionAttributesModel():
+return $default(_that);case _:
+  throw StateError('Unexpected subclass');
+
+}
+}
+/// A variant of `map` that fallback to returning `null`.
+///
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case final Subclass value:
+///     return ...;
+///   case _:
+///     return null;
+/// }
+/// ```
+
+@optionalTypeArgs TResult? mapOrNull<TResult extends Object?>(TResult? Function( _RouteDirectionAttributesModel value)?  $default,){
+final _that = this;
+switch (_that) {
+case _RouteDirectionAttributesModel() when $default != null:
+return $default(_that);case _:
+  return null;
+
+}
+}
+/// A variant of `when` that fallback to an `orElse` callback.
+///
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case Subclass(:final field):
+///     return ...;
+///   case _:
+///     return orElse();
+/// }
+/// ```
+
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function(@JsonKey(name: 'length')  double length, @JsonKey(name: 'time')  double time, @JsonKey(name: 'text')  String? text, @JsonKey(name: 'maneuverType')  String? maneuverType)?  $default,{required TResult orElse(),}) {final _that = this;
+switch (_that) {
+case _RouteDirectionAttributesModel() when $default != null:
+return $default(_that.length,_that.time,_that.text,_that.maneuverType);case _:
+  return orElse();
+
+}
+}
+/// A `switch`-like method, using callbacks.
+///
+/// As opposed to `map`, this offers destructuring.
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case Subclass(:final field):
+///     return ...;
+///   case Subclass2(:final field2):
+///     return ...;
+/// }
+/// ```
+
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function(@JsonKey(name: 'length')  double length, @JsonKey(name: 'time')  double time, @JsonKey(name: 'text')  String? text, @JsonKey(name: 'maneuverType')  String? maneuverType)  $default,) {final _that = this;
+switch (_that) {
+case _RouteDirectionAttributesModel():
+return $default(_that.length,_that.time,_that.text,_that.maneuverType);case _:
+  throw StateError('Unexpected subclass');
+
+}
+}
+/// A variant of `when` that fallback to returning `null`
+///
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case Subclass(:final field):
+///     return ...;
+///   case _:
+///     return null;
+/// }
+/// ```
+
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function(@JsonKey(name: 'length')  double length, @JsonKey(name: 'time')  double time, @JsonKey(name: 'text')  String? text, @JsonKey(name: 'maneuverType')  String? maneuverType)?  $default,) {final _that = this;
+switch (_that) {
+case _RouteDirectionAttributesModel() when $default != null:
+return $default(_that.length,_that.time,_that.text,_that.maneuverType);case _:
+  return null;
+
+}
+}
+
 }
 
 /// @nodoc
 @JsonSerializable()
-class _$RouteDirectionAttributesModelImpl
-    implements _RouteDirectionAttributesModel {
-  const _$RouteDirectionAttributesModelImpl(
-      {@JsonKey(name: 'length') this.length = 0,
-      @JsonKey(name: 'time') this.time = 0,
-      @JsonKey(name: 'text') this.text,
-      @JsonKey(name: 'maneuverType') this.maneuverType});
 
-  factory _$RouteDirectionAttributesModelImpl.fromJson(
-          Map<String, dynamic> json) =>
-      _$$RouteDirectionAttributesModelImplFromJson(json);
+class _RouteDirectionAttributesModel implements RouteDirectionAttributesModel {
+  const _RouteDirectionAttributesModel({@JsonKey(name: 'length') this.length = 0, @JsonKey(name: 'time') this.time = 0, @JsonKey(name: 'text') this.text, @JsonKey(name: 'maneuverType') this.maneuverType});
+  factory _RouteDirectionAttributesModel.fromJson(Map<String, dynamic> json) => _$RouteDirectionAttributesModelFromJson(json);
 
-  @override
-  @JsonKey(name: 'length')
-  final double length;
-  @override
-  @JsonKey(name: 'time')
-  final double time;
-  @override
-  @JsonKey(name: 'text')
-  final String? text;
-  @override
-  @JsonKey(name: 'maneuverType')
-  final String? maneuverType;
+@override@JsonKey(name: 'length') final  double length;
+@override@JsonKey(name: 'time') final  double time;
+@override@JsonKey(name: 'text') final  String? text;
+@override@JsonKey(name: 'maneuverType') final  String? maneuverType;
 
-  @override
-  String toString() {
-    return 'RouteDirectionAttributesModel(length: $length, time: $time, text: $text, maneuverType: $maneuverType)';
-  }
+/// Create a copy of RouteDirectionAttributesModel
+/// with the given fields replaced by the non-null parameter values.
+@override @JsonKey(includeFromJson: false, includeToJson: false)
+@pragma('vm:prefer-inline')
+_$RouteDirectionAttributesModelCopyWith<_RouteDirectionAttributesModel> get copyWith => __$RouteDirectionAttributesModelCopyWithImpl<_RouteDirectionAttributesModel>(this, _$identity);
 
-  @override
-  bool operator ==(Object other) {
-    return identical(this, other) ||
-        (other.runtimeType == runtimeType &&
-            other is _$RouteDirectionAttributesModelImpl &&
-            (identical(other.length, length) || other.length == length) &&
-            (identical(other.time, time) || other.time == time) &&
-            (identical(other.text, text) || other.text == text) &&
-            (identical(other.maneuverType, maneuverType) ||
-                other.maneuverType == maneuverType));
-  }
-
-  @JsonKey(ignore: true)
-  @override
-  int get hashCode =>
-      Object.hash(runtimeType, length, time, text, maneuverType);
-
-  @JsonKey(ignore: true)
-  @override
-  @pragma('vm:prefer-inline')
-  _$$RouteDirectionAttributesModelImplCopyWith<
-          _$RouteDirectionAttributesModelImpl>
-      get copyWith => __$$RouteDirectionAttributesModelImplCopyWithImpl<
-          _$RouteDirectionAttributesModelImpl>(this, _$identity);
-
-  @override
-  Map<String, dynamic> toJson() {
-    return _$$RouteDirectionAttributesModelImplToJson(
-      this,
-    );
-  }
+@override
+Map<String, dynamic> toJson() {
+  return _$RouteDirectionAttributesModelToJson(this, );
 }
 
-abstract class _RouteDirectionAttributesModel
-    implements RouteDirectionAttributesModel {
-  const factory _RouteDirectionAttributesModel(
-          {@JsonKey(name: 'length') final double length,
-          @JsonKey(name: 'time') final double time,
-          @JsonKey(name: 'text') final String? text,
-          @JsonKey(name: 'maneuverType') final String? maneuverType}) =
-      _$RouteDirectionAttributesModelImpl;
-
-  factory _RouteDirectionAttributesModel.fromJson(Map<String, dynamic> json) =
-      _$RouteDirectionAttributesModelImpl.fromJson;
-
-  @override
-  @JsonKey(name: 'length')
-  double get length;
-  @override
-  @JsonKey(name: 'time')
-  double get time;
-  @override
-  @JsonKey(name: 'text')
-  String? get text;
-  @override
-  @JsonKey(name: 'maneuverType')
-  String? get maneuverType;
-  @override
-  @JsonKey(ignore: true)
-  _$$RouteDirectionAttributesModelImplCopyWith<
-          _$RouteDirectionAttributesModelImpl>
-      get copyWith => throw _privateConstructorUsedError;
+@override
+bool operator ==(Object other) {
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _RouteDirectionAttributesModel&&(identical(other.length, length) || other.length == length)&&(identical(other.time, time) || other.time == time)&&(identical(other.text, text) || other.text == text)&&(identical(other.maneuverType, maneuverType) || other.maneuverType == maneuverType));
 }
 
-RouteDirectionStringModel _$RouteDirectionStringModelFromJson(
-    Map<String, dynamic> json) {
-  return _RouteDirectionStringModel.fromJson(json);
+@JsonKey(includeFromJson: false, includeToJson: false)
+@override
+int get hashCode => Object.hash(runtimeType,length,time,text,maneuverType);
+
+@override
+String toString() {
+  return 'RouteDirectionAttributesModel(length: $length, time: $time, text: $text, maneuverType: $maneuverType)';
 }
+
+
+}
+
+/// @nodoc
+abstract mixin class _$RouteDirectionAttributesModelCopyWith<$Res> implements $RouteDirectionAttributesModelCopyWith<$Res> {
+  factory _$RouteDirectionAttributesModelCopyWith(_RouteDirectionAttributesModel value, $Res Function(_RouteDirectionAttributesModel) _then) = __$RouteDirectionAttributesModelCopyWithImpl;
+@override @useResult
+$Res call({
+@JsonKey(name: 'length') double length,@JsonKey(name: 'time') double time,@JsonKey(name: 'text') String? text,@JsonKey(name: 'maneuverType') String? maneuverType
+});
+
+
+
+
+}
+/// @nodoc
+class __$RouteDirectionAttributesModelCopyWithImpl<$Res>
+    implements _$RouteDirectionAttributesModelCopyWith<$Res> {
+  __$RouteDirectionAttributesModelCopyWithImpl(this._self, this._then);
+
+  final _RouteDirectionAttributesModel _self;
+  final $Res Function(_RouteDirectionAttributesModel) _then;
+
+/// Create a copy of RouteDirectionAttributesModel
+/// with the given fields replaced by the non-null parameter values.
+@override @pragma('vm:prefer-inline') $Res call({Object? length = null,Object? time = null,Object? text = freezed,Object? maneuverType = freezed,}) {
+  return _then(_RouteDirectionAttributesModel(
+length: null == length ? _self.length : length // ignore: cast_nullable_to_non_nullable
+as double,time: null == time ? _self.time : time // ignore: cast_nullable_to_non_nullable
+as double,text: freezed == text ? _self.text : text // ignore: cast_nullable_to_non_nullable
+as String?,maneuverType: freezed == maneuverType ? _self.maneuverType : maneuverType // ignore: cast_nullable_to_non_nullable
+as String?,
+  ));
+}
+
+
+}
+
 
 /// @nodoc
 mixin _$RouteDirectionStringModel {
-  @JsonKey(name: 'string')
-  String? get string => throw _privateConstructorUsedError;
-  @JsonKey(name: 'stringType')
-  String? get stringType => throw _privateConstructorUsedError;
 
-  Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
-  @JsonKey(ignore: true)
-  $RouteDirectionStringModelCopyWith<RouteDirectionStringModel> get copyWith =>
-      throw _privateConstructorUsedError;
+@JsonKey(name: 'string') String? get string;@JsonKey(name: 'stringType') String? get stringType;
+/// Create a copy of RouteDirectionStringModel
+/// with the given fields replaced by the non-null parameter values.
+@JsonKey(includeFromJson: false, includeToJson: false)
+@pragma('vm:prefer-inline')
+$RouteDirectionStringModelCopyWith<RouteDirectionStringModel> get copyWith => _$RouteDirectionStringModelCopyWithImpl<RouteDirectionStringModel>(this as RouteDirectionStringModel, _$identity);
+
+  /// Serializes this RouteDirectionStringModel to a JSON map.
+  Map<String, dynamic> toJson();
+
+
+@override
+bool operator ==(Object other) {
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is RouteDirectionStringModel&&(identical(other.string, string) || other.string == string)&&(identical(other.stringType, stringType) || other.stringType == stringType));
+}
+
+@JsonKey(includeFromJson: false, includeToJson: false)
+@override
+int get hashCode => Object.hash(runtimeType,string,stringType);
+
+@override
+String toString() {
+  return 'RouteDirectionStringModel(string: $string, stringType: $stringType)';
+}
+
+
 }
 
 /// @nodoc
-abstract class $RouteDirectionStringModelCopyWith<$Res> {
-  factory $RouteDirectionStringModelCopyWith(RouteDirectionStringModel value,
-          $Res Function(RouteDirectionStringModel) then) =
-      _$RouteDirectionStringModelCopyWithImpl<$Res, RouteDirectionStringModel>;
-  @useResult
-  $Res call(
-      {@JsonKey(name: 'string') String? string,
-      @JsonKey(name: 'stringType') String? stringType});
-}
+abstract mixin class $RouteDirectionStringModelCopyWith<$Res>  {
+  factory $RouteDirectionStringModelCopyWith(RouteDirectionStringModel value, $Res Function(RouteDirectionStringModel) _then) = _$RouteDirectionStringModelCopyWithImpl;
+@useResult
+$Res call({
+@JsonKey(name: 'string') String? string,@JsonKey(name: 'stringType') String? stringType
+});
 
+
+
+
+}
 /// @nodoc
-class _$RouteDirectionStringModelCopyWithImpl<$Res,
-        $Val extends RouteDirectionStringModel>
+class _$RouteDirectionStringModelCopyWithImpl<$Res>
     implements $RouteDirectionStringModelCopyWith<$Res> {
-  _$RouteDirectionStringModelCopyWithImpl(this._value, this._then);
+  _$RouteDirectionStringModelCopyWithImpl(this._self, this._then);
 
-  // ignore: unused_field
-  final $Val _value;
-  // ignore: unused_field
-  final $Res Function($Val) _then;
+  final RouteDirectionStringModel _self;
+  final $Res Function(RouteDirectionStringModel) _then;
 
-  @pragma('vm:prefer-inline')
-  @override
-  $Res call({
-    Object? string = freezed,
-    Object? stringType = freezed,
-  }) {
-    return _then(_value.copyWith(
-      string: freezed == string
-          ? _value.string
-          : string // ignore: cast_nullable_to_non_nullable
-              as String?,
-      stringType: freezed == stringType
-          ? _value.stringType
-          : stringType // ignore: cast_nullable_to_non_nullable
-              as String?,
-    ) as $Val);
-  }
+/// Create a copy of RouteDirectionStringModel
+/// with the given fields replaced by the non-null parameter values.
+@pragma('vm:prefer-inline') @override $Res call({Object? string = freezed,Object? stringType = freezed,}) {
+  return _then(_self.copyWith(
+string: freezed == string ? _self.string : string // ignore: cast_nullable_to_non_nullable
+as String?,stringType: freezed == stringType ? _self.stringType : stringType // ignore: cast_nullable_to_non_nullable
+as String?,
+  ));
 }
 
-/// @nodoc
-abstract class _$$RouteDirectionStringModelImplCopyWith<$Res>
-    implements $RouteDirectionStringModelCopyWith<$Res> {
-  factory _$$RouteDirectionStringModelImplCopyWith(
-          _$RouteDirectionStringModelImpl value,
-          $Res Function(_$RouteDirectionStringModelImpl) then) =
-      __$$RouteDirectionStringModelImplCopyWithImpl<$Res>;
-  @override
-  @useResult
-  $Res call(
-      {@JsonKey(name: 'string') String? string,
-      @JsonKey(name: 'stringType') String? stringType});
 }
 
-/// @nodoc
-class __$$RouteDirectionStringModelImplCopyWithImpl<$Res>
-    extends _$RouteDirectionStringModelCopyWithImpl<$Res,
-        _$RouteDirectionStringModelImpl>
-    implements _$$RouteDirectionStringModelImplCopyWith<$Res> {
-  __$$RouteDirectionStringModelImplCopyWithImpl(
-      _$RouteDirectionStringModelImpl _value,
-      $Res Function(_$RouteDirectionStringModelImpl) _then)
-      : super(_value, _then);
 
-  @pragma('vm:prefer-inline')
-  @override
-  $Res call({
-    Object? string = freezed,
-    Object? stringType = freezed,
-  }) {
-    return _then(_$RouteDirectionStringModelImpl(
-      string: freezed == string
-          ? _value.string
-          : string // ignore: cast_nullable_to_non_nullable
-              as String?,
-      stringType: freezed == stringType
-          ? _value.stringType
-          : stringType // ignore: cast_nullable_to_non_nullable
-              as String?,
-    ));
-  }
+/// Adds pattern-matching-related methods to [RouteDirectionStringModel].
+extension RouteDirectionStringModelPatterns on RouteDirectionStringModel {
+/// A variant of `map` that fallback to returning `orElse`.
+///
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case final Subclass value:
+///     return ...;
+///   case _:
+///     return orElse();
+/// }
+/// ```
+
+@optionalTypeArgs TResult maybeMap<TResult extends Object?>(TResult Function( _RouteDirectionStringModel value)?  $default,{required TResult orElse(),}){
+final _that = this;
+switch (_that) {
+case _RouteDirectionStringModel() when $default != null:
+return $default(_that);case _:
+  return orElse();
+
+}
+}
+/// A `switch`-like method, using callbacks.
+///
+/// Callbacks receives the raw object, upcasted.
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case final Subclass value:
+///     return ...;
+///   case final Subclass2 value:
+///     return ...;
+/// }
+/// ```
+
+@optionalTypeArgs TResult map<TResult extends Object?>(TResult Function( _RouteDirectionStringModel value)  $default,){
+final _that = this;
+switch (_that) {
+case _RouteDirectionStringModel():
+return $default(_that);case _:
+  throw StateError('Unexpected subclass');
+
+}
+}
+/// A variant of `map` that fallback to returning `null`.
+///
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case final Subclass value:
+///     return ...;
+///   case _:
+///     return null;
+/// }
+/// ```
+
+@optionalTypeArgs TResult? mapOrNull<TResult extends Object?>(TResult? Function( _RouteDirectionStringModel value)?  $default,){
+final _that = this;
+switch (_that) {
+case _RouteDirectionStringModel() when $default != null:
+return $default(_that);case _:
+  return null;
+
+}
+}
+/// A variant of `when` that fallback to an `orElse` callback.
+///
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case Subclass(:final field):
+///     return ...;
+///   case _:
+///     return orElse();
+/// }
+/// ```
+
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function(@JsonKey(name: 'string')  String? string, @JsonKey(name: 'stringType')  String? stringType)?  $default,{required TResult orElse(),}) {final _that = this;
+switch (_that) {
+case _RouteDirectionStringModel() when $default != null:
+return $default(_that.string,_that.stringType);case _:
+  return orElse();
+
+}
+}
+/// A `switch`-like method, using callbacks.
+///
+/// As opposed to `map`, this offers destructuring.
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case Subclass(:final field):
+///     return ...;
+///   case Subclass2(:final field2):
+///     return ...;
+/// }
+/// ```
+
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function(@JsonKey(name: 'string')  String? string, @JsonKey(name: 'stringType')  String? stringType)  $default,) {final _that = this;
+switch (_that) {
+case _RouteDirectionStringModel():
+return $default(_that.string,_that.stringType);case _:
+  throw StateError('Unexpected subclass');
+
+}
+}
+/// A variant of `when` that fallback to returning `null`
+///
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case Subclass(:final field):
+///     return ...;
+///   case _:
+///     return null;
+/// }
+/// ```
+
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function(@JsonKey(name: 'string')  String? string, @JsonKey(name: 'stringType')  String? stringType)?  $default,) {final _that = this;
+switch (_that) {
+case _RouteDirectionStringModel() when $default != null:
+return $default(_that.string,_that.stringType);case _:
+  return null;
+
+}
+}
+
 }
 
 /// @nodoc
 @JsonSerializable()
-class _$RouteDirectionStringModelImpl implements _RouteDirectionStringModel {
-  const _$RouteDirectionStringModelImpl(
-      {@JsonKey(name: 'string') this.string,
-      @JsonKey(name: 'stringType') this.stringType});
 
-  factory _$RouteDirectionStringModelImpl.fromJson(Map<String, dynamic> json) =>
-      _$$RouteDirectionStringModelImplFromJson(json);
+class _RouteDirectionStringModel implements RouteDirectionStringModel {
+  const _RouteDirectionStringModel({@JsonKey(name: 'string') this.string, @JsonKey(name: 'stringType') this.stringType});
+  factory _RouteDirectionStringModel.fromJson(Map<String, dynamic> json) => _$RouteDirectionStringModelFromJson(json);
 
-  @override
-  @JsonKey(name: 'string')
-  final String? string;
-  @override
-  @JsonKey(name: 'stringType')
-  final String? stringType;
+@override@JsonKey(name: 'string') final  String? string;
+@override@JsonKey(name: 'stringType') final  String? stringType;
 
-  @override
-  String toString() {
-    return 'RouteDirectionStringModel(string: $string, stringType: $stringType)';
-  }
+/// Create a copy of RouteDirectionStringModel
+/// with the given fields replaced by the non-null parameter values.
+@override @JsonKey(includeFromJson: false, includeToJson: false)
+@pragma('vm:prefer-inline')
+_$RouteDirectionStringModelCopyWith<_RouteDirectionStringModel> get copyWith => __$RouteDirectionStringModelCopyWithImpl<_RouteDirectionStringModel>(this, _$identity);
 
-  @override
-  bool operator ==(Object other) {
-    return identical(this, other) ||
-        (other.runtimeType == runtimeType &&
-            other is _$RouteDirectionStringModelImpl &&
-            (identical(other.string, string) || other.string == string) &&
-            (identical(other.stringType, stringType) ||
-                other.stringType == stringType));
-  }
-
-  @JsonKey(ignore: true)
-  @override
-  int get hashCode => Object.hash(runtimeType, string, stringType);
-
-  @JsonKey(ignore: true)
-  @override
-  @pragma('vm:prefer-inline')
-  _$$RouteDirectionStringModelImplCopyWith<_$RouteDirectionStringModelImpl>
-      get copyWith => __$$RouteDirectionStringModelImplCopyWithImpl<
-          _$RouteDirectionStringModelImpl>(this, _$identity);
-
-  @override
-  Map<String, dynamic> toJson() {
-    return _$$RouteDirectionStringModelImplToJson(
-      this,
-    );
-  }
+@override
+Map<String, dynamic> toJson() {
+  return _$RouteDirectionStringModelToJson(this, );
 }
 
-abstract class _RouteDirectionStringModel implements RouteDirectionStringModel {
-  const factory _RouteDirectionStringModel(
-          {@JsonKey(name: 'string') final String? string,
-          @JsonKey(name: 'stringType') final String? stringType}) =
-      _$RouteDirectionStringModelImpl;
-
-  factory _RouteDirectionStringModel.fromJson(Map<String, dynamic> json) =
-      _$RouteDirectionStringModelImpl.fromJson;
-
-  @override
-  @JsonKey(name: 'string')
-  String? get string;
-  @override
-  @JsonKey(name: 'stringType')
-  String? get stringType;
-  @override
-  @JsonKey(ignore: true)
-  _$$RouteDirectionStringModelImplCopyWith<_$RouteDirectionStringModelImpl>
-      get copyWith => throw _privateConstructorUsedError;
+@override
+bool operator ==(Object other) {
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _RouteDirectionStringModel&&(identical(other.string, string) || other.string == string)&&(identical(other.stringType, stringType) || other.stringType == stringType));
 }
+
+@JsonKey(includeFromJson: false, includeToJson: false)
+@override
+int get hashCode => Object.hash(runtimeType,string,stringType);
+
+@override
+String toString() {
+  return 'RouteDirectionStringModel(string: $string, stringType: $stringType)';
+}
+
+
+}
+
+/// @nodoc
+abstract mixin class _$RouteDirectionStringModelCopyWith<$Res> implements $RouteDirectionStringModelCopyWith<$Res> {
+  factory _$RouteDirectionStringModelCopyWith(_RouteDirectionStringModel value, $Res Function(_RouteDirectionStringModel) _then) = __$RouteDirectionStringModelCopyWithImpl;
+@override @useResult
+$Res call({
+@JsonKey(name: 'string') String? string,@JsonKey(name: 'stringType') String? stringType
+});
+
+
+
+
+}
+/// @nodoc
+class __$RouteDirectionStringModelCopyWithImpl<$Res>
+    implements _$RouteDirectionStringModelCopyWith<$Res> {
+  __$RouteDirectionStringModelCopyWithImpl(this._self, this._then);
+
+  final _RouteDirectionStringModel _self;
+  final $Res Function(_RouteDirectionStringModel) _then;
+
+/// Create a copy of RouteDirectionStringModel
+/// with the given fields replaced by the non-null parameter values.
+@override @pragma('vm:prefer-inline') $Res call({Object? string = freezed,Object? stringType = freezed,}) {
+  return _then(_RouteDirectionStringModel(
+string: freezed == string ? _self.string : string // ignore: cast_nullable_to_non_nullable
+as String?,stringType: freezed == stringType ? _self.stringType : stringType // ignore: cast_nullable_to_non_nullable
+as String?,
+  ));
+}
+
+
+}
+
+// dart format on

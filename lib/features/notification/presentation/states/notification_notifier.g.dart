@@ -6,22 +6,58 @@ part of 'notification_notifier.dart';
 // RiverpodGenerator
 // **************************************************************************
 
+// GENERATED CODE - DO NOT MODIFY BY HAND
+// ignore_for_file: type=lint, type=warning
+
+@ProviderFor(NotificationNotifier)
+final notificationProvider = NotificationNotifierProvider._();
+
+final class NotificationNotifierProvider
+    extends $NotifierProvider<NotificationNotifier, NotificationState> {
+  NotificationNotifierProvider._()
+    : super(
+        from: null,
+        argument: null,
+        retry: null,
+        name: r'notificationProvider',
+        isAutoDispose: true,
+        dependencies: null,
+        $allTransitiveDependencies: null,
+      );
+
+  @override
+  String debugGetCreateSourceHash() => _$notificationNotifierHash();
+
+  @$internal
+  @override
+  NotificationNotifier create() => NotificationNotifier();
+
+  /// {@macro riverpod.override_with_value}
+  Override overrideWithValue(NotificationState value) {
+    return $ProviderOverride(
+      origin: this,
+      providerOverride: $SyncValueProvider<NotificationState>(value),
+    );
+  }
+}
+
 String _$notificationNotifierHash() =>
     r'b1687d217fa14d75a44bbd6613ee90f3d3055d6e';
 
-/// See also [NotificationNotifier].
-@ProviderFor(NotificationNotifier)
-final notificationNotifierProvider = AutoDisposeNotifierProvider<
-    NotificationNotifier, NotificationState>.internal(
-  NotificationNotifier.new,
-  name: r'notificationNotifierProvider',
-  debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
-      ? null
-      : _$notificationNotifierHash,
-  dependencies: null,
-  allTransitiveDependencies: null,
-);
-
-typedef _$NotificationNotifier = AutoDisposeNotifier<NotificationState>;
-// ignore_for_file: type=lint
-// ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member
+abstract class _$NotificationNotifier extends $Notifier<NotificationState> {
+  NotificationState build();
+  @$mustCallSuper
+  @override
+  WhenComplete runBuild() {
+    final ref = this.ref as $Ref<NotificationState, NotificationState>;
+    final element =
+        ref.element
+            as $ClassProviderElement<
+              AnyNotifier<NotificationState, NotificationState>,
+              NotificationState,
+              Object?,
+              Object?
+            >;
+    return element.handleCreate(ref, build);
+  }
+}

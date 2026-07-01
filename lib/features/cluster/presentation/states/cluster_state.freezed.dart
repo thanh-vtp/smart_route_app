@@ -1,5 +1,5 @@
-// coverage:ignore-file
 // GENERATED CODE - DO NOT MODIFY BY HAND
+// coverage:ignore-file
 // ignore_for_file: type=lint
 // ignore_for_file: unused_element, deprecated_member_use, deprecated_member_use_from_same_package, use_function_type_syntax_for_parameters, unnecessary_const, avoid_init_to_null, invalid_override_different_default_values_named, prefer_expression_function_bodies, annotate_overrides, invalid_annotation_target, unnecessary_question_mark
 
@@ -9,184 +9,293 @@ part of 'cluster_state.dart';
 // FreezedGenerator
 // **************************************************************************
 
+// dart format off
 T _$identity<T>(T value) => value;
-
-final _privateConstructorUsedError = UnsupportedError(
-    'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#adding-getters-and-methods-to-our-models');
-
 /// @nodoc
 mixin _$ClusterState {
-  bool get isLoading => throw _privateConstructorUsedError;
-  ClusterResult? get clusterResult => throw _privateConstructorUsedError;
-  String? get errorMessage => throw _privateConstructorUsedError;
 
-  @JsonKey(ignore: true)
-  $ClusterStateCopyWith<ClusterState> get copyWith =>
-      throw _privateConstructorUsedError;
+ bool get isLoading; ClusterResult? get clusterResult; String? get errorMessage;
+/// Create a copy of ClusterState
+/// with the given fields replaced by the non-null parameter values.
+@JsonKey(includeFromJson: false, includeToJson: false)
+@pragma('vm:prefer-inline')
+$ClusterStateCopyWith<ClusterState> get copyWith => _$ClusterStateCopyWithImpl<ClusterState>(this as ClusterState, _$identity);
+
+
+
+@override
+bool operator ==(Object other) {
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is ClusterState&&(identical(other.isLoading, isLoading) || other.isLoading == isLoading)&&(identical(other.clusterResult, clusterResult) || other.clusterResult == clusterResult)&&(identical(other.errorMessage, errorMessage) || other.errorMessage == errorMessage));
+}
+
+
+@override
+int get hashCode => Object.hash(runtimeType,isLoading,clusterResult,errorMessage);
+
+@override
+String toString() {
+  return 'ClusterState(isLoading: $isLoading, clusterResult: $clusterResult, errorMessage: $errorMessage)';
+}
+
+
 }
 
 /// @nodoc
-abstract class $ClusterStateCopyWith<$Res> {
-  factory $ClusterStateCopyWith(
-          ClusterState value, $Res Function(ClusterState) then) =
-      _$ClusterStateCopyWithImpl<$Res, ClusterState>;
-  @useResult
-  $Res call(
-      {bool isLoading, ClusterResult? clusterResult, String? errorMessage});
+abstract mixin class $ClusterStateCopyWith<$Res>  {
+  factory $ClusterStateCopyWith(ClusterState value, $Res Function(ClusterState) _then) = _$ClusterStateCopyWithImpl;
+@useResult
+$Res call({
+ bool isLoading, ClusterResult? clusterResult, String? errorMessage
+});
 
-  $ClusterResultCopyWith<$Res>? get clusterResult;
+
+$ClusterResultCopyWith<$Res>? get clusterResult;
+
 }
-
 /// @nodoc
-class _$ClusterStateCopyWithImpl<$Res, $Val extends ClusterState>
+class _$ClusterStateCopyWithImpl<$Res>
     implements $ClusterStateCopyWith<$Res> {
-  _$ClusterStateCopyWithImpl(this._value, this._then);
+  _$ClusterStateCopyWithImpl(this._self, this._then);
 
-  // ignore: unused_field
-  final $Val _value;
-  // ignore: unused_field
-  final $Res Function($Val) _then;
+  final ClusterState _self;
+  final $Res Function(ClusterState) _then;
 
-  @pragma('vm:prefer-inline')
-  @override
-  $Res call({
-    Object? isLoading = null,
-    Object? clusterResult = freezed,
-    Object? errorMessage = freezed,
-  }) {
-    return _then(_value.copyWith(
-      isLoading: null == isLoading
-          ? _value.isLoading
-          : isLoading // ignore: cast_nullable_to_non_nullable
-              as bool,
-      clusterResult: freezed == clusterResult
-          ? _value.clusterResult
-          : clusterResult // ignore: cast_nullable_to_non_nullable
-              as ClusterResult?,
-      errorMessage: freezed == errorMessage
-          ? _value.errorMessage
-          : errorMessage // ignore: cast_nullable_to_non_nullable
-              as String?,
-    ) as $Val);
+/// Create a copy of ClusterState
+/// with the given fields replaced by the non-null parameter values.
+@pragma('vm:prefer-inline') @override $Res call({Object? isLoading = null,Object? clusterResult = freezed,Object? errorMessage = freezed,}) {
+  return _then(_self.copyWith(
+isLoading: null == isLoading ? _self.isLoading : isLoading // ignore: cast_nullable_to_non_nullable
+as bool,clusterResult: freezed == clusterResult ? _self.clusterResult : clusterResult // ignore: cast_nullable_to_non_nullable
+as ClusterResult?,errorMessage: freezed == errorMessage ? _self.errorMessage : errorMessage // ignore: cast_nullable_to_non_nullable
+as String?,
+  ));
+}
+/// Create a copy of ClusterState
+/// with the given fields replaced by the non-null parameter values.
+@override
+@pragma('vm:prefer-inline')
+$ClusterResultCopyWith<$Res>? get clusterResult {
+    if (_self.clusterResult == null) {
+    return null;
   }
 
-  @override
-  @pragma('vm:prefer-inline')
-  $ClusterResultCopyWith<$Res>? get clusterResult {
-    if (_value.clusterResult == null) {
-      return null;
-    }
+  return $ClusterResultCopyWith<$Res>(_self.clusterResult!, (value) {
+    return _then(_self.copyWith(clusterResult: value));
+  });
+}
+}
 
-    return $ClusterResultCopyWith<$Res>(_value.clusterResult!, (value) {
-      return _then(_value.copyWith(clusterResult: value) as $Val);
-    });
-  }
+
+/// Adds pattern-matching-related methods to [ClusterState].
+extension ClusterStatePatterns on ClusterState {
+/// A variant of `map` that fallback to returning `orElse`.
+///
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case final Subclass value:
+///     return ...;
+///   case _:
+///     return orElse();
+/// }
+/// ```
+
+@optionalTypeArgs TResult maybeMap<TResult extends Object?>(TResult Function( _ClusterState value)?  $default,{required TResult orElse(),}){
+final _that = this;
+switch (_that) {
+case _ClusterState() when $default != null:
+return $default(_that);case _:
+  return orElse();
+
+}
+}
+/// A `switch`-like method, using callbacks.
+///
+/// Callbacks receives the raw object, upcasted.
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case final Subclass value:
+///     return ...;
+///   case final Subclass2 value:
+///     return ...;
+/// }
+/// ```
+
+@optionalTypeArgs TResult map<TResult extends Object?>(TResult Function( _ClusterState value)  $default,){
+final _that = this;
+switch (_that) {
+case _ClusterState():
+return $default(_that);case _:
+  throw StateError('Unexpected subclass');
+
+}
+}
+/// A variant of `map` that fallback to returning `null`.
+///
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case final Subclass value:
+///     return ...;
+///   case _:
+///     return null;
+/// }
+/// ```
+
+@optionalTypeArgs TResult? mapOrNull<TResult extends Object?>(TResult? Function( _ClusterState value)?  $default,){
+final _that = this;
+switch (_that) {
+case _ClusterState() when $default != null:
+return $default(_that);case _:
+  return null;
+
+}
+}
+/// A variant of `when` that fallback to an `orElse` callback.
+///
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case Subclass(:final field):
+///     return ...;
+///   case _:
+///     return orElse();
+/// }
+/// ```
+
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( bool isLoading,  ClusterResult? clusterResult,  String? errorMessage)?  $default,{required TResult orElse(),}) {final _that = this;
+switch (_that) {
+case _ClusterState() when $default != null:
+return $default(_that.isLoading,_that.clusterResult,_that.errorMessage);case _:
+  return orElse();
+
+}
+}
+/// A `switch`-like method, using callbacks.
+///
+/// As opposed to `map`, this offers destructuring.
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case Subclass(:final field):
+///     return ...;
+///   case Subclass2(:final field2):
+///     return ...;
+/// }
+/// ```
+
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( bool isLoading,  ClusterResult? clusterResult,  String? errorMessage)  $default,) {final _that = this;
+switch (_that) {
+case _ClusterState():
+return $default(_that.isLoading,_that.clusterResult,_that.errorMessage);case _:
+  throw StateError('Unexpected subclass');
+
+}
+}
+/// A variant of `when` that fallback to returning `null`
+///
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case Subclass(:final field):
+///     return ...;
+///   case _:
+///     return null;
+/// }
+/// ```
+
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( bool isLoading,  ClusterResult? clusterResult,  String? errorMessage)?  $default,) {final _that = this;
+switch (_that) {
+case _ClusterState() when $default != null:
+return $default(_that.isLoading,_that.clusterResult,_that.errorMessage);case _:
+  return null;
+
+}
+}
+
 }
 
 /// @nodoc
-abstract class _$$ClusterStateImplCopyWith<$Res>
-    implements $ClusterStateCopyWith<$Res> {
-  factory _$$ClusterStateImplCopyWith(
-          _$ClusterStateImpl value, $Res Function(_$ClusterStateImpl) then) =
-      __$$ClusterStateImplCopyWithImpl<$Res>;
-  @override
-  @useResult
-  $Res call(
-      {bool isLoading, ClusterResult? clusterResult, String? errorMessage});
 
-  @override
-  $ClusterResultCopyWith<$Res>? get clusterResult;
+
+class _ClusterState implements ClusterState {
+  const _ClusterState({this.isLoading = false, this.clusterResult, this.errorMessage});
+  
+
+@override@JsonKey() final  bool isLoading;
+@override final  ClusterResult? clusterResult;
+@override final  String? errorMessage;
+
+/// Create a copy of ClusterState
+/// with the given fields replaced by the non-null parameter values.
+@override @JsonKey(includeFromJson: false, includeToJson: false)
+@pragma('vm:prefer-inline')
+_$ClusterStateCopyWith<_ClusterState> get copyWith => __$ClusterStateCopyWithImpl<_ClusterState>(this, _$identity);
+
+
+
+@override
+bool operator ==(Object other) {
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _ClusterState&&(identical(other.isLoading, isLoading) || other.isLoading == isLoading)&&(identical(other.clusterResult, clusterResult) || other.clusterResult == clusterResult)&&(identical(other.errorMessage, errorMessage) || other.errorMessage == errorMessage));
+}
+
+
+@override
+int get hashCode => Object.hash(runtimeType,isLoading,clusterResult,errorMessage);
+
+@override
+String toString() {
+  return 'ClusterState(isLoading: $isLoading, clusterResult: $clusterResult, errorMessage: $errorMessage)';
+}
+
+
 }
 
 /// @nodoc
-class __$$ClusterStateImplCopyWithImpl<$Res>
-    extends _$ClusterStateCopyWithImpl<$Res, _$ClusterStateImpl>
-    implements _$$ClusterStateImplCopyWith<$Res> {
-  __$$ClusterStateImplCopyWithImpl(
-      _$ClusterStateImpl _value, $Res Function(_$ClusterStateImpl) _then)
-      : super(_value, _then);
+abstract mixin class _$ClusterStateCopyWith<$Res> implements $ClusterStateCopyWith<$Res> {
+  factory _$ClusterStateCopyWith(_ClusterState value, $Res Function(_ClusterState) _then) = __$ClusterStateCopyWithImpl;
+@override @useResult
+$Res call({
+ bool isLoading, ClusterResult? clusterResult, String? errorMessage
+});
 
-  @pragma('vm:prefer-inline')
-  @override
-  $Res call({
-    Object? isLoading = null,
-    Object? clusterResult = freezed,
-    Object? errorMessage = freezed,
-  }) {
-    return _then(_$ClusterStateImpl(
-      isLoading: null == isLoading
-          ? _value.isLoading
-          : isLoading // ignore: cast_nullable_to_non_nullable
-              as bool,
-      clusterResult: freezed == clusterResult
-          ? _value.clusterResult
-          : clusterResult // ignore: cast_nullable_to_non_nullable
-              as ClusterResult?,
-      errorMessage: freezed == errorMessage
-          ? _value.errorMessage
-          : errorMessage // ignore: cast_nullable_to_non_nullable
-              as String?,
-    ));
-  }
+
+@override $ClusterResultCopyWith<$Res>? get clusterResult;
+
 }
-
 /// @nodoc
+class __$ClusterStateCopyWithImpl<$Res>
+    implements _$ClusterStateCopyWith<$Res> {
+  __$ClusterStateCopyWithImpl(this._self, this._then);
 
-class _$ClusterStateImpl implements _ClusterState {
-  const _$ClusterStateImpl(
-      {this.isLoading = false, this.clusterResult, this.errorMessage});
+  final _ClusterState _self;
+  final $Res Function(_ClusterState) _then;
 
-  @override
-  @JsonKey()
-  final bool isLoading;
-  @override
-  final ClusterResult? clusterResult;
-  @override
-  final String? errorMessage;
-
-  @override
-  String toString() {
-    return 'ClusterState(isLoading: $isLoading, clusterResult: $clusterResult, errorMessage: $errorMessage)';
-  }
-
-  @override
-  bool operator ==(Object other) {
-    return identical(this, other) ||
-        (other.runtimeType == runtimeType &&
-            other is _$ClusterStateImpl &&
-            (identical(other.isLoading, isLoading) ||
-                other.isLoading == isLoading) &&
-            (identical(other.clusterResult, clusterResult) ||
-                other.clusterResult == clusterResult) &&
-            (identical(other.errorMessage, errorMessage) ||
-                other.errorMessage == errorMessage));
-  }
-
-  @override
-  int get hashCode =>
-      Object.hash(runtimeType, isLoading, clusterResult, errorMessage);
-
-  @JsonKey(ignore: true)
-  @override
-  @pragma('vm:prefer-inline')
-  _$$ClusterStateImplCopyWith<_$ClusterStateImpl> get copyWith =>
-      __$$ClusterStateImplCopyWithImpl<_$ClusterStateImpl>(this, _$identity);
+/// Create a copy of ClusterState
+/// with the given fields replaced by the non-null parameter values.
+@override @pragma('vm:prefer-inline') $Res call({Object? isLoading = null,Object? clusterResult = freezed,Object? errorMessage = freezed,}) {
+  return _then(_ClusterState(
+isLoading: null == isLoading ? _self.isLoading : isLoading // ignore: cast_nullable_to_non_nullable
+as bool,clusterResult: freezed == clusterResult ? _self.clusterResult : clusterResult // ignore: cast_nullable_to_non_nullable
+as ClusterResult?,errorMessage: freezed == errorMessage ? _self.errorMessage : errorMessage // ignore: cast_nullable_to_non_nullable
+as String?,
+  ));
 }
 
-abstract class _ClusterState implements ClusterState {
-  const factory _ClusterState(
-      {final bool isLoading,
-      final ClusterResult? clusterResult,
-      final String? errorMessage}) = _$ClusterStateImpl;
+/// Create a copy of ClusterState
+/// with the given fields replaced by the non-null parameter values.
+@override
+@pragma('vm:prefer-inline')
+$ClusterResultCopyWith<$Res>? get clusterResult {
+    if (_self.clusterResult == null) {
+    return null;
+  }
 
-  @override
-  bool get isLoading;
-  @override
-  ClusterResult? get clusterResult;
-  @override
-  String? get errorMessage;
-  @override
-  @JsonKey(ignore: true)
-  _$$ClusterStateImplCopyWith<_$ClusterStateImpl> get copyWith =>
-      throw _privateConstructorUsedError;
+  return $ClusterResultCopyWith<$Res>(_self.clusterResult!, (value) {
+    return _then(_self.copyWith(clusterResult: value));
+  });
 }
+}
+
+// dart format on

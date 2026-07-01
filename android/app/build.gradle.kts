@@ -4,13 +4,12 @@ plugins {
     id("com.google.gms.google-services")
     id("com.google.firebase.crashlytics")
     // END: FlutterFire Configuration
-    id("kotlin-android")
     // The Flutter Gradle Plugin must be applied after the Android and Kotlin Gradle plugins.
     id("dev.flutter.flutter-gradle-plugin")
 }
 
 android {
-    namespace = "com.example.smart_route_app"
+    namespace = "com.thanh.smartroute"
     compileSdk = flutter.compileSdkVersion
     ndkVersion = flutter.ndkVersion
 
@@ -23,14 +22,9 @@ android {
         targetCompatibility = JavaVersion.VERSION_17
     }
 
-    kotlinOptions {
-        // Sets the JVM target to Java 17 follow pakage flutter_local_notifications
-        jvmTarget = JavaVersion.VERSION_17.toString()
-    }
-
     defaultConfig {
         // TODO: Specify your own unique Application ID (https://developer.android.com/studio/build/application-id.html).
-        applicationId = "com.example.smart_route_app"
+        applicationId = "com.thanh.smartroute"
         // You can update the following values to match your application needs.
         // For more information, see: https://flutter.dev/to/review-gradle-config.
         minSdk = 28  // Required for arcgis_maps plugin
@@ -49,6 +43,16 @@ android {
         }
     }
 }
+
+// Built-in Kotlin migration for app developers
+// Chuyển đổi ứng dụng Flutter sang sử dụng Kotlin tích hợp sẵn
+// https://docs.flutter.dev/release/breaking-changes/migrate-to-built-in-kotlin/for-app-developers
+kotlin {
+    compilerOptions {
+        jvmTarget = org.jetbrains.kotlin.gradle.dsl.JvmTarget.JVM_17
+    }
+}
+
 
 dependencies {
     coreLibraryDesugaring("com.android.tools:desugar_jdk_libs:2.1.4")

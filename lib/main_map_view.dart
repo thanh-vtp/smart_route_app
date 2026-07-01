@@ -56,7 +56,7 @@ class _MainMapViewState extends ConsumerState<MainMapView> {
       await notifierIncidents.fetchIncidents();
       notifierIncidents.listenToRealtimeUpdates();
 
-      await ref.read(clusterNotifierProvider.notifier).fetchClusters();
+      await ref.read(clusterProvider.notifier).fetchClusters();
     });
 
     ref.listenManual<IncidentsState>(incidentsProvider, (previous, next) async {
@@ -64,10 +64,7 @@ class _MainMapViewState extends ConsumerState<MainMapView> {
       AppLogger.debug('renderIncidents: ${next.incidents.length}');
     });
 
-    ref.listenManual<ClusterState>(clusterNotifierProvider, (
-      previous,
-      next,
-    ) async {
+    ref.listenManual<ClusterState>(clusterProvider, (previous, next) async {
       final clusterResult = next.clusterResult;
       if (clusterResult != null) {
         await ref
@@ -82,12 +79,12 @@ class _MainMapViewState extends ConsumerState<MainMapView> {
     final cs = Theme.of(context).colorScheme;
 
     final mapUiState = ref.watch(mapUiProvider);
-    final routeState = ref.watch(routeNotifierProvider);
+    final routeState = ref.watch(routeProvider);
     final hasRoute = routeState.routeResult != null;
     final isNavigating = mapUiState.isNavigating;
 
     // Recenter khi có route mới
-    ref.listen<RouteState>(routeNotifierProvider, (previous, next) async {
+    ref.listen<RouteState>(routeProvider, (previous, next) async {
       if (next.routeResult != null && previous?.routeResult == null) {
         final route = next.routeResult!;
         if (route.polylinePoints.isNotEmpty) {
@@ -114,7 +111,7 @@ class _MainMapViewState extends ConsumerState<MainMapView> {
       if (nextId == null) return;
       await ref.read(mapFacadeProvider).recenterToIncident(nextId);
       if (!mounted) return;
-      _showIncidentDetail(context, nextId);
+      _showIncidentDetail(this.context, nextId);
       Future.microtask(() {
         ref.read(selectedIncidentIdFromNotificationProvider.notifier).state =
             null;
@@ -238,7 +235,7 @@ class _MapLayerState extends ConsumerState<_MapLayer> {
     final textTheme = Theme.of(context).textTheme;
 
     final mapUiState = widget.mapUiState;
-    final routeState = ref.watch(routeNotifierProvider);
+    final routeState = ref.watch(routeProvider);
     final hasRoute = routeState.routeResult != null;
 
     return Stack(

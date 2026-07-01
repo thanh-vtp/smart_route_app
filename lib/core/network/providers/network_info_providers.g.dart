@@ -6,53 +6,128 @@ part of 'network_info_providers.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$internetConnectionCheckerHash() =>
-    r'e1e55441d0887ab8db58716ea3da033409d46b26';
+// GENERATED CODE - DO NOT MODIFY BY HAND
+// ignore_for_file: type=lint, type=warning
 
-/// See also [internetConnectionChecker].
 @ProviderFor(internetConnectionChecker)
-final internetConnectionCheckerProvider =
-    Provider<InternetConnectionChecker>.internal(
-  internetConnectionChecker,
-  name: r'internetConnectionCheckerProvider',
-  debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
-      ? null
-      : _$internetConnectionCheckerHash,
-  dependencies: null,
-  allTransitiveDependencies: null,
-);
+final internetConnectionCheckerProvider = InternetConnectionCheckerProvider._();
 
-typedef InternetConnectionCheckerRef = ProviderRef<InternetConnectionChecker>;
-String _$networkInfoHash() => r'760b5471112c37b3eacf66bd9da8a02cee4c1bef';
+final class InternetConnectionCheckerProvider
+    extends
+        $FunctionalProvider<
+          InternetConnectionChecker,
+          InternetConnectionChecker,
+          InternetConnectionChecker
+        >
+    with $Provider<InternetConnectionChecker> {
+  InternetConnectionCheckerProvider._()
+    : super(
+        from: null,
+        argument: null,
+        retry: null,
+        name: r'internetConnectionCheckerProvider',
+        isAutoDispose: false,
+        dependencies: null,
+        $allTransitiveDependencies: null,
+      );
 
-/// See also [networkInfo].
+  @override
+  String debugGetCreateSourceHash() => _$internetConnectionCheckerHash();
+
+  @$internal
+  @override
+  $ProviderElement<InternetConnectionChecker> $createElement(
+    $ProviderPointer pointer,
+  ) => $ProviderElement(pointer);
+
+  @override
+  InternetConnectionChecker create(Ref ref) {
+    return internetConnectionChecker(ref);
+  }
+
+  /// {@macro riverpod.override_with_value}
+  Override overrideWithValue(InternetConnectionChecker value) {
+    return $ProviderOverride(
+      origin: this,
+      providerOverride: $SyncValueProvider<InternetConnectionChecker>(value),
+    );
+  }
+}
+
+String _$internetConnectionCheckerHash() =>
+    r'8afe34858d4f7303ae4886c28401921b1f651949';
+
 @ProviderFor(networkInfo)
-final networkInfoProvider = Provider<NetworkInfo>.internal(
-  networkInfo,
-  name: r'networkInfoProvider',
-  debugGetCreateSourceHash:
-      const bool.fromEnvironment('dart.vm.product') ? null : _$networkInfoHash,
-  dependencies: null,
-  allTransitiveDependencies: null,
-);
+final networkInfoProvider = NetworkInfoProvider._();
 
-typedef NetworkInfoRef = ProviderRef<NetworkInfo>;
-String _$internetConnectionStreamHash() =>
-    r'effeafd2e731f9b8423c19c02359127327a00632';
+final class NetworkInfoProvider
+    extends $FunctionalProvider<NetworkInfo, NetworkInfo, NetworkInfo>
+    with $Provider<NetworkInfo> {
+  NetworkInfoProvider._()
+    : super(
+        from: null,
+        argument: null,
+        retry: null,
+        name: r'networkInfoProvider',
+        isAutoDispose: false,
+        dependencies: null,
+        $allTransitiveDependencies: null,
+      );
 
-/// See also [internetConnectionStream].
+  @override
+  String debugGetCreateSourceHash() => _$networkInfoHash();
+
+  @$internal
+  @override
+  $ProviderElement<NetworkInfo> $createElement($ProviderPointer pointer) =>
+      $ProviderElement(pointer);
+
+  @override
+  NetworkInfo create(Ref ref) {
+    return networkInfo(ref);
+  }
+
+  /// {@macro riverpod.override_with_value}
+  Override overrideWithValue(NetworkInfo value) {
+    return $ProviderOverride(
+      origin: this,
+      providerOverride: $SyncValueProvider<NetworkInfo>(value),
+    );
+  }
+}
+
+String _$networkInfoHash() => r'9cde9ad9ecb16e5f22fe75967834c716219b14a7';
+
 @ProviderFor(internetConnectionStream)
-final internetConnectionStreamProvider =
-    AutoDisposeStreamProvider<bool>.internal(
-  internetConnectionStream,
-  name: r'internetConnectionStreamProvider',
-  debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
-      ? null
-      : _$internetConnectionStreamHash,
-  dependencies: null,
-  allTransitiveDependencies: null,
-);
+final internetConnectionStreamProvider = InternetConnectionStreamProvider._();
 
-typedef InternetConnectionStreamRef = AutoDisposeStreamProviderRef<bool>;
-// ignore_for_file: type=lint
-// ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member
+final class InternetConnectionStreamProvider
+    extends $FunctionalProvider<AsyncValue<bool>, bool, Stream<bool>>
+    with $FutureModifier<bool>, $StreamProvider<bool> {
+  InternetConnectionStreamProvider._()
+    : super(
+        from: null,
+        argument: null,
+        retry: null,
+        name: r'internetConnectionStreamProvider',
+        isAutoDispose: true,
+        dependencies: null,
+        $allTransitiveDependencies: null,
+      );
+
+  @override
+  String debugGetCreateSourceHash() => _$internetConnectionStreamHash();
+
+  @$internal
+  @override
+  $StreamProviderElement<bool> $createElement($ProviderPointer pointer) =>
+      $StreamProviderElement(pointer);
+
+  @override
+  Stream<bool> create(Ref ref) {
+    return internetConnectionStream(ref);
+  }
+}
+
+String _$internetConnectionStreamHash() =>
+    r'faa484a228969e1abf2c1c2fd680e115f8c231a9';

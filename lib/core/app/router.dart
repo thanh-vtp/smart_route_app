@@ -1,12 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
+import 'package:smart_route_app/features/auth/presentation/states/auth_session_provider.dart';
 import 'package:smart_route_app/features/search/domain/entities/address_result.dart';
 import 'package:smart_route_app/features/analytics/presentation/screens/analytics_screen.dart';
 import 'package:smart_route_app/features/auth/presentation/screens/auth_screen.dart';
 import 'package:smart_route_app/features/auth/domain/entities/app_user.dart';
-import 'package:smart_route_app/features/auth/presentation/auth_session_provider.dart';
 import 'package:smart_route_app/features/profile/presentation/screens/account_management_screen.dart';
 import 'package:smart_route_app/main_map_view.dart';
 import 'package:smart_route_app/main_scaffold.dart';
@@ -32,42 +31,13 @@ final _rootNavigatorKey = GlobalKey<NavigatorState>(debugLabel: 'root');
 
 @riverpod
 GoRouter router(Ref ref) {
-  // Dùng ValueNotifier + refreshListenable thay vì ref.watch để tránh
-  // GoRouter bị recreate mỗi khi Riverpod rebuild (keyboard insets,
-  // MediaQuery, v.v.). GoRouter chỉ re-evaluate redirect khi login status
-  // thực sự thay đổi.
-  final authStateListener = ValueNotifier<AsyncValue<AppUser>>(
-    ref.read(authSessionProvider),
-  );
-
-  // Guard: chỉ notify GoRouter khi login/loading status thực sự thay đổi,
-  // không notify mỗi lần Supabase stream emit heartbeat/session refresh.
-  ref.listen<AsyncValue<AppUser>>(authSessionProvider, (previous, next) {
-    final prevUserId = previous?.asData?.value.id ?? '';
-    final nextUserId = next.asData?.value.id ?? '';
-    final prevLoading = previous?.isLoading ?? true;
-    final nextLoading = next.isLoading;
-    final prevHasError = previous?.hasError ?? false;
-    final nextHasError = next.hasError;
-
-    // Chỉ notify khi user id, loading, hoặc error state thực sự thay đổi
-    if (prevUserId != nextUserId ||
-        prevLoading != nextLoading ||
-        prevHasError != nextHasError) {
-      authStateListener.value = next;
-    }
-  });
-
-  ref.onDispose(authStateListener.dispose);
+  final authState = ref.watch(authSessionProvider);
 
   return GoRouter(
     debugLogDiagnostics: true,
     initialLocation: AppRoutes.explore,
     navigatorKey: _rootNavigatorKey,
-    refreshListenable: authStateListener,
     redirect: (context, state) {
-      final authState = authStateListener.value;
-
       if (authState.isLoading) {
         return AppRoutes.splash;
       }

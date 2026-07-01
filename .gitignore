@@ -98,3 +98,10 @@ supabase/seed.sql
 
 bao-cao-chuyen-de-tot-nghiep/
 
+# ========================
+# Auth
+# ========================
+# Script lấy SHA-1 fingerprint
+get_sha1.bat
+# Hướng dẫn chi tiết cấu hình
+GOOGLE_SIGNIN_SETUP.txt

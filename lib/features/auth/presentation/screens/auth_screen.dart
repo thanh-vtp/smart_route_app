@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:smart_route_app/features/auth/presentation/auth_controller_provider.dart';
+import 'package:smart_route_app/features/auth/presentation/states/auth_controller_provider.dart';
+import 'package:smart_route_app/features/auth/presentation/states/auth_state.dart';
 
 class AuthScreen extends ConsumerStatefulWidget {
   const AuthScreen({super.key});

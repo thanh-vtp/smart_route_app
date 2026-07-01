@@ -235,7 +235,7 @@ class _DirectionsList extends ConsumerWidget {
       controller: scrollController,
       padding: const EdgeInsets.symmetric(vertical: 8),
       itemCount: directions.length,
-      separatorBuilder: (_, __) =>
+      separatorBuilder: (_, _) =>
           Divider(height: 1, indent: 64, color: cs.surfaceVariant),
       itemBuilder: (_, index) => _DirectionTile(
         direction: directions[index],

@@ -5,17 +5,11 @@ import 'package:smart_route_app/features/map_drawing/model/incident_arcgis_model
 import 'package:smart_route_app/core/errors/exceptions.dart';
 import 'package:smart_route_app/common/app_logger.dart';
 import 'package:smart_route_app/features/incident/data/datasources/arcgis_remote_data_source.dart';
-import 'package:http/http.dart' as http;
 
 class ArcGISRemoteDataSourceImpl implements ArcGISRemoteDataSource {
   final FeatureLayer _featureLayer;
-  final http.Client _client;
 
-  ArcGISRemoteDataSourceImpl(
-    this._featureLayer, {
-    http.Client? client,
-    String? arcgisToken,
-  }) : _client = client ?? http.Client();
+  ArcGISRemoteDataSourceImpl(this._featureLayer, {String? arcgisToken});
 
   @override
   Future<List<IncidentArcgisModel>> getIncidents({

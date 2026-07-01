@@ -6,22 +6,53 @@ part of 'remote_datasource_providers.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$analyticsRemoteDataSourceHash() =>
-    r'e55096b66f97f5ff65e12cbbc989c9968b4fb9dd';
+// GENERATED CODE - DO NOT MODIFY BY HAND
+// ignore_for_file: type=lint, type=warning
 
-/// See also [analyticsRemoteDataSource].
 @ProviderFor(analyticsRemoteDataSource)
-final analyticsRemoteDataSourceProvider =
-    Provider<AnalyticsRemoteDataSource>.internal(
-  analyticsRemoteDataSource,
-  name: r'analyticsRemoteDataSourceProvider',
-  debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
-      ? null
-      : _$analyticsRemoteDataSourceHash,
-  dependencies: null,
-  allTransitiveDependencies: null,
-);
+final analyticsRemoteDataSourceProvider = AnalyticsRemoteDataSourceProvider._();
 
-typedef AnalyticsRemoteDataSourceRef = ProviderRef<AnalyticsRemoteDataSource>;
-// ignore_for_file: type=lint
-// ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member
+final class AnalyticsRemoteDataSourceProvider
+    extends
+        $FunctionalProvider<
+          AnalyticsRemoteDataSource,
+          AnalyticsRemoteDataSource,
+          AnalyticsRemoteDataSource
+        >
+    with $Provider<AnalyticsRemoteDataSource> {
+  AnalyticsRemoteDataSourceProvider._()
+    : super(
+        from: null,
+        argument: null,
+        retry: null,
+        name: r'analyticsRemoteDataSourceProvider',
+        isAutoDispose: false,
+        dependencies: null,
+        $allTransitiveDependencies: null,
+      );
+
+  @override
+  String debugGetCreateSourceHash() => _$analyticsRemoteDataSourceHash();
+
+  @$internal
+  @override
+  $ProviderElement<AnalyticsRemoteDataSource> $createElement(
+    $ProviderPointer pointer,
+  ) => $ProviderElement(pointer);
+
+  @override
+  AnalyticsRemoteDataSource create(Ref ref) {
+    return analyticsRemoteDataSource(ref);
+  }
+
+  /// {@macro riverpod.override_with_value}
+  Override overrideWithValue(AnalyticsRemoteDataSource value) {
+    return $ProviderOverride(
+      origin: this,
+      providerOverride: $SyncValueProvider<AnalyticsRemoteDataSource>(value),
+    );
+  }
+}
+
+String _$analyticsRemoteDataSourceHash() =>
+    r'191425ffbde7a56c9b883396205af4b23a8fe836';

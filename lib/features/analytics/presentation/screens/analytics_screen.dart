@@ -2,7 +2,6 @@ import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:smart_route_app/features/profile/presentation/screens/account_management_screen.dart';
 import 'package:smart_route_app/features/analytics/domain/entities/analytics_data.dart';
 import 'package:smart_route_app/features/analytics/presentation/states/analytics_notifier.dart';
 import 'package:smart_route_app/features/analytics/presentation/states/analytics_state.dart';
@@ -18,7 +17,7 @@ class AnalyticsScreen extends ConsumerWidget {
     final cs = theme.colorScheme;
     final textTheme = theme.textTheme;
 
-    final state = ref.watch(analyticsNotifierProvider);
+    final state = ref.watch(analyticsProvider);
     final currentUser = ref
         .watch(getCurrentUserUsecaseProvider)
         .call(); // Avatar, Name
@@ -69,7 +68,7 @@ class AnalyticsScreen extends ConsumerWidget {
             const SizedBox(height: 16),
             FilledButton(
               onPressed: () =>
-                  ref.read(analyticsNotifierProvider.notifier).fetchAnalytics(),
+                  ref.read(analyticsProvider.notifier).fetchAnalytics(),
               child: const Text('Thử lại'),
             ),
           ],
@@ -80,8 +79,7 @@ class AnalyticsScreen extends ConsumerWidget {
     final data = state.data!;
 
     return RefreshIndicator(
-      onRefresh: () =>
-          ref.read(analyticsNotifierProvider.notifier).fetchAnalytics(),
+      onRefresh: () => ref.read(analyticsProvider.notifier).fetchAnalytics(),
       child: SingleChildScrollView(
         padding: const EdgeInsets.all(16.0),
         child: Column(
@@ -407,9 +405,7 @@ class AnalyticsScreen extends ConsumerWidget {
             child: GestureDetector(
               onTap: () {
                 if (!isSelected) {
-                  ref
-                      .read(analyticsNotifierProvider.notifier)
-                      .fetchAnalytics(range);
+                  ref.read(analyticsProvider.notifier).fetchAnalytics(range);
                 }
               },
               child: AnimatedContainer(

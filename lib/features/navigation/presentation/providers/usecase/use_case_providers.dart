@@ -6,15 +6,13 @@ import 'package:smart_route_app/features/navigation/presentation/providers/repos
 part 'use_case_providers.g.dart';
 
 @riverpod
-CalculateRouteUseCase calculateRouteUseCase(CalculateRouteUseCaseRef ref) {
+CalculateRouteUseCase calculateRouteUseCase(Ref ref) {
   final repository = ref.watch(routingRepositoryProvider);
   return CalculateRouteUseCase(repository);
 }
 
 @riverpod
-CalculateAlternativeRoutesUseCase calculateAlternativeRoutesUseCase(
-  CalculateAlternativeRoutesUseCaseRef ref,
-) {
+CalculateAlternativeRoutesUseCase calculateAlternativeRoutesUseCase(Ref ref) {
   final repository = ref.watch(routingRepositoryProvider);
   return CalculateAlternativeRoutesUseCase(repository);
 }

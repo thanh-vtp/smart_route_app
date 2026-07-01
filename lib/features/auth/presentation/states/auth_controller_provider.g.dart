@@ -1,6 +1,6 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'analytics_notifier.dart';
+part of 'auth_controller_provider.dart';
 
 // **************************************************************************
 // RiverpodGenerator
@@ -9,51 +9,51 @@ part of 'analytics_notifier.dart';
 // GENERATED CODE - DO NOT MODIFY BY HAND
 // ignore_for_file: type=lint, type=warning
 
-@ProviderFor(AnalyticsNotifier)
-final analyticsProvider = AnalyticsNotifierProvider._();
+@ProviderFor(AuthController)
+final authControllerProvider = AuthControllerProvider._();
 
-final class AnalyticsNotifierProvider
-    extends $NotifierProvider<AnalyticsNotifier, AnalyticsState> {
-  AnalyticsNotifierProvider._()
+final class AuthControllerProvider
+    extends $NotifierProvider<AuthController, AuthState> {
+  AuthControllerProvider._()
     : super(
         from: null,
         argument: null,
         retry: null,
-        name: r'analyticsProvider',
+        name: r'authControllerProvider',
         isAutoDispose: true,
         dependencies: null,
         $allTransitiveDependencies: null,
       );
 
   @override
-  String debugGetCreateSourceHash() => _$analyticsNotifierHash();
+  String debugGetCreateSourceHash() => _$authControllerHash();
 
   @$internal
   @override
-  AnalyticsNotifier create() => AnalyticsNotifier();
+  AuthController create() => AuthController();
 
   /// {@macro riverpod.override_with_value}
-  Override overrideWithValue(AnalyticsState value) {
+  Override overrideWithValue(AuthState value) {
     return $ProviderOverride(
       origin: this,
-      providerOverride: $SyncValueProvider<AnalyticsState>(value),
+      providerOverride: $SyncValueProvider<AuthState>(value),
     );
   }
 }
 
-String _$analyticsNotifierHash() => r'7716eefedc890e0f369d496a95c243582c1179fc';
+String _$authControllerHash() => r'265b1d6b71d982bb7fe5e7882518c2db50507461';
 
-abstract class _$AnalyticsNotifier extends $Notifier<AnalyticsState> {
-  AnalyticsState build();
+abstract class _$AuthController extends $Notifier<AuthState> {
+  AuthState build();
   @$mustCallSuper
   @override
   WhenComplete runBuild() {
-    final ref = this.ref as $Ref<AnalyticsState, AnalyticsState>;
+    final ref = this.ref as $Ref<AuthState, AuthState>;
     final element =
         ref.element
             as $ClassProviderElement<
-              AnyNotifier<AnalyticsState, AnalyticsState>,
-              AnalyticsState,
+              AnyNotifier<AuthState, AuthState>,
+              AuthState,
               Object?,
               Object?
             >;

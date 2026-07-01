@@ -4,7 +4,7 @@ import 'package:smart_route_app/features/cluster/domain/entities/cluster_entitie
 part 'cluster_state.freezed.dart';
 
 @freezed
-class ClusterState with _$ClusterState {
+abstract class ClusterState with _$ClusterState {
   const factory ClusterState({
     @Default(false) bool isLoading,
     final ClusterResult? clusterResult,

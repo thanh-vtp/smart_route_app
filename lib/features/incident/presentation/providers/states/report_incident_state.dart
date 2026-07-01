@@ -3,7 +3,7 @@ import 'package:freezed_annotation/freezed_annotation.dart';
 part 'report_incident_state.freezed.dart';
 
 @freezed
-class ReportIncidentState with _$ReportIncidentState {
+abstract class ReportIncidentState with _$ReportIncidentState {
   const factory ReportIncidentState({
     // Trạng thái cho việc dịch địa chỉ
     @Default(true) bool isLoadingAddress,

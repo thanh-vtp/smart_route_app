@@ -1,5 +1,5 @@
-// coverage:ignore-file
 // GENERATED CODE - DO NOT MODIFY BY HAND
+// coverage:ignore-file
 // ignore_for_file: type=lint
 // ignore_for_file: unused_element, deprecated_member_use, deprecated_member_use_from_same_package, use_function_type_syntax_for_parameters, unnecessary_const, avoid_init_to_null, invalid_override_different_default_values_named, prefer_expression_function_bodies, annotate_overrides, invalid_annotation_target, unnecessary_question_mark
 
@@ -9,846 +9,852 @@ part of 'analytics_data.dart';
 // FreezedGenerator
 // **************************************************************************
 
+// dart format off
 T _$identity<T>(T value) => value;
-
-final _privateConstructorUsedError = UnsupportedError(
-    'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#adding-getters-and-methods-to-our-models');
-
 /// @nodoc
 mixin _$AnalyticsData {
-  int get reputationScore => throw _privateConstructorUsedError;
-  int get totalReports => throw _privateConstructorUsedError;
-  double get reportsChangePercent => throw _privateConstructorUsedError;
-  String get reportsDirection => throw _privateConstructorUsedError;
-  int get totalUpvotes => throw _privateConstructorUsedError;
-  double get upvotesChangePercent => throw _privateConstructorUsedError;
-  String get upvotesDirection => throw _privateConstructorUsedError;
-  int get totalDownvotes => throw _privateConstructorUsedError;
-  double get confirmationRate => throw _privateConstructorUsedError;
-  int get distributionTotal => throw _privateConstructorUsedError;
-  List<IncidentChartData> get distribution =>
-      throw _privateConstructorUsedError;
-  List<ActivityItem> get recentActivities => throw _privateConstructorUsedError;
 
-  @JsonKey(ignore: true)
-  $AnalyticsDataCopyWith<AnalyticsData> get copyWith =>
-      throw _privateConstructorUsedError;
+ int get reputationScore; int get totalReports; double get reportsChangePercent; String get reportsDirection; int get totalUpvotes; double get upvotesChangePercent; String get upvotesDirection; int get totalDownvotes; double get confirmationRate; int get distributionTotal; List<IncidentChartData> get distribution; List<ActivityItem> get recentActivities;
+/// Create a copy of AnalyticsData
+/// with the given fields replaced by the non-null parameter values.
+@JsonKey(includeFromJson: false, includeToJson: false)
+@pragma('vm:prefer-inline')
+$AnalyticsDataCopyWith<AnalyticsData> get copyWith => _$AnalyticsDataCopyWithImpl<AnalyticsData>(this as AnalyticsData, _$identity);
+
+
+
+@override
+bool operator ==(Object other) {
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is AnalyticsData&&(identical(other.reputationScore, reputationScore) || other.reputationScore == reputationScore)&&(identical(other.totalReports, totalReports) || other.totalReports == totalReports)&&(identical(other.reportsChangePercent, reportsChangePercent) || other.reportsChangePercent == reportsChangePercent)&&(identical(other.reportsDirection, reportsDirection) || other.reportsDirection == reportsDirection)&&(identical(other.totalUpvotes, totalUpvotes) || other.totalUpvotes == totalUpvotes)&&(identical(other.upvotesChangePercent, upvotesChangePercent) || other.upvotesChangePercent == upvotesChangePercent)&&(identical(other.upvotesDirection, upvotesDirection) || other.upvotesDirection == upvotesDirection)&&(identical(other.totalDownvotes, totalDownvotes) || other.totalDownvotes == totalDownvotes)&&(identical(other.confirmationRate, confirmationRate) || other.confirmationRate == confirmationRate)&&(identical(other.distributionTotal, distributionTotal) || other.distributionTotal == distributionTotal)&&const DeepCollectionEquality().equals(other.distribution, distribution)&&const DeepCollectionEquality().equals(other.recentActivities, recentActivities));
+}
+
+
+@override
+int get hashCode => Object.hash(runtimeType,reputationScore,totalReports,reportsChangePercent,reportsDirection,totalUpvotes,upvotesChangePercent,upvotesDirection,totalDownvotes,confirmationRate,distributionTotal,const DeepCollectionEquality().hash(distribution),const DeepCollectionEquality().hash(recentActivities));
+
+@override
+String toString() {
+  return 'AnalyticsData(reputationScore: $reputationScore, totalReports: $totalReports, reportsChangePercent: $reportsChangePercent, reportsDirection: $reportsDirection, totalUpvotes: $totalUpvotes, upvotesChangePercent: $upvotesChangePercent, upvotesDirection: $upvotesDirection, totalDownvotes: $totalDownvotes, confirmationRate: $confirmationRate, distributionTotal: $distributionTotal, distribution: $distribution, recentActivities: $recentActivities)';
+}
+
+
 }
 
 /// @nodoc
-abstract class $AnalyticsDataCopyWith<$Res> {
-  factory $AnalyticsDataCopyWith(
-          AnalyticsData value, $Res Function(AnalyticsData) then) =
-      _$AnalyticsDataCopyWithImpl<$Res, AnalyticsData>;
-  @useResult
-  $Res call(
-      {int reputationScore,
-      int totalReports,
-      double reportsChangePercent,
-      String reportsDirection,
-      int totalUpvotes,
-      double upvotesChangePercent,
-      String upvotesDirection,
-      int totalDownvotes,
-      double confirmationRate,
-      int distributionTotal,
-      List<IncidentChartData> distribution,
-      List<ActivityItem> recentActivities});
-}
+abstract mixin class $AnalyticsDataCopyWith<$Res>  {
+  factory $AnalyticsDataCopyWith(AnalyticsData value, $Res Function(AnalyticsData) _then) = _$AnalyticsDataCopyWithImpl;
+@useResult
+$Res call({
+ int reputationScore, int totalReports, double reportsChangePercent, String reportsDirection, int totalUpvotes, double upvotesChangePercent, String upvotesDirection, int totalDownvotes, double confirmationRate, int distributionTotal, List<IncidentChartData> distribution, List<ActivityItem> recentActivities
+});
 
+
+
+
+}
 /// @nodoc
-class _$AnalyticsDataCopyWithImpl<$Res, $Val extends AnalyticsData>
+class _$AnalyticsDataCopyWithImpl<$Res>
     implements $AnalyticsDataCopyWith<$Res> {
-  _$AnalyticsDataCopyWithImpl(this._value, this._then);
+  _$AnalyticsDataCopyWithImpl(this._self, this._then);
 
-  // ignore: unused_field
-  final $Val _value;
-  // ignore: unused_field
-  final $Res Function($Val) _then;
+  final AnalyticsData _self;
+  final $Res Function(AnalyticsData) _then;
 
-  @pragma('vm:prefer-inline')
-  @override
-  $Res call({
-    Object? reputationScore = null,
-    Object? totalReports = null,
-    Object? reportsChangePercent = null,
-    Object? reportsDirection = null,
-    Object? totalUpvotes = null,
-    Object? upvotesChangePercent = null,
-    Object? upvotesDirection = null,
-    Object? totalDownvotes = null,
-    Object? confirmationRate = null,
-    Object? distributionTotal = null,
-    Object? distribution = null,
-    Object? recentActivities = null,
-  }) {
-    return _then(_value.copyWith(
-      reputationScore: null == reputationScore
-          ? _value.reputationScore
-          : reputationScore // ignore: cast_nullable_to_non_nullable
-              as int,
-      totalReports: null == totalReports
-          ? _value.totalReports
-          : totalReports // ignore: cast_nullable_to_non_nullable
-              as int,
-      reportsChangePercent: null == reportsChangePercent
-          ? _value.reportsChangePercent
-          : reportsChangePercent // ignore: cast_nullable_to_non_nullable
-              as double,
-      reportsDirection: null == reportsDirection
-          ? _value.reportsDirection
-          : reportsDirection // ignore: cast_nullable_to_non_nullable
-              as String,
-      totalUpvotes: null == totalUpvotes
-          ? _value.totalUpvotes
-          : totalUpvotes // ignore: cast_nullable_to_non_nullable
-              as int,
-      upvotesChangePercent: null == upvotesChangePercent
-          ? _value.upvotesChangePercent
-          : upvotesChangePercent // ignore: cast_nullable_to_non_nullable
-              as double,
-      upvotesDirection: null == upvotesDirection
-          ? _value.upvotesDirection
-          : upvotesDirection // ignore: cast_nullable_to_non_nullable
-              as String,
-      totalDownvotes: null == totalDownvotes
-          ? _value.totalDownvotes
-          : totalDownvotes // ignore: cast_nullable_to_non_nullable
-              as int,
-      confirmationRate: null == confirmationRate
-          ? _value.confirmationRate
-          : confirmationRate // ignore: cast_nullable_to_non_nullable
-              as double,
-      distributionTotal: null == distributionTotal
-          ? _value.distributionTotal
-          : distributionTotal // ignore: cast_nullable_to_non_nullable
-              as int,
-      distribution: null == distribution
-          ? _value.distribution
-          : distribution // ignore: cast_nullable_to_non_nullable
-              as List<IncidentChartData>,
-      recentActivities: null == recentActivities
-          ? _value.recentActivities
-          : recentActivities // ignore: cast_nullable_to_non_nullable
-              as List<ActivityItem>,
-    ) as $Val);
-  }
+/// Create a copy of AnalyticsData
+/// with the given fields replaced by the non-null parameter values.
+@pragma('vm:prefer-inline') @override $Res call({Object? reputationScore = null,Object? totalReports = null,Object? reportsChangePercent = null,Object? reportsDirection = null,Object? totalUpvotes = null,Object? upvotesChangePercent = null,Object? upvotesDirection = null,Object? totalDownvotes = null,Object? confirmationRate = null,Object? distributionTotal = null,Object? distribution = null,Object? recentActivities = null,}) {
+  return _then(_self.copyWith(
+reputationScore: null == reputationScore ? _self.reputationScore : reputationScore // ignore: cast_nullable_to_non_nullable
+as int,totalReports: null == totalReports ? _self.totalReports : totalReports // ignore: cast_nullable_to_non_nullable
+as int,reportsChangePercent: null == reportsChangePercent ? _self.reportsChangePercent : reportsChangePercent // ignore: cast_nullable_to_non_nullable
+as double,reportsDirection: null == reportsDirection ? _self.reportsDirection : reportsDirection // ignore: cast_nullable_to_non_nullable
+as String,totalUpvotes: null == totalUpvotes ? _self.totalUpvotes : totalUpvotes // ignore: cast_nullable_to_non_nullable
+as int,upvotesChangePercent: null == upvotesChangePercent ? _self.upvotesChangePercent : upvotesChangePercent // ignore: cast_nullable_to_non_nullable
+as double,upvotesDirection: null == upvotesDirection ? _self.upvotesDirection : upvotesDirection // ignore: cast_nullable_to_non_nullable
+as String,totalDownvotes: null == totalDownvotes ? _self.totalDownvotes : totalDownvotes // ignore: cast_nullable_to_non_nullable
+as int,confirmationRate: null == confirmationRate ? _self.confirmationRate : confirmationRate // ignore: cast_nullable_to_non_nullable
+as double,distributionTotal: null == distributionTotal ? _self.distributionTotal : distributionTotal // ignore: cast_nullable_to_non_nullable
+as int,distribution: null == distribution ? _self.distribution : distribution // ignore: cast_nullable_to_non_nullable
+as List<IncidentChartData>,recentActivities: null == recentActivities ? _self.recentActivities : recentActivities // ignore: cast_nullable_to_non_nullable
+as List<ActivityItem>,
+  ));
 }
 
-/// @nodoc
-abstract class _$$AnalyticsDataImplCopyWith<$Res>
-    implements $AnalyticsDataCopyWith<$Res> {
-  factory _$$AnalyticsDataImplCopyWith(
-          _$AnalyticsDataImpl value, $Res Function(_$AnalyticsDataImpl) then) =
-      __$$AnalyticsDataImplCopyWithImpl<$Res>;
-  @override
-  @useResult
-  $Res call(
-      {int reputationScore,
-      int totalReports,
-      double reportsChangePercent,
-      String reportsDirection,
-      int totalUpvotes,
-      double upvotesChangePercent,
-      String upvotesDirection,
-      int totalDownvotes,
-      double confirmationRate,
-      int distributionTotal,
-      List<IncidentChartData> distribution,
-      List<ActivityItem> recentActivities});
 }
 
-/// @nodoc
-class __$$AnalyticsDataImplCopyWithImpl<$Res>
-    extends _$AnalyticsDataCopyWithImpl<$Res, _$AnalyticsDataImpl>
-    implements _$$AnalyticsDataImplCopyWith<$Res> {
-  __$$AnalyticsDataImplCopyWithImpl(
-      _$AnalyticsDataImpl _value, $Res Function(_$AnalyticsDataImpl) _then)
-      : super(_value, _then);
 
-  @pragma('vm:prefer-inline')
-  @override
-  $Res call({
-    Object? reputationScore = null,
-    Object? totalReports = null,
-    Object? reportsChangePercent = null,
-    Object? reportsDirection = null,
-    Object? totalUpvotes = null,
-    Object? upvotesChangePercent = null,
-    Object? upvotesDirection = null,
-    Object? totalDownvotes = null,
-    Object? confirmationRate = null,
-    Object? distributionTotal = null,
-    Object? distribution = null,
-    Object? recentActivities = null,
-  }) {
-    return _then(_$AnalyticsDataImpl(
-      reputationScore: null == reputationScore
-          ? _value.reputationScore
-          : reputationScore // ignore: cast_nullable_to_non_nullable
-              as int,
-      totalReports: null == totalReports
-          ? _value.totalReports
-          : totalReports // ignore: cast_nullable_to_non_nullable
-              as int,
-      reportsChangePercent: null == reportsChangePercent
-          ? _value.reportsChangePercent
-          : reportsChangePercent // ignore: cast_nullable_to_non_nullable
-              as double,
-      reportsDirection: null == reportsDirection
-          ? _value.reportsDirection
-          : reportsDirection // ignore: cast_nullable_to_non_nullable
-              as String,
-      totalUpvotes: null == totalUpvotes
-          ? _value.totalUpvotes
-          : totalUpvotes // ignore: cast_nullable_to_non_nullable
-              as int,
-      upvotesChangePercent: null == upvotesChangePercent
-          ? _value.upvotesChangePercent
-          : upvotesChangePercent // ignore: cast_nullable_to_non_nullable
-              as double,
-      upvotesDirection: null == upvotesDirection
-          ? _value.upvotesDirection
-          : upvotesDirection // ignore: cast_nullable_to_non_nullable
-              as String,
-      totalDownvotes: null == totalDownvotes
-          ? _value.totalDownvotes
-          : totalDownvotes // ignore: cast_nullable_to_non_nullable
-              as int,
-      confirmationRate: null == confirmationRate
-          ? _value.confirmationRate
-          : confirmationRate // ignore: cast_nullable_to_non_nullable
-              as double,
-      distributionTotal: null == distributionTotal
-          ? _value.distributionTotal
-          : distributionTotal // ignore: cast_nullable_to_non_nullable
-              as int,
-      distribution: null == distribution
-          ? _value._distribution
-          : distribution // ignore: cast_nullable_to_non_nullable
-              as List<IncidentChartData>,
-      recentActivities: null == recentActivities
-          ? _value._recentActivities
-          : recentActivities // ignore: cast_nullable_to_non_nullable
-              as List<ActivityItem>,
-    ));
-  }
+/// Adds pattern-matching-related methods to [AnalyticsData].
+extension AnalyticsDataPatterns on AnalyticsData {
+/// A variant of `map` that fallback to returning `orElse`.
+///
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case final Subclass value:
+///     return ...;
+///   case _:
+///     return orElse();
+/// }
+/// ```
+
+@optionalTypeArgs TResult maybeMap<TResult extends Object?>(TResult Function( _AnalyticsData value)?  $default,{required TResult orElse(),}){
+final _that = this;
+switch (_that) {
+case _AnalyticsData() when $default != null:
+return $default(_that);case _:
+  return orElse();
+
+}
+}
+/// A `switch`-like method, using callbacks.
+///
+/// Callbacks receives the raw object, upcasted.
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case final Subclass value:
+///     return ...;
+///   case final Subclass2 value:
+///     return ...;
+/// }
+/// ```
+
+@optionalTypeArgs TResult map<TResult extends Object?>(TResult Function( _AnalyticsData value)  $default,){
+final _that = this;
+switch (_that) {
+case _AnalyticsData():
+return $default(_that);case _:
+  throw StateError('Unexpected subclass');
+
+}
+}
+/// A variant of `map` that fallback to returning `null`.
+///
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case final Subclass value:
+///     return ...;
+///   case _:
+///     return null;
+/// }
+/// ```
+
+@optionalTypeArgs TResult? mapOrNull<TResult extends Object?>(TResult? Function( _AnalyticsData value)?  $default,){
+final _that = this;
+switch (_that) {
+case _AnalyticsData() when $default != null:
+return $default(_that);case _:
+  return null;
+
+}
+}
+/// A variant of `when` that fallback to an `orElse` callback.
+///
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case Subclass(:final field):
+///     return ...;
+///   case _:
+///     return orElse();
+/// }
+/// ```
+
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( int reputationScore,  int totalReports,  double reportsChangePercent,  String reportsDirection,  int totalUpvotes,  double upvotesChangePercent,  String upvotesDirection,  int totalDownvotes,  double confirmationRate,  int distributionTotal,  List<IncidentChartData> distribution,  List<ActivityItem> recentActivities)?  $default,{required TResult orElse(),}) {final _that = this;
+switch (_that) {
+case _AnalyticsData() when $default != null:
+return $default(_that.reputationScore,_that.totalReports,_that.reportsChangePercent,_that.reportsDirection,_that.totalUpvotes,_that.upvotesChangePercent,_that.upvotesDirection,_that.totalDownvotes,_that.confirmationRate,_that.distributionTotal,_that.distribution,_that.recentActivities);case _:
+  return orElse();
+
+}
+}
+/// A `switch`-like method, using callbacks.
+///
+/// As opposed to `map`, this offers destructuring.
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case Subclass(:final field):
+///     return ...;
+///   case Subclass2(:final field2):
+///     return ...;
+/// }
+/// ```
+
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( int reputationScore,  int totalReports,  double reportsChangePercent,  String reportsDirection,  int totalUpvotes,  double upvotesChangePercent,  String upvotesDirection,  int totalDownvotes,  double confirmationRate,  int distributionTotal,  List<IncidentChartData> distribution,  List<ActivityItem> recentActivities)  $default,) {final _that = this;
+switch (_that) {
+case _AnalyticsData():
+return $default(_that.reputationScore,_that.totalReports,_that.reportsChangePercent,_that.reportsDirection,_that.totalUpvotes,_that.upvotesChangePercent,_that.upvotesDirection,_that.totalDownvotes,_that.confirmationRate,_that.distributionTotal,_that.distribution,_that.recentActivities);case _:
+  throw StateError('Unexpected subclass');
+
+}
+}
+/// A variant of `when` that fallback to returning `null`
+///
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case Subclass(:final field):
+///     return ...;
+///   case _:
+///     return null;
+/// }
+/// ```
+
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( int reputationScore,  int totalReports,  double reportsChangePercent,  String reportsDirection,  int totalUpvotes,  double upvotesChangePercent,  String upvotesDirection,  int totalDownvotes,  double confirmationRate,  int distributionTotal,  List<IncidentChartData> distribution,  List<ActivityItem> recentActivities)?  $default,) {final _that = this;
+switch (_that) {
+case _AnalyticsData() when $default != null:
+return $default(_that.reputationScore,_that.totalReports,_that.reportsChangePercent,_that.reportsDirection,_that.totalUpvotes,_that.upvotesChangePercent,_that.upvotesDirection,_that.totalDownvotes,_that.confirmationRate,_that.distributionTotal,_that.distribution,_that.recentActivities);case _:
+  return null;
+
+}
+}
+
 }
 
 /// @nodoc
 
-class _$AnalyticsDataImpl implements _AnalyticsData {
-  const _$AnalyticsDataImpl(
-      {this.reputationScore = 0,
-      this.totalReports = 0,
-      this.reportsChangePercent = 0.0,
-      this.reportsDirection = 'flat',
-      this.totalUpvotes = 0,
-      this.upvotesChangePercent = 0.0,
-      this.upvotesDirection = 'flat',
-      this.totalDownvotes = 0,
-      this.confirmationRate = 0.0,
-      this.distributionTotal = 0,
-      final List<IncidentChartData> distribution = const [],
-      final List<ActivityItem> recentActivities = const []})
-      : _distribution = distribution,
-        _recentActivities = recentActivities;
 
-  @override
-  @JsonKey()
-  final int reputationScore;
-  @override
-  @JsonKey()
-  final int totalReports;
-  @override
-  @JsonKey()
-  final double reportsChangePercent;
-  @override
-  @JsonKey()
-  final String reportsDirection;
-  @override
-  @JsonKey()
-  final int totalUpvotes;
-  @override
-  @JsonKey()
-  final double upvotesChangePercent;
-  @override
-  @JsonKey()
-  final String upvotesDirection;
-  @override
-  @JsonKey()
-  final int totalDownvotes;
-  @override
-  @JsonKey()
-  final double confirmationRate;
-  @override
-  @JsonKey()
-  final int distributionTotal;
-  final List<IncidentChartData> _distribution;
-  @override
-  @JsonKey()
-  List<IncidentChartData> get distribution {
-    if (_distribution is EqualUnmodifiableListView) return _distribution;
-    // ignore: implicit_dynamic_type
-    return EqualUnmodifiableListView(_distribution);
-  }
+class _AnalyticsData implements AnalyticsData {
+  const _AnalyticsData({this.reputationScore = 0, this.totalReports = 0, this.reportsChangePercent = 0.0, this.reportsDirection = 'flat', this.totalUpvotes = 0, this.upvotesChangePercent = 0.0, this.upvotesDirection = 'flat', this.totalDownvotes = 0, this.confirmationRate = 0.0, this.distributionTotal = 0, final  List<IncidentChartData> distribution = const [], final  List<ActivityItem> recentActivities = const []}): _distribution = distribution,_recentActivities = recentActivities;
+  
 
-  final List<ActivityItem> _recentActivities;
-  @override
-  @JsonKey()
-  List<ActivityItem> get recentActivities {
-    if (_recentActivities is EqualUnmodifiableListView)
-      return _recentActivities;
-    // ignore: implicit_dynamic_type
-    return EqualUnmodifiableListView(_recentActivities);
-  }
-
-  @override
-  String toString() {
-    return 'AnalyticsData(reputationScore: $reputationScore, totalReports: $totalReports, reportsChangePercent: $reportsChangePercent, reportsDirection: $reportsDirection, totalUpvotes: $totalUpvotes, upvotesChangePercent: $upvotesChangePercent, upvotesDirection: $upvotesDirection, totalDownvotes: $totalDownvotes, confirmationRate: $confirmationRate, distributionTotal: $distributionTotal, distribution: $distribution, recentActivities: $recentActivities)';
-  }
-
-  @override
-  bool operator ==(Object other) {
-    return identical(this, other) ||
-        (other.runtimeType == runtimeType &&
-            other is _$AnalyticsDataImpl &&
-            (identical(other.reputationScore, reputationScore) ||
-                other.reputationScore == reputationScore) &&
-            (identical(other.totalReports, totalReports) ||
-                other.totalReports == totalReports) &&
-            (identical(other.reportsChangePercent, reportsChangePercent) ||
-                other.reportsChangePercent == reportsChangePercent) &&
-            (identical(other.reportsDirection, reportsDirection) ||
-                other.reportsDirection == reportsDirection) &&
-            (identical(other.totalUpvotes, totalUpvotes) ||
-                other.totalUpvotes == totalUpvotes) &&
-            (identical(other.upvotesChangePercent, upvotesChangePercent) ||
-                other.upvotesChangePercent == upvotesChangePercent) &&
-            (identical(other.upvotesDirection, upvotesDirection) ||
-                other.upvotesDirection == upvotesDirection) &&
-            (identical(other.totalDownvotes, totalDownvotes) ||
-                other.totalDownvotes == totalDownvotes) &&
-            (identical(other.confirmationRate, confirmationRate) ||
-                other.confirmationRate == confirmationRate) &&
-            (identical(other.distributionTotal, distributionTotal) ||
-                other.distributionTotal == distributionTotal) &&
-            const DeepCollectionEquality()
-                .equals(other._distribution, _distribution) &&
-            const DeepCollectionEquality()
-                .equals(other._recentActivities, _recentActivities));
-  }
-
-  @override
-  int get hashCode => Object.hash(
-      runtimeType,
-      reputationScore,
-      totalReports,
-      reportsChangePercent,
-      reportsDirection,
-      totalUpvotes,
-      upvotesChangePercent,
-      upvotesDirection,
-      totalDownvotes,
-      confirmationRate,
-      distributionTotal,
-      const DeepCollectionEquality().hash(_distribution),
-      const DeepCollectionEquality().hash(_recentActivities));
-
-  @JsonKey(ignore: true)
-  @override
-  @pragma('vm:prefer-inline')
-  _$$AnalyticsDataImplCopyWith<_$AnalyticsDataImpl> get copyWith =>
-      __$$AnalyticsDataImplCopyWithImpl<_$AnalyticsDataImpl>(this, _$identity);
+@override@JsonKey() final  int reputationScore;
+@override@JsonKey() final  int totalReports;
+@override@JsonKey() final  double reportsChangePercent;
+@override@JsonKey() final  String reportsDirection;
+@override@JsonKey() final  int totalUpvotes;
+@override@JsonKey() final  double upvotesChangePercent;
+@override@JsonKey() final  String upvotesDirection;
+@override@JsonKey() final  int totalDownvotes;
+@override@JsonKey() final  double confirmationRate;
+@override@JsonKey() final  int distributionTotal;
+ final  List<IncidentChartData> _distribution;
+@override@JsonKey() List<IncidentChartData> get distribution {
+  if (_distribution is EqualUnmodifiableListView) return _distribution;
+  // ignore: implicit_dynamic_type
+  return EqualUnmodifiableListView(_distribution);
 }
 
-abstract class _AnalyticsData implements AnalyticsData {
-  const factory _AnalyticsData(
-      {final int reputationScore,
-      final int totalReports,
-      final double reportsChangePercent,
-      final String reportsDirection,
-      final int totalUpvotes,
-      final double upvotesChangePercent,
-      final String upvotesDirection,
-      final int totalDownvotes,
-      final double confirmationRate,
-      final int distributionTotal,
-      final List<IncidentChartData> distribution,
-      final List<ActivityItem> recentActivities}) = _$AnalyticsDataImpl;
+ final  List<ActivityItem> _recentActivities;
+@override@JsonKey() List<ActivityItem> get recentActivities {
+  if (_recentActivities is EqualUnmodifiableListView) return _recentActivities;
+  // ignore: implicit_dynamic_type
+  return EqualUnmodifiableListView(_recentActivities);
+}
 
-  @override
-  int get reputationScore;
-  @override
-  int get totalReports;
-  @override
-  double get reportsChangePercent;
-  @override
-  String get reportsDirection;
-  @override
-  int get totalUpvotes;
-  @override
-  double get upvotesChangePercent;
-  @override
-  String get upvotesDirection;
-  @override
-  int get totalDownvotes;
-  @override
-  double get confirmationRate;
-  @override
-  int get distributionTotal;
-  @override
-  List<IncidentChartData> get distribution;
-  @override
-  List<ActivityItem> get recentActivities;
-  @override
-  @JsonKey(ignore: true)
-  _$$AnalyticsDataImplCopyWith<_$AnalyticsDataImpl> get copyWith =>
-      throw _privateConstructorUsedError;
+
+/// Create a copy of AnalyticsData
+/// with the given fields replaced by the non-null parameter values.
+@override @JsonKey(includeFromJson: false, includeToJson: false)
+@pragma('vm:prefer-inline')
+_$AnalyticsDataCopyWith<_AnalyticsData> get copyWith => __$AnalyticsDataCopyWithImpl<_AnalyticsData>(this, _$identity);
+
+
+
+@override
+bool operator ==(Object other) {
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _AnalyticsData&&(identical(other.reputationScore, reputationScore) || other.reputationScore == reputationScore)&&(identical(other.totalReports, totalReports) || other.totalReports == totalReports)&&(identical(other.reportsChangePercent, reportsChangePercent) || other.reportsChangePercent == reportsChangePercent)&&(identical(other.reportsDirection, reportsDirection) || other.reportsDirection == reportsDirection)&&(identical(other.totalUpvotes, totalUpvotes) || other.totalUpvotes == totalUpvotes)&&(identical(other.upvotesChangePercent, upvotesChangePercent) || other.upvotesChangePercent == upvotesChangePercent)&&(identical(other.upvotesDirection, upvotesDirection) || other.upvotesDirection == upvotesDirection)&&(identical(other.totalDownvotes, totalDownvotes) || other.totalDownvotes == totalDownvotes)&&(identical(other.confirmationRate, confirmationRate) || other.confirmationRate == confirmationRate)&&(identical(other.distributionTotal, distributionTotal) || other.distributionTotal == distributionTotal)&&const DeepCollectionEquality().equals(other._distribution, _distribution)&&const DeepCollectionEquality().equals(other._recentActivities, _recentActivities));
+}
+
+
+@override
+int get hashCode => Object.hash(runtimeType,reputationScore,totalReports,reportsChangePercent,reportsDirection,totalUpvotes,upvotesChangePercent,upvotesDirection,totalDownvotes,confirmationRate,distributionTotal,const DeepCollectionEquality().hash(_distribution),const DeepCollectionEquality().hash(_recentActivities));
+
+@override
+String toString() {
+  return 'AnalyticsData(reputationScore: $reputationScore, totalReports: $totalReports, reportsChangePercent: $reportsChangePercent, reportsDirection: $reportsDirection, totalUpvotes: $totalUpvotes, upvotesChangePercent: $upvotesChangePercent, upvotesDirection: $upvotesDirection, totalDownvotes: $totalDownvotes, confirmationRate: $confirmationRate, distributionTotal: $distributionTotal, distribution: $distribution, recentActivities: $recentActivities)';
+}
+
+
+}
+
+/// @nodoc
+abstract mixin class _$AnalyticsDataCopyWith<$Res> implements $AnalyticsDataCopyWith<$Res> {
+  factory _$AnalyticsDataCopyWith(_AnalyticsData value, $Res Function(_AnalyticsData) _then) = __$AnalyticsDataCopyWithImpl;
+@override @useResult
+$Res call({
+ int reputationScore, int totalReports, double reportsChangePercent, String reportsDirection, int totalUpvotes, double upvotesChangePercent, String upvotesDirection, int totalDownvotes, double confirmationRate, int distributionTotal, List<IncidentChartData> distribution, List<ActivityItem> recentActivities
+});
+
+
+
+
+}
+/// @nodoc
+class __$AnalyticsDataCopyWithImpl<$Res>
+    implements _$AnalyticsDataCopyWith<$Res> {
+  __$AnalyticsDataCopyWithImpl(this._self, this._then);
+
+  final _AnalyticsData _self;
+  final $Res Function(_AnalyticsData) _then;
+
+/// Create a copy of AnalyticsData
+/// with the given fields replaced by the non-null parameter values.
+@override @pragma('vm:prefer-inline') $Res call({Object? reputationScore = null,Object? totalReports = null,Object? reportsChangePercent = null,Object? reportsDirection = null,Object? totalUpvotes = null,Object? upvotesChangePercent = null,Object? upvotesDirection = null,Object? totalDownvotes = null,Object? confirmationRate = null,Object? distributionTotal = null,Object? distribution = null,Object? recentActivities = null,}) {
+  return _then(_AnalyticsData(
+reputationScore: null == reputationScore ? _self.reputationScore : reputationScore // ignore: cast_nullable_to_non_nullable
+as int,totalReports: null == totalReports ? _self.totalReports : totalReports // ignore: cast_nullable_to_non_nullable
+as int,reportsChangePercent: null == reportsChangePercent ? _self.reportsChangePercent : reportsChangePercent // ignore: cast_nullable_to_non_nullable
+as double,reportsDirection: null == reportsDirection ? _self.reportsDirection : reportsDirection // ignore: cast_nullable_to_non_nullable
+as String,totalUpvotes: null == totalUpvotes ? _self.totalUpvotes : totalUpvotes // ignore: cast_nullable_to_non_nullable
+as int,upvotesChangePercent: null == upvotesChangePercent ? _self.upvotesChangePercent : upvotesChangePercent // ignore: cast_nullable_to_non_nullable
+as double,upvotesDirection: null == upvotesDirection ? _self.upvotesDirection : upvotesDirection // ignore: cast_nullable_to_non_nullable
+as String,totalDownvotes: null == totalDownvotes ? _self.totalDownvotes : totalDownvotes // ignore: cast_nullable_to_non_nullable
+as int,confirmationRate: null == confirmationRate ? _self.confirmationRate : confirmationRate // ignore: cast_nullable_to_non_nullable
+as double,distributionTotal: null == distributionTotal ? _self.distributionTotal : distributionTotal // ignore: cast_nullable_to_non_nullable
+as int,distribution: null == distribution ? _self._distribution : distribution // ignore: cast_nullable_to_non_nullable
+as List<IncidentChartData>,recentActivities: null == recentActivities ? _self._recentActivities : recentActivities // ignore: cast_nullable_to_non_nullable
+as List<ActivityItem>,
+  ));
+}
+
+
 }
 
 /// @nodoc
 mixin _$IncidentChartData {
-  String get type => throw _privateConstructorUsedError;
-  int get count => throw _privateConstructorUsedError;
 
-  @JsonKey(ignore: true)
-  $IncidentChartDataCopyWith<IncidentChartData> get copyWith =>
-      throw _privateConstructorUsedError;
+ String get type; int get count;
+/// Create a copy of IncidentChartData
+/// with the given fields replaced by the non-null parameter values.
+@JsonKey(includeFromJson: false, includeToJson: false)
+@pragma('vm:prefer-inline')
+$IncidentChartDataCopyWith<IncidentChartData> get copyWith => _$IncidentChartDataCopyWithImpl<IncidentChartData>(this as IncidentChartData, _$identity);
+
+
+
+@override
+bool operator ==(Object other) {
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is IncidentChartData&&(identical(other.type, type) || other.type == type)&&(identical(other.count, count) || other.count == count));
+}
+
+
+@override
+int get hashCode => Object.hash(runtimeType,type,count);
+
+@override
+String toString() {
+  return 'IncidentChartData(type: $type, count: $count)';
+}
+
+
 }
 
 /// @nodoc
-abstract class $IncidentChartDataCopyWith<$Res> {
-  factory $IncidentChartDataCopyWith(
-          IncidentChartData value, $Res Function(IncidentChartData) then) =
-      _$IncidentChartDataCopyWithImpl<$Res, IncidentChartData>;
-  @useResult
-  $Res call({String type, int count});
-}
+abstract mixin class $IncidentChartDataCopyWith<$Res>  {
+  factory $IncidentChartDataCopyWith(IncidentChartData value, $Res Function(IncidentChartData) _then) = _$IncidentChartDataCopyWithImpl;
+@useResult
+$Res call({
+ String type, int count
+});
 
+
+
+
+}
 /// @nodoc
-class _$IncidentChartDataCopyWithImpl<$Res, $Val extends IncidentChartData>
+class _$IncidentChartDataCopyWithImpl<$Res>
     implements $IncidentChartDataCopyWith<$Res> {
-  _$IncidentChartDataCopyWithImpl(this._value, this._then);
+  _$IncidentChartDataCopyWithImpl(this._self, this._then);
 
-  // ignore: unused_field
-  final $Val _value;
-  // ignore: unused_field
-  final $Res Function($Val) _then;
+  final IncidentChartData _self;
+  final $Res Function(IncidentChartData) _then;
 
-  @pragma('vm:prefer-inline')
-  @override
-  $Res call({
-    Object? type = null,
-    Object? count = null,
-  }) {
-    return _then(_value.copyWith(
-      type: null == type
-          ? _value.type
-          : type // ignore: cast_nullable_to_non_nullable
-              as String,
-      count: null == count
-          ? _value.count
-          : count // ignore: cast_nullable_to_non_nullable
-              as int,
-    ) as $Val);
-  }
+/// Create a copy of IncidentChartData
+/// with the given fields replaced by the non-null parameter values.
+@pragma('vm:prefer-inline') @override $Res call({Object? type = null,Object? count = null,}) {
+  return _then(_self.copyWith(
+type: null == type ? _self.type : type // ignore: cast_nullable_to_non_nullable
+as String,count: null == count ? _self.count : count // ignore: cast_nullable_to_non_nullable
+as int,
+  ));
+}
+
+}
+
+
+/// Adds pattern-matching-related methods to [IncidentChartData].
+extension IncidentChartDataPatterns on IncidentChartData {
+/// A variant of `map` that fallback to returning `orElse`.
+///
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case final Subclass value:
+///     return ...;
+///   case _:
+///     return orElse();
+/// }
+/// ```
+
+@optionalTypeArgs TResult maybeMap<TResult extends Object?>(TResult Function( _IncidentChartData value)?  $default,{required TResult orElse(),}){
+final _that = this;
+switch (_that) {
+case _IncidentChartData() when $default != null:
+return $default(_that);case _:
+  return orElse();
+
+}
+}
+/// A `switch`-like method, using callbacks.
+///
+/// Callbacks receives the raw object, upcasted.
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case final Subclass value:
+///     return ...;
+///   case final Subclass2 value:
+///     return ...;
+/// }
+/// ```
+
+@optionalTypeArgs TResult map<TResult extends Object?>(TResult Function( _IncidentChartData value)  $default,){
+final _that = this;
+switch (_that) {
+case _IncidentChartData():
+return $default(_that);case _:
+  throw StateError('Unexpected subclass');
+
+}
+}
+/// A variant of `map` that fallback to returning `null`.
+///
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case final Subclass value:
+///     return ...;
+///   case _:
+///     return null;
+/// }
+/// ```
+
+@optionalTypeArgs TResult? mapOrNull<TResult extends Object?>(TResult? Function( _IncidentChartData value)?  $default,){
+final _that = this;
+switch (_that) {
+case _IncidentChartData() when $default != null:
+return $default(_that);case _:
+  return null;
+
+}
+}
+/// A variant of `when` that fallback to an `orElse` callback.
+///
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case Subclass(:final field):
+///     return ...;
+///   case _:
+///     return orElse();
+/// }
+/// ```
+
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( String type,  int count)?  $default,{required TResult orElse(),}) {final _that = this;
+switch (_that) {
+case _IncidentChartData() when $default != null:
+return $default(_that.type,_that.count);case _:
+  return orElse();
+
+}
+}
+/// A `switch`-like method, using callbacks.
+///
+/// As opposed to `map`, this offers destructuring.
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case Subclass(:final field):
+///     return ...;
+///   case Subclass2(:final field2):
+///     return ...;
+/// }
+/// ```
+
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String type,  int count)  $default,) {final _that = this;
+switch (_that) {
+case _IncidentChartData():
+return $default(_that.type,_that.count);case _:
+  throw StateError('Unexpected subclass');
+
+}
+}
+/// A variant of `when` that fallback to returning `null`
+///
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case Subclass(:final field):
+///     return ...;
+///   case _:
+///     return null;
+/// }
+/// ```
+
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( String type,  int count)?  $default,) {final _that = this;
+switch (_that) {
+case _IncidentChartData() when $default != null:
+return $default(_that.type,_that.count);case _:
+  return null;
+
+}
+}
+
 }
 
 /// @nodoc
-abstract class _$$IncidentChartDataImplCopyWith<$Res>
-    implements $IncidentChartDataCopyWith<$Res> {
-  factory _$$IncidentChartDataImplCopyWith(_$IncidentChartDataImpl value,
-          $Res Function(_$IncidentChartDataImpl) then) =
-      __$$IncidentChartDataImplCopyWithImpl<$Res>;
-  @override
-  @useResult
-  $Res call({String type, int count});
+
+
+class _IncidentChartData implements IncidentChartData {
+  const _IncidentChartData({required this.type, required this.count});
+  
+
+@override final  String type;
+@override final  int count;
+
+/// Create a copy of IncidentChartData
+/// with the given fields replaced by the non-null parameter values.
+@override @JsonKey(includeFromJson: false, includeToJson: false)
+@pragma('vm:prefer-inline')
+_$IncidentChartDataCopyWith<_IncidentChartData> get copyWith => __$IncidentChartDataCopyWithImpl<_IncidentChartData>(this, _$identity);
+
+
+
+@override
+bool operator ==(Object other) {
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _IncidentChartData&&(identical(other.type, type) || other.type == type)&&(identical(other.count, count) || other.count == count));
+}
+
+
+@override
+int get hashCode => Object.hash(runtimeType,type,count);
+
+@override
+String toString() {
+  return 'IncidentChartData(type: $type, count: $count)';
+}
+
+
 }
 
 /// @nodoc
-class __$$IncidentChartDataImplCopyWithImpl<$Res>
-    extends _$IncidentChartDataCopyWithImpl<$Res, _$IncidentChartDataImpl>
-    implements _$$IncidentChartDataImplCopyWith<$Res> {
-  __$$IncidentChartDataImplCopyWithImpl(_$IncidentChartDataImpl _value,
-      $Res Function(_$IncidentChartDataImpl) _then)
-      : super(_value, _then);
+abstract mixin class _$IncidentChartDataCopyWith<$Res> implements $IncidentChartDataCopyWith<$Res> {
+  factory _$IncidentChartDataCopyWith(_IncidentChartData value, $Res Function(_IncidentChartData) _then) = __$IncidentChartDataCopyWithImpl;
+@override @useResult
+$Res call({
+ String type, int count
+});
 
-  @pragma('vm:prefer-inline')
-  @override
-  $Res call({
-    Object? type = null,
-    Object? count = null,
-  }) {
-    return _then(_$IncidentChartDataImpl(
-      type: null == type
-          ? _value.type
-          : type // ignore: cast_nullable_to_non_nullable
-              as String,
-      count: null == count
-          ? _value.count
-          : count // ignore: cast_nullable_to_non_nullable
-              as int,
-    ));
-  }
+
+
+
 }
-
 /// @nodoc
+class __$IncidentChartDataCopyWithImpl<$Res>
+    implements _$IncidentChartDataCopyWith<$Res> {
+  __$IncidentChartDataCopyWithImpl(this._self, this._then);
 
-class _$IncidentChartDataImpl implements _IncidentChartData {
-  const _$IncidentChartDataImpl({required this.type, required this.count});
+  final _IncidentChartData _self;
+  final $Res Function(_IncidentChartData) _then;
 
-  @override
-  final String type;
-  @override
-  final int count;
-
-  @override
-  String toString() {
-    return 'IncidentChartData(type: $type, count: $count)';
-  }
-
-  @override
-  bool operator ==(Object other) {
-    return identical(this, other) ||
-        (other.runtimeType == runtimeType &&
-            other is _$IncidentChartDataImpl &&
-            (identical(other.type, type) || other.type == type) &&
-            (identical(other.count, count) || other.count == count));
-  }
-
-  @override
-  int get hashCode => Object.hash(runtimeType, type, count);
-
-  @JsonKey(ignore: true)
-  @override
-  @pragma('vm:prefer-inline')
-  _$$IncidentChartDataImplCopyWith<_$IncidentChartDataImpl> get copyWith =>
-      __$$IncidentChartDataImplCopyWithImpl<_$IncidentChartDataImpl>(
-          this, _$identity);
+/// Create a copy of IncidentChartData
+/// with the given fields replaced by the non-null parameter values.
+@override @pragma('vm:prefer-inline') $Res call({Object? type = null,Object? count = null,}) {
+  return _then(_IncidentChartData(
+type: null == type ? _self.type : type // ignore: cast_nullable_to_non_nullable
+as String,count: null == count ? _self.count : count // ignore: cast_nullable_to_non_nullable
+as int,
+  ));
 }
 
-abstract class _IncidentChartData implements IncidentChartData {
-  const factory _IncidentChartData(
-      {required final String type,
-      required final int count}) = _$IncidentChartDataImpl;
 
-  @override
-  String get type;
-  @override
-  int get count;
-  @override
-  @JsonKey(ignore: true)
-  _$$IncidentChartDataImplCopyWith<_$IncidentChartDataImpl> get copyWith =>
-      throw _privateConstructorUsedError;
 }
 
 /// @nodoc
 mixin _$ActivityItem {
-  String get id => throw _privateConstructorUsedError;
-  String get actionType => throw _privateConstructorUsedError;
-  String get severity => throw _privateConstructorUsedError;
-  DateTime get createdAt => throw _privateConstructorUsedError;
-  double get lat => throw _privateConstructorUsedError;
-  double get lng => throw _privateConstructorUsedError;
-  int get upvotes => throw _privateConstructorUsedError;
-  int get downvotes => throw _privateConstructorUsedError;
-  int get earnedPoints => throw _privateConstructorUsedError;
-  String? get address => throw _privateConstructorUsedError;
 
-  @JsonKey(ignore: true)
-  $ActivityItemCopyWith<ActivityItem> get copyWith =>
-      throw _privateConstructorUsedError;
+ String get id; String get actionType; String get severity; DateTime get createdAt; double get lat; double get lng; int get upvotes; int get downvotes; int get earnedPoints; String? get address;
+/// Create a copy of ActivityItem
+/// with the given fields replaced by the non-null parameter values.
+@JsonKey(includeFromJson: false, includeToJson: false)
+@pragma('vm:prefer-inline')
+$ActivityItemCopyWith<ActivityItem> get copyWith => _$ActivityItemCopyWithImpl<ActivityItem>(this as ActivityItem, _$identity);
+
+
+
+@override
+bool operator ==(Object other) {
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is ActivityItem&&(identical(other.id, id) || other.id == id)&&(identical(other.actionType, actionType) || other.actionType == actionType)&&(identical(other.severity, severity) || other.severity == severity)&&(identical(other.createdAt, createdAt) || other.createdAt == createdAt)&&(identical(other.lat, lat) || other.lat == lat)&&(identical(other.lng, lng) || other.lng == lng)&&(identical(other.upvotes, upvotes) || other.upvotes == upvotes)&&(identical(other.downvotes, downvotes) || other.downvotes == downvotes)&&(identical(other.earnedPoints, earnedPoints) || other.earnedPoints == earnedPoints)&&(identical(other.address, address) || other.address == address));
+}
+
+
+@override
+int get hashCode => Object.hash(runtimeType,id,actionType,severity,createdAt,lat,lng,upvotes,downvotes,earnedPoints,address);
+
+@override
+String toString() {
+  return 'ActivityItem(id: $id, actionType: $actionType, severity: $severity, createdAt: $createdAt, lat: $lat, lng: $lng, upvotes: $upvotes, downvotes: $downvotes, earnedPoints: $earnedPoints, address: $address)';
+}
+
+
 }
 
 /// @nodoc
-abstract class $ActivityItemCopyWith<$Res> {
-  factory $ActivityItemCopyWith(
-          ActivityItem value, $Res Function(ActivityItem) then) =
-      _$ActivityItemCopyWithImpl<$Res, ActivityItem>;
-  @useResult
-  $Res call(
-      {String id,
-      String actionType,
-      String severity,
-      DateTime createdAt,
-      double lat,
-      double lng,
-      int upvotes,
-      int downvotes,
-      int earnedPoints,
-      String? address});
-}
+abstract mixin class $ActivityItemCopyWith<$Res>  {
+  factory $ActivityItemCopyWith(ActivityItem value, $Res Function(ActivityItem) _then) = _$ActivityItemCopyWithImpl;
+@useResult
+$Res call({
+ String id, String actionType, String severity, DateTime createdAt, double lat, double lng, int upvotes, int downvotes, int earnedPoints, String? address
+});
 
+
+
+
+}
 /// @nodoc
-class _$ActivityItemCopyWithImpl<$Res, $Val extends ActivityItem>
+class _$ActivityItemCopyWithImpl<$Res>
     implements $ActivityItemCopyWith<$Res> {
-  _$ActivityItemCopyWithImpl(this._value, this._then);
+  _$ActivityItemCopyWithImpl(this._self, this._then);
 
-  // ignore: unused_field
-  final $Val _value;
-  // ignore: unused_field
-  final $Res Function($Val) _then;
+  final ActivityItem _self;
+  final $Res Function(ActivityItem) _then;
 
-  @pragma('vm:prefer-inline')
-  @override
-  $Res call({
-    Object? id = null,
-    Object? actionType = null,
-    Object? severity = null,
-    Object? createdAt = null,
-    Object? lat = null,
-    Object? lng = null,
-    Object? upvotes = null,
-    Object? downvotes = null,
-    Object? earnedPoints = null,
-    Object? address = freezed,
-  }) {
-    return _then(_value.copyWith(
-      id: null == id
-          ? _value.id
-          : id // ignore: cast_nullable_to_non_nullable
-              as String,
-      actionType: null == actionType
-          ? _value.actionType
-          : actionType // ignore: cast_nullable_to_non_nullable
-              as String,
-      severity: null == severity
-          ? _value.severity
-          : severity // ignore: cast_nullable_to_non_nullable
-              as String,
-      createdAt: null == createdAt
-          ? _value.createdAt
-          : createdAt // ignore: cast_nullable_to_non_nullable
-              as DateTime,
-      lat: null == lat
-          ? _value.lat
-          : lat // ignore: cast_nullable_to_non_nullable
-              as double,
-      lng: null == lng
-          ? _value.lng
-          : lng // ignore: cast_nullable_to_non_nullable
-              as double,
-      upvotes: null == upvotes
-          ? _value.upvotes
-          : upvotes // ignore: cast_nullable_to_non_nullable
-              as int,
-      downvotes: null == downvotes
-          ? _value.downvotes
-          : downvotes // ignore: cast_nullable_to_non_nullable
-              as int,
-      earnedPoints: null == earnedPoints
-          ? _value.earnedPoints
-          : earnedPoints // ignore: cast_nullable_to_non_nullable
-              as int,
-      address: freezed == address
-          ? _value.address
-          : address // ignore: cast_nullable_to_non_nullable
-              as String?,
-    ) as $Val);
-  }
+/// Create a copy of ActivityItem
+/// with the given fields replaced by the non-null parameter values.
+@pragma('vm:prefer-inline') @override $Res call({Object? id = null,Object? actionType = null,Object? severity = null,Object? createdAt = null,Object? lat = null,Object? lng = null,Object? upvotes = null,Object? downvotes = null,Object? earnedPoints = null,Object? address = freezed,}) {
+  return _then(_self.copyWith(
+id: null == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
+as String,actionType: null == actionType ? _self.actionType : actionType // ignore: cast_nullable_to_non_nullable
+as String,severity: null == severity ? _self.severity : severity // ignore: cast_nullable_to_non_nullable
+as String,createdAt: null == createdAt ? _self.createdAt : createdAt // ignore: cast_nullable_to_non_nullable
+as DateTime,lat: null == lat ? _self.lat : lat // ignore: cast_nullable_to_non_nullable
+as double,lng: null == lng ? _self.lng : lng // ignore: cast_nullable_to_non_nullable
+as double,upvotes: null == upvotes ? _self.upvotes : upvotes // ignore: cast_nullable_to_non_nullable
+as int,downvotes: null == downvotes ? _self.downvotes : downvotes // ignore: cast_nullable_to_non_nullable
+as int,earnedPoints: null == earnedPoints ? _self.earnedPoints : earnedPoints // ignore: cast_nullable_to_non_nullable
+as int,address: freezed == address ? _self.address : address // ignore: cast_nullable_to_non_nullable
+as String?,
+  ));
+}
+
+}
+
+
+/// Adds pattern-matching-related methods to [ActivityItem].
+extension ActivityItemPatterns on ActivityItem {
+/// A variant of `map` that fallback to returning `orElse`.
+///
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case final Subclass value:
+///     return ...;
+///   case _:
+///     return orElse();
+/// }
+/// ```
+
+@optionalTypeArgs TResult maybeMap<TResult extends Object?>(TResult Function( _ActivityItem value)?  $default,{required TResult orElse(),}){
+final _that = this;
+switch (_that) {
+case _ActivityItem() when $default != null:
+return $default(_that);case _:
+  return orElse();
+
+}
+}
+/// A `switch`-like method, using callbacks.
+///
+/// Callbacks receives the raw object, upcasted.
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case final Subclass value:
+///     return ...;
+///   case final Subclass2 value:
+///     return ...;
+/// }
+/// ```
+
+@optionalTypeArgs TResult map<TResult extends Object?>(TResult Function( _ActivityItem value)  $default,){
+final _that = this;
+switch (_that) {
+case _ActivityItem():
+return $default(_that);case _:
+  throw StateError('Unexpected subclass');
+
+}
+}
+/// A variant of `map` that fallback to returning `null`.
+///
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case final Subclass value:
+///     return ...;
+///   case _:
+///     return null;
+/// }
+/// ```
+
+@optionalTypeArgs TResult? mapOrNull<TResult extends Object?>(TResult? Function( _ActivityItem value)?  $default,){
+final _that = this;
+switch (_that) {
+case _ActivityItem() when $default != null:
+return $default(_that);case _:
+  return null;
+
+}
+}
+/// A variant of `when` that fallback to an `orElse` callback.
+///
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case Subclass(:final field):
+///     return ...;
+///   case _:
+///     return orElse();
+/// }
+/// ```
+
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( String id,  String actionType,  String severity,  DateTime createdAt,  double lat,  double lng,  int upvotes,  int downvotes,  int earnedPoints,  String? address)?  $default,{required TResult orElse(),}) {final _that = this;
+switch (_that) {
+case _ActivityItem() when $default != null:
+return $default(_that.id,_that.actionType,_that.severity,_that.createdAt,_that.lat,_that.lng,_that.upvotes,_that.downvotes,_that.earnedPoints,_that.address);case _:
+  return orElse();
+
+}
+}
+/// A `switch`-like method, using callbacks.
+///
+/// As opposed to `map`, this offers destructuring.
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case Subclass(:final field):
+///     return ...;
+///   case Subclass2(:final field2):
+///     return ...;
+/// }
+/// ```
+
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String id,  String actionType,  String severity,  DateTime createdAt,  double lat,  double lng,  int upvotes,  int downvotes,  int earnedPoints,  String? address)  $default,) {final _that = this;
+switch (_that) {
+case _ActivityItem():
+return $default(_that.id,_that.actionType,_that.severity,_that.createdAt,_that.lat,_that.lng,_that.upvotes,_that.downvotes,_that.earnedPoints,_that.address);case _:
+  throw StateError('Unexpected subclass');
+
+}
+}
+/// A variant of `when` that fallback to returning `null`
+///
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case Subclass(:final field):
+///     return ...;
+///   case _:
+///     return null;
+/// }
+/// ```
+
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( String id,  String actionType,  String severity,  DateTime createdAt,  double lat,  double lng,  int upvotes,  int downvotes,  int earnedPoints,  String? address)?  $default,) {final _that = this;
+switch (_that) {
+case _ActivityItem() when $default != null:
+return $default(_that.id,_that.actionType,_that.severity,_that.createdAt,_that.lat,_that.lng,_that.upvotes,_that.downvotes,_that.earnedPoints,_that.address);case _:
+  return null;
+
+}
+}
+
 }
 
 /// @nodoc
-abstract class _$$ActivityItemImplCopyWith<$Res>
-    implements $ActivityItemCopyWith<$Res> {
-  factory _$$ActivityItemImplCopyWith(
-          _$ActivityItemImpl value, $Res Function(_$ActivityItemImpl) then) =
-      __$$ActivityItemImplCopyWithImpl<$Res>;
-  @override
-  @useResult
-  $Res call(
-      {String id,
-      String actionType,
-      String severity,
-      DateTime createdAt,
-      double lat,
-      double lng,
-      int upvotes,
-      int downvotes,
-      int earnedPoints,
-      String? address});
+
+
+class _ActivityItem implements ActivityItem {
+  const _ActivityItem({required this.id, required this.actionType, required this.severity, required this.createdAt, required this.lat, required this.lng, this.upvotes = 0, this.downvotes = 0, this.earnedPoints = 0, this.address});
+  
+
+@override final  String id;
+@override final  String actionType;
+@override final  String severity;
+@override final  DateTime createdAt;
+@override final  double lat;
+@override final  double lng;
+@override@JsonKey() final  int upvotes;
+@override@JsonKey() final  int downvotes;
+@override@JsonKey() final  int earnedPoints;
+@override final  String? address;
+
+/// Create a copy of ActivityItem
+/// with the given fields replaced by the non-null parameter values.
+@override @JsonKey(includeFromJson: false, includeToJson: false)
+@pragma('vm:prefer-inline')
+_$ActivityItemCopyWith<_ActivityItem> get copyWith => __$ActivityItemCopyWithImpl<_ActivityItem>(this, _$identity);
+
+
+
+@override
+bool operator ==(Object other) {
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _ActivityItem&&(identical(other.id, id) || other.id == id)&&(identical(other.actionType, actionType) || other.actionType == actionType)&&(identical(other.severity, severity) || other.severity == severity)&&(identical(other.createdAt, createdAt) || other.createdAt == createdAt)&&(identical(other.lat, lat) || other.lat == lat)&&(identical(other.lng, lng) || other.lng == lng)&&(identical(other.upvotes, upvotes) || other.upvotes == upvotes)&&(identical(other.downvotes, downvotes) || other.downvotes == downvotes)&&(identical(other.earnedPoints, earnedPoints) || other.earnedPoints == earnedPoints)&&(identical(other.address, address) || other.address == address));
+}
+
+
+@override
+int get hashCode => Object.hash(runtimeType,id,actionType,severity,createdAt,lat,lng,upvotes,downvotes,earnedPoints,address);
+
+@override
+String toString() {
+  return 'ActivityItem(id: $id, actionType: $actionType, severity: $severity, createdAt: $createdAt, lat: $lat, lng: $lng, upvotes: $upvotes, downvotes: $downvotes, earnedPoints: $earnedPoints, address: $address)';
+}
+
+
 }
 
 /// @nodoc
-class __$$ActivityItemImplCopyWithImpl<$Res>
-    extends _$ActivityItemCopyWithImpl<$Res, _$ActivityItemImpl>
-    implements _$$ActivityItemImplCopyWith<$Res> {
-  __$$ActivityItemImplCopyWithImpl(
-      _$ActivityItemImpl _value, $Res Function(_$ActivityItemImpl) _then)
-      : super(_value, _then);
+abstract mixin class _$ActivityItemCopyWith<$Res> implements $ActivityItemCopyWith<$Res> {
+  factory _$ActivityItemCopyWith(_ActivityItem value, $Res Function(_ActivityItem) _then) = __$ActivityItemCopyWithImpl;
+@override @useResult
+$Res call({
+ String id, String actionType, String severity, DateTime createdAt, double lat, double lng, int upvotes, int downvotes, int earnedPoints, String? address
+});
 
-  @pragma('vm:prefer-inline')
-  @override
-  $Res call({
-    Object? id = null,
-    Object? actionType = null,
-    Object? severity = null,
-    Object? createdAt = null,
-    Object? lat = null,
-    Object? lng = null,
-    Object? upvotes = null,
-    Object? downvotes = null,
-    Object? earnedPoints = null,
-    Object? address = freezed,
-  }) {
-    return _then(_$ActivityItemImpl(
-      id: null == id
-          ? _value.id
-          : id // ignore: cast_nullable_to_non_nullable
-              as String,
-      actionType: null == actionType
-          ? _value.actionType
-          : actionType // ignore: cast_nullable_to_non_nullable
-              as String,
-      severity: null == severity
-          ? _value.severity
-          : severity // ignore: cast_nullable_to_non_nullable
-              as String,
-      createdAt: null == createdAt
-          ? _value.createdAt
-          : createdAt // ignore: cast_nullable_to_non_nullable
-              as DateTime,
-      lat: null == lat
-          ? _value.lat
-          : lat // ignore: cast_nullable_to_non_nullable
-              as double,
-      lng: null == lng
-          ? _value.lng
-          : lng // ignore: cast_nullable_to_non_nullable
-              as double,
-      upvotes: null == upvotes
-          ? _value.upvotes
-          : upvotes // ignore: cast_nullable_to_non_nullable
-              as int,
-      downvotes: null == downvotes
-          ? _value.downvotes
-          : downvotes // ignore: cast_nullable_to_non_nullable
-              as int,
-      earnedPoints: null == earnedPoints
-          ? _value.earnedPoints
-          : earnedPoints // ignore: cast_nullable_to_non_nullable
-              as int,
-      address: freezed == address
-          ? _value.address
-          : address // ignore: cast_nullable_to_non_nullable
-              as String?,
-    ));
-  }
+
+
+
 }
-
 /// @nodoc
+class __$ActivityItemCopyWithImpl<$Res>
+    implements _$ActivityItemCopyWith<$Res> {
+  __$ActivityItemCopyWithImpl(this._self, this._then);
 
-class _$ActivityItemImpl implements _ActivityItem {
-  const _$ActivityItemImpl(
-      {required this.id,
-      required this.actionType,
-      required this.severity,
-      required this.createdAt,
-      required this.lat,
-      required this.lng,
-      this.upvotes = 0,
-      this.downvotes = 0,
-      this.earnedPoints = 0,
-      this.address});
+  final _ActivityItem _self;
+  final $Res Function(_ActivityItem) _then;
 
-  @override
-  final String id;
-  @override
-  final String actionType;
-  @override
-  final String severity;
-  @override
-  final DateTime createdAt;
-  @override
-  final double lat;
-  @override
-  final double lng;
-  @override
-  @JsonKey()
-  final int upvotes;
-  @override
-  @JsonKey()
-  final int downvotes;
-  @override
-  @JsonKey()
-  final int earnedPoints;
-  @override
-  final String? address;
-
-  @override
-  String toString() {
-    return 'ActivityItem(id: $id, actionType: $actionType, severity: $severity, createdAt: $createdAt, lat: $lat, lng: $lng, upvotes: $upvotes, downvotes: $downvotes, earnedPoints: $earnedPoints, address: $address)';
-  }
-
-  @override
-  bool operator ==(Object other) {
-    return identical(this, other) ||
-        (other.runtimeType == runtimeType &&
-            other is _$ActivityItemImpl &&
-            (identical(other.id, id) || other.id == id) &&
-            (identical(other.actionType, actionType) ||
-                other.actionType == actionType) &&
-            (identical(other.severity, severity) ||
-                other.severity == severity) &&
-            (identical(other.createdAt, createdAt) ||
-                other.createdAt == createdAt) &&
-            (identical(other.lat, lat) || other.lat == lat) &&
-            (identical(other.lng, lng) || other.lng == lng) &&
-            (identical(other.upvotes, upvotes) || other.upvotes == upvotes) &&
-            (identical(other.downvotes, downvotes) ||
-                other.downvotes == downvotes) &&
-            (identical(other.earnedPoints, earnedPoints) ||
-                other.earnedPoints == earnedPoints) &&
-            (identical(other.address, address) || other.address == address));
-  }
-
-  @override
-  int get hashCode => Object.hash(runtimeType, id, actionType, severity,
-      createdAt, lat, lng, upvotes, downvotes, earnedPoints, address);
-
-  @JsonKey(ignore: true)
-  @override
-  @pragma('vm:prefer-inline')
-  _$$ActivityItemImplCopyWith<_$ActivityItemImpl> get copyWith =>
-      __$$ActivityItemImplCopyWithImpl<_$ActivityItemImpl>(this, _$identity);
+/// Create a copy of ActivityItem
+/// with the given fields replaced by the non-null parameter values.
+@override @pragma('vm:prefer-inline') $Res call({Object? id = null,Object? actionType = null,Object? severity = null,Object? createdAt = null,Object? lat = null,Object? lng = null,Object? upvotes = null,Object? downvotes = null,Object? earnedPoints = null,Object? address = freezed,}) {
+  return _then(_ActivityItem(
+id: null == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
+as String,actionType: null == actionType ? _self.actionType : actionType // ignore: cast_nullable_to_non_nullable
+as String,severity: null == severity ? _self.severity : severity // ignore: cast_nullable_to_non_nullable
+as String,createdAt: null == createdAt ? _self.createdAt : createdAt // ignore: cast_nullable_to_non_nullable
+as DateTime,lat: null == lat ? _self.lat : lat // ignore: cast_nullable_to_non_nullable
+as double,lng: null == lng ? _self.lng : lng // ignore: cast_nullable_to_non_nullable
+as double,upvotes: null == upvotes ? _self.upvotes : upvotes // ignore: cast_nullable_to_non_nullable
+as int,downvotes: null == downvotes ? _self.downvotes : downvotes // ignore: cast_nullable_to_non_nullable
+as int,earnedPoints: null == earnedPoints ? _self.earnedPoints : earnedPoints // ignore: cast_nullable_to_non_nullable
+as int,address: freezed == address ? _self.address : address // ignore: cast_nullable_to_non_nullable
+as String?,
+  ));
 }
 
-abstract class _ActivityItem implements ActivityItem {
-  const factory _ActivityItem(
-      {required final String id,
-      required final String actionType,
-      required final String severity,
-      required final DateTime createdAt,
-      required final double lat,
-      required final double lng,
-      final int upvotes,
-      final int downvotes,
-      final int earnedPoints,
-      final String? address}) = _$ActivityItemImpl;
 
-  @override
-  String get id;
-  @override
-  String get actionType;
-  @override
-  String get severity;
-  @override
-  DateTime get createdAt;
-  @override
-  double get lat;
-  @override
-  double get lng;
-  @override
-  int get upvotes;
-  @override
-  int get downvotes;
-  @override
-  int get earnedPoints;
-  @override
-  String? get address;
-  @override
-  @JsonKey(ignore: true)
-  _$$ActivityItemImplCopyWith<_$ActivityItemImpl> get copyWith =>
-      throw _privateConstructorUsedError;
 }
+
+// dart format on

@@ -1,6 +1,6 @@
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:smart_route_app/features/auth/presentation/providers/uscases/use_case_providers.dart';
-import 'package:smart_route_app/features/auth/presentation/auth_state.dart';
+import 'package:smart_route_app/features/auth/presentation/states/auth_state.dart';
 
 part 'auth_controller_provider.g.dart';
 

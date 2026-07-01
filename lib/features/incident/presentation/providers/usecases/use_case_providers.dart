@@ -10,41 +10,37 @@ import 'package:smart_route_app/features/incident/presentation/providers/reposit
 part 'use_case_providers.g.dart';
 
 @Riverpod(keepAlive: true)
-GetIncidentsForMapUsecase getIncidentsForMapUsecase(
-  GetIncidentsForMapUsecaseRef ref,
-) {
+GetIncidentsForMapUsecase getIncidentsForMapUsecase(Ref ref) {
   final repository = ref.watch(incidentRepositoryProvider);
   return GetIncidentsForMapUsecase(repository);
 }
 
 @Riverpod(keepAlive: true)
-GetIncidentDetailUsecase getIncidentDetailUsecase(
-  GetIncidentDetailUsecaseRef ref,
-) {
+GetIncidentDetailUsecase getIncidentDetailUsecase(Ref ref) {
   final repository = ref.watch(incidentRepositoryProvider);
   return GetIncidentDetailUsecase(repository);
 }
 
 @Riverpod(keepAlive: true)
-GetMyIncidentsUsecase getMyIncidentsUsecase(GetMyIncidentsUsecaseRef ref) {
+GetMyIncidentsUsecase getMyIncidentsUsecase(Ref ref) {
   final repository = ref.watch(incidentRepositoryProvider);
   return GetMyIncidentsUsecase(repository);
 }
 
 @Riverpod(keepAlive: true)
-AddIncidentUsecase addIncidentUsecase(AddIncidentUsecaseRef ref) {
+AddIncidentUsecase addIncidentUsecase(Ref ref) {
   final repository = ref.watch(incidentRepositoryProvider);
   return AddIncidentUsecase(repository);
 }
 
 @Riverpod(keepAlive: true)
-UpdateIncidentUsecase updateIncidentUsecase(UpdateIncidentUsecaseRef ref) {
+UpdateIncidentUsecase updateIncidentUsecase(Ref ref) {
   final repository = ref.watch(incidentRepositoryProvider);
   return UpdateIncidentUsecase(repository);
 }
 
 @Riverpod(keepAlive: true)
-DeleteIncidentUsecase deleteIncidentUsecase(DeleteIncidentUsecaseRef ref) {
+DeleteIncidentUsecase deleteIncidentUsecase(Ref ref) {
   final repository = ref.watch(incidentRepositoryProvider);
   return DeleteIncidentUsecase(repository);
 }

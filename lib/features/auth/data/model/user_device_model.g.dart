@@ -6,9 +6,8 @@ part of 'user_device_model.dart';
 // JsonSerializableGenerator
 // **************************************************************************
 
-_$UserDeviceModelImpl _$$UserDeviceModelImplFromJson(
-        Map<String, dynamic> json) =>
-    _$UserDeviceModelImpl(
+_UserDeviceModel _$UserDeviceModelFromJson(Map<String, dynamic> json) =>
+    _UserDeviceModel(
       userId: json['user_id'] as String,
       fcmToken: json['fcm_token'] as String,
       deviceId: json['device_id'] as String,
@@ -17,8 +16,7 @@ _$UserDeviceModelImpl _$$UserDeviceModelImplFromJson(
       lastActiveAt: json['last_active_at'] as String?,
     );
 
-Map<String, dynamic> _$$UserDeviceModelImplToJson(
-        _$UserDeviceModelImpl instance) =>
+Map<String, dynamic> _$UserDeviceModelToJson(_UserDeviceModel instance) =>
     <String, dynamic>{
       'user_id': instance.userId,
       'fcm_token': instance.fcmToken,

@@ -7,7 +7,7 @@ part 'repository_providers.g.dart';
 /// Provider cho Incident Repository
 /// Điều phối giữa ArcGIS (GET) và Supabase (ADD/DELETE)
 @Riverpod(keepAlive: true)
-IncidentRepository incidentRepository(IncidentRepositoryRef ref) {
+IncidentRepository incidentRepository(Ref ref) {
   final arcgisDataSource = ref.watch(arcgisRemoteDataSourceProvider);
   final supabaseDataSource = ref.watch(supabaseRemoteDataSourceProvider);
   // final incidentLocalDataSource = ref.watch(incidentLocalDataSourceProvider);

@@ -26,7 +26,7 @@ class RouteSummarySheet extends ConsumerWidget {
     final cs = theme.colorScheme;
     final textTheme = theme.textTheme;
 
-    final routeState = ref.watch(routeNotifierProvider);
+    final routeState = ref.watch(routeProvider);
     final alternatives = routeState.alternativeRoutesResult;
     final selectedStrategy =
         routeState.selectedStrategy ?? RouteStrategy.balanced;
@@ -75,8 +75,7 @@ class RouteSummarySheet extends ConsumerWidget {
                 ),
               ),
               GestureDetector(
-                onTap: () =>
-                    ref.read(routeNotifierProvider.notifier).clearRoute(),
+                onTap: () => ref.read(routeProvider.notifier).clearRoute(),
                 child: Container(
                   width: 40,
                   height: 40,

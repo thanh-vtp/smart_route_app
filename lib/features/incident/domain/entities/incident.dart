@@ -3,7 +3,7 @@ import 'package:freezed_annotation/freezed_annotation.dart';
 part 'incident.freezed.dart';
 
 @freezed
-class Incident with _$Incident {
+abstract class Incident with _$Incident {
   const factory Incident({
     required String id,
     String? arcgisObjectId,

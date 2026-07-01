@@ -13,15 +13,13 @@ part 'remote_datasource_providers.g.dart';
 
 /// Provider cho ArcGIS Data Source (chỉ GET)
 @Riverpod(keepAlive: true)
-ArcGISRemoteDataSource arcgisRemoteDataSource(ArcgisRemoteDataSourceRef ref) {
+ArcGISRemoteDataSource arcgisRemoteDataSource(Ref ref) {
   final layer = ref.watch(incidentFeatureLayerProvider);
   return ArcGISRemoteDataSourceImpl(layer);
 }
 
 /// Provider cho Supabase Data Source (ADD & DELETE)
 @Riverpod(keepAlive: true)
-SupabaseRemoteDataSource supabaseRemoteDataSource(
-  SupabaseRemoteDataSourceRef ref,
-) {
+SupabaseRemoteDataSource supabaseRemoteDataSource(Ref ref) {
   return SupabaseRemoteDataSourceImpl(supabase);
 }

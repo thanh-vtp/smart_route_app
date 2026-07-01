@@ -6,56 +6,149 @@ part of 'use_case_providers.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$updatePushSettingUseCaseHash() =>
-    r'e6d4711d97a068aea45d5082845786c96ac39e43';
+// GENERATED CODE - DO NOT MODIFY BY HAND
+// ignore_for_file: type=lint, type=warning
 
-/// See also [updatePushSettingUseCase].
 @ProviderFor(updatePushSettingUseCase)
-final updatePushSettingUseCaseProvider =
-    Provider<UpdatePushSettingUseCase>.internal(
-  updatePushSettingUseCase,
-  name: r'updatePushSettingUseCaseProvider',
-  debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
-      ? null
-      : _$updatePushSettingUseCaseHash,
-  dependencies: null,
-  allTransitiveDependencies: null,
-);
+final updatePushSettingUseCaseProvider = UpdatePushSettingUseCaseProvider._();
 
-typedef UpdatePushSettingUseCaseRef = ProviderRef<UpdatePushSettingUseCase>;
-String _$getProfileSettingsUseCaseHash() =>
-    r'c610cc04ba566f42637ddb8553f19c7fed8511e4';
+final class UpdatePushSettingUseCaseProvider
+    extends
+        $FunctionalProvider<
+          UpdatePushSettingUseCase,
+          UpdatePushSettingUseCase,
+          UpdatePushSettingUseCase
+        >
+    with $Provider<UpdatePushSettingUseCase> {
+  UpdatePushSettingUseCaseProvider._()
+    : super(
+        from: null,
+        argument: null,
+        retry: null,
+        name: r'updatePushSettingUseCaseProvider',
+        isAutoDispose: false,
+        dependencies: null,
+        $allTransitiveDependencies: null,
+      );
 
-/// See also [getProfileSettingsUseCase].
+  @override
+  String debugGetCreateSourceHash() => _$updatePushSettingUseCaseHash();
+
+  @$internal
+  @override
+  $ProviderElement<UpdatePushSettingUseCase> $createElement(
+    $ProviderPointer pointer,
+  ) => $ProviderElement(pointer);
+
+  @override
+  UpdatePushSettingUseCase create(Ref ref) {
+    return updatePushSettingUseCase(ref);
+  }
+
+  /// {@macro riverpod.override_with_value}
+  Override overrideWithValue(UpdatePushSettingUseCase value) {
+    return $ProviderOverride(
+      origin: this,
+      providerOverride: $SyncValueProvider<UpdatePushSettingUseCase>(value),
+    );
+  }
+}
+
+String _$updatePushSettingUseCaseHash() =>
+    r'57fca582a9c5d8381f5e476b3f40f875090c4e60';
+
 @ProviderFor(getProfileSettingsUseCase)
-final getProfileSettingsUseCaseProvider =
-    Provider<GetProfileSettingsUseCase>.internal(
-  getProfileSettingsUseCase,
-  name: r'getProfileSettingsUseCaseProvider',
-  debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
-      ? null
-      : _$getProfileSettingsUseCaseHash,
-  dependencies: null,
-  allTransitiveDependencies: null,
-);
+final getProfileSettingsUseCaseProvider = GetProfileSettingsUseCaseProvider._();
 
-typedef GetProfileSettingsUseCaseRef = ProviderRef<GetProfileSettingsUseCase>;
-String _$updateProfileNameUseCaseHash() =>
-    r'9589c8036942a3254fd619bf7f18c6347d2bfd72';
+final class GetProfileSettingsUseCaseProvider
+    extends
+        $FunctionalProvider<
+          GetProfileSettingsUseCase,
+          GetProfileSettingsUseCase,
+          GetProfileSettingsUseCase
+        >
+    with $Provider<GetProfileSettingsUseCase> {
+  GetProfileSettingsUseCaseProvider._()
+    : super(
+        from: null,
+        argument: null,
+        retry: null,
+        name: r'getProfileSettingsUseCaseProvider',
+        isAutoDispose: false,
+        dependencies: null,
+        $allTransitiveDependencies: null,
+      );
 
-/// See also [updateProfileNameUseCase].
+  @override
+  String debugGetCreateSourceHash() => _$getProfileSettingsUseCaseHash();
+
+  @$internal
+  @override
+  $ProviderElement<GetProfileSettingsUseCase> $createElement(
+    $ProviderPointer pointer,
+  ) => $ProviderElement(pointer);
+
+  @override
+  GetProfileSettingsUseCase create(Ref ref) {
+    return getProfileSettingsUseCase(ref);
+  }
+
+  /// {@macro riverpod.override_with_value}
+  Override overrideWithValue(GetProfileSettingsUseCase value) {
+    return $ProviderOverride(
+      origin: this,
+      providerOverride: $SyncValueProvider<GetProfileSettingsUseCase>(value),
+    );
+  }
+}
+
+String _$getProfileSettingsUseCaseHash() =>
+    r'a0e7a55de8b855b55df630afd1e9695f1f1545b4';
+
 @ProviderFor(updateProfileNameUseCase)
-final updateProfileNameUseCaseProvider =
-    Provider<UpdateProfileNameUseCase>.internal(
-  updateProfileNameUseCase,
-  name: r'updateProfileNameUseCaseProvider',
-  debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
-      ? null
-      : _$updateProfileNameUseCaseHash,
-  dependencies: null,
-  allTransitiveDependencies: null,
-);
+final updateProfileNameUseCaseProvider = UpdateProfileNameUseCaseProvider._();
 
-typedef UpdateProfileNameUseCaseRef = ProviderRef<UpdateProfileNameUseCase>;
-// ignore_for_file: type=lint
-// ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member
+final class UpdateProfileNameUseCaseProvider
+    extends
+        $FunctionalProvider<
+          UpdateProfileNameUseCase,
+          UpdateProfileNameUseCase,
+          UpdateProfileNameUseCase
+        >
+    with $Provider<UpdateProfileNameUseCase> {
+  UpdateProfileNameUseCaseProvider._()
+    : super(
+        from: null,
+        argument: null,
+        retry: null,
+        name: r'updateProfileNameUseCaseProvider',
+        isAutoDispose: false,
+        dependencies: null,
+        $allTransitiveDependencies: null,
+      );
+
+  @override
+  String debugGetCreateSourceHash() => _$updateProfileNameUseCaseHash();
+
+  @$internal
+  @override
+  $ProviderElement<UpdateProfileNameUseCase> $createElement(
+    $ProviderPointer pointer,
+  ) => $ProviderElement(pointer);
+
+  @override
+  UpdateProfileNameUseCase create(Ref ref) {
+    return updateProfileNameUseCase(ref);
+  }
+
+  /// {@macro riverpod.override_with_value}
+  Override overrideWithValue(UpdateProfileNameUseCase value) {
+    return $ProviderOverride(
+      origin: this,
+      providerOverride: $SyncValueProvider<UpdateProfileNameUseCase>(value),
+    );
+  }
+}
+
+String _$updateProfileNameUseCaseHash() =>
+    r'e21833f4ae1b5e46dc07c2573df8271be2a7bee9';

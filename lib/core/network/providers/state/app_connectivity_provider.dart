@@ -19,8 +19,7 @@ class AppConnectivity extends _$AppConnectivity {
             ? ConnectivityStatus.online
             : ConnectivityStatus.offline;
       },
-      error: (_, __) =>
-          ConnectivityStatus.offline, // Lỗi stream coi như offline
+      error: (_, _) => ConnectivityStatus.offline, // Lỗi stream coi như offline
       loading: () => ConnectivityStatus.loading,
     );
   }

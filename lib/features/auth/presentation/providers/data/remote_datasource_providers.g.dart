@@ -6,62 +6,169 @@ part of 'remote_datasource_providers.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$googleAuthDatasourceHash() =>
-    r'9d3c1d013643ea1daf7604f63214be60d460e9f4';
+// GENERATED CODE - DO NOT MODIFY BY HAND
+// ignore_for_file: type=lint, type=warning
+/// dùng Ref hoặc tự định nghĩa Ref type
+/// Quy tắc: name function + Ref
+/// Provider cho Google Auth Data Source
+
+@ProviderFor(googleAuthDatasource)
+final googleAuthDatasourceProvider = GoogleAuthDatasourceProvider._();
 
 /// dùng Ref hoặc tự định nghĩa Ref type
 /// Quy tắc: name function + Ref
 /// Provider cho Google Auth Data Source
-///
-/// Copied from [googleAuthDatasource].
-@ProviderFor(googleAuthDatasource)
-final googleAuthDatasourceProvider = Provider<GoogleAuthDatasource>.internal(
-  googleAuthDatasource,
-  name: r'googleAuthDatasourceProvider',
-  debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
-      ? null
-      : _$googleAuthDatasourceHash,
-  dependencies: null,
-  allTransitiveDependencies: null,
-);
 
-typedef GoogleAuthDatasourceRef = ProviderRef<GoogleAuthDatasource>;
-String _$supabaseAuthDatasourceHash() =>
-    r'773b3e2ce6c6850a0a1acf614678aa70789c1e51';
+final class GoogleAuthDatasourceProvider
+    extends
+        $FunctionalProvider<
+          GoogleAuthDatasource,
+          GoogleAuthDatasource,
+          GoogleAuthDatasource
+        >
+    with $Provider<GoogleAuthDatasource> {
+  /// dùng Ref hoặc tự định nghĩa Ref type
+  /// Quy tắc: name function + Ref
+  /// Provider cho Google Auth Data Source
+  GoogleAuthDatasourceProvider._()
+    : super(
+        from: null,
+        argument: null,
+        retry: null,
+        name: r'googleAuthDatasourceProvider',
+        isAutoDispose: false,
+        dependencies: null,
+        $allTransitiveDependencies: null,
+      );
+
+  @override
+  String debugGetCreateSourceHash() => _$googleAuthDatasourceHash();
+
+  @$internal
+  @override
+  $ProviderElement<GoogleAuthDatasource> $createElement(
+    $ProviderPointer pointer,
+  ) => $ProviderElement(pointer);
+
+  @override
+  GoogleAuthDatasource create(Ref ref) {
+    return googleAuthDatasource(ref);
+  }
+
+  /// {@macro riverpod.override_with_value}
+  Override overrideWithValue(GoogleAuthDatasource value) {
+    return $ProviderOverride(
+      origin: this,
+      providerOverride: $SyncValueProvider<GoogleAuthDatasource>(value),
+    );
+  }
+}
+
+String _$googleAuthDatasourceHash() =>
+    r'ee7a61638866c20e8c1c3a6f3fae02785461efc3';
 
 /// Provider cho Supabase Auth Data Source
-///
-/// Copied from [supabaseAuthDatasource].
-@ProviderFor(supabaseAuthDatasource)
-final supabaseAuthDatasourceProvider =
-    Provider<SupabaseAuthDatasource>.internal(
-  supabaseAuthDatasource,
-  name: r'supabaseAuthDatasourceProvider',
-  debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
-      ? null
-      : _$supabaseAuthDatasourceHash,
-  dependencies: null,
-  allTransitiveDependencies: null,
-);
 
-typedef SupabaseAuthDatasourceRef = ProviderRef<SupabaseAuthDatasource>;
-String _$userDeviceDatasourceHash() =>
-    r'1b952a408ddd8a1bb09e7ad45b6604d0b9bcb70d';
+@ProviderFor(supabaseAuthDatasource)
+final supabaseAuthDatasourceProvider = SupabaseAuthDatasourceProvider._();
+
+/// Provider cho Supabase Auth Data Source
+
+final class SupabaseAuthDatasourceProvider
+    extends
+        $FunctionalProvider<
+          SupabaseAuthDatasource,
+          SupabaseAuthDatasource,
+          SupabaseAuthDatasource
+        >
+    with $Provider<SupabaseAuthDatasource> {
+  /// Provider cho Supabase Auth Data Source
+  SupabaseAuthDatasourceProvider._()
+    : super(
+        from: null,
+        argument: null,
+        retry: null,
+        name: r'supabaseAuthDatasourceProvider',
+        isAutoDispose: false,
+        dependencies: null,
+        $allTransitiveDependencies: null,
+      );
+
+  @override
+  String debugGetCreateSourceHash() => _$supabaseAuthDatasourceHash();
+
+  @$internal
+  @override
+  $ProviderElement<SupabaseAuthDatasource> $createElement(
+    $ProviderPointer pointer,
+  ) => $ProviderElement(pointer);
+
+  @override
+  SupabaseAuthDatasource create(Ref ref) {
+    return supabaseAuthDatasource(ref);
+  }
+
+  /// {@macro riverpod.override_with_value}
+  Override overrideWithValue(SupabaseAuthDatasource value) {
+    return $ProviderOverride(
+      origin: this,
+      providerOverride: $SyncValueProvider<SupabaseAuthDatasource>(value),
+    );
+  }
+}
+
+String _$supabaseAuthDatasourceHash() =>
+    r'dc7b9aa49b1617040c17bda2292d02789bf653bd';
 
 /// Provider cho User Device Data Source
-///
-/// Copied from [userDeviceDatasource].
-@ProviderFor(userDeviceDatasource)
-final userDeviceDatasourceProvider = Provider<UserDeviceDatasource>.internal(
-  userDeviceDatasource,
-  name: r'userDeviceDatasourceProvider',
-  debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
-      ? null
-      : _$userDeviceDatasourceHash,
-  dependencies: null,
-  allTransitiveDependencies: null,
-);
 
-typedef UserDeviceDatasourceRef = ProviderRef<UserDeviceDatasource>;
-// ignore_for_file: type=lint
-// ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member
+@ProviderFor(userDeviceDatasource)
+final userDeviceDatasourceProvider = UserDeviceDatasourceProvider._();
+
+/// Provider cho User Device Data Source
+
+final class UserDeviceDatasourceProvider
+    extends
+        $FunctionalProvider<
+          UserDeviceDatasource,
+          UserDeviceDatasource,
+          UserDeviceDatasource
+        >
+    with $Provider<UserDeviceDatasource> {
+  /// Provider cho User Device Data Source
+  UserDeviceDatasourceProvider._()
+    : super(
+        from: null,
+        argument: null,
+        retry: null,
+        name: r'userDeviceDatasourceProvider',
+        isAutoDispose: false,
+        dependencies: null,
+        $allTransitiveDependencies: null,
+      );
+
+  @override
+  String debugGetCreateSourceHash() => _$userDeviceDatasourceHash();
+
+  @$internal
+  @override
+  $ProviderElement<UserDeviceDatasource> $createElement(
+    $ProviderPointer pointer,
+  ) => $ProviderElement(pointer);
+
+  @override
+  UserDeviceDatasource create(Ref ref) {
+    return userDeviceDatasource(ref);
+  }
+
+  /// {@macro riverpod.override_with_value}
+  Override overrideWithValue(UserDeviceDatasource value) {
+    return $ProviderOverride(
+      origin: this,
+      providerOverride: $SyncValueProvider<UserDeviceDatasource>(value),
+    );
+  }
+}
+
+String _$userDeviceDatasourceHash() =>
+    r'271380a4c880cf536d0eee286bf8a329b00f5b8e';

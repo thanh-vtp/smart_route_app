@@ -6,8 +6,6 @@ import 'package:smart_route_app/features/analytics/data/datasources/analytics_re
 part 'remote_datasource_providers.g.dart';
 
 @Riverpod(keepAlive: true)
-AnalyticsRemoteDataSource analyticsRemoteDataSource(
-  AnalyticsRemoteDataSourceRef ref,
-) {
+AnalyticsRemoteDataSource analyticsRemoteDataSource(Ref ref) {
   return AnalyticsRemoteDataSourceImpl(supabase);
 }
