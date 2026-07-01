@@ -1,0 +1,263 @@
+[
+    {
+        "routeId": 1,
+        "routeName": "Location 1 - Location 2",
+        "hasM": true,
+        "summary": {
+            "totalLength": 4053.353351504584,
+            "totalTime": 10.002138536094135,
+            "totalDriveTime": 10.002138536094135,
+            "envelope": {
+                "xmin": 109.17833121300004,
+                "ymin": 12.26880790000007,
+                "xmax": 109.20058133400005,
+                "ymax": 12.288363700000048,
+                "mmin": 0,
+                "mmax": 10.002138536094135,
+                "spatialReference": {
+                    "wkid": 4326,
+                    "latestWkid": 4326
+                }
+            }
+        },
+        "features": [
+            {
+                "attributes": {
+                    "length": 0,
+                    "time": 0,
+                    "text": "Bắt đầu tại Location 1",
+                    "ETA": -2209161600000,
+                    "arriveTimeUTC": -2209161600000,
+                    "maneuverType": "esriDMTDepart"
+                },
+                "compressedGeometry": "+0+1+2+io8g0+1vvvvv7+76e1jd+0+0|+1vvvvvv+0+0",
+                "strings": [
+                    {
+                        "string": "Location 1",
+                        "stringType": "esriDSTStreetName"
+                    }
+                ]
+            },
+            {
+                "attributes": {
+                    "length": 308.3947010531896,
+                    "time": 0.8234058569197191,
+                    "text": "Đi về phía đông bắc",
+                    "ETA": -2209161600000,
+                    "arriveTimeUTC": -2209161600000,
+                    "maneuverType": "esriDMTStraight"
+                },
+                "compressedGeometry": "+0+1+2+io82c+1vvuhfl+76dsc1+o4g+jq3+i15+41r+49o-2b|+1vvvvvv+0+uesckt+i121no+46c8r0"
+            },
+            {
+                "attributes": {
+                    "length": 565.155029296875,
+                    "time": 1.4321289062500002,
+                    "text": "Tiếp tục đi về phía trước trên Đường Mai Thị Dõng",
+                    "ETA": -2209161600000,
+                    "arriveTimeUTC": -2209161600000,
+                    "maneuverType": "esriDMTStraight"
+                },
+                "compressedGeometry": "+0+1+2+io79l+1vvtbk8+76ealu+14ps-bi+7fd+4l+dhu+b5n+c8o+dqh+dlj+7gb+fc+2pn|+sbvkci+nbkijs+f4eo4m+32fa3d+7798h0+7jb3go+6daojd+15e6eq",
+                "strings": [
+                    {
+                        "string": "Đường Mai Thị Dõng",
+                        "stringType": "esriDSTStreetName"
+                    }
+                ]
+            },
+            {
+                "attributes": {
+                    "length": 247.1466064453125,
+                    "time": 0.632568359375,
+                    "text": "Rẽ phải trên Đường Nguyễn Xiển",
+                    "ETA": -2209161600000,
+                    "arriveTimeUTC": -2209161600000,
+                    "maneuverType": "esriDMTTurnRight"
+                },
+                "compressedGeometry": "+0+1+2+io6te+1vvum73+76f937+803+29s+6bk+1qs+cpb+3m0+eia+4lp|+m53mnh+1hvdu4e+2lo3p5+2464fd+491kqk+4ti4o8",
+                "strings": [
+                    {
+                        "string": "Đường Nguyễn Xiển",
+                        "stringType": "esriDSTStreetName"
+                    }
+                ]
+            },
+            {
+                "attributes": {
+                    "length": 28.5491943359375,
+                    "time": 0.076171875,
+                    "text": "Rẽ phải trên Đường Thái Phiên",
+                    "ETA": -2209161600000,
+                    "arriveTimeUTC": -2209161600000,
+                    "maneuverType": "esriDMTTurnRight"
+                },
+                "compressedGeometry": "+0+1+2+io6se+1vvvsh9+76fl7f+3dd-3b2|+lisjgl+1ubbu8a+1kk1nj",
+                "strings": [
+                    {
+                        "string": "Đường Thái Phiên",
+                        "stringType": "esriDSTStreetName"
+                    }
+                ]
+            },
+            {
+                "attributes": {
+                    "length": 149.47509765625,
+                    "time": 0.344970703125,
+                    "text": "Rẽ về bên trái trên Đường Ngô Gia Khảm",
+                    "ETA": -2209161600000,
+                    "arriveTimeUTC": -2209161600000,
+                    "maneuverType": "esriDMTBearLeft"
+                },
+                "compressedGeometry": "+0+1+2+io6kn+1vvv5jt+76feti+qc1+72|+jart2i+1pag7d4+6lfoip",
+                "strings": [
+                    {
+                        "string": "Đường Ngô Gia Khảm",
+                        "stringType": "esriDSTStreetName"
+                    }
+                ]
+            },
+            {
+                "attributes": {
+                    "length": 98.6175537109375,
+                    "time": 0.4930419921875,
+                    "text": "Tiếp tục đi về phía trước",
+                    "ETA": -2209161600000,
+                    "arriveTimeUTC": -2209161600000,
+                    "maneuverType": "esriDMTStraight"
+                },
+                "compressedGeometry": "+0+1+2+io6fj+1vvvegb+76fd5l+hc7-jm|+gqju1r+1nmdul1+89i1ar"
+            },
+            {
+                "attributes": {
+                    "length": 1472.259521484375,
+                    "time": 2.778076171875,
+                    "text": "Rẽ phải trên Đường 2 Tháng 4",
+                    "ETA": -2209161600000,
+                    "arriveTimeUTC": -2209161600000,
+                    "maneuverType": "esriDMTTurnRight"
+                },
+                "compressedGeometry": "+0+1+2+io57f+1vvrmvb+76et4t+a5r-gak+sm1-1d2o+55a-8dp+g7s-pnb+144-1ov+57b-881+bet-huk+3jf-5j2+37a-505+a53-g0i+2de-3qt+2md-4b7+1rq-309+1q0-2v9+kb9-10ip+27t-3kp+7rb-cmr+2ho-3tc|+9n7afh+14vc7ag+20poc8+5ju10n+119d9c+36eks3+7355q+10sgjg+27nimm+mdfp7+k1n5r+1vrmof+f94ov+h7l6u+btm1p+bnhi7+41bngd+ednjl+1ia861+fntte",
+                "strings": [
+                    {
+                        "string": "Đường 2 Tháng 4",
+                        "stringType": "esriDSTStreetName"
+                    }
+                ]
+            },
+            {
+                "attributes": {
+                    "length": 65.765380859375,
+                    "time": 0.2818603515625,
+                    "text": "Rẽ phải trên Đường Dương Vân Nga",
+                    "ETA": -2209161600000,
+                    "arriveTimeUTC": -2209161600000,
+                    "maneuverType": "esriDMTTurnRight"
+                },
+                "compressedGeometry": "+0+1+2+io57f+1vvvvsj+7683th-90r-74j|+9ae86e+1tbs558+2k3qqn",
+                "strings": [
+                    {
+                        "string": "Đường Dương Vân Nga",
+                        "stringType": "esriDSTStreetName"
+                    }
+                ]
+            },
+            {
+                "attributes": {
+                    "length": 97.83935546875,
+                    "time": 0.562255859375,
+                    "text": "Rẽ trái",
+                    "ETA": -2209161600000,
+                    "arriveTimeUTC": -2209161600000,
+                    "maneuverType": "esriDMTTurnLeft"
+                },
+                "compressedGeometry": "+0+1+2+io568+1vvviml+767s9v+543-3v7+23j-1m3+60c-55a|+8jr0fo+1r4suln+1qoumg+og9d3+27pp6g"
+            },
+            {
+                "attributes": {
+                    "length": 582.3516845703125,
+                    "time": 1.2193603515625009,
+                    "text": "Rẽ trái trên Đường Lý Ông Trọng, rồi rẽ phải trên Đường 2 Tháng 4",
+                    "ETA": -2209161600000,
+                    "arriveTimeUTC": -2209161600000,
+                    "maneuverType": "esriDMTTurnLeftRight"
+                },
+                "compressedGeometry": "+0+1+2+io50u+1vvvdqj+767fe4+55a+2p4+7d7-cer+1uu-4mb+1no-5cs+1qu-bpd-7i-etk-2t-5l5-k9-111m+pk-4b8|+7ctq2l+1mv313u+1km96d+13ueco+cjvto+e29jc+tiubb+1507tc+e16as+2hug2t+av113",
+                "strings": [
+                    {
+                        "string": "Đường Lý Ông Trọng",
+                        "stringType": "esriDSTStreetName"
+                    }
+                ]
+            },
+            {
+                "attributes": {
+                    "length": 43.0908203125,
+                    "time": 0.1658935546875,
+                    "text": "Rẽ về bên phải trên Đường Hai Tháng Tư",
+                    "ETA": -2209161600000,
+                    "arriveTimeUTC": -2209161600000,
+                    "maneuverType": "esriDMTBearRight"
+                },
+                "compressedGeometry": "+0+1+2+io50v+1vvvvt2+764lse-2d-1a3-gf-64j|+78f1d6+1updt47+6pa0j+voor1",
+                "strings": [
+                    {
+                        "string": "Đường Hai Tháng Tư",
+                        "stringType": "esriDSTStreetName"
+                    }
+                ]
+            },
+            {
+                "attributes": {
+                    "length": 48.004150390625,
+                    "time": 0.2879638671875,
+                    "text": "Tiếp tục đi về phía trước trên Đường 2 Tháng 4",
+                    "ETA": -2209161600000,
+                    "arriveTimeUTC": -2209161600000,
+                    "maneuverType": "esriDMTStraight"
+                },
+                "compressedGeometry": "+0+1+2+io515+1vvvvul+764eg2-148-889|+713iih+1tv5k3s+20qbrq",
+                "strings": [
+                    {
+                        "string": "Đường 2 Tháng 4",
+                        "stringType": "esriDSTStreetName"
+                    }
+                ]
+            },
+            {
+                "attributes": {
+                    "length": 346.70425592014453,
+                    "time": 0.9044406869869146,
+                    "text": "Rẽ trái trên Đường Nguyễn Đình Chiểu",
+                    "ETA": -2209161600000,
+                    "arriveTimeUTC": -2209161600000,
+                    "maneuverType": "esriDMTTurnLeft"
+                },
+                "compressedGeometry": "+0+1+2+io4io+1vvudl9+7640n1+360-1rk+4hl-2og+48e-2ns+2td-1p5+c1u-3lv+7in-8ki+9r9-89f+4hs-1hr+19o+3j|+6co6bh+1q6ptio+b8smt+g8hn3+fflvg+aefjr+16glsq+133ufl+17at3s+emt3n+3vvni",
+                "strings": [
+                    {
+                        "string": "Đường Nguyễn Đình Chiểu",
+                        "stringType": "esriDSTStreetName"
+                    }
+                ]
+            },
+            {
+                "attributes": {
+                    "length": 0,
+                    "time": 0,
+                    "text": "Kết thúc tại Location 2, ở bên trái",
+                    "ETA": -2209161600000,
+                    "arriveTimeUTC": -2209161600000,
+                    "maneuverType": "esriDMTStop"
+                },
+                "compressedGeometry": "+0+1+2+io4io+1vvvvub+7631fk+0+0|+6co6bh+1vvvvvn+0",
+                "strings": [
+                    {
+                        "string": "Location 2",
+                        "stringType": "esriDSTStreetName"
+                    }
+                ]
+            }
+        ]
+    }
+]

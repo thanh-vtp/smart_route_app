@@ -1,0 +1,657 @@
+{
+    "checksum": "E5kzaYrELAJQwiwC",
+    "requestID": "a17082bf-7190-4b35-ba71-6394a607a7b5",
+    "routes": {
+        "hasM": true,
+        "fieldAliases": {
+            "ObjectID": "ObjectID",
+            "Name": "Name",
+            "FirstStopID": "FirstStopID",
+            "LastStopID": "LastStopID",
+            "StopCount": "StopCount",
+            "Total_TravelTime": "Total_TravelTime",
+            "Total_Kilometers": "Total_Kilometers",
+            "Total_Miles": "Total_Miles",
+            "Shape_Length": "Shape_Length"
+        },
+        "geometryType": "esriGeometryPolyline",
+        "spatialReference": {
+            "wkid": 4326,
+            "latestWkid": 4326
+        },
+        "fields": [
+            {
+                "name": "ObjectID",
+                "type": "esriFieldTypeOID",
+                "alias": "ObjectID"
+            },
+            {
+                "name": "Name",
+                "type": "esriFieldTypeString",
+                "alias": "Name",
+                "length": 1024
+            },
+            {
+                "name": "FirstStopID",
+                "type": "esriFieldTypeInteger",
+                "alias": "FirstStopID"
+            },
+            {
+                "name": "LastStopID",
+                "type": "esriFieldTypeInteger",
+                "alias": "LastStopID"
+            },
+            {
+                "name": "StopCount",
+                "type": "esriFieldTypeInteger",
+                "alias": "StopCount"
+            },
+            {
+                "name": "Total_TravelTime",
+                "type": "esriFieldTypeDouble",
+                "alias": "Total_TravelTime"
+            },
+            {
+                "name": "Total_Kilometers",
+                "type": "esriFieldTypeDouble",
+                "alias": "Total_Kilometers"
+            },
+            {
+                "name": "Total_Miles",
+                "type": "esriFieldTypeDouble",
+                "alias": "Total_Miles"
+            },
+            {
+                "name": "Shape_Length",
+                "type": "esriFieldTypeDouble",
+                "alias": "Shape_Length"
+            }
+        ],
+        "features": [
+            {
+                "attributes": {
+                    "ObjectID": 1,
+                    "Name": "Location 1 - Location 2",
+                    "FirstStopID": 1,
+                    "LastStopID": 2,
+                    "StopCount": 2,
+                    "Total_TravelTime": 10.002138536094135,
+                    "Total_Kilometers": 4.0533533515045841,
+                    "Total_Miles": 2.518623205107104,
+                    "Shape_Length": 0.036861990626234187
+                },
+                "geometry": {
+                    "hasM": true,
+                    "paths": [
+                        [
+                            [
+                                109.17833121300004,
+                                12.284645169000044,
+                                0
+                            ],
+                            [
+                                109.17958800000008,
+                                12.285676800000033,
+                                0.46635019285678864
+                            ],
+                            [
+                                109.18052700000004,
+                                12.285888000000057,
+                                0.76713144285678858
+                            ],
+                            [
+                                109.18075110000007,
+                                12.285884200000055,
+                                0.82340585691928858
+                            ],
+                            [
+                                109.18266750000004,
+                                12.285865400000034,
+                                1.2701832006692886
+                            ],
+                            [
+                                109.18305700000008,
+                                12.285873000000038,
+                                1.3807789037942886
+                            ],
+                            [
+                                109.18376300000006,
+                                12.286455000000046,
+                                1.6637378881692886
+                            ],
+                            [
+                                109.18440200000003,
+                                12.287175000000047,
+                                1.9599813586950303
+                            ],
+                            [
+                                109.18511400000006,
+                                12.287566000000027,
+                                2.2099518063068389
+                            ],
+                            [
+                                109.18513900000005,
+                                12.287712000000056,
+                                2.2555347631692886
+                            ],
+                            [
+                                109.18555570000007,
+                                12.287832200000025,
+                                2.4326587866067886
+                            ],
+                            [
+                                109.18588700000004,
+                                12.287928000000022,
+                                2.5513111303567886
+                            ],
+                            [
+                                109.18655300000006,
+                                12.288120000000049,
+                                2.7079273412942886
+                            ],
+                            [
+                                109.18731170000007,
+                                12.288363700000048,
+                                2.8881031225442886
+                            ],
+                            [
+                                109.18748970000007,
+                                12.288189500000044,
+                                2.9642749975442886
+                            ],
+                            [
+                                109.18886300000008,
+                                12.288201000000072,
+                                3.3092457006692886
+                            ],
+                            [
+                                109.18976800000007,
+                                12.288169000000039,
+                                3.8022876928567886
+                            ],
+                            [
+                                109.19029820000009,
+                                12.287318600000049,
+                                3.9864917944192886
+                            ],
+                            [
+                                109.19179200000008,
+                                12.284971000000041,
+                                4.4980884741067886
+                            ],
+                            [
+                                109.19206100000008,
+                                12.28453200000007,
+                                4.5928150366067886
+                            ],
+                            [
+                                109.19290690000008,
+                                12.283192300000053,
+                                4.8840748022317886
+                            ],
+                            [
+                                109.19296570000006,
+                                12.283099600000071,
+                                4.9042164037942886
+                            ],
+                            [
+                                109.19323800000006,
+                                12.282670000000053,
+                                4.9977222631692886
+                            ],
+                            [
+                                109.19383500000004,
+                                12.281735000000026,
+                                5.2017017553567886
+                            ],
+                            [
+                                109.19402290000005,
+                                12.281443600000046,
+                                5.2654224584817886
+                            ],
+                            [
+                                109.19419100000005,
+                                12.281183000000055,
+                                5.3224292944192886
+                            ],
+                            [
+                                109.19472000000007,
+                                12.280349000000058,
+                                5.5040699194192886
+                            ],
+                            [
+                                109.19484600000004,
+                                12.280149000000051,
+                                5.5475269506692886
+                            ],
+                            [
+                                109.19498660000005,
+                                12.279922500000055,
+                                5.7226978491067886
+                            ],
+                            [
+                                109.19508390000004,
+                                12.279765800000064,
+                                5.8439136694192886
+                            ],
+                            [
+                                109.19517830000007,
+                                12.279610800000057,
+                                5.8830982397317886
+                            ],
+                            [
+                                109.19623800000005,
+                                12.277914000000067,
+                                6.3157154272317886
+                            ],
+                            [
+                                109.19635500000004,
+                                12.277724000000035,
+                                6.3590503881692886
+                            ],
+                            [
+                                109.19676400000009,
+                                12.277062000000058,
+                                6.5276294897317886
+                            ],
+                            [
+                                109.19689700000004,
+                                12.276858000000061,
+                                6.5803638647317886
+                            ],
+                            [
+                                109.19642700000009,
+                                12.276486000000034,
+                                6.8622242162942886
+                            ],
+                            [
+                                109.19669400000004,
+                                12.276279000000045,
+                                7.0841480444192886
+                            ],
+                            [
+                                109.19680400000004,
+                                12.27619100000004,
+                                7.1766773412942886
+                            ],
+                            [
+                                109.19711700000005,
+                                12.275922000000037,
+                                7.4244800756692886
+                            ],
+                            [
+                                109.19738600000005,
+                                12.276067000000069,
+                                7.6468921850442886
+                            ],
+                            [
+                                109.19777200000004,
+                                12.275418000000059,
+                                7.8251148412942886
+                            ],
+                            [
+                                109.19787440000005,
+                                12.275173400000028,
+                                7.8752857397317886
+                            ],
+                            [
+                                109.19796510000003,
+                                12.274892100000045,
+                                7.9310718725442886
+                            ],
+                            [
+                                109.19806100000005,
+                                12.274278000000038,
+                                8.0488697241067886
+                            ],
+                            [
+                                109.19804870000007,
+                                12.273500800000022,
+                                8.1957203100442886
+                            ],
+                            [
+                                109.19804400000004,
+                                12.273206000000073,
+                                8.2513843725442886
+                            ],
+                            [
+                                109.19801100000006,
+                                12.271485000000041,
+                                8.5764576147317886
+                            ],
+                            [
+                                109.19805270000006,
+                                12.271258400000022,
+                                8.6438404272317886
+                            ],
+                            [
+                                109.19804880000004,
+                                12.271189900000024,
+                                8.6730152319192886
+                            ],
+                            [
+                                109.19802200000004,
+                                12.270870000000059,
+                                8.8097339819192886
+                            ],
+                            [
+                                109.19796300000007,
+                                12.270440000000065,
+                                9.0976978491067886
+                            ],
+                            [
+                                109.19812900000005,
+                                12.270343000000025,
+                                9.1816822241067886
+                            ],
+                            [
+                                109.19836600000008,
+                                12.270199000000048,
+                                9.2682300756692886
+                            ],
+                            [
+                                109.19858800000009,
+                                12.270056000000068,
+                                9.3403736303567886
+                            ],
+                            [
+                                109.19874000000004,
+                                12.269963000000075,
+                                9.3884693334817886
+                            ],
+                            [
+                                109.19936800000005,
+                                12.269771000000048,
+                                9.5670582006692886
+                            ],
+                            [
+                                109.19976300000008,
+                                12.269321000000048,
+                                9.7294117162942886
+                            ],
+                            [
+                                109.20027600000009,
+                                12.268889000000058,
+                                9.9120289037942886
+                            ],
+                            [
+                                109.20051340000003,
+                                12.26880790000007,
+                                9.9797779272317886
+                            ],
+                            [
+                                109.20058133400005,
+                                12.268813754000064,
+                                10.00213853609562
+                            ]
+                        ]
+                    ]
+                }
+            }
+        ]
+    },
+    "directions": [
+        {
+            "routeId": 1,
+            "routeName": "Location 1 - Location 2",
+            "hasM": true,
+            "summary": {
+                "totalLength": 4053.3533515045842,
+                "totalTime": 10.002138536094135,
+                "totalDriveTime": 10.002138536094135,
+                "envelope": {
+                    "xmin": 109.17833121300004,
+                    "ymin": 12.26880790000007,
+                    "xmax": 109.20058133400005,
+                    "ymax": 12.288363700000048,
+                    "mmin": 0,
+                    "mmax": 10.002138536094135,
+                    "spatialReference": {
+                        "wkid": 4326,
+                        "latestWkid": 4326
+                    }
+                }
+            },
+            "features": [
+                {
+                    "attributes": {
+                        "length": 0,
+                        "time": 0,
+                        "text": "Bắt đầu tại Location 1",
+                        "ETA": -2209161600000,
+                        "arriveTimeUTC": -2209161600000,
+                        "maneuverType": "esriDMTDepart"
+                    },
+                    "compressedGeometry": "+0+1+2+io8g0+1vvvvv7+76e1jd+0+0|+1vvvvvv+0+0",
+                    "strings": [
+                        {
+                            "string": "Location 1",
+                            "stringType": "esriDSTStreetName"
+                        }
+                    ]
+                },
+                {
+                    "attributes": {
+                        "length": 308.39470105318958,
+                        "time": 0.82340585691971913,
+                        "text": "Đi về phía đông bắc",
+                        "ETA": -2209161600000,
+                        "arriveTimeUTC": -2209161600000,
+                        "maneuverType": "esriDMTStraight"
+                    },
+                    "compressedGeometry": "+0+1+2+io82c+1vvuhfl+76dsc1+o4g+jq3+i15+41r+49o-2b|+1vvvvvv+0+uesckt+i121no+46c8r0"
+                },
+                {
+                    "attributes": {
+                        "length": 565.155029296875,
+                        "time": 1.4321289062500002,
+                        "text": "Tiếp tục đi về phía trước trên Đường Mai Thị Dõng",
+                        "ETA": -2209161600000,
+                        "arriveTimeUTC": -2209161600000,
+                        "maneuverType": "esriDMTStraight"
+                    },
+                    "compressedGeometry": "+0+1+2+io79l+1vvtbk8+76ealu+14ps-bi+7fd+4l+dhu+b5n+c8o+dqh+dlj+7gb+fc+2pn|+sbvkci+nbkijs+f4eo4m+32fa3d+7798h0+7jb3go+6daojd+15e6eq",
+                    "strings": [
+                        {
+                            "string": "Đường Mai Thị Dõng",
+                            "stringType": "esriDSTStreetName"
+                        }
+                    ]
+                },
+                {
+                    "attributes": {
+                        "length": 247.1466064453125,
+                        "time": 0.632568359375,
+                        "text": "Rẽ phải trên Đường Nguyễn Xiển",
+                        "ETA": -2209161600000,
+                        "arriveTimeUTC": -2209161600000,
+                        "maneuverType": "esriDMTTurnRight"
+                    },
+                    "compressedGeometry": "+0+1+2+io6te+1vvum73+76f937+803+29s+6bk+1qs+cpb+3m0+eia+4lp|+m53mnh+1hvdu4e+2lo3p5+2464fd+491kqk+4ti4o8",
+                    "strings": [
+                        {
+                            "string": "Đường Nguyễn Xiển",
+                            "stringType": "esriDSTStreetName"
+                        }
+                    ]
+                },
+                {
+                    "attributes": {
+                        "length": 28.5491943359375,
+                        "time": 0.076171875,
+                        "text": "Rẽ phải trên Đường Thái Phiên",
+                        "ETA": -2209161600000,
+                        "arriveTimeUTC": -2209161600000,
+                        "maneuverType": "esriDMTTurnRight"
+                    },
+                    "compressedGeometry": "+0+1+2+io6se+1vvvsh9+76fl7f+3dd-3b2|+lisjgl+1ubbu8a+1kk1nj",
+                    "strings": [
+                        {
+                            "string": "Đường Thái Phiên",
+                            "stringType": "esriDSTStreetName"
+                        }
+                    ]
+                },
+                {
+                    "attributes": {
+                        "length": 149.47509765625,
+                        "time": 0.344970703125,
+                        "text": "Rẽ về bên trái trên Đường Ngô Gia Khảm",
+                        "ETA": -2209161600000,
+                        "arriveTimeUTC": -2209161600000,
+                        "maneuverType": "esriDMTBearLeft"
+                    },
+                    "compressedGeometry": "+0+1+2+io6kn+1vvv5jt+76feti+qc1+72|+jart2i+1pag7d4+6lfoip",
+                    "strings": [
+                        {
+                            "string": "Đường Ngô Gia Khảm",
+                            "stringType": "esriDSTStreetName"
+                        }
+                    ]
+                },
+                {
+                    "attributes": {
+                        "length": 98.6175537109375,
+                        "time": 0.4930419921875,
+                        "text": "Tiếp tục đi về phía trước",
+                        "ETA": -2209161600000,
+                        "arriveTimeUTC": -2209161600000,
+                        "maneuverType": "esriDMTStraight"
+                    },
+                    "compressedGeometry": "+0+1+2+io6fj+1vvvegb+76fd5l+hc7-jm|+gqju1r+1nmdul1+89i1ar"
+                },
+                {
+                    "attributes": {
+                        "length": 1472.259521484375,
+                        "time": 2.778076171875,
+                        "text": "Rẽ phải trên Đường 2 Tháng 4",
+                        "ETA": -2209161600000,
+                        "arriveTimeUTC": -2209161600000,
+                        "maneuverType": "esriDMTTurnRight"
+                    },
+                    "compressedGeometry": "+0+1+2+io57f+1vvrmvb+76et4t+a5r-gak+sm1-1d2o+55a-8dp+g7s-pnb+144-1ov+57b-881+bet-huk+3jf-5j2+37a-505+a53-g0i+2de-3qt+2md-4b7+1rq-309+1q0-2v9+kb9-10ip+27t-3kp+7rb-cmr+2ho-3tc|+9n7afh+14vc7ag+20poc8+5ju10n+119d9c+36eks3+7355q+10sgjg+27nimm+mdfp7+k1n5r+1vrmof+f94ov+h7l6u+btm1p+bnhi7+41bngd+ednjl+1ia861+fntte",
+                    "strings": [
+                        {
+                            "string": "Đường 2 Tháng 4",
+                            "stringType": "esriDSTStreetName"
+                        }
+                    ]
+                },
+                {
+                    "attributes": {
+                        "length": 65.765380859375,
+                        "time": 0.2818603515625,
+                        "text": "Rẽ phải trên Đường Dương Vân Nga",
+                        "ETA": -2209161600000,
+                        "arriveTimeUTC": -2209161600000,
+                        "maneuverType": "esriDMTTurnRight"
+                    },
+                    "compressedGeometry": "+0+1+2+io57f+1vvvvsj+7683th-90r-74j|+9ae86e+1tbs558+2k3qqn",
+                    "strings": [
+                        {
+                            "string": "Đường Dương Vân Nga",
+                            "stringType": "esriDSTStreetName"
+                        }
+                    ]
+                },
+                {
+                    "attributes": {
+                        "length": 97.83935546875,
+                        "time": 0.562255859375,
+                        "text": "Rẽ trái",
+                        "ETA": -2209161600000,
+                        "arriveTimeUTC": -2209161600000,
+                        "maneuverType": "esriDMTTurnLeft"
+                    },
+                    "compressedGeometry": "+0+1+2+io568+1vvviml+767s9v+543-3v7+23j-1m3+60c-55a|+8jr0fo+1r4suln+1qoumg+og9d3+27pp6g"
+                },
+                {
+                    "attributes": {
+                        "length": 582.3516845703125,
+                        "time": 1.2193603515625009,
+                        "text": "Rẽ trái trên Đường Lý Ông Trọng, rồi rẽ phải trên Đường 2 Tháng 4",
+                        "ETA": -2209161600000,
+                        "arriveTimeUTC": -2209161600000,
+                        "maneuverType": "esriDMTTurnLeftRight"
+                    },
+                    "compressedGeometry": "+0+1+2+io50u+1vvvdqj+767fe4+55a+2p4+7d7-cer+1uu-4mb+1no-5cs+1qu-bpd-7i-etk-2t-5l5-k9-111m+pk-4b8|+7ctq2l+1mv313u+1km96d+13ueco+cjvto+e29jc+tiubb+1507tc+e16as+2hug2t+av113",
+                    "strings": [
+                        {
+                            "string": "Đường Lý Ông Trọng",
+                            "stringType": "esriDSTStreetName"
+                        }
+                    ]
+                },
+                {
+                    "attributes": {
+                        "length": 43.0908203125,
+                        "time": 0.1658935546875,
+                        "text": "Rẽ về bên phải trên Đường Hai Tháng Tư",
+                        "ETA": -2209161600000,
+                        "arriveTimeUTC": -2209161600000,
+                        "maneuverType": "esriDMTBearRight"
+                    },
+                    "compressedGeometry": "+0+1+2+io50v+1vvvvt2+764lse-2d-1a3-gf-64j|+78f1d6+1updt47+6pa0j+voor1",
+                    "strings": [
+                        {
+                            "string": "Đường Hai Tháng Tư",
+                            "stringType": "esriDSTStreetName"
+                        }
+                    ]
+                },
+                {
+                    "attributes": {
+                        "length": 48.004150390625,
+                        "time": 0.2879638671875,
+                        "text": "Tiếp tục đi về phía trước trên Đường 2 Tháng 4",
+                        "ETA": -2209161600000,
+                        "arriveTimeUTC": -2209161600000,
+                        "maneuverType": "esriDMTStraight"
+                    },
+                    "compressedGeometry": "+0+1+2+io515+1vvvvul+764eg2-148-889|+713iih+1tv5k3s+20qbrq",
+                    "strings": [
+                        {
+                            "string": "Đường 2 Tháng 4",
+                            "stringType": "esriDSTStreetName"
+                        }
+                    ]
+                },
+                {
+                    "attributes": {
+                        "length": 346.70425592014453,
+                        "time": 0.9044406869869146,
+                        "text": "Rẽ trái trên Đường Nguyễn Đình Chiểu",
+                        "ETA": -2209161600000,
+                        "arriveTimeUTC": -2209161600000,
+                        "maneuverType": "esriDMTTurnLeft"
+                    },
+                    "compressedGeometry": "+0+1+2+io4io+1vvudl9+7640n1+360-1rk+4hl-2og+48e-2ns+2td-1p5+c1u-3lv+7in-8ki+9r9-89f+4hs-1hr+19o+3j|+6co6bh+1q6ptio+b8smt+g8hn3+fflvg+aefjr+16glsq+133ufl+17at3s+emt3n+3vvni",
+                    "strings": [
+                        {
+                            "string": "Đường Nguyễn Đình Chiểu",
+                            "stringType": "esriDSTStreetName"
+                        }
+                    ]
+                },
+                {
+                    "attributes": {
+                        "length": 0,
+                        "time": 0,
+                        "text": "Kết thúc tại Location 2, ở bên trái",
+                        "ETA": -2209161600000,
+                        "arriveTimeUTC": -2209161600000,
+                        "maneuverType": "esriDMTStop"
+                    },
+                    "compressedGeometry": "+0+1+2+io4io+1vvvvub+7631fk+0+0|+6co6bh+1vvvvvn+0",
+                    "strings": [
+                        {
+                            "string": "Location 2",
+                            "stringType": "esriDSTStreetName"
+                        }
+                    ]
+                }
+            ]
+        }
+    ],
+    "messages": []
+}
